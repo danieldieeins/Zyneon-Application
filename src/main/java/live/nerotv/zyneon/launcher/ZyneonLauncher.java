@@ -1,6 +1,6 @@
 package live.nerotv.zyneon.launcher;
 
-import live.nerotv.zyneon.launcher.front.ZyneonFront;
+import live.nerotv.zyneon.launcher.frontend.ZyneonFront;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

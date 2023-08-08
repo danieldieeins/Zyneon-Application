@@ -1,7 +1,6 @@
-package live.nerotv.zyneon.launcher.front.backend;
+package live.nerotv.zyneon.launcher.frontend.backend;
 
 import com.sun.net.httpserver.HttpServer;
-import live.nerotv.zyneon.launcher.front.ZyneonFront;
 
 import java.io.IOException;
 import java.net.ConnectException;

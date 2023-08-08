@@ -1,6 +1,6 @@
-package live.nerotv.zyneon.launcher.front;
+package live.nerotv.zyneon.launcher.frontend;
 
-import live.nerotv.zyneon.launcher.front.backend.ZyneonFrontBackendSocket;
+import live.nerotv.zyneon.launcher.frontend.backend.ZyneonFrontBackendSocket;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
