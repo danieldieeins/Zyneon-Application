@@ -12,7 +12,10 @@ public class WebViewApp extends Application {
         WebView webView = new WebView();
         webView.getEngine().load(getClass().getResource("/index.html").toExternalForm());
 
-        Scene scene = new Scene(webView, 800, 600);
+        Scene scene = new Scene(webView, 1280, 801);
+        primaryStage.setMinHeight(801);
+        primaryStage.setMinWidth(1280);
+
         primaryStage.setTitle("Zyneon Launcher");
         primaryStage.setScene(scene);
         primaryStage.show();
