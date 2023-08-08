@@ -16,6 +16,11 @@
         <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css">
         <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
         <style>body{overflow:hidden;}body{overflow-y:hidden;}body{overflow-x: hidden;}</style>
+        <script>
+            function callJavaMethod(message) {
+                backendConnector.callJavaMethod(message);
+            }
+        </script>
     </head>
     <body>
         <section data-bs-version="5.1" class="menu menu2 cid-tMlOgqESlK" once="menu" id="menu-bar">
@@ -49,8 +54,9 @@
 						        <a class="nav-link link text-white text-primary display-4" href="argria-2.html#argria-2">Argria II</a>
 					        </li>
                         </ul>
-				        <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="#">Account wechseln</a></div>
-			        </div>
+                        <div class="navbar-buttons mbr-section-btn">
+                            <a class="btn btn-primary display-4" href="#" onclick="callJavaMethod('button.account')">Account wechseln</a>
+                        </div>			        </div>
 		        </div>
 	        </nav>
         </section>
@@ -67,7 +73,7 @@
                     <div class="col-md-12 col-lg-9">
                         <p class="mbr-text mbr-fonts-style mb-4 display-5">1.20.1</p>
                         <div class="mbr-section-btn mt-4">
-                            <a class="btn btn-warning display-1" href="#">SPIELEN</a>
+                            <a class="btn btn-warning display-1" href="#" onclick="callJavaMethod('button.start.zyneonplus1201')">SPIELEN</a>
                         </div>
                     </div>
                 </div>

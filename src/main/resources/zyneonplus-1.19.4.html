@@ -16,6 +16,11 @@
         <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css">
         <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
         <style>body{overflow:hidden;}body{overflow-y:hidden;}body{overflow-x: hidden;}</style>
+        <script>
+            function callJavaMethod(message) {
+                backendConnector.callJavaMethod(message);
+            }
+        </script>
     </head>
     <body>
         <section data-bs-version="5.1" class="menu menu2 cid-tMlOOzvWqO" once="menu" id="menu-bar">
@@ -50,7 +55,7 @@
 					        </li>
                         </ul>
                         <div class="navbar-buttons mbr-section-btn">
-                            <a class="btn btn-primary display-4" href="#">Account wechseln</a>
+                            <a class="btn btn-primary display-4" href="#" onclick="callJavaMethod('button.account')">Account wechseln</a>
                         </div>
 			        </div>
 		        </div>
@@ -68,7 +73,7 @@
                     <div class="col-md-12 col-lg-9">
                         <p class="mbr-text mbr-fonts-style mb-4 display-5">1.19.4</p>
                         <div class="mbr-section-btn mt-4">
-                            <a class="btn btn-warning display-1" href="#">SPIELEN</a>
+                            <a class="btn btn-warning display-1" href="#" onclick="callJavaMethod('button.start.zyneonplus1194')">SPIELEN</a>
                         </div>
                     </div>
                 </div>

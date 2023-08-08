@@ -16,6 +16,11 @@
   		<link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css">
 		<link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
   		<style>body{overflow:hidden;}body{overflow-y:hidden;}body{overflow-x: hidden;}</style>
+		<script>
+			function callJavaMethod(message) {
+				backendConnector.callJavaMethod(message);
+			}
+		</script>
 	</head>
 	<body>
   		<section data-bs-version="5.1" class="menu menu2 cid-tMlM1kGix2" once="menu" id="menu-bar">
@@ -50,7 +55,7 @@
 							</li>
 						</ul>
 						<div class="navbar-buttons mbr-section-btn">
-							<a class="btn btn-primary display-4" href="#">Account wechseln</a>
+							<a class="btn btn-primary display-4" href="#" onclick="callJavaMethod('button.account')">Account wechseln</a>
 						</div>
 					</div>
 				</div>
