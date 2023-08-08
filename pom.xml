@@ -85,8 +85,9 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>assets/web/assets/mobirise-icons2/*</exclude>
-                    <!-- Weitere <exclude> Einträge für andere Dateien -->
+                    <exclude>assets/web/assets/mobirise-icons2/*.eot</exclude>
+                    <exclude>assets/web/assets/mobirise-icons2/*.ttf</exclude>
+                    <exclude>assets/web/assets/mobirise-icons2/*.woff</exclude>
                 </excludes>
             </resource>
         </resources>
