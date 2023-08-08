@@ -24,6 +24,7 @@ public class ZyneonFront {
         mainFrame.setUndecorated(true);
         mainFrame.setSize(1280, 720);
         mainFrame.setLocationRelativeTo(null);
+
         mainFrame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "close_K");
         mainFrame.getRootPane().getActionMap().put("close_K", new AbstractAction() {
@@ -35,22 +36,28 @@ public class ZyneonFront {
             }
         });
 
-        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        while (mainFrame.getDefaultCloseOperation() != 3) {
-           mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        }
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JEditorPane jEditorPane = new JEditorPane();
 
+
+
         try {
+            jEditorPane.setContentType("text/html");
+
+            jEditorPane.getDocument().putProperty("base", "http://localhost:" + backendSocket.getBackendWebPort() + "/");
+
             jEditorPane.setPage("http://localhost:" + backendSocket.getBackendWebPort() + "/web");
+
         } catch (IOException e) {
             e.printStackTrace();
             jEditorPane.setText("<!DOCTYPE html><html lang=\"de\"><head><meta charset=\"UTF-8\"><title>Fehler | Zyneon Launcher</title></head><body><p>Kann nicht geladen werden</p></body></html>");
         }
 
+        jEditorPane.setEditable(false);
+
         JScrollPane scrollPane = new JScrollPane(jEditorPane);
+        scrollPane.setWheelScrollingEnabled(false);
         mainFrame.add(scrollPane);
 
         mainFrame.setVisible(true);
