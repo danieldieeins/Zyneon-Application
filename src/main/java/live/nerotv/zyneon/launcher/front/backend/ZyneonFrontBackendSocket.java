@@ -29,12 +29,12 @@ public class ZyneonFrontBackendSocket {
         }
 
         try {
-            socket = HttpServer.create(new InetSocketAddress("127.0.0.1", 29998), 0);
+            socket = HttpServer.create(new InetSocketAddress("localhost", port), 0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         socket.createContext("/web", exchange -> {
-            Scanner webPage = new Scanner(ZyneonFront.class.getClassLoader().getResourceAsStream("html/index.html"), StandardCharsets.UTF_8);
+            Scanner webPage = new Scanner(ZyneonFrontBackendSocket.class.getClassLoader().getResourceAsStream("index.html"), StandardCharsets.UTF_8);
 
             String page = "";
 
@@ -42,8 +42,14 @@ public class ZyneonFrontBackendSocket {
                 page = page + webPage.next() + "\n";
             }
 
+            System.out.println(page);
+
             exchange.sendResponseHeaders(200, page.getBytes().length);
             exchange.getResponseBody().write(page.getBytes(StandardCharsets.UTF_8));
+            exchange.getResponseBody().flush();
+
+            exchange.getResponseBody().close();
+            exchange.close();
         });
     }
 
