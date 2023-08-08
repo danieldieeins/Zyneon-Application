@@ -19,8 +19,8 @@ public class Authentication {
         System.out.println(new Authentication().startAuth());
     }
 
-    private HttpServer socket;
-    private int port;
+    private final HttpServer socket;
+    private final int port;
 
     public Authentication() {
         Random random = new Random();
@@ -101,13 +101,14 @@ public class Authentication {
 
         String clientId = "5193b2fd-a1d1-40f0-a0e2-2e982688f7db";
         String redirectUri = "http://localhost:" + port + "/auth";
-        String scope = "openid profile email offline_access";
+        String scope = "XboxLive.signin XboxLive.offline_access";
 
-        String authUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize" +
+        String authUrl = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize" +
                 "?client_id=" + clientId +
-                "&response_type=token" +
+                "&response_type=code" +
                 "&redirect_uri=" + URLEncoder.encode(redirectUri) +
-                "&scope=" + URLEncoder.encode(scope);
+                "&scope=" + URLEncoder.encode(scope) +
+                "&prompt=select_account&";
 
         try {
             Desktop.getDesktop().browse(new URI(authUrl));
