@@ -20,6 +20,16 @@
             <artifactId>commons-compress</artifactId>
             <version>1.23.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>17</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,6 +81,10 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>assets/web/assets/mobirise-icons2/*</exclude>
+                    <!-- Weitere <exclude> Einträge für andere Dateien -->
+                </excludes>
             </resource>
         </resources>
     </build>
