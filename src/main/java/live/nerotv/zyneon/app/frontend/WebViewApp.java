@@ -32,8 +32,13 @@ public class WebViewApp extends Application {
         scene = new Scene(webView, 1280, 800);
         primaryStage.setMinHeight(800);
         primaryStage.setMinWidth(1280);
-        primaryStage.setTitle("Zyneon App (Alpha 0.0.6)");
+        primaryStage.setTitle("Zyneon App (Alpha 0.0.8)");
         primaryStage.setScene(scene);
+
+        primaryStage.setOnCloseRequest(event -> {
+            System.exit(0);
+        });
+
         primaryStage.show();
     }
 
