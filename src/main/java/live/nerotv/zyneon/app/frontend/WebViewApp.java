@@ -36,7 +36,7 @@ public class WebViewApp extends Application {
         if(MicrosoftAuth.isUserSignedIn()) {
             primaryStage.setTitle("Zyneon App ("+MicrosoftAuth.getAuthInfos().getUsername()+")");
         } else {
-            primaryStage.setTitle("Zyneon App (Alpha 0.0.8)");
+            primaryStage.setTitle("Zyneon App (Alpha 0.0.9)");
         }
         primaryStage.setScene(scene);
 

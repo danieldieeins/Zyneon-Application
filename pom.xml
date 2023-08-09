@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>app</artifactId>
-    <version>0.0.8-ALPHA</version>
+    <version>0.0.9-ALPHA</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
