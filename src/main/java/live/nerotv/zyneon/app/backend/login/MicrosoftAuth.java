@@ -1,8 +1,10 @@
 package live.nerotv.zyneon.app.backend.login;
 
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import live.nerotv.Main;
+
+import java.util.Base64;
 
 public class MicrosoftAuth {
 
@@ -16,19 +18,10 @@ public class MicrosoftAuth {
                 alert.show();
                 return;
             }
-
-            /*saver.set("msAccessToken", response.getAccessToken());
-            saver.set("msRefreshToken", response.getRefreshToken());
-            saver.save();
-            Launcher.getInstance().setAuthInfos(new AuthInfos(
-                    response.getProfile().getName(),
-                    response.getAccessToken(),
-                    response.getProfile().getId()
-            ));*/
-
-            Platform.runLater(() -> {
-
-            });
+            Main.config.set("account.access", Base64.getEncoder().encodeToString(response.getAccessToken().getBytes()));
+            Main.config.set("account.refresh",Base64.getEncoder().encodeToString(response.getRefreshToken().getBytes()));
+            Main.config.set("account.name", Base64.getEncoder().encodeToString(response.getProfile().getName().getBytes()));
+            Main.config.set("account.id",Base64.getEncoder().encodeToString(response.getProfile().getId().getBytes()));
         });
     }
 }

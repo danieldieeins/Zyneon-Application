@@ -2,7 +2,6 @@ package live.nerotv;
 
 import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.WebViewApp;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,24 +11,15 @@ public class Main {
 
     private static WebViewApp mainWindow;
     private static String[] arguments;
+    private static String path;
     public static Config config;
 
     public static void main(String[] args) {
         config = new Config(new File(getDirectoryPath()+"config.json"));
-        arguments = args;
         mainWindow = new WebViewApp();
         mainWindow.start(args);
-    }
+        arguments = args;
 
-    public static WebViewApp getMainWindow() {
-        return mainWindow;
-    }
-
-    public static String[] getArguments() {
-        return arguments;
-    }
-
-    public static String getDirectoryPath() {
         String folderName = "ZyneonLauncher";
         String appData;
         String os = System.getProperty("os.name").toLowerCase();
@@ -46,6 +36,18 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return folderPath.toString()+"/";
+        path = folderPath+"/";
+    }
+
+    public static WebViewApp getMainWindow() {
+        return mainWindow;
+    }
+
+    public static String[] getArguments() {
+        return arguments;
+    }
+
+    public static String getDirectoryPath() {
+        return path;
     }
 }
