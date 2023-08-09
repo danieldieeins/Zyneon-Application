@@ -4,6 +4,7 @@ import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.backend.launcher.ForgeLauncher;
+import live.nerotv.zyneon.app.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 
 import java.nio.file.Path;
