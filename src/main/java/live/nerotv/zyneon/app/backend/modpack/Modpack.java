@@ -1,6 +1,7 @@
 package live.nerotv.zyneon.app.backend.modpack;
 
 import java.net.URL;
+import java.nio.file.Path;
 
 public class Modpack {
 
@@ -9,6 +10,7 @@ public class Modpack {
     private String version;
     private String minecraftVersion;
     private String id;
+    private Path path;
 
     public Modpack(URL fileDownload) {
         url = fileDownload;
@@ -26,6 +28,10 @@ public class Modpack {
         version = "Unbekannt";
         minecraftVersion = "Unbekannt";
         id = "Unbekannt";
+    }
+
+    public Path getPath() {
+        return path;
     }
 
     public String getName() {

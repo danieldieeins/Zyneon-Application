@@ -10,6 +10,10 @@ public class FabricPack extends Modpack {
         super(fileDownload);
     }
 
+    public URL getMods() {
+        return null;
+    }
+
     public String getFabricVersion() {
         return fabricVersion;
     }

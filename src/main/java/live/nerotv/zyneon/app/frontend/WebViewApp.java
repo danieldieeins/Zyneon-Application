@@ -11,10 +11,10 @@ import netscape.javascript.JSObject;
 
 public class WebViewApp extends Application {
 
-    private Stage primaryStage;
-    private WebView webView;
-    private WebEngine webEngine;
-    private Scene scene;
+    public Stage primaryStage;
+    public WebView webView;
+    public WebEngine webEngine;
+    public Scene scene;
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,7 +34,7 @@ public class WebViewApp extends Application {
         primaryStage.setMinHeight(800);
         primaryStage.setMinWidth(1280);
         if(MicrosoftAuth.isUserSignedIn()) {
-            primaryStage.setTitle("Zyneon App ("+MicrosoftAuth.getAuthInfos().getName()+")");
+            primaryStage.setTitle("Zyneon App ("+MicrosoftAuth.getAuthInfos().getUsername()+")");
         } else {
             primaryStage.setTitle("Zyneon App (Alpha 0.0.8)");
         }
@@ -45,22 +45,6 @@ public class WebViewApp extends Application {
         });
 
         primaryStage.show();
-    }
-
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
-
-    public WebView getWebView() {
-        return webView;
-    }
-
-    public WebEngine getWebEngine() {
-        return webEngine;
-    }
-
-    public Scene getScene() {
-        return scene;
     }
 
     public void start(String[] args) {

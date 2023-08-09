@@ -1,65 +1,80 @@
 package live.nerotv.zyneon.app.backend.installer;
 
-import live.nerotv.Main;
+import fr.flowarg.flowupdater.FlowUpdater;
+import fr.flowarg.flowupdater.download.json.CurseFileInfo;
+import fr.flowarg.flowupdater.download.json.Mod;
+import fr.flowarg.flowupdater.utils.UpdaterOptions;
+import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
+import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
+import fr.flowarg.flowupdater.versions.ForgeVersionType;
+import fr.flowarg.flowupdater.versions.VanillaVersion;
+import live.nerotv.zyneon.app.backend.modpack.ForgePack;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.List;
 
 public class ForgeInstaller {
 
-    public void installForge(String minecraftVersion, String forgeVersion) {
-        System.out.println("attempting to install forge "+forgeVersion+" for minecraft "+minecraftVersion+"...");
-        String installerPath = Main.getDirectoryPath()+"installer/forge/"+minecraftVersion+"/"+forgeVersion+".jar";
-        String installFolder = Main.getDirectoryPath()+"installer/forge/"+minecraftVersion+"/"+forgeVersion+"-installed/";
-        File installer = new File(installerPath);
-        if(!installer.exists()) {
-            new File(installer.getParent()).mkdirs();
-            if(!downloadForge(minecraftVersion,forgeVersion)) {
-                System.out.println("error: couldn't download forge - stopping installation...");
-                return;
-            }
-        }
-        if(!new File(installFolder).exists()) {
-            new File(installFolder).mkdirs();
-        }
+    public boolean downloadModpack(ForgePack modpack) {
+        String minecraftVersion = modpack.getMinecraftVersion();
+        String forgeVersion = modpack.getForgeVersion();
+        ForgeVersionType type = modpack.getForgeType();
+        Path instancePath = modpack.getPath();
+        URL JSON = modpack.getMods();
+
+        VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
+                .withName(minecraftVersion)
+                .build();
+
+        UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
+                .build();
+
+        List<CurseFileInfo> curseMods = CurseFileInfo.getFilesFromJson(JSON);
+        List<Mod> mods = Mod.getModsFromJson(JSON);
+
+        AbstractForgeVersion forge = new ForgeVersionBuilder(type)
+                .withForgeVersion(minecraftVersion+"-"+forgeVersion)
+                .withCurseMods(JSON)
+                .withMods(JSON)
+                .build();
+
+        FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
+                .withVanillaVersion(vanillaVersion)
+                .withModLoaderVersion(forge)
+                .withUpdaterOptions(options)
+                .build();
+
         try {
-            Process process = Runtime.getRuntime().exec("java -jar "+installerPath+" --installClient --installPath "+installFolder+" --mcversion "+minecraftVersion+" --forgeVersion "+forgeVersion);
-            int exitCode = process.waitFor();
-            System.out.println("Prozess beendet mit Exit-Code: " + exitCode);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            updater.update(instancePath);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    public boolean downloadForge(String minecraftVersion, String forgeVersion) {
-        System.out.println("attempting to download forge "+forgeVersion+" for minecraft "+minecraftVersion+"...");
-        String installerPath = Main.getDirectoryPath()+"installer/forge/"+minecraftVersion+"/"+forgeVersion+".jar";
-        File installer = new File(installerPath);
-        if(installer.exists()) {
-            System.out.println("deleted existing installer: "+installer.delete());
-        }
-        System.out.println("folders created: "+new File(installer.getParent()).mkdirs());
-        String installerURL = "https://files.minecraftforge.net/maven/net/minecraftforge/forge/"+minecraftVersion+"-"+forgeVersion+"/forge-"+minecraftVersion+"-"+forgeVersion+"-installer.jar";
+    public boolean download(String minecraftVersion, String forgeVersion, ForgeVersionType type, Path instancePath) {
+        VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
+                .withName(minecraftVersion)
+                .build();
+
+        UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
+                .build();
+
+        AbstractForgeVersion forge = new ForgeVersionBuilder(type)
+                .withForgeVersion(minecraftVersion+"-"+forgeVersion)
+                .build();
+
+        FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
+                .withVanillaVersion(vanillaVersion)
+                .withModLoaderVersion(forge)
+                .withUpdaterOptions(options)
+                .build();
+
         try {
-            System.out.println("trying to download forge "+forgeVersion+" for "+minecraftVersion+" from: "+installerURL);
-            installerPath = URLDecoder.decode(installerPath,StandardCharsets.UTF_8);
-            BufferedInputStream inputStream = new BufferedInputStream(new URL(installerURL).openStream());
-            FileOutputStream fileOutputStream = new FileOutputStream(installerPath);
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer, 0, 1024)) != -1) {
-                fileOutputStream.write(buffer, 0, bytesRead);
-            }
-            fileOutputStream.close();
-            inputStream.close();
+            updater.update(instancePath);
             return true;
-        } catch (IOException e) {
-            System.out.println("error: failed to download forge "+forgeVersion+" for "+minecraftVersion+" from: "+installerURL);
+        } catch (Exception e) {
             return false;
         }
     }

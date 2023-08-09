@@ -3,23 +3,20 @@ package live.nerotv;
 import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.WebViewApp;
 import java.io.File;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
 
-    private static WebViewApp mainWindow;
+    public static WebViewApp mainWindow;
     private static String[] arguments;
     private static String path;
     public static Config config;
 
     public static void main(String[] args) {
-        config = new Config(new File(getDirectoryPath()+"config.json"));
-        mainWindow = new WebViewApp();
-        mainWindow.start(args);
-        arguments = args;
-
         String folderName = "ZyneonLauncher";
         String appData;
         String os = System.getProperty("os.name").toLowerCase();
@@ -36,11 +33,13 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        path = folderPath+"/";
-    }
 
-    public static WebViewApp getMainWindow() {
-        return mainWindow;
+
+        path = folderPath+"/";
+        config = new Config(new File(getDirectoryPath()+"config.json"));
+        mainWindow = new WebViewApp();
+        mainWindow.start(args);
+        arguments = args;
     }
 
     public static String[] getArguments() {
@@ -48,6 +47,6 @@ public class Main {
     }
 
     public static String getDirectoryPath() {
-        return path;
+        return URLDecoder.decode(path,StandardCharsets.UTF_8);
     }
 }
