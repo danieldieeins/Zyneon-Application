@@ -12,7 +12,6 @@ import java.nio.file.Path;
 public class VanillaLauncher {
 
     public boolean launch(Modpack modpack, int ram) {
-        //change to modpacklaunch
         return launch(modpack.getMinecraftVersion(), ram, modpack.getPath());
     }
 

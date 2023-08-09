@@ -7,7 +7,6 @@ import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.installer.FabricInstaller;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.modpack.FabricPack;
-
 import java.nio.file.Path;
 
 public class FabricLauncher {

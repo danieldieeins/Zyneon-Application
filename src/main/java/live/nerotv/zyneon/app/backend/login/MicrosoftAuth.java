@@ -4,7 +4,6 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import live.nerotv.Main;
 
@@ -20,7 +19,7 @@ public class MicrosoftAuth {
             if (Main.config.get("account.access") != null && Main.config.get("account.refresh") != null) {
                 try {
                     MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-                    MicrosoftAuthResult response = authenticator.loginWithRefreshToken(new String(Base64.getDecoder().decode((String)Main.config.get("account.refresh"))));
+                    MicrosoftAuthResult response = authenticator.loginWithRefreshToken(new String(Base64.getDecoder().decode((String) Main.config.get("account.refresh"))));
                     Main.config.delete("account.access");
                     Main.config.delete("account.refresh");
                     Main.config.set("account.access", response.getAccessToken());
@@ -47,32 +46,25 @@ public class MicrosoftAuth {
         return authInfos;
     }
 
-    private static boolean isOpen = false;
-
     public static void authenticateMS() {
-        if(!isOpen) {
-            isOpen = true;
-            MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-            authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
-                if (error != null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("error");
-                    alert.setContentText(error.getMessage());
-                    alert.show();
-                    Platform.runLater(() -> isOpen = false);
-                    return;
-                }
-                Main.config.delete("account.access");
-                Main.config.delete("account.refresh");
-                Main.config.delete("account.name");
-                Main.config.delete("account.id");
-                Main.config.set("account.access", Base64.getEncoder().encodeToString(response.getAccessToken().getBytes()));
-                Main.config.set("account.refresh", Base64.getEncoder().encodeToString(response.getRefreshToken().getBytes()));
-                Main.config.set("account.name", Base64.getEncoder().encodeToString(response.getProfile().getName().getBytes()));
-                Main.config.set("account.id", Base64.getEncoder().encodeToString(response.getProfile().getId().getBytes()));
-                authInfos = new AuthInfos(response.getProfile().getName(),response.getAccessToken(),response.getProfile().getId());
-                Platform.runLater(() -> isOpen = false);
-            });
-        }
+        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
+        authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
+            if (error != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("error");
+                alert.setContentText(error.getMessage());
+                alert.show();
+                return;
+            }
+            Main.config.delete("account.access");
+            Main.config.delete("account.refresh");
+            Main.config.delete("account.name");
+            Main.config.delete("account.id");
+            Main.config.set("account.access", Base64.getEncoder().encodeToString(response.getAccessToken().getBytes()));
+            Main.config.set("account.refresh", Base64.getEncoder().encodeToString(response.getRefreshToken().getBytes()));
+            Main.config.set("account.name", Base64.getEncoder().encodeToString(response.getProfile().getName().getBytes()));
+            Main.config.set("account.id", Base64.getEncoder().encodeToString(response.getProfile().getId().getBytes()));
+            authInfos = new AuthInfos(response.getProfile().getName(), response.getAccessToken(), response.getProfile().getId());
+        });
     }
 }

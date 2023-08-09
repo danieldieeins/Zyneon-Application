@@ -9,7 +9,6 @@ import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
 import live.nerotv.zyneon.app.backend.modpack.ForgePack;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;

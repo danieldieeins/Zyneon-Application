@@ -8,7 +8,6 @@ import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.installer.ForgeInstaller;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.modpack.ForgePack;
-
 import java.nio.file.Path;
 
 public class ForgeLauncher {

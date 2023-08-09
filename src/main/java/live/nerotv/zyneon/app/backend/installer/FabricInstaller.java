@@ -7,7 +7,6 @@ import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.FabricVersion;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
 import live.nerotv.zyneon.app.backend.modpack.FabricPack;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;

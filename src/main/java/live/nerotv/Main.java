@@ -34,7 +34,6 @@ public class Main {
             e.printStackTrace();
         }
 
-
         path = folderPath+"/";
         config = new Config(new File(getDirectoryPath()+"config.json"));
         mainWindow = new WebViewApp();
