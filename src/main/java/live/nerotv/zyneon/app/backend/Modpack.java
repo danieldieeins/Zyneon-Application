@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.launcher.backend;
+package live.nerotv.zyneon.app.backend;
 
 import java.net.URL;
 

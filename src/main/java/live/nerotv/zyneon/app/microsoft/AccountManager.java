@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.launcher.microsoft;
+package live.nerotv.zyneon.app.microsoft;
 
 public class AccountManager {
 

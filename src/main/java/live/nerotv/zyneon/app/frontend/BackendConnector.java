@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.launcher.frontend;
+package live.nerotv.zyneon.app.frontend;
 
 public class BackendConnector {
 

@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.launcher.frontend;
+package live.nerotv.zyneon.app.frontend;
 
 import javafx.application.Application;
 import javafx.concurrent.Worker;
@@ -10,10 +10,16 @@ import netscape.javascript.JSObject;
 
 public class WebViewApp extends Application {
 
+    private Stage primaryStage;
+    private WebView webView;
+    private WebEngine webEngine;
+    private Scene scene;
+
     @Override
     public void start(Stage primaryStage) {
-        WebView webView = new WebView();
-        WebEngine webEngine = webView.getEngine();
+        this.primaryStage = primaryStage;
+        webView = new WebView();
+        webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
@@ -23,12 +29,28 @@ public class WebViewApp extends Application {
         });
         webEngine.load(getClass().getResource("/index.html").toExternalForm());
 
-        Scene scene = new Scene(webView, 1280, 800);
+        scene = new Scene(webView, 1280, 800);
         primaryStage.setMinHeight(800);
         primaryStage.setMinWidth(1280);
-        primaryStage.setTitle("Zyneon Launcher");
+        primaryStage.setTitle("Zyneon App (Alpha 0.0.6)");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public WebView getWebView() {
+        return webView;
+    }
+
+    public WebEngine getWebEngine() {
+        return webEngine;
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 
     public void start(String[] args) {

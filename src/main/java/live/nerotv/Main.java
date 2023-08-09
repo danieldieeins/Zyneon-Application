@@ -1,6 +1,6 @@
 package live.nerotv;
 
-import live.nerotv.zyneon.launcher.frontend.WebViewApp;
+import live.nerotv.zyneon.app.frontend.WebViewApp;
 
 public class Main {
 

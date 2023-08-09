@@ -88,13 +88,6 @@
                     <exclude>assets/web/assets/mobirise-icons2/*.eot</exclude>
                     <exclude>assets/web/assets/mobirise-icons2/*.ttf</exclude>
                     <exclude>assets/web/assets/mobirise-icons2/*.woff</exclude>
-                    <exclude>backup/assets/web/assets/mobirise-icons2/*.eot</exclude>
-                    <exclude>backup/assets/web/assets/mobirise-icons2/*.ttf</exclude>
-                    <exclude>backup/assets/web/assets/mobirise-icons2/*.woff</exclude>
-                    <exclude>assets/socicon/fonts/*.eot</exclude>
-                    <exclude>assets/socicon/fonts/*.woff2</exclude>
-                    <exclude>assets/socicon/fonts/*.woff</exclude>
-                    <exclude>assets/socicon/fonts/*.ttf</exclude>
                 </excludes>
             </resource>
         </resources>
