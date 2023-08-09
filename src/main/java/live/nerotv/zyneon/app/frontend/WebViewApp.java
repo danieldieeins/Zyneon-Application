@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import netscape.javascript.JSObject;
 
 public class WebViewApp extends Application {
@@ -32,7 +33,11 @@ public class WebViewApp extends Application {
         scene = new Scene(webView, 1280, 800);
         primaryStage.setMinHeight(800);
         primaryStage.setMinWidth(1280);
-        primaryStage.setTitle("Zyneon App (Alpha 0.0.8)");
+        if(MicrosoftAuth.isUserSignedIn()) {
+            primaryStage.setTitle("Zyneon App ("+MicrosoftAuth.getAuthInfos().getName()+")");
+        } else {
+            primaryStage.setTitle("Zyneon App (Alpha 0.0.8)");
+        }
         primaryStage.setScene(scene);
 
         primaryStage.setOnCloseRequest(event -> {
