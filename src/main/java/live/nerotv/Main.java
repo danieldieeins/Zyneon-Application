@@ -1,7 +1,9 @@
 package live.nerotv;
 
+import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.WebViewApp;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,9 +12,10 @@ public class Main {
 
     private static WebViewApp mainWindow;
     private static String[] arguments;
+    public static Config config;
 
     public static void main(String[] args) {
-        getDirectoryPath();
+        config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         mainWindow = new WebViewApp();
         mainWindow.start(args);
