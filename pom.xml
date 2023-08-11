@@ -86,6 +86,12 @@
             <version>2.10.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>me.friwi</groupId>
+            <artifactId>jcefmaven</artifactId>
+            <version>110.0.25.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

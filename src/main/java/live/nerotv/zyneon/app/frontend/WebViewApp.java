@@ -28,8 +28,8 @@ public class WebViewApp extends Application {
                 jsObject.setMember("backendConnector", new BackendConnector());
             }
         });
-        webEngine.load(getClass().getResource("/index.html").toExternalForm());
-
+        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 OPR/100.0.0.0");
+        webEngine.load("https://a.nerotv.live/zyneon/launcher/html2/index.html");
         scene = new Scene(webView, 1280, 800);
         primaryStage.setMinHeight(800);
         primaryStage.setMinWidth(1280);

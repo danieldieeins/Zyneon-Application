@@ -6,6 +6,9 @@ import live.nerotv.zyneon.app.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Path;
 
 public class BackendConnector {
@@ -15,6 +18,7 @@ public class BackendConnector {
     private final VanillaLauncher vanillaLauncher = new VanillaLauncher();
 
     public void callJavaMethod(String message) {
+        System.out.println(message);
         if(message.equals("button.account")) {
             System.out.println(message);
             MicrosoftAuth.authenticateMS();
@@ -30,6 +34,45 @@ public class BackendConnector {
                 }
             }
             System.out.println(message);
+        }
+    }
+
+    public void scanfor() {
+        scan();
+        /*Thread consoleListenerThread = new Thread(() -> {
+
+        });
+        consoleListenerThread.start();*/
+    }
+
+    public void scan() {
+        PrintStream originalOut = System.out;
+        PrintStream customOut = new PrintStream(new CustomOutputStream(originalOut));
+        System.setOut(customOut);
+        System.setOut(originalOut);
+    }
+
+    class CustomOutputStream extends OutputStream {
+        private final PrintStream originalOut;
+        private StringBuilder lineBuffer = new StringBuilder();
+
+        public CustomOutputStream(PrintStream originalOut) {
+            this.originalOut = originalOut;
+        }
+
+        @Override
+        public void write(int b) {
+            char c = (char) b;
+            if (c == '\n') {
+                String line = lineBuffer.toString();
+                if (line.contains("[Launcher-Bridge] ")) {
+                    callJavaMethod(line.replace("[Launcher-Bridge] ",""));
+                }
+                lineBuffer.setLength(0);
+            } else {
+                lineBuffer.append(c);
+            }
+            originalOut.write(b);
         }
     }
 }
