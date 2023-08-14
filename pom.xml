@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>app</artifactId>
-    <version>0.0.9-ALPHA</version>
+    <version>0.1.0-ALPHA</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -40,13 +40,13 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
+            <artifactId>javafx-swing</artifactId>
             <version>17</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
+            <artifactId>javafx-web</artifactId>
             <version>17</version>
             <scope>compile</scope>
         </dependency>

@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.frontend;
+package live.nerotv.zyneon.app.frontend.deprecated;
 
 import javafx.application.Application;
 import javafx.concurrent.Worker;
@@ -9,14 +9,23 @@ import javafx.stage.Stage;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import netscape.javascript.JSObject;
 
+@Deprecated
 public class WebViewApp extends Application {
 
+    @Deprecated
     public Stage primaryStage;
+
+    @Deprecated
     public WebView webView;
+
+    @Deprecated
     public WebEngine webEngine;
+
+    @Deprecated
     public Scene scene;
 
     @Override
+    @Deprecated
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         webView = new WebView();
@@ -47,6 +56,7 @@ public class WebViewApp extends Application {
         primaryStage.show();
     }
 
+    @Deprecated
     public void start(String[] args) {
         launch(args);
     }

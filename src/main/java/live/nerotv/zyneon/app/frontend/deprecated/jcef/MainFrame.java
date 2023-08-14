@@ -1,6 +1,6 @@
-package live.nerotv.zyneon.app.frontend.jcef;
+package live.nerotv.zyneon.app.frontend.deprecated.jcef;
 
-import live.nerotv.zyneon.app.frontend.BackendConnector;
+import live.nerotv.zyneon.app.frontend.deprecated.BackendConnector;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
@@ -19,20 +19,26 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Serial;
 
+@Deprecated
 public class MainFrame extends JFrame {
 
-    @Serial
+    @Serial @Deprecated
     private static final long serialVersionUID = -5570653778104813836L;
+
+    @Deprecated
     private boolean browserFocus_ = true;
+
+    @Deprecated
     private BackendConnector backendConnector;
 
+    @Deprecated
     public MainFrame(String startURL, boolean useOSR, boolean isTransparent, String[] args) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
         backendConnector = new BackendConnector();
 
         CefAppBuilder builder = new CefAppBuilder();
         builder.getCefSettings().windowless_rendering_enabled = useOSR;
         builder.setAppHandler(new MavenCefAppHandlerAdapter() {
-            @Override
+            @Override @Deprecated
             public void stateHasChanged(CefAppState state) {
                 if (state == CefAppState.TERMINATED) System.exit(0);
             }
@@ -48,7 +54,7 @@ public class MainFrame extends JFrame {
 
         Component browerUI_ = browser_.getUIComponent();
         client_.addFocusHandler(new CefFocusHandlerAdapter() {
-            @Override
+            @Override @Deprecated
             public void onGotFocus(CefBrowser browser) {
                 if (browserFocus_) return;
                 browserFocus_ = true;
@@ -56,7 +62,7 @@ public class MainFrame extends JFrame {
                 browser.setFocus(true);
             }
 
-            @Override
+            @Override @Deprecated
             public void onTakeFocus(CefBrowser browser, boolean next) {
                 browserFocus_ = false;
             }
@@ -67,7 +73,7 @@ public class MainFrame extends JFrame {
         setSize(800, 600);
         setVisible(true);
         addWindowListener(new WindowAdapter() {
-            @Override
+            @Override @Deprecated
             public void windowClosing(WindowEvent e) {
                 CefApp.getInstance().dispose();
                 dispose();
@@ -75,6 +81,7 @@ public class MainFrame extends JFrame {
         });
     }
 
+    @Deprecated
     public static void main(String[] args) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
         TestReportGenerator.print(args);
         boolean useOsr = false;

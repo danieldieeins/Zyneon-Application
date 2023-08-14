@@ -1,9 +1,16 @@
 package live.nerotv;
 
+import live.nerotv.zyneon.app.backend.launcher.FabricLauncher;
+import live.nerotv.zyneon.app.backend.launcher.ForgeLauncher;
+import live.nerotv.zyneon.app.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.backend.utils.Config;
-import live.nerotv.zyneon.app.frontend.WebViewApp;
+import live.nerotv.zyneon.app.frontend.JCefFrame;
+import me.friwi.jcefmaven.CefInitializationException;
+import me.friwi.jcefmaven.UnsupportedPlatformException;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,16 +19,26 @@ import java.nio.file.Paths;
 
 public class Main {
 
-    public static WebViewApp mainWindow;
     private static String[] arguments;
     private static String path;
     public static Config config;
+    public static JCefFrame frame;
+    private static FabricLauncher fabricLauncher;
+    private static ForgeLauncher forgeLauncher;
+    private static VanillaLauncher vanillaLauncher;
 
     public static void main(String[] args) {
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
-        mainWindow = new WebViewApp();
-        mainWindow.start(args);
+        try {
+            frame = new JCefFrame("https://a.nerotv.live/zyneon/launcher/html2/index.html");
+            frame.setTitle("Zyneon Application (Alpha 0.1.0)");
+            frame.setMinimumSize(new Dimension(1280,800));
+            frame.open();
+        } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     public static String[] getArguments() {
@@ -49,5 +66,26 @@ public class Main {
             path = folderPath+"/";
         }
         return URLDecoder.decode(path,StandardCharsets.UTF_8);
+    }
+
+    public static FabricLauncher getFabricLauncher() {
+        if(fabricLauncher==null) {
+            fabricLauncher = new FabricLauncher();
+        }
+        return fabricLauncher;
+    }
+
+    public static ForgeLauncher getForgeLauncher() {
+        if(forgeLauncher==null) {
+            forgeLauncher = new ForgeLauncher();
+        }
+        return forgeLauncher;
+    }
+
+    public static VanillaLauncher getVanillaLauncher() {
+        if(vanillaLauncher==null) {
+            vanillaLauncher = new VanillaLauncher();
+        }
+        return vanillaLauncher;
     }
 }

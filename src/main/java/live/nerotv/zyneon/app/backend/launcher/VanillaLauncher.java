@@ -7,6 +7,7 @@ import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.installer.VanillaInstaller;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.modpack.Modpack;
+
 import java.nio.file.Path;
 
 public class VanillaLauncher {
@@ -25,11 +26,12 @@ public class VanillaLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(version, version, NoFramework.ModLoader.VANILLA);
-                Main.mainWindow.primaryStage.hide();
+                Main.frame.hide();
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();
                         Platform.exit();
+                        Main.frame.show();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

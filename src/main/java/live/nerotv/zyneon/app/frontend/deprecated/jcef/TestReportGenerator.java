@@ -1,21 +1,17 @@
-package live.nerotv.zyneon.app.frontend.jcef;
+package live.nerotv.zyneon.app.frontend.deprecated.jcef;
 
 import me.friwi.jcefmaven.EnumPlatform;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Locale;
 
-/**
- * Just a small class that assists users in generating test reports.
- * You can ignore this, it is not really part of the example.
- *
- * @author Fritz Windisch
- */
+@Deprecated
 public class TestReportGenerator {
+
+    @Deprecated
     public static void print(String[] args) throws IOException, UnsupportedPlatformException {
         System.out.println("Please consider reporting back whether this build worked on your platform or not.");
         System.out.println("To report back, follow these 3 (1/2) easy steps (it will take ~1 minute):");

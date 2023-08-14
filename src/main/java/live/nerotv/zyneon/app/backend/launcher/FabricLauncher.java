@@ -7,6 +7,7 @@ import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.installer.FabricInstaller;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.modpack.FabricPack;
+
 import java.nio.file.Path;
 
 public class FabricLauncher {
@@ -25,11 +26,12 @@ public class FabricLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
-                Main.mainWindow.primaryStage.hide();
+                Main.frame.hide();
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();
                         Platform.exit();
+                        Main.frame.show();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
