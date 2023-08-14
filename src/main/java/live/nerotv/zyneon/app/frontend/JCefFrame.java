@@ -43,6 +43,7 @@ public class JCefFrame extends JFrame {
                 if (state == CefApp.CefAppState.TERMINATED) System.exit(0);
             }
         });
+        builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
         builder.setInstallDir(installDir);
         builder.install();
         builder.getCefSettings().windowless_rendering_enabled = false;

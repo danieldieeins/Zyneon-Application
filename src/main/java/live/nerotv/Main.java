@@ -12,7 +12,7 @@ import me.friwi.jcefmaven.UnsupportedPlatformException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLDecoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,27 +32,33 @@ public class Main {
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         try {
-            boolean offline = true;
-            if(args.length != 0) {
-                if(args[0].equalsIgnoreCase("online")) {
-                    offline = false;
-                }
-            }
-            if(offline) {
-                frame = new JCefFrame(null);
-            } else {
-                frame = new JCefFrame("https://a.nerotv.live/zyneon/launcher/html2/index.html");
-            }
+            checkURL("https://a.nerotv.live/zyneon/application/html/index.html");
             if(MicrosoftAuth.isUserSignedIn()) {
-                frame.setTitle("Zyneon Application (Alpha 0.1.0, "+MicrosoftAuth.getAuthInfos().getUsername()+")");
+                frame.setTitle("Zyneon Application (Alpha 0.1.2, "+MicrosoftAuth.getAuthInfos().getUsername()+")");
             } else {
-                frame.setTitle("Zyneon Application (Alpha 0.1.0)");
+                frame.setTitle("Zyneon Application (Alpha 0.1.2, nicht eingeloggt)");
             }
             frame.setMinimumSize(new Dimension(1280,800));
             frame.open();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             e.printStackTrace();
             System.exit(-1);
+        }
+    }
+
+    private static void checkURL(String urlString) throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                frame = new JCefFrame(urlString);
+            } else {
+                frame = new JCefFrame(null);
+            }
+        } catch (UnknownHostException e) {
+            frame = new JCefFrame(null);
         }
     }
 

@@ -47,6 +47,7 @@ public class MicrosoftAuth {
     }
 
     public static void authenticateMS() {
+
         MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
         authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
             if (error != null) {
@@ -67,4 +68,5 @@ public class MicrosoftAuth {
             authInfos = new AuthInfos(response.getProfile().getName(), response.getAccessToken(), response.getProfile().getId());
         });
     }
+
 }

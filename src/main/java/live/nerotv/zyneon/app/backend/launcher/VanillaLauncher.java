@@ -30,8 +30,8 @@ public class VanillaLauncher {
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();
-                        Platform.exit();
                         Main.frame.show();
+                        Platform.exit();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
