@@ -22,8 +22,8 @@ public class MicrosoftAuth {
                     MicrosoftAuthResult response = authenticator.loginWithRefreshToken(new String(Base64.getDecoder().decode((String) Main.config.get("account.refresh"))));
                     Main.config.delete("account.access");
                     Main.config.delete("account.refresh");
-                    Main.config.set("account.access", response.getAccessToken());
-                    Main.config.set("account.refresh", response.getRefreshToken());
+                    Main.config.set("account.access", Base64.getEncoder().encodeToString(response.getAccessToken().getBytes()));
+                    Main.config.set("account.refresh", Base64.getEncoder().encodeToString(response.getRefreshToken().getBytes()));
                     authInfos = new AuthInfos(response.getProfile().getName(), response.getAccessToken(), response.getProfile().getId());
                     return true;
                 } catch (MicrosoftAuthenticationException e) {

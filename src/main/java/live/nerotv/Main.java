@@ -3,6 +3,7 @@ package live.nerotv;
 import live.nerotv.zyneon.app.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.backend.launcher.VanillaLauncher;
+import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.JCefFrame;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -31,8 +32,22 @@ public class Main {
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         try {
-            frame = new JCefFrame("https://a.nerotv.live/zyneon/launcher/html2/index.html");
-            frame.setTitle("Zyneon Application (Alpha 0.1.0)");
+            boolean offline = true;
+            if(args.length != 0) {
+                if(args[0].equalsIgnoreCase("online")) {
+                    offline = false;
+                }
+            }
+            if(offline) {
+                frame = new JCefFrame(null);
+            } else {
+                frame = new JCefFrame("https://a.nerotv.live/zyneon/launcher/html2/index.html");
+            }
+            if(MicrosoftAuth.isUserSignedIn()) {
+                frame.setTitle("Zyneon Application (Alpha 0.1.0, "+MicrosoftAuth.getAuthInfos().getUsername()+")");
+            } else {
+                frame.setTitle("Zyneon Application (Alpha 0.1.0)");
+            }
             frame.setMinimumSize(new Dimension(1280,800));
             frame.open();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {

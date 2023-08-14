@@ -50,6 +50,9 @@ public class JCefFrame extends JFrame {
         client = app.createClient();
         messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);
+        if(url==null) {
+            url = getClass().getResource("/index.html").toExternalForm();
+        }
         browser = client.createBrowser(url, false, false);
         client.addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
