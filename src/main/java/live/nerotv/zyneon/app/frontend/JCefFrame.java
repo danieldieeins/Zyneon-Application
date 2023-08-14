@@ -35,7 +35,7 @@ public class JCefFrame extends JFrame {
         backendConnector = new BackendConnectorV2();
         browserFocus = true;
         File installDir = new File(Main.getDirectoryPath()+"libs/jcef/");
-        System.out.println("NEED_JCEF_INSTALL: "+installDir.mkdirs());
+        Main.debug("NEED_JCEF_INSTALL: "+installDir.mkdirs());
         builder = new CefAppBuilder();
         builder.setAppHandler(new MavenCefAppHandlerAdapter() {
             @Override @Deprecated
@@ -60,7 +60,7 @@ public class JCefFrame extends JFrame {
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
                 if(message.contains("[Launcher-Bridge] ")) {
                     String request = message.replace("[Launcher-Bridge] ","");
-                    System.out.println("BackendConnectorV2: Received request: \""+request+"\"");
+                    Main.debug("[BackendConnectorV2] Received request: \""+request+"\"");
                     backendConnector.resolveRequest(request);
                 }
                 return super.onConsoleMessage(browser, level, message, source, line);

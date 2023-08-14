@@ -3,7 +3,10 @@ package live.nerotv.zyneon.app.frontend;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
+import live.nerotv.zyneon.app.backend.modpack.FabricPack;
+import live.nerotv.zyneon.app.backend.modpack.ForgePack;
 
+import java.net.URL;
 import java.nio.file.Path;
 
 public class BackendConnectorV2 {
@@ -19,27 +22,23 @@ public class BackendConnectorV2 {
 
     public void startInstance(String id) {
         if(id.contains("argria2")) {
-            Main.getForgeLauncher().launch("1.18.2","40.2.10", ForgeVersionType.NEW,16384, Path.of(Main.getDirectoryPath()+"instances/official/argria2/"));
+            Main.getForgeLauncher().launch(new ForgePack("https://a.nerotv.live/zyneon/application/modpack/argria2.json"),8192*2);
         } else if(id.contains("zyneonplus")) {
             startZyneonPlus(id.replace("button","").replace("zyneonplus","").replace("start","").replace(".",""));
         }
     }
 
     public void startZyneonPlus(String versionID) {
-        if(versionID.equalsIgnoreCase("189")) {
-            Main.getForgeLauncher().launch("1.8.9","11.15.1.2318",ForgeVersionType.OLD,8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/legacy/1.8.9/"));
-        } else if(versionID.equalsIgnoreCase("1122")) {
-            Main.getForgeLauncher().launch("1.12.2","14.23.5.2860",ForgeVersionType.OLD,8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/legacy/1.12.2/"));
-        } else if(versionID.equalsIgnoreCase("1165")) {
-            Main.getFabricLauncher().launch("1.16.5","0.14.22",8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/1.16.5/"));
+        if(versionID.equalsIgnoreCase("1165")) {
+            Main.getFabricLauncher().launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.16.5.json"),8192);
         } else if(versionID.equalsIgnoreCase("1171")) {
-            Main.getFabricLauncher().launch("1.17.1","0.14.22",8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/1.17.1/"));
+            Main.getFabricLauncher().launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.17.1.json"),8192);
         } else if(versionID.equalsIgnoreCase("1182")) {
-            Main.getFabricLauncher().launch("1.18.2","0.14.22",8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/1.18.2/"));
+            Main.getFabricLauncher().launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.18.2.json"),8192);
         } else if(versionID.equalsIgnoreCase("1194")) {
-            Main.getFabricLauncher().launch("1.19.4","0.14.22",8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/1.19.4/"));
+            Main.getFabricLauncher().launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.19.4.json"),8192);
         } else if(versionID.equalsIgnoreCase("1201")) {
-            Main.getFabricLauncher().launch("1.20.1","0.14.22",8192,Path.of(Main.getDirectoryPath()+"instances/official/zyneonplus/1.20.1/"));
+            Main.getFabricLauncher().launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.20.1.json"),8192);
         }
     }
 }

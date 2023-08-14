@@ -26,11 +26,9 @@ public class VanillaLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(version, version, NoFramework.ModLoader.VANILLA);
-                Main.frame.hide();
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();
-                        Main.frame.show();
                         Platform.exit();
                     } catch (InterruptedException e) {
                         e.printStackTrace();

@@ -4,6 +4,7 @@ import live.nerotv.zyneon.app.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
+import live.nerotv.zyneon.app.backend.modpack.creator.ModpackCreator;
 import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.JCefFrame;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -27,16 +28,25 @@ public class Main {
     private static FabricLauncher fabricLauncher;
     private static ForgeLauncher forgeLauncher;
     private static VanillaLauncher vanillaLauncher;
+    private static boolean sendDebug = false;
 
     public static void main(String[] args) {
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
+        if(arguments.length > 0) {
+            if(args[0].equalsIgnoreCase("debug")) {
+                sendDebug = true;
+            } else if(args[0].equalsIgnoreCase("creator")) {
+                new ModpackCreator().start();
+                return;
+            }
+        }
         try {
             checkURL("https://a.nerotv.live/zyneon/application/html/index.html");
             if(MicrosoftAuth.isUserSignedIn()) {
-                frame.setTitle("Zyneon Application (Alpha 0.1.2, "+MicrosoftAuth.getAuthInfos().getUsername()+")");
+                frame.setTitle("Zyneon Application (Alpha 0.1.3, "+MicrosoftAuth.getAuthInfos().getUsername()+")");
             } else {
-                frame.setTitle("Zyneon Application (Alpha 0.1.2, nicht eingeloggt)");
+                frame.setTitle("Zyneon Application (Alpha 0.1.3, nicht eingeloggt)");
             }
             frame.setMinimumSize(new Dimension(1280,800));
             frame.open();
@@ -108,5 +118,11 @@ public class Main {
             vanillaLauncher = new VanillaLauncher();
         }
         return vanillaLauncher;
+    }
+
+    public static void debug(String message) {
+        if(sendDebug) {
+            System.out.println("[DEBUG] " + message);
+        }
     }
 }

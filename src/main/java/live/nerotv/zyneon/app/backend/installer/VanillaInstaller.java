@@ -2,6 +2,7 @@ package live.nerotv.zyneon.app.backend.installer;
 
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
+import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.modpack.Modpack;
 import java.nio.file.Path;
 
@@ -12,7 +13,7 @@ public class VanillaInstaller {
     }
 
     public boolean download(String version, Path instancePath) {
-        System.out.println("Starting download of Minecraft "+version);
+        Main.debug("Starting download of Minecraft "+version);
         VanillaVersion vanilla = new VanillaVersion.VanillaVersionBuilder()
                 .withName(version)
                 .build();
@@ -21,7 +22,7 @@ public class VanillaInstaller {
                 .build();
         try {
             flowUpdater.update(instancePath);
-            System.out.println("Successfully downloaded Minecraft "+version);
+            Main.debug("Successfully downloaded Minecraft "+version);
             return true;
         } catch (Exception e) {
             System.out.println("Error: Couldn't download Minecraft "+version);

@@ -71,6 +71,7 @@ public class FabricInstaller {
             updater.update(instancePath);
             return true;
         } catch (Exception e) {
+            System.out.println("Error: Couldn't download Minecraft "+minecraftVersion+" with Fabric "+fabricVersion);
             return false;
         }
     }

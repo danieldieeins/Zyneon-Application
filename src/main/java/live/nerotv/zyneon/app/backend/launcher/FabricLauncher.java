@@ -26,11 +26,9 @@ public class FabricLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
-                Main.frame.hide();
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();
-                        Main.frame.show();
                         Platform.exit();
                     } catch (InterruptedException e) {
                         e.printStackTrace();

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import live.nerotv.Main;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -16,6 +18,7 @@ public class Config {
     private final String path;
 
     public Config(File file) {
+        Main.debug("JSON folder(s) created: "+new File(file.getParent()).mkdirs());
         this.objectMapper = new ObjectMapper();
         this.jsonFile = file;
         if (!jsonFile.exists()) {

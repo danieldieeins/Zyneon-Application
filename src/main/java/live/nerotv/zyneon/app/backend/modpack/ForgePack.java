@@ -8,8 +8,20 @@ public class ForgePack extends Modpack{
     private String forgeVersion;
     private ForgeVersionType forgeType;
 
-    public ForgePack(URL fileDownload) {
+    public ForgePack(String fileDownload) {
         super(fileDownload);
+        forgeVersion = (String)getConfig().get("modpack.forge.version");
+        String type = (String)getConfig().get("modpack.forge.type");
+        if(type==null||forgeVersion==null) {
+            throw new NullPointerException("Modpack file doesn't contain all values");
+        }
+        if(type.toLowerCase().contains("neo")) {
+            forgeType = ForgeVersionType.NEO_FORGE;
+        } else if (type.contains("old")) {
+            forgeType = ForgeVersionType.OLD;
+        } else {
+            forgeType = ForgeVersionType.NEW;
+        }
     }
 
     public URL getMods() {
@@ -22,5 +34,11 @@ public class ForgePack extends Modpack{
 
     public String getForgeVersion() {
         return forgeVersion;
+    }
+
+    public void unloadPack() {
+        forgeVersion = null;
+        forgeType = null;
+        unload();
     }
 }
