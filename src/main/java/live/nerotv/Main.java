@@ -29,8 +29,10 @@ public class Main {
     private static ForgeLauncher forgeLauncher;
     private static VanillaLauncher vanillaLauncher;
     private static boolean sendDebug = false;
+    private static String version;
 
     public static void main(String[] args) {
+        version = "1.0.0 Beta 2";
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         if(arguments.length > 0) {
@@ -44,9 +46,9 @@ public class Main {
         try {
             checkURL("https://a.nerotv.live/zyneon/application/html/index.html");
             if(MicrosoftAuth.isUserSignedIn()) {
-                frame.setTitle("Zyneon Application (Alpha 0.1.3, "+MicrosoftAuth.getAuthInfos().getUsername()+")");
+                frame.setTitle("Zyneon Application ("+version+", "+MicrosoftAuth.getAuthInfos().getUsername()+")");
             } else {
-                frame.setTitle("Zyneon Application (Alpha 0.1.3, nicht eingeloggt)");
+                frame.setTitle("Zyneon Application ("+version+", nicht eingeloggt)");
             }
             frame.setMinimumSize(new Dimension(1280,800));
             frame.open();
@@ -54,6 +56,10 @@ public class Main {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    public static String getVersion() {
+        return version;
     }
 
     private static void checkURL(String urlString) throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
@@ -78,7 +84,7 @@ public class Main {
 
     public static String getDirectoryPath() {
         if(path == null) {
-            String folderName = "ZyneonLauncher";
+            String folderName = "ZyneonApplication";
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {

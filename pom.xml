@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>app</artifactId>
-    <version>1.0.0-BETA-1</version>
+    <version>1.0.0-BETA-2</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -63,21 +63,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>fr.flowarg</groupId>
-            <artifactId>openlauncherlib</artifactId>
-            <version>3.2.6</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.flowarg</groupId>
-            <artifactId>flowupdater</artifactId>
-            <version>1.8.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>fr.flowarg</groupId>
-            <artifactId>flowmultitools</artifactId>
-            <version>1.4.0</version>
+            <groupId>com.github.danieldieeins</groupId>
+            <artifactId>OpenLauncherAPI</artifactId>
+            <version>e8f96d9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
