@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>live.nerotv</groupId>
-    <artifactId>app</artifactId>
+    <artifactId>ZyneonApplication</artifactId>
     <version>1.0.0-BETA-2</version>
 
     <properties>
