@@ -1,2 +1,2 @@
-# ZyneonLauncher
-Launcher for Zyneon Studios Modpacks
+# ZyneonApplication
+including a Minecraft launcher for Zyneon Studios modpacks
