@@ -1,72 +1,36 @@
 package live.nerotv.zyneon.app.backend.login;
 
-import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
-import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
-import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
-import javafx.scene.control.Alert;
 import live.nerotv.Main;
+import live.nerotv.zyneon.app.backend.utils.Config;
 
+import javax.crypto.KeyGenerator;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.UUID;
 
 public class MicrosoftAuth {
 
-    private static AuthInfos authInfos;
-
-    public static boolean isUserSignedIn() {
+    public static void login() {
         try {
-            if (Main.config.get("account.access") != null && Main.config.get("account.refresh") != null) {
-                try {
-                    MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-                    MicrosoftAuthResult response = authenticator.loginWithRefreshToken(new String(Base64.getDecoder().decode((String) Main.config.get("account.refresh"))));
-                    Main.config.delete("account.access");
-                    Main.config.delete("account.refresh");
-                    Main.config.set("account.access", Base64.getEncoder().encodeToString(response.getAccessToken().getBytes()));
-                    Main.config.set("account.refresh", Base64.getEncoder().encodeToString(response.getRefreshToken().getBytes()));
-                    authInfos = new AuthInfos(response.getProfile().getName(), response.getAccessToken(), response.getProfile().getId());
-                    return true;
-                } catch (MicrosoftAuthenticationException e) {
-                    Main.config.delete("account.access");
-                    Main.config.delete("account.refresh");
-                }
-            } else if (Main.config.get("account.offline") != null) {
-                authInfos = new AuthInfos((String) Main.config.get("account.offline"), UUID.randomUUID().toString(), UUID.randomUUID().toString());
-                return true;
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(256);
+            byte[] key = keyGenerator.generateKey().getEncoded();
+            String key_ = new String(Base64.getEncoder().encode(key));
+            Main.getAuth().setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json",StandardCharsets.UTF_8));
+            Config saver = new Config(Main.getAuth().getSaveFile());
+            if(saver.get("op.k")==null) {
+                saver.set("op.k",key_);
+            } else {
+                key_ = (String)saver.get("op.k");
+                key = Base64.getDecoder().decode(key_);
             }
-            return false;
-        } catch (RuntimeException e) {
-            Main.config.delete("account.access");
-            Main.config.delete("account.refresh");
-            return false;
+            Main.getAuth().setKey(key);
+            if(!Main.getAuth().isLoggedIn()) {
+                //Main.getAuth().startAsyncWebview();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
     }
-
-    public static AuthInfos getAuthInfos() {
-        return authInfos;
-    }
-
-    public static void authenticateMS() {
-
-        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-        authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
-            if (error != null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("error");
-                alert.setContentText(error.getMessage());
-                alert.show();
-                return;
-            }
-            Main.config.delete("account.access");
-            Main.config.delete("account.refresh");
-            Main.config.delete("account.name");
-            Main.config.delete("account.id");
-            Main.config.set("account.access", Base64.getEncoder().encodeToString(response.getAccessToken().getBytes()));
-            Main.config.set("account.refresh", Base64.getEncoder().encodeToString(response.getRefreshToken().getBytes()));
-            Main.config.set("account.name", Base64.getEncoder().encodeToString(response.getProfile().getName().getBytes()));
-            Main.config.set("account.id", Base64.getEncoder().encodeToString(response.getProfile().getId().getBytes()));
-            authInfos = new AuthInfos(response.getProfile().getName(), response.getAccessToken(), response.getProfile().getId());
-        });
-    }
-
 }

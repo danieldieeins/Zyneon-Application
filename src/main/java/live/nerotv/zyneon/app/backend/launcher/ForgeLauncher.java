@@ -6,7 +6,6 @@ import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.backend.installer.ForgeInstaller;
-import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.modpack.ForgePack;
 
 import java.nio.file.Path;
@@ -21,7 +20,7 @@ public class ForgeLauncher {
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    MicrosoftAuth.getAuthInfos(),
+                    Main.getAuth().getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");

@@ -1,5 +1,6 @@
 package live.nerotv;
 
+import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.zyneon.app.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.backend.launcher.VanillaLauncher;
@@ -9,11 +10,13 @@ import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.JCefFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +24,7 @@ import java.nio.file.Paths;
 
 public class Main {
 
+    private static SimpleMicrosoftAuth auth;
     private static String[] arguments;
     private static String path;
     public static Config config;
@@ -32,7 +36,7 @@ public class Main {
     private static String version;
 
     public static void main(String[] args) {
-        version = "1.0.0 Beta 2";
+        version = "1.0.0 Beta 4";
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         if(arguments.length > 0) {
@@ -43,12 +47,14 @@ public class Main {
                 return;
             }
         }
+        auth = new SimpleMicrosoftAuth();
+        MicrosoftAuth.login();
         try {
             checkURL("https://a.nerotv.live/zyneon/application/html/index.html");
-            if(MicrosoftAuth.isUserSignedIn()) {
-                frame.setTitle("Zyneon Application ("+version+", "+MicrosoftAuth.getAuthInfos().getUsername()+")");
+            if(auth.isLoggedIn()) {
+                frame.setTitle("Zyneon Application ("+version+", "+auth.getAuthInfos().getUsername()+")");
             } else {
-                frame.setTitle("Zyneon Application ("+version+", nicht eingeloggt)");
+                frame.setTitle("Zyneon Application ("+version+")");
             }
             frame.setMinimumSize(new Dimension(1280,800));
             frame.open();
@@ -56,6 +62,10 @@ public class Main {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    public static SimpleMicrosoftAuth getAuth() {
+        return auth;
     }
 
     public static String getVersion() {

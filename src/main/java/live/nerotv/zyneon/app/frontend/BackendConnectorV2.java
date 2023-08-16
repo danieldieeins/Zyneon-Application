@@ -1,19 +1,14 @@
 package live.nerotv.zyneon.app.frontend;
 
-import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.backend.login.MicrosoftAuth;
 import live.nerotv.zyneon.app.backend.modpack.FabricPack;
 import live.nerotv.zyneon.app.backend.modpack.ForgePack;
-
-import java.net.URL;
-import java.nio.file.Path;
 
 public class BackendConnectorV2 {
 
     public void resolveRequest(String request) {
         if(request.equals("button.account")) {
-            MicrosoftAuth.authenticateMS();
+            Main.getAuth().startAsyncWebview();
         } else if(request.contains("button.start.")) {
             String id = request.replace("button.start.","");
             startInstance(id);
