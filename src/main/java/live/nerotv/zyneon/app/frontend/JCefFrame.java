@@ -1,5 +1,6 @@
 package live.nerotv.zyneon.app.frontend;
 
+import javafx.application.Platform;
 import live.nerotv.Main;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -12,7 +13,6 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefFocusHandlerAdapter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -40,7 +40,7 @@ public class JCefFrame extends JFrame {
         builder.setAppHandler(new MavenCefAppHandlerAdapter() {
             @Override @Deprecated
             public void stateHasChanged(CefApp.CefAppState state) {
-                if (state == CefApp.CefAppState.TERMINATED) System.exit(0);
+                if (state == CefApp.CefAppState.TERMINATED) Platform.exit();
             }
         });
         builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
@@ -52,7 +52,15 @@ public class JCefFrame extends JFrame {
         messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);
         if(url==null) {
-            url = getClass().getResource("/index.html").toExternalForm();
+            if(Main.auth.isLoggedIn()) {
+                if(Main.us.contains(Main.auth.getAuthInfos().getUuid())) {
+                    url = getClass().getResource("admin/index.html").toExternalForm();
+                } else {
+                    url = getClass().getResource("html/index.html").toExternalForm();
+                }
+            } else {
+                url = getClass().getResource("html/index.html").toExternalForm();
+            }
         }
         browser = client.createBrowser(url, false, false);
         client.addDisplayHandler(new CefDisplayHandlerAdapter() {

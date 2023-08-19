@@ -17,16 +17,16 @@ public class MicrosoftAuth {
             keyGenerator.init(256);
             byte[] key = keyGenerator.generateKey().getEncoded();
             String key_ = new String(Base64.getEncoder().encode(key));
-            Main.getAuth().setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json",StandardCharsets.UTF_8));
-            Config saver = new Config(Main.getAuth().getSaveFile());
+            Main.auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json",StandardCharsets.UTF_8));
+            Config saver = new Config(Main.auth.getSaveFile());
             if(saver.get("op.k")==null) {
                 saver.set("op.k",key_);
             } else {
                 key_ = (String)saver.get("op.k");
                 key = Base64.getDecoder().decode(key_);
             }
-            Main.getAuth().setKey(key);
-            if(!Main.getAuth().isLoggedIn()) {
+            Main.auth.setKey(key);
+            if(!Main.auth.isLoggedIn()) {
                 //Main.getAuth().startAsyncWebview();
             }
         } catch (NoSuchAlgorithmException e) {

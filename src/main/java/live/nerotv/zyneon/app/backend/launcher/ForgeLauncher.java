@@ -20,7 +20,7 @@ public class ForgeLauncher {
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    Main.getAuth().getAuthInfos(),
+                    Main.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");

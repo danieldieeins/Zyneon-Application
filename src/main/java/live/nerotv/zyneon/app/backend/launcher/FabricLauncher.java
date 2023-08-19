@@ -19,7 +19,7 @@ public class FabricLauncher {
         if(new FabricInstaller().download(minecraftVersion,fabricVersion,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    Main.getAuth().getAuthInfos(),
+                    Main.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");

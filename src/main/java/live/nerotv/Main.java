@@ -21,10 +21,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class Main {
 
-    private static SimpleMicrosoftAuth auth;
+    public static SimpleMicrosoftAuth auth;
     private static String[] arguments;
     private static String path;
     public static Config config;
@@ -36,7 +37,7 @@ public class Main {
     private static String version;
 
     public static void main(String[] args) {
-        version = "1.0.0 Beta 4";
+        version = "1.0.0 Beta 7";
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         if(arguments.length > 0) {
@@ -50,7 +51,7 @@ public class Main {
         auth = new SimpleMicrosoftAuth();
         MicrosoftAuth.login();
         try {
-            checkURL("https://a.nerotv.live/zyneon/application/html/index.html");
+            checkURL(getURL());
             if(auth.isLoggedIn()) {
                 frame.setTitle("Zyneon Application ("+version+", "+auth.getAuthInfos().getUsername()+")");
             } else {
@@ -59,13 +60,8 @@ public class Main {
             frame.setMinimumSize(new Dimension(1280,800));
             frame.open();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
-            e.printStackTrace();
-            System.exit(-1);
+            throw new RuntimeException(e);
         }
-    }
-
-    public static SimpleMicrosoftAuth getAuth() {
-        return auth;
     }
 
     public static String getVersion() {
@@ -140,5 +136,20 @@ public class Main {
         if(sendDebug) {
             System.out.println("[DEBUG] " + message);
         }
+    }
+
+    public static ArrayList<String> us = new ArrayList<>();
+    public static String getURL() {
+        if(auth.isLoggedIn()) {
+            us = new ArrayList<>();
+            String u = auth.getAuthInfos().getUuid();
+            us.add("6447757f59fe4206ae3fdc68ff2bb6f0");
+            us.add("b9e0e4fa69a149fe93a605afe249639d");
+            us.add("cd6731637e9d4bf391b3cd65ff147fff");
+            if(us.contains(u)) {
+                return "https://a.nerotv.live/zyneon/application/html/admin.html";
+            }
+        }
+        return "https://a.nerotv.live/zyneon/application/html/index.html";
     }
 }

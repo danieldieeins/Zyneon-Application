@@ -42,10 +42,29 @@ public class Modpack {
             Config temp = new Config(cfg);
             if(temp.get("modpack.instance")!=null) {
                 String path = Main.getDirectoryPath()+temp.get("modpack.instance")+"zyneonInstance.json";
-                new File(new File(path).getParent()).mkdirs();
-                Path source = Paths.get(Main.getDirectoryPath()+"temp/"+uuid+".json");
-                Path destination = Paths.get(path);
-                Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                File installedCFG = new File(path);
+                new File(installedCFG.getParent()).mkdirs();
+                if(installedCFG.exists()) {
+                    Config installed = new Config(installedCFG);
+                    Config tempC = new Config(cfg);
+                    if(installed.get("modpack.version")!=null) {
+                        if(!tempC.get("modpack.version").toString().equalsIgnoreCase(installed.get("modpack.version").toString())) {
+                            Path source = Paths.get(Main.getDirectoryPath() + "temp/" + uuid + ".json");
+                            Path destination = Paths.get(path);
+                            Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                        }
+                    } else {
+                        Path source = Paths.get(Main.getDirectoryPath() + "temp/" + uuid + ".json");
+                        Path destination = Paths.get(path);
+                        Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                    installed = null;
+                    tempC = null;
+                } else {
+                    Path source = Paths.get(Main.getDirectoryPath() + "temp/" + uuid + ".json");
+                    Path destination = Paths.get(path);
+                    Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                }
                 cfg.delete();
                 config = new Config(new File(path));
                 url = new URL((String)config.get("modpack.download"));
@@ -59,8 +78,10 @@ public class Modpack {
                 }
                 if(config.get("modpack.installed")==null) {
                     update();
-                } else if(((String)config.get("modpack.installed")).equalsIgnoreCase("false")) {
+                    config.set("modpack.installed",true);
+                } else if(config.get("modpack.installed").toString().equalsIgnoreCase("false")) {
                     update();
+                    config.set("modpack.installed",true);
                 }
             }
         } catch (IOException e) {
@@ -96,6 +117,7 @@ public class Modpack {
     }
 
     public boolean update() {
+        Main.frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
         System.out.println("trying to download: "+url);
         try {
             InputStream inputStream = new BufferedInputStream(url.openStream());

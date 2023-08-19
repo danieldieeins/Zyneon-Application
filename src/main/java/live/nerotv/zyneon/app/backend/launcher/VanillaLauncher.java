@@ -19,7 +19,7 @@ public class VanillaLauncher {
         if(new VanillaInstaller().download(version,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    Main.getAuth().getAuthInfos(),
+                    Main.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
