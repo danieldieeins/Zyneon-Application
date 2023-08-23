@@ -12,10 +12,16 @@ import java.nio.file.Path;
 public class VanillaLauncher {
 
     public boolean launch(Modpack modpack, int ram) {
+        if(Main.config.get("settings.memory."+modpack.getID())!=null) {
+            ram = (int)Main.config.get("settings.memory."+modpack.getID());
+        }
         return launch(modpack.getMinecraftVersion(), ram, modpack.getPath());
     }
 
     public boolean launch(String version, int ram, Path instancePath) {
+        if(ram<1024) {
+            ram = 1024;
+        }
         if(new VanillaInstaller().download(version,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
@@ -25,6 +31,7 @@ public class VanillaLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(version, version, NoFramework.ModLoader.VANILLA);
+                Main.frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();

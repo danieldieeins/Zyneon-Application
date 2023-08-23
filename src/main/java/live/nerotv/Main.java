@@ -10,6 +10,7 @@ import live.nerotv.zyneon.app.backend.utils.Config;
 import live.nerotv.zyneon.app.frontend.JCefFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class Main {
     private static String version;
 
     public static void main(String[] args) {
-        version = "1.0.0 Beta 7";
+        version = "1.0.0 Beta 9";
         config = new Config(new File(getDirectoryPath()+"config.json"));
         arguments = args;
         if(arguments.length > 0) {
@@ -57,7 +58,7 @@ public class Main {
             } else {
                 frame.setTitle("Zyneon Application ("+version+")");
             }
-            frame.setMinimumSize(new Dimension(1280,800));
+            frame.setMinimumSize(new Dimension(1280,820));
             frame.open();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);

@@ -13,10 +13,16 @@ import java.nio.file.Path;
 public class ForgeLauncher {
 
     public boolean launch(ForgePack modpack, int ram) {
+        if(Main.config.get("settings.memory."+modpack.getID())!=null) {
+            ram = (int)Main.config.get("settings.memory."+modpack.getID());
+        }
         return launch(modpack.getMinecraftVersion(), modpack.getForgeVersion(), modpack.getForgeType(), ram, modpack.getPath());
     }
 
     public boolean launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath) {
+        if(ram<1024) {
+            ram = 1024;
+        }
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
@@ -26,6 +32,7 @@ public class ForgeLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(minecraftVersion, forgeVersion, NoFramework.ModLoader.FORGE);
+                Main.frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();

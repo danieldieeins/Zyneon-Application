@@ -128,7 +128,7 @@ public class JCefFrame extends JFrame {
         });
         getContentPane().add(ui,BorderLayout.CENTER);
         pack();
-        setSize(1280,800);
+        setSize(1280,820);
         setVisible(true);
         addWindowListener(new WindowAdapter() {
 
