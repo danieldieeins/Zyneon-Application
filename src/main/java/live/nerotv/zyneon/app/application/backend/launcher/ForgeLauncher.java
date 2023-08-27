@@ -1,16 +1,26 @@
-package live.nerotv.zyneon.app.backend.launcher;
+package live.nerotv.zyneon.app.application.backend.launcher;
 
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import javafx.application.Platform;
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.backend.installer.ForgeInstaller;
-import live.nerotv.zyneon.app.backend.modpack.ForgePack;
+import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
+import live.nerotv.zyneon.app.application.backend.installer.ForgeInstaller;
+import live.nerotv.zyneon.app.application.backend.modpack.ForgePack;
+import live.nerotv.zyneon.app.application.frontend.JCefFrame;
 
 import java.nio.file.Path;
 
 public class ForgeLauncher {
+
+    private JCefFrame frame;
+    private SimpleMicrosoftAuth auth;
+
+    public ForgeLauncher(SimpleMicrosoftAuth auth, JCefFrame frame) {
+        this.auth = auth;
+        this.frame = frame;
+    }
 
     public boolean launch(ForgePack modpack, int ram) {
         if(Main.config.get("settings.memory."+modpack.getID())!=null) {
@@ -26,13 +36,13 @@ public class ForgeLauncher {
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    Main.auth.getAuthInfos(),
+                    auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(minecraftVersion, forgeVersion, NoFramework.ModLoader.FORGE);
-                Main.frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+                frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();

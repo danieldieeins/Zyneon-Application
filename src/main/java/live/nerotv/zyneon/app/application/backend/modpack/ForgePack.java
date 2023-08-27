@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.backend.modpack;
+package live.nerotv.zyneon.app.application.backend.modpack;
 
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import java.net.URL;

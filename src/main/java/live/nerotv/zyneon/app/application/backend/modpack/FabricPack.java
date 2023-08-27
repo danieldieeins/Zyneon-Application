@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.backend.modpack;
+package live.nerotv.zyneon.app.application.backend.modpack;
 
 import java.net.URL;
 

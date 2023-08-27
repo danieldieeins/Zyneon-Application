@@ -1,7 +1,7 @@
-package live.nerotv.zyneon.app.frontend.settings;
+package live.nerotv.zyneon.app.application.frontend.settings;
 
 import com.sun.management.OperatingSystemMXBean;
-import live.nerotv.zyneon.app.backend.utils.Config;
+import live.nerotv.zyneon.app.application.backend.utils.Config;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

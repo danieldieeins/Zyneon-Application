@@ -1,7 +1,8 @@
-package live.nerotv.zyneon.app.backend.modpack;
+package live.nerotv.zyneon.app.application.backend.modpack;
 
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.backend.utils.Config;
+import live.nerotv.zyneon.app.application.Application;
+import live.nerotv.zyneon.app.application.backend.utils.Config;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 
@@ -117,7 +118,7 @@ public class Modpack {
     }
 
     public boolean update() {
-        Main.frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+        Application.getFrame().getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
         System.out.println("trying to download: "+url);
         try {
             InputStream inputStream = new BufferedInputStream(url.openStream());

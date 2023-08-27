@@ -1,7 +1,8 @@
-package live.nerotv.zyneon.app.frontend;
+package live.nerotv.zyneon.app.application.frontend;
 
 import javafx.application.Platform;
 import live.nerotv.Main;
+import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
@@ -13,12 +14,14 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefFocusHandlerAdapter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class JCefFrame extends JFrame {
 
@@ -31,8 +34,8 @@ public class JCefFrame extends JFrame {
     private final CefMessageRouter messageRouter;
     private final BackendConnectorV2 backendConnector;
 
-    public JCefFrame(String url) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
-        backendConnector = new BackendConnectorV2();
+    public JCefFrame(String url, SimpleMicrosoftAuth auth, ArrayList<String> us) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
+        backendConnector = new BackendConnectorV2(auth,us,this);
         browserFocus = true;
         File installDir = new File(Main.getDirectoryPath()+"libs/jcef/");
         Main.debug("NEED_JCEF_INSTALL: "+installDir.mkdirs());
@@ -52,8 +55,8 @@ public class JCefFrame extends JFrame {
         messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);
         if(url==null) {
-            if(Main.auth.isLoggedIn()) {
-                if(Main.us.contains(Main.auth.getAuthInfos().getUuid())) {
+            if(auth.isLoggedIn()) {
+                if(us.contains(auth.getAuthInfos().getUuid())) {
                     url = getClass().getResource("admin/index.html").toExternalForm();
                 } else {
                     url = getClass().getResource("html/index.html").toExternalForm();
@@ -84,28 +87,12 @@ public class JCefFrame extends JFrame {
         return ui;
     }
 
-    public CefClient getClient() {
-        return client;
-    }
-
     public CefBrowser getBrowser() {
         return browser;
     }
 
-    public boolean isBrowserFocusActive() {
-        return browserFocus;
-    }
-
     public CefAppBuilder getBuilder() {
         return builder;
-    }
-
-    public CefMessageRouter getMessageRouter() {
-        return messageRouter;
-    }
-
-    public BackendConnectorV2 getBackendConnector() {
-        return backendConnector;
     }
 
     public void open() {

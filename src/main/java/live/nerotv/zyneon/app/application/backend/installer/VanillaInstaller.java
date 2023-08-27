@@ -1,9 +1,9 @@
-package live.nerotv.zyneon.app.backend.installer;
+package live.nerotv.zyneon.app.application.backend.installer;
 
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.backend.modpack.Modpack;
+import live.nerotv.zyneon.app.application.backend.modpack.Modpack;
 import java.nio.file.Path;
 
 public class VanillaInstaller {

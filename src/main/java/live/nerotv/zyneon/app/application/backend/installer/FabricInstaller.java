@@ -1,24 +1,21 @@
-package live.nerotv.zyneon.app.backend.installer;
+package live.nerotv.zyneon.app.application.backend.installer;
 
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.json.CurseFileInfo;
 import fr.flowarg.flowupdater.download.json.Mod;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
-import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
-import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
-import fr.flowarg.flowupdater.versions.ForgeVersionType;
+import fr.flowarg.flowupdater.versions.FabricVersion;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
-import live.nerotv.zyneon.app.backend.modpack.ForgePack;
+import live.nerotv.zyneon.app.application.backend.modpack.FabricPack;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ForgeInstaller {
+public class FabricInstaller {
 
-    public boolean downloadModpack(ForgePack modpack) {
+    public boolean downloadModpack(FabricPack modpack) {
         String minecraftVersion = modpack.getMinecraftVersion();
-        String forgeVersion = modpack.getForgeVersion();
-        ForgeVersionType type = modpack.getForgeType();
+        String fabricVersion = modpack.getFabricVersion();
         Path instancePath = modpack.getPath();
         URL JSON = modpack.getMods();
 
@@ -32,15 +29,15 @@ public class ForgeInstaller {
         List<CurseFileInfo> curseMods = CurseFileInfo.getFilesFromJson(JSON);
         List<Mod> mods = Mod.getModsFromJson(JSON);
 
-        AbstractForgeVersion forge = new ForgeVersionBuilder(type)
-                .withForgeVersion(minecraftVersion+"-"+forgeVersion)
+        FabricVersion fabric = new FabricVersion.FabricVersionBuilder()
+                .withFabricVersion(fabricVersion)
                 .withCurseMods(JSON)
                 .withMods(JSON)
                 .build();
 
         FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
                 .withVanillaVersion(vanillaVersion)
-                .withModLoaderVersion(forge)
+                .withModLoaderVersion(fabric)
                 .withUpdaterOptions(options)
                 .build();
 
@@ -52,7 +49,7 @@ public class ForgeInstaller {
         }
     }
 
-    public boolean download(String minecraftVersion, String forgeVersion, ForgeVersionType type, Path instancePath) {
+    public boolean download(String minecraftVersion, String fabricVersion, Path instancePath) {
         VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                 .withName(minecraftVersion)
                 .build();
@@ -60,13 +57,13 @@ public class ForgeInstaller {
         UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
                 .build();
 
-        AbstractForgeVersion forge = new ForgeVersionBuilder(type)
-                .withForgeVersion(minecraftVersion+"-"+forgeVersion)
+        FabricVersion fabric = new FabricVersion.FabricVersionBuilder()
+                .withFabricVersion(fabricVersion)
                 .build();
 
         FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
                 .withVanillaVersion(vanillaVersion)
-                .withModLoaderVersion(forge)
+                .withModLoaderVersion(fabric)
                 .withUpdaterOptions(options)
                 .build();
 
@@ -74,7 +71,7 @@ public class ForgeInstaller {
             updater.update(instancePath);
             return true;
         } catch (Exception e) {
-            System.out.println("Error: Couldn't download Minecraft "+minecraftVersion+" with Forge "+forgeVersion);
+            System.out.println("Error: Couldn't download Minecraft "+minecraftVersion+" with Fabric "+fabricVersion);
             return false;
         }
     }

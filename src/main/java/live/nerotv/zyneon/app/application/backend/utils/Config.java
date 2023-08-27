@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.backend.utils;
+package live.nerotv.zyneon.app.application.backend.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,7 +1,7 @@
-package live.nerotv.zyneon.app.backend.modpack.creator;
+package live.nerotv.zyneon.app.application.backend.modpack.creator;
 
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.backend.utils.Config;
+import live.nerotv.zyneon.app.application.backend.utils.Config;
 
 import java.io.File;
 import java.util.Scanner;
