@@ -9,7 +9,7 @@ import java.net.URL;
 public class Updater {
 
     public Updater() {
-        System.out.println("Stardet updater...");
+        System.out.println("Started updater...");
         try {
             System.out.println("Getting newest version...");
             InputStream inputStream = new BufferedInputStream(new URL("https://a.nerotv.live/zyneon/application/version.json").openStream());
