@@ -24,6 +24,22 @@ public class Main {
         if(config.get("settings.memory.default")==null) {
             config.set("settings.memory.default",2048);
         }
+
+        String jarPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        if (jarPath.startsWith("/")) {
+            jarPath = jarPath.substring(1);
+        }
+        try {
+            jarPath = java.net.URLDecoder.decode(jarPath, "UTF-8");
+        } catch (java.io.UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if(jarPath.contains("app.jar")) {
+            new Application().start();
+            return;
+        }
+
+
         arguments = args;
         if(arguments.length > 0) {
             if(arguments.length > 1) {
@@ -41,19 +57,6 @@ public class Main {
                 System.out.println("invalid arguments");
                 System.exit(-1);
             }
-            return;
-        }
-        String jarPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        if (jarPath.startsWith("/")) {
-            jarPath = jarPath.substring(1);
-        }
-        try {
-            jarPath = java.net.URLDecoder.decode(jarPath, "UTF-8");
-        } catch (java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        if(jarPath.contains("app.jar")) {
-            new Application().start();
             return;
         }
         new Updater();

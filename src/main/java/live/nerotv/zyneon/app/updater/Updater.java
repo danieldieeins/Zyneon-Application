@@ -11,7 +11,7 @@ public class Updater {
     public Updater() {
         System.out.println("Started updater...");
         try {
-            System.out.println("Getting newest version...");
+            System.out.println("Getting latest version...");
             InputStream inputStream = new BufferedInputStream(new URL("https://a.nerotv.live/zyneon/application/version.json").openStream());
             FileOutputStream outputStream = new FileOutputStream(Main.getDirectoryPath() + "version.json");
             byte[] buffer = new byte[1024];
@@ -58,7 +58,7 @@ public class Updater {
     }
 
     private void downloadApp(Config json) {
-        System.out.println("downloading latest version...");
+        System.out.println("Downloading latest version...");
         try {
             InputStream inputStream = new BufferedInputStream(new URL((String)json.get("launcher.download")).openStream());
             FileOutputStream outputStream = new FileOutputStream(Main.getDirectoryPath() + "app.jar");

@@ -26,7 +26,7 @@ public class Application {
     private final ArrayList<String> us;
 
     public Application() {
-        version = "1.0.0 Beta 11";
+        version = "1.0.0 Beta 12";
         auth = new SimpleMicrosoftAuth();
         us = new ArrayList<>();
         us.add("6447757f59fe4206ae3fdc68ff2bb6f0");
@@ -64,7 +64,7 @@ public class Application {
                 key = Base64.getDecoder().decode(key_);
             }
             auth.setKey(key);
-            System.out.println(auth.isLoggedIn());
+            auth.isLoggedIn();
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
