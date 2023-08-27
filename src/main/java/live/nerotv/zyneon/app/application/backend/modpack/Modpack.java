@@ -73,7 +73,7 @@ public class Modpack {
                 version = (String)config.get("modpack.version");
                 minecraftVersion = (String)config.get("modpack.minecraft");
                 id = (String)config.get("modpack.id");
-                this.path = Path.of(Main.getDirectoryPath()+config.get("modpack.instance"));
+                this.path = Paths.get(Main.getDirectoryPath()+config.get("modpack.instance"));
                 if(config==null||url==null||name==null||version==null||minecraftVersion==null||id==null) {
                     throw new NullPointerException("Modpack file doesn't contain all values");
                 }

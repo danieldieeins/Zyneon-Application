@@ -6,15 +6,14 @@ import live.nerotv.zyneon.app.application.backend.utils.Config;
 import live.nerotv.zyneon.app.application.frontend.JCefFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
-
 import javax.crypto.KeyGenerator;
 import java.awt.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -56,7 +55,7 @@ public class Application {
             keyGenerator.init(256);
             byte[] key = keyGenerator.generateKey().getEncoded();
             String key_ = new String(Base64.getEncoder().encode(key));
-            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", StandardCharsets.UTF_8));
+            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", "UTF-8"));
             Config saver = new Config(auth.getSaveFile());
             if(saver.get("op.k")==null) {
                 saver.set("op.k",key_);
@@ -66,7 +65,7 @@ public class Application {
             }
             auth.setKey(key);
             System.out.println(auth.isLoggedIn());
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }

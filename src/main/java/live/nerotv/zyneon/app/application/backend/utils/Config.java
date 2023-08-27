@@ -8,8 +8,8 @@ import live.nerotv.Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 
 public class Config {
 
@@ -24,7 +24,11 @@ public class Config {
         if (!jsonFile.exists()) {
             createEmptyJsonFile();
         }
-        this.path = URLDecoder.decode(file.getAbsolutePath(),StandardCharsets.UTF_8);
+        try {
+            this.path = URLDecoder.decode(file.getAbsolutePath(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void createEmptyJsonFile() {

@@ -38,7 +38,7 @@ public class MemoryWindow extends JFrame {
 
         OperatingSystemMXBean os = (OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
         long c = 1024L*1024L;
-        long maxValue = os.getTotalMemorySize()/c;
+        long maxValue = os.getTotalPhysicalMemorySize()/c;
 
         int minValue = 0;
         int initialValue = 0;

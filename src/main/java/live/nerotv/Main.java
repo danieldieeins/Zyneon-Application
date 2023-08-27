@@ -4,9 +4,10 @@ import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.modpack.creator.ModpackCreator;
 import live.nerotv.zyneon.app.application.backend.utils.Config;
 import live.nerotv.zyneon.app.updater.Updater;
+
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -82,7 +83,11 @@ public class Main {
             }
             path = folderPath+"/";
         }
-        return URLDecoder.decode(path,StandardCharsets.UTF_8);
+        try {
+            return URLDecoder.decode(path,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void debug(String message) {
