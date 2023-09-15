@@ -37,7 +37,15 @@ public class BackendConnectorV2 {
     }
 
     public void resolveRequest(String request) {
-        if (request.equals("button.accessmode")) {
+        if(request.equals("connector.sync")) {
+            if(auth.isLoggedIn()) {
+                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+auth.getAuthInfos().getUsername()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:syncButton('Abmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            } else {
+                frame.getBrowser().executeJavaScript("javascript:syncAccount('Nicht eingeloggt')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:syncButton('Anmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            }
+        } else if (request.equals("button.accessmode")) {
             if (auth.isLoggedIn()) {
                 if (us.contains(auth.getAuthInfos().getUuid())) {
                     frame.getBrowser().loadURL("https://danieldieeins.github.io/ZyneonApplicationContent/h/access.html");
