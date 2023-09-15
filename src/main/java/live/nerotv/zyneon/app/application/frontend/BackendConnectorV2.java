@@ -92,6 +92,11 @@ public class BackendConnectorV2 {
                 frame.getBrowser().executeJavaScript("javascript:OpenModal('notLoggedIn')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
         } else if (request.contains("button.start.")) {
+            if(request.contains("zyverse")) {
+                String id = request.replace("button.start.", "");
+                startInstance(id);
+                return;
+            }
             if (auth.isLoggedIn()) {
                 String id = request.replace("button.start.", "");
                 startInstance(id);
@@ -111,7 +116,7 @@ public class BackendConnectorV2 {
             try {
                 InputStream inputStream = new BufferedInputStream(new URL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/z/latest.jar").openStream());
                 new File(Main.getDirectoryPath().replace("Application", "Zyverse")).mkdirs();
-                FileOutputStream outputStream = new FileOutputStream(Main.getDirectoryPath().replace("Application", "Zyverse") + "game.jar");
+                FileOutputStream outputStream = new FileOutputStream(Main.getZyversePath() + "game.jar");
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -119,7 +124,7 @@ public class BackendConnectorV2 {
                 }
                 inputStream.close();
                 outputStream.close();
-                String path = URLDecoder.decode(Main.getDirectoryPath().replace("Application", "Zyverse") + "game.jar", StandardCharsets.UTF_8);
+                String path = URLDecoder.decode(Main.getZyversePath() + "game.jar", StandardCharsets.UTF_8);
 
                 try {
                     ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", path);
@@ -132,8 +137,6 @@ public class BackendConnectorV2 {
                         System.out.println(line);
                     }
                     int exitCode = process.waitFor();
-                    System.out.println(exitCode);
-                    System.exit(0);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -141,7 +144,7 @@ public class BackendConnectorV2 {
                 throw new RuntimeException(e);
             }
         } else if (id.contains("argria2")) {
-            forgeLauncher.launch(new ForgePack("https://a.nerotv.live/zyneon/application/modpack/argria2.json"), ram);
+            forgeLauncher.launch(new ForgePack("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/argria2.json"), ram);
         } else if (id.contains("zyneonplus")) {
             startZyneonPlus(id.replace("button", "").replace("zyneonplus", "").replace("start", "").replace(".", ""), ram);
         } else if (id.contains("ukzplite")) {
@@ -163,15 +166,15 @@ public class BackendConnectorV2 {
 
     public void startZyneonPlus(String versionID, int ram) {
         if (versionID.equalsIgnoreCase("1165")) {
-            fabricLauncher.launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.16.5.json"), ram);
+            fabricLauncher.launch(new FabricPack("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/zyneonplus/1.16.5.json"), ram);
         } else if (versionID.equalsIgnoreCase("1171")) {
-            fabricLauncher.launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.17.1.json"), ram);
+            fabricLauncher.launch(new FabricPack("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/zyneonplus/1.17.1.json"), ram);
         } else if (versionID.equalsIgnoreCase("1182")) {
-            fabricLauncher.launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.18.2.json"), ram);
+            fabricLauncher.launch(new FabricPack("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/zyneonplus/1.18.2.json"), ram);
         } else if (versionID.equalsIgnoreCase("1194")) {
-            fabricLauncher.launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.19.4.json"), ram);
+            fabricLauncher.launch(new FabricPack("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/zyneonplus/1.19.4.json"), ram);
         } else if (versionID.equalsIgnoreCase("1201")) {
-            fabricLauncher.launch(new FabricPack("https://a.nerotv.live/zyneon/application/modpack/zyneonplus/1.20.1.json"), ram);
+            fabricLauncher.launch(new FabricPack("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/zyneonplus/1.20.1.json"), ram);
         }
     }
 }

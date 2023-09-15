@@ -93,6 +93,33 @@ public class Main {
         }
     }
 
+    public static String getZyversePath() {
+        if(path == null) {
+            String folderName = "Zyneon/Zyverse";
+            String appData;
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                appData = System.getenv("LOCALAPPDATA");
+            } else if (os.contains("mac")) {
+                appData = System.getProperty("user.home") + "/Library/Application Support";
+            } else {
+                appData = System.getProperty("user.home") + "/.local/share";
+            }
+            Path folderPath = Paths.get(appData, folderName);
+            try {
+                Files.createDirectories(folderPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            path = folderPath+"/";
+        }
+        try {
+            return URLDecoder.decode(path,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void debug(String message) {
         if(sendDebug) {
             System.out.println("[DEBUG] " + message);
