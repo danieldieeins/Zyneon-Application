@@ -68,7 +68,12 @@ public class BackendConnectorV2 {
         } else if (request.equals("button.normalmode")) {
             frame.getBrowser().loadURL("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html");
         } else if (request.equals("button.account")) {
+            if(auth.isLoggedIn()) {
+                resolveRequest("button.logout");
+                return;
+            }
             auth.startAsyncWebview();
+            resolveRequest("connector.sync");
         } else if (request.contains("button.logout")) {
             System.out.println("0");
             if (auth.isLoggedIn()) {
@@ -84,6 +89,7 @@ public class BackendConnectorV2 {
             } else {
                 frame.getBrowser().executeJavaScript("javascript:OpenModal('notLoggedIn')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
+            resolveRequest("connector.sync");
         } else if (request.contains("button.labynet")) {
             if (auth.isLoggedIn()) {
                 String url = "https://laby.net/@" + auth.getAuthInfos().getUsername();
