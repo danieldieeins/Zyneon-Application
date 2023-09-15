@@ -12,7 +12,7 @@ public class Updater {
         System.out.println("Started updater...");
         try {
             System.out.println("Getting latest version...");
-            InputStream inputStream = new BufferedInputStream(new URL("https://a.nerotv.live/zyneon/application/version.json").openStream());
+            InputStream inputStream = new BufferedInputStream(new URL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/l/index.json").openStream());
             FileOutputStream outputStream = new FileOutputStream(Main.getDirectoryPath() + "version.json");
             byte[] buffer = new byte[1024];
             int bytesRead;

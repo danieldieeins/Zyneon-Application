@@ -3,7 +3,7 @@ package live.nerotv.zyneon.app.application.backend.modpack;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import java.net.URL;
 
-public class ForgePack extends Modpack{
+public class ForgePack extends Modpack {
 
     private String forgeVersion;
     private ForgeVersionType forgeType;

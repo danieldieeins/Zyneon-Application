@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-public class Modpack {
+public abstract class Modpack {
 
     private URL url;
     private Config config;

@@ -68,7 +68,7 @@ public class Main {
 
     public static String getDirectoryPath() {
         if(path == null) {
-            String folderName = "ZyneonApplication";
+            String folderName = "Zyneon/Application";
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {

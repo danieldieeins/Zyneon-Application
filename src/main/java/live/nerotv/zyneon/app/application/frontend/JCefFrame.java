@@ -31,7 +31,6 @@ public class JCefFrame extends JFrame {
     private final CefBrowser browser;
     private boolean browserFocus;
     private final CefAppBuilder builder;
-    private final CefMessageRouter messageRouter;
     private final BackendConnectorV2 backendConnector;
 
     public JCefFrame(String url, SimpleMicrosoftAuth auth, ArrayList<String> us) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
@@ -52,7 +51,7 @@ public class JCefFrame extends JFrame {
         builder.getCefSettings().windowless_rendering_enabled = false;
         app = builder.build();
         client = app.createClient();
-        messageRouter = CefMessageRouter.create();
+        CefMessageRouter messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);
         if(url==null) {
             if(auth.isLoggedIn()) {

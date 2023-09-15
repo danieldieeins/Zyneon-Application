@@ -26,7 +26,7 @@ public class Application {
     private final ArrayList<String> us;
 
     public Application() {
-        version = "1.0.0 Beta 12";
+        version = "1.0.0 Beta g14";
         auth = new SimpleMicrosoftAuth();
         us = new ArrayList<>();
         us.add("6447757f59fe4206ae3fdc68ff2bb6f0");
@@ -72,12 +72,12 @@ public class Application {
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
         try {
-            URL url = new URL("https://a.nerotv.live/zyneon/application/html/index.html");
+            URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                frame = new JCefFrame("https://a.nerotv.live/zyneon/application/html/index.html",auth,us);
+                frame = new JCefFrame("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html",auth,us);
             } else {
                 frame = new JCefFrame(null,auth,us);
             }
