@@ -129,7 +129,7 @@ public class BackendConnectorV2 {
             System.out.println("Downloading latest version...");
             try {
                 InputStream inputStream = new BufferedInputStream(new URL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/z/latest.jar").openStream());
-                new File(Main.getDirectoryPath().replace("Application", "Zyverse")).mkdirs();
+                new File(Main.getZyversePath()).mkdirs();
                 FileOutputStream outputStream = new FileOutputStream(Main.getZyversePath() + "game.jar");
                 byte[] buffer = new byte[1024];
                 int bytesRead;

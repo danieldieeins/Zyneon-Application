@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 public class Main {
 
     private static String[] arguments;
+    private static String zyverse;
     private static String path;
     public static Config config;
     private static boolean sendDebug = false;
@@ -94,7 +95,7 @@ public class Main {
     }
 
     public static String getZyversePath() {
-        if(path == null) {
+        if(zyverse == null) {
             String folderName = "Zyneon/Zyverse";
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
@@ -111,10 +112,10 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            path = folderPath+"/";
+            zyverse = folderPath+"/";
         }
         try {
-            return URLDecoder.decode(path,"UTF-8");
+            return URLDecoder.decode(zyverse,"UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
