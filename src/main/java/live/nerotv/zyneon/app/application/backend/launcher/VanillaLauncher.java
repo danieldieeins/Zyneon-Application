@@ -23,7 +23,7 @@ public class VanillaLauncher {
 
     public boolean launch(Modpack modpack, int ram) {
         if(Main.config.get("settings.memory."+modpack.getID())!=null) {
-            ram = (int)Main.config.get("settings.memory."+modpack.getID());
+            ram = Main.config.getInteger("settings.memory."+modpack.getID());
         }
         return launch(modpack.getMinecraftVersion(), ram, modpack.getPath());
     }

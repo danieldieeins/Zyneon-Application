@@ -7,7 +7,6 @@ import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.modpack.FabricPack;
 import live.nerotv.zyneon.app.application.backend.modpack.ForgePack;
-import live.nerotv.zyneon.app.application.backend.utils.Config;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 
 import java.awt.*;
@@ -123,7 +122,7 @@ public class BackendConnectorV2 {
     public void startInstance(String id) {
         int ram = 2048;
         if (Main.config.get("settings.memory.default") != null) {
-            ram = (int) Main.config.get("settings.memory.default");
+            ram = Main.config.getInteger("settings.memory.default");
         }
         if (id.contains("zyverse")) {
             System.out.println("Downloading latest version...");

@@ -25,7 +25,7 @@ public class FabricLauncher {
         String id = modpack.getID().replace("/","").replace(".","");
         if(Main.config.get("settings.memory."+id)!=null) {
             System.out.println("settings.memory."+id+", "+Main.config.get("settings.memory."+id));
-            ram = (int)Main.config.get("settings.memory."+id);
+            ram = Main.config.getInteger("settings.memory."+id);
         }
         return launch(modpack.getMinecraftVersion(), modpack.getFabricVersion(), ram, modpack.getPath());
     }

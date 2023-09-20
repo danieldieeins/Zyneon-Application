@@ -43,11 +43,11 @@ public class MemoryWindow extends JFrame {
         int minValue = 0;
         int initialValue = 0;
         if(saveFile.get("settings.memory.default")!=null) {
-            initialValue = (int)saveFile.get("settings.memory.default");
+            initialValue = saveFile.getInteger("settings.memory.default");
         }
         if(instance!=null) {
             if(saveFile.get("settings.memory."+instance)!=null) {
-                initialValue = (int)saveFile.get("settings.memory."+instance);
+                initialValue = saveFile.getInteger("settings.memory."+instance);
             }
         }
         JSlider slider = new JSlider(minValue, (int)maxValue, initialValue);

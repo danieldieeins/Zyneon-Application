@@ -24,7 +24,7 @@ public class ForgeLauncher {
 
     public boolean launch(ForgePack modpack, int ram) {
         if(Main.config.get("settings.memory."+modpack.getID())!=null) {
-            ram = (int)Main.config.get("settings.memory."+modpack.getID());
+            ram = Main.config.getInteger("settings.memory."+modpack.getID());
         }
         return launch(modpack.getMinecraftVersion(), modpack.getForgeVersion(), modpack.getForgeType(), ram, modpack.getPath());
     }
