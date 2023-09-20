@@ -15,6 +15,7 @@ import org.cef.browser.CefMessageRouter;
 import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefFocusHandlerAdapter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -22,6 +23,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class JCefFrame extends JFrame {
 
@@ -33,7 +35,7 @@ public class JCefFrame extends JFrame {
     private final CefAppBuilder builder;
     private final BackendConnectorV2 backendConnector;
 
-    public JCefFrame(String url, SimpleMicrosoftAuth auth, ArrayList<String> us) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
+    public JCefFrame(SimpleMicrosoftAuth auth, ArrayList<String> us) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
         backendConnector = new BackendConnectorV2(auth,us,this);
         browserFocus = true;
         File installDir = new File(Main.getDirectoryPath()+"libs/jcef/");
@@ -53,18 +55,7 @@ public class JCefFrame extends JFrame {
         client = app.createClient();
         CefMessageRouter messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);
-        if(url==null) {
-            if(auth.isLoggedIn()) {
-                if(us.contains(auth.getAuthInfos().getUuid())) {
-                    url = getClass().getResource("admin/index.html").toExternalForm();
-                } else {
-                    url = getClass().getResource("html/index.html").toExternalForm();
-                }
-            } else {
-                url = getClass().getResource("html/index.html").toExternalForm();
-            }
-        }
-        browser = client.createBrowser(url, false, false);
+        browser = client.createBrowser("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html", false, false);
         client.addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
@@ -76,6 +67,14 @@ public class JCefFrame extends JFrame {
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
+    }
+
+    public void setIcon(String resourcePath) {
+        try {
+            setIconImage(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(resourcePath)))).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+        } catch (Exception e) {
+            System.out.println("Error obtaining icon file: " + e.getMessage());
+        }
     }
 
     public CefApp getApp() {

@@ -1,43 +1,44 @@
 package live.nerotv.zyneon.app.application.backend.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import live.nerotv.Main;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import com.google.gson.*;
+import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class Config {
 
-    private final ObjectMapper objectMapper;
-    private final File jsonFile;
-    private final String path;
+    private Gson gson;
+    private File jsonFile;
+    private String path;
 
     public Config(File file) {
-        Main.debug("JSON folder(s) created: "+new File(file.getParent()).mkdirs());
-        this.objectMapper = new ObjectMapper();
-        this.jsonFile = file;
-        if (!jsonFile.exists()) {
-            createEmptyJsonFile();
-        }
-        try {
-            this.path = URLDecoder.decode(file.getAbsolutePath(),"UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        init(file);
+    }
+
+    public Config(String path) {
+        File file = new File(path);
+        init(file);
+    }
+
+    private void createEmptyJsonFile() {
+        try (FileWriter writer = new FileWriter(jsonFile)) {
+            JsonObject rootNode = new JsonObject();
+            writer.write(gson.toJson(rootNode));
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void createEmptyJsonFile() {
-        try {
-            JsonNode rootNode = JsonNodeFactory.instance.objectNode();
-            objectMapper.writeValue(jsonFile, rootNode);
-        } catch (IOException e) {
-            throw new RuntimeException("Fehler beim Erstellen der Konfigurationsdatei", e);
+    private void init(File file) {
+        if(!new File(file.getParent()).exists()) {
+            new File(file.getParent()).mkdirs();
         }
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.jsonFile = file;
+        if (!jsonFile.exists()) {
+            createEmptyJsonFile();
+        }
+        this.path = URLDecoder.decode(file.getAbsolutePath(), StandardCharsets.UTF_8);
     }
 
     public File getJsonFile() {
@@ -48,27 +49,72 @@ public class Config {
         return path;
     }
 
-    public ObjectMapper getObjectMapper() {
-        return objectMapper;
+    public Gson getGson() {
+        return gson;
+    }
+
+    public String getString(String path) {
+        if (get(path) != null) {
+            return get(path).toString();
+        }
+        return null;
+    }
+
+    public Integer getInteger(String path) {
+        if (get(path) != null) {
+            try {
+                return (int)(double)getDouble(path);
+            } catch (Exception ignore) {
+            }
+        }
+        return null;
+    }
+
+    public Double getDouble(String path) {
+        if (get(path) != null) {
+            try {
+                return (Double) get(path);
+            } catch (Exception ignore) {
+            }
+        }
+        return null;
+    }
+
+    public Boolean getBoolean(String path) {
+        if (get(path) != null) {
+            try {
+                return (Boolean) get(path);
+            } catch (Exception ignore) {
+            }
+        }
+        return null;
+    }
+
+    public void checkEntry(String path, Object value) {
+        if (get(path) == null) {
+            set(path, value);
+        }
     }
 
     public void set(String path, Object value) {
         try {
-            JsonNode rootNode = objectMapper.readTree(jsonFile);
+            JsonObject rootNode = JsonParser.parseReader(jsonFileReader()).getAsJsonObject();
             String[] parts = path.split("\\.");
-            ObjectNode currentNode = (ObjectNode) rootNode;
+            JsonObject currentNode = rootNode;
 
             for (int i = 0; i < parts.length - 1; i++) {
-                if (!currentNode.has(parts[i]) || !currentNode.get(parts[i]).isObject()) {
-                    currentNode.putObject(parts[i]);
+                if (!currentNode.has(parts[i]) || !currentNode.get(parts[i]).isJsonObject()) {
+                    currentNode.add(parts[i], new JsonObject());
                 }
-                currentNode = (ObjectNode) currentNode.get(parts[i]);
+                currentNode = currentNode.getAsJsonObject(parts[i]);
             }
 
-            JsonNode valueNode = objectMapper.valueToTree(value);
-            currentNode.set(parts[parts.length - 1], valueNode);
+            JsonElement valueElement = gson.toJsonTree(value);
+            currentNode.add(parts[parts.length - 1], valueElement);
 
-            objectMapper.writeValue(jsonFile, rootNode);
+            try (FileWriter writer = new FileWriter(jsonFile)) {
+                writer.write(gson.toJson(rootNode));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,18 +122,18 @@ public class Config {
 
     public Object get(String path) {
         try {
-            JsonNode rootNode = objectMapper.readTree(jsonFile);
+            JsonObject rootNode = JsonParser.parseReader(jsonFileReader()).getAsJsonObject();
             String[] parts = path.split("\\.");
-            JsonNode currentNode = rootNode;
+            JsonElement currentNode = rootNode;
 
             for (String part : parts) {
-                if (!currentNode.has(part)) {
+                if (!currentNode.isJsonObject() || !currentNode.getAsJsonObject().has(part)) {
                     return null;
                 }
-                currentNode = currentNode.get(part);
+                currentNode = currentNode.getAsJsonObject().get(part);
             }
 
-            return objectMapper.treeToValue(currentNode, Object.class);
+            return gson.fromJson(currentNode, Object.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,22 +142,28 @@ public class Config {
 
     public void delete(String path) {
         try {
-            JsonNode rootNode = objectMapper.readTree(jsonFile);
+            JsonObject rootNode = JsonParser.parseReader(jsonFileReader()).getAsJsonObject();
             String[] parts = path.split("\\.");
-            ObjectNode currentNode = (ObjectNode) rootNode;
+            JsonObject currentNode = rootNode;
 
             for (int i = 0; i < parts.length - 1; i++) {
-                if (!currentNode.has(parts[i]) || !currentNode.get(parts[i]).isObject()) {
+                if (!currentNode.isJsonObject() || !currentNode.getAsJsonObject().has(parts[i])) {
                     return;
                 }
-                currentNode = (ObjectNode) currentNode.get(parts[i]);
+                currentNode = currentNode.getAsJsonObject(parts[i]);
             }
 
-            currentNode.remove(parts[parts.length - 1]);
+            currentNode.getAsJsonObject().remove(parts[parts.length - 1]);
 
-            objectMapper.writeValue(jsonFile, rootNode);
+            try (FileWriter writer = new FileWriter(jsonFile)) {
+                writer.write(gson.toJson(rootNode));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private FileReader jsonFileReader() throws FileNotFoundException {
+        return new FileReader(jsonFile);
     }
 }

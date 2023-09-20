@@ -1,20 +1,17 @@
 package live.nerotv;
 
 import live.nerotv.zyneon.app.application.Application;
-import live.nerotv.zyneon.app.application.backend.modpack.creator.ModpackCreator;
 import live.nerotv.zyneon.app.application.backend.utils.Config;
-import live.nerotv.zyneon.app.updater.Updater;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
 
-    private static String[] arguments;
     private static String zyverse;
     private static String path;
     public static Config config;
@@ -25,46 +22,11 @@ public class Main {
         if(config.get("settings.memory.default")==null) {
             config.set("settings.memory.default",2048);
         }
-
-        String jarPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        if (jarPath.startsWith("/")) {
-            jarPath = jarPath.substring(1);
-        }
-        try {
-            jarPath = java.net.URLDecoder.decode(jarPath, "UTF-8");
-        } catch (java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        if(jarPath.contains("app.jar")) {
-            new Application().start();
-            return;
-        }
-
-
-        arguments = args;
-        if(arguments.length > 0) {
-            if(arguments.length > 1) {
-                if(arguments[1].equalsIgnoreCase("debug")) {
-                    sendDebug = true;
-                }
-            }
-            if(arguments[0].equalsIgnoreCase("creator")) {
-                new ModpackCreator().start();
-            } else if(arguments[0].equalsIgnoreCase("updater")) {
-                new Updater();
-            } else if(arguments[0].equalsIgnoreCase("application")) {
-                new Application().start();
-            } else {
-                System.out.println("invalid arguments");
-                System.exit(-1);
-            }
-            return;
-        }
-        new Updater();
+        new Application().start();
     }
 
-    public static String[] getArguments() {
-        return arguments;
+    public static boolean isDebugEnabled() {
+        return sendDebug;
     }
 
     public static String getDirectoryPath() {
@@ -87,11 +49,7 @@ public class Main {
             }
             path = folderPath+"/";
         }
-        try {
-            return URLDecoder.decode(path,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return URLDecoder.decode(path, StandardCharsets.UTF_8);
     }
 
     public static String getZyversePath() {
@@ -114,11 +72,7 @@ public class Main {
             }
             zyverse = folderPath+"/";
         }
-        try {
-            return URLDecoder.decode(zyverse,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return URLDecoder.decode(zyverse, StandardCharsets.UTF_8);
     }
 
     public static void debug(String message) {

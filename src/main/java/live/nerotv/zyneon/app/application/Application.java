@@ -6,14 +6,15 @@ import live.nerotv.zyneon.app.application.backend.utils.Config;
 import live.nerotv.zyneon.app.application.frontend.JCefFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
+
 import javax.crypto.KeyGenerator;
 import java.awt.*;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -26,7 +27,7 @@ public class Application {
     private final ArrayList<String> us;
 
     public Application() {
-        version = "1.0.0 Beta g18";
+        version = "1.0.0 Beta G19";
         auth = new SimpleMicrosoftAuth();
         us = new ArrayList<>();
         us.add("6447757f59fe4206ae3fdc68ff2bb6f0");
@@ -43,6 +44,8 @@ public class Application {
                 frame.setTitle("Zyneon Application ("+version+")");
             }
             frame.setMinimumSize(new Dimension(1280,820));
+            frame.setLocationRelativeTo(null);
+            frame.setIcon("/icon.png");
             frame.open();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -55,7 +58,7 @@ public class Application {
             keyGenerator.init(256);
             byte[] key = keyGenerator.generateKey().getEncoded();
             String key_ = new String(Base64.getEncoder().encode(key));
-            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", "UTF-8"));
+            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", StandardCharsets.UTF_8));
             Config saver = new Config(auth.getSaveFile());
             if(saver.get("op.k")==null) {
                 saver.set("op.k",key_);
@@ -65,7 +68,7 @@ public class Application {
             }
             auth.setKey(key);
             auth.isLoggedIn();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
@@ -75,14 +78,9 @@ public class Application {
             URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                frame = new JCefFrame("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html",auth,us);
-            } else {
-                frame = new JCefFrame(null,auth,us);
-            }
+            frame = new JCefFrame(auth,us);
         } catch (UnknownHostException e) {
-            frame = new JCefFrame(null,auth,us);
+            throw new RuntimeException(e);
         }
     }
 
