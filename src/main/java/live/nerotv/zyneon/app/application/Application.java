@@ -27,7 +27,7 @@ public class Application {
     private final ArrayList<String> us;
 
     public Application() {
-        version = "1.0.0 Beta G19";
+        version = "1.0.0 Beta 20";
         auth = new SimpleMicrosoftAuth();
         us = new ArrayList<>();
         us.add("6447757f59fe4206ae3fdc68ff2bb6f0");
