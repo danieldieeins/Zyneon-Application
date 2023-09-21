@@ -1,10 +1,9 @@
 package live.nerotv.zyneon.app.application.frontend.settings;
 
-import live.nerotv.zyneon.app.application.backend.utils.Config;
+import live.nerotv.zyneon.app.application.backend.utils.file.Config;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonFrame;
 
-import javax.swing.*;
-
-public class JavaWindow extends JFrame {
+public class JavaWindow extends ZyneonFrame {
 
     public JavaWindow(Config saveFile) {
 

@@ -7,26 +7,35 @@ import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.installer.ForgeInstaller;
-import live.nerotv.zyneon.app.application.backend.modpack.ForgePack;
-import live.nerotv.zyneon.app.application.frontend.JCefFrame;
+import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class ForgeLauncher {
 
-    private JCefFrame frame;
+    private ZyneonWebFrame frame;
     private SimpleMicrosoftAuth auth;
 
-    public ForgeLauncher(SimpleMicrosoftAuth auth, JCefFrame frame) {
+    public ForgeLauncher(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
         this.auth = auth;
         this.frame = frame;
     }
 
-    public boolean launch(ForgePack modpack, int ram) {
-        if(Main.config.get("settings.memory."+modpack.getID())!=null) {
-            ram = Main.config.getInteger("settings.memory."+modpack.getID());
+    public boolean launch(ForgeInstance instance, int ram) {
+        if(Main.config.get("settings.memory."+instance.getID())!=null) {
+            ram = Main.config.getInteger("settings.memory."+instance.getID());
         }
-        return launch(modpack.getMinecraftVersion(), modpack.getForgeVersion(), modpack.getForgeType(), ram, modpack.getPath());
+        if(!new File(instance.getPath()+"/pack.zip").exists()) {
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            instance.update();
+        }
+        if(!instance.checkVersion()) {
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            instance.update();
+        }
+        return launch(instance.getMinecraftVersion(), instance.getForgeVersion(), instance.getForgeType(), ram, Path.of(instance.getPath()));
     }
 
     public boolean launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath) {

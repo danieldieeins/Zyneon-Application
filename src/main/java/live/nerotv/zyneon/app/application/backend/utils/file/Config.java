@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.application.backend.utils;
+package live.nerotv.zyneon.app.application.backend.utils.file;
 
 import com.google.gson.*;
 import java.io.*;
@@ -60,6 +60,10 @@ public class Config {
         return null;
     }
 
+    public int getInt(String path) {
+        return getInteger(path);
+    }
+
     public Integer getInteger(String path) {
         if (get(path) != null) {
             try {
@@ -70,6 +74,10 @@ public class Config {
         return null;
     }
 
+    public double getDoub(String path) {
+        return getDouble(path);
+    }
+
     public Double getDouble(String path) {
         if (get(path) != null) {
             try {
@@ -78,6 +86,10 @@ public class Config {
             }
         }
         return null;
+    }
+
+    public boolean getBool(String path) {
+        return getBoolean(path);
     }
 
     public Boolean getBoolean(String path) {

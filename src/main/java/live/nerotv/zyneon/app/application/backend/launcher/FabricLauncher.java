@@ -6,28 +6,37 @@ import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.installer.FabricInstaller;
-import live.nerotv.zyneon.app.application.backend.modpack.FabricPack;
-import live.nerotv.zyneon.app.application.frontend.JCefFrame;
+import live.nerotv.zyneon.app.application.backend.instance.FabricInstance;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class FabricLauncher {
 
-    private JCefFrame frame;
+    private ZyneonWebFrame frame;
     private SimpleMicrosoftAuth auth;
 
-    public FabricLauncher(SimpleMicrosoftAuth auth, JCefFrame frame) {
+    public FabricLauncher(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
         this.auth = auth;
         this.frame = frame;
     }
 
-    public boolean launch(FabricPack modpack, int ram) {
-        String id = modpack.getID().replace("/","").replace(".","");
+    public boolean launch(FabricInstance instance, int ram) {
+        String id = instance.getID().replace("/","").replace(".","");
         if(Main.config.get("settings.memory."+id)!=null) {
             System.out.println("settings.memory."+id+", "+Main.config.get("settings.memory."+id));
             ram = Main.config.getInteger("settings.memory."+id);
         }
-        return launch(modpack.getMinecraftVersion(), modpack.getFabricVersion(), ram, modpack.getPath());
+        if(!new File(instance.getPath()+"/pack.zip").exists()) {
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            instance.update();
+        }
+        if(!instance.checkVersion()) {
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            instance.update();
+        }
+        return launch(instance.getMinecraftVersion(), instance.getFabricVersion(), ram, Path.of(instance.getPath()));
     }
 
     public boolean launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {

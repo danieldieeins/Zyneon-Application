@@ -1,7 +1,8 @@
 package live.nerotv.zyneon.app.application.frontend.settings;
 
 import com.sun.management.OperatingSystemMXBean;
-import live.nerotv.zyneon.app.application.backend.utils.Config;
+import live.nerotv.zyneon.app.application.backend.utils.file.Config;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonFrame;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -13,11 +14,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.management.ManagementFactory;
 
-public class MemoryWindow extends JFrame {
+public class MemoryWindow extends ZyneonFrame {
 
     private final Config saveFile;
     private final String title;
-    private final String instance;
+    private String instance;
 
     public MemoryWindow(Config saveFile, String title, String instance) {
         this.saveFile = saveFile;
@@ -69,6 +70,9 @@ public class MemoryWindow extends JFrame {
                 if(instance==null) {
                     saveFile.set("settings.memory.default", slider.getValue());
                 } else {
+                    if(instance.equalsIgnoreCase("")) {
+                        instance = "default";
+                    }
                     saveFile.set("settings.memory."+instance, slider.getValue());
                 }
             }
@@ -90,6 +94,9 @@ public class MemoryWindow extends JFrame {
                 if(instance==null) {
                     saveFile.set("settings.memory.default", slider.getValue());
                 } else {
+                    if(instance.equalsIgnoreCase("")) {
+                        instance = "default";
+                    }
                     saveFile.set("settings.memory."+instance, slider.getValue());
                 }
             }
@@ -97,10 +104,13 @@ public class MemoryWindow extends JFrame {
         Dimension d = new Dimension(380,92);
         setMinimumSize(d);
         setSize(d);
+        setResizable(false);
+        setLocationRelativeTo(null);
         add(slider);
         add(textField);
         add(label);
         pack();
+        setIcon("/icon.png");
         setTitle(title);
         setVisible(true);
     }

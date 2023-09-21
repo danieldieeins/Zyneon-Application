@@ -2,8 +2,8 @@ package live.nerotv.zyneon.app.application;
 
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
-import live.nerotv.zyneon.app.application.backend.utils.Config;
-import live.nerotv.zyneon.app.application.frontend.JCefFrame;
+import live.nerotv.zyneon.app.application.backend.utils.file.Config;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 
@@ -16,23 +16,17 @@ import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Base64;
 
 public class Application {
 
     private static String version;
-    private static JCefFrame frame;
+    private static ZyneonWebFrame frame;
     private static SimpleMicrosoftAuth auth;
-    private final ArrayList<String> us;
 
     public Application() {
-        version = "1.0.0 Beta 20";
+        version = "1.0.0 Beta 21";
         auth = new SimpleMicrosoftAuth();
-        us = new ArrayList<>();
-        us.add("6447757f59fe4206ae3fdc68ff2bb6f0");
-        us.add("b9e0e4fa69a149fe93a605afe249639d");
-        us.add("cd6731637e9d4bf391b3cd65ff147fff");
     }
     public void start() {
         login();
@@ -78,7 +72,7 @@ public class Application {
             URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
-            frame = new JCefFrame(auth,us);
+            frame = new ZyneonWebFrame(auth);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
@@ -88,7 +82,7 @@ public class Application {
         return version;
     }
 
-    public static JCefFrame getFrame() {
+    public static ZyneonWebFrame getFrame() {
         return frame;
     }
 }

@@ -6,26 +6,35 @@ import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.installer.VanillaInstaller;
-import live.nerotv.zyneon.app.application.backend.modpack.Modpack;
-import live.nerotv.zyneon.app.application.frontend.JCefFrame;
+import live.nerotv.zyneon.app.application.backend.instance.Instance;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class VanillaLauncher {
 
-    private JCefFrame frame;
+    private ZyneonWebFrame frame;
     private SimpleMicrosoftAuth auth;
 
-    public VanillaLauncher(SimpleMicrosoftAuth auth, JCefFrame frame) {
+    public VanillaLauncher(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
         this.auth = auth;
         this.frame = frame;
     }
 
-    public boolean launch(Modpack modpack, int ram) {
-        if(Main.config.get("settings.memory."+modpack.getID())!=null) {
-            ram = Main.config.getInteger("settings.memory."+modpack.getID());
+    public boolean launch(Instance instance, int ram) {
+        if(Main.config.get("settings.memory."+instance.getID())!=null) {
+            ram = Main.config.getInteger("settings.memory."+instance.getID());
         }
-        return launch(modpack.getMinecraftVersion(), ram, modpack.getPath());
+        if(!new File(instance.getPath()+"/pack.zip").exists()) {
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            instance.update();
+        }
+        if(!instance.checkVersion()) {
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            instance.update();
+        }
+        return launch(instance.getMinecraftVersion(), ram, Path.of(instance.getPath()));
     }
 
     public boolean launch(String version, int ram, Path instancePath) {

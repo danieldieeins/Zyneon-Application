@@ -1,23 +1,20 @@
 package live.nerotv.zyneon.app.application.backend.installer;
 
 import fr.flowarg.flowupdater.FlowUpdater;
-import fr.flowarg.flowupdater.download.json.CurseFileInfo;
-import fr.flowarg.flowupdater.download.json.Mod;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.FabricVersion;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
-import live.nerotv.zyneon.app.application.backend.modpack.FabricPack;
-import java.net.URL;
+import live.nerotv.zyneon.app.application.backend.instance.FabricInstance;
+
 import java.nio.file.Path;
-import java.util.List;
 
 public class FabricInstaller {
 
-    public boolean downloadModpack(FabricPack modpack) {
-        String minecraftVersion = modpack.getMinecraftVersion();
-        String fabricVersion = modpack.getFabricVersion();
-        Path instancePath = modpack.getPath();
-        URL JSON = modpack.getMods();
+    public boolean downloadInstance(FabricInstance instance) {
+        String minecraftVersion = instance.getMinecraftVersion();
+        String fabricVersion = instance.getFabricVersion();
+        Path instancePath = Path.of(instance.getPath());
+        //URL JSON = null;
 
         VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                 .withName(minecraftVersion)
@@ -26,13 +23,13 @@ public class FabricInstaller {
         UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
                 .build();
 
-        List<CurseFileInfo> curseMods = CurseFileInfo.getFilesFromJson(JSON);
-        List<Mod> mods = Mod.getModsFromJson(JSON);
+        //List<CurseFileInfo> curseMods = CurseFileInfo.getFilesFromJson(JSON);
+        //List<Mod> mods = Mod.getModsFromJson(JSON);
 
         FabricVersion fabric = new FabricVersion.FabricVersionBuilder()
                 .withFabricVersion(fabricVersion)
-                .withCurseMods(JSON)
-                .withMods(JSON)
+                //.withCurseMods(JSON)
+                //.withMods(JSON)
                 .build();
 
         FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()

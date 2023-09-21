@@ -1,8 +1,9 @@
-package live.nerotv.zyneon.app.application.frontend;
+package live.nerotv.zyneon.app.application.backend.utils.frame;
 
 import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
+import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnectorV3;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
@@ -15,17 +16,13 @@ import org.cef.browser.CefMessageRouter;
 import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefFocusHandlerAdapter;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
 
-public class JCefFrame extends JFrame {
+public class ZyneonWebFrame extends ZyneonFrame {
 
     private final CefApp app;
     private Component ui;
@@ -33,10 +30,10 @@ public class JCefFrame extends JFrame {
     private final CefBrowser browser;
     private boolean browserFocus;
     private final CefAppBuilder builder;
-    private final BackendConnectorV2 backendConnector;
+    private final BackendConnectorV3 backendConnector;
 
-    public JCefFrame(SimpleMicrosoftAuth auth, ArrayList<String> us) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
-        backendConnector = new BackendConnectorV2(auth,us,this);
+    public ZyneonWebFrame(SimpleMicrosoftAuth auth) throws UnsupportedPlatformException, CefInitializationException, IOException, InterruptedException {
+        backendConnector = new BackendConnectorV3(auth,this);
         browserFocus = true;
         File installDir = new File(Main.getDirectoryPath()+"libs/jcef/");
         Main.debug("NEED_JCEF_INSTALL: "+installDir.mkdirs());
@@ -61,20 +58,12 @@ public class JCefFrame extends JFrame {
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
                 if(message.contains("[Launcher-Bridge] ")) {
                     String request = message.replace("[Launcher-Bridge] ","");
-                    Main.debug("[BackendConnectorV2] Received request: \""+request+"\"");
+                    Main.debug("[BackendConnector] Received request: \""+request+"\"");
                     backendConnector.resolveRequest(request);
                 }
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
-    }
-
-    public void setIcon(String resourcePath) {
-        try {
-            setIconImage(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(resourcePath)))).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-        } catch (Exception e) {
-            System.out.println("Error obtaining icon file: " + e.getMessage());
-        }
     }
 
     public CefApp getApp() {
