@@ -2,6 +2,8 @@ package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
 
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
+import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.file.FileUtils;
 import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.instance.FabricInstance;
 import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
@@ -9,8 +11,6 @@ import live.nerotv.zyneon.app.application.backend.instance.VanillaInstance;
 import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
-import live.nerotv.zyneon.app.application.backend.utils.file.FileUtils;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 

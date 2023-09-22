@@ -2,7 +2,7 @@ package live.nerotv.zyneon.app.application;
 
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
+import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
@@ -25,7 +25,7 @@ public class Application {
     private static SimpleMicrosoftAuth auth;
 
     public Application() {
-        version = "1.0.0 Beta 21";
+        version = "1.0.0 Beta 22";
         auth = new SimpleMicrosoftAuth();
     }
     public void start() {
@@ -39,7 +39,7 @@ public class Application {
             }
             frame.setMinimumSize(new Dimension(1280,820));
             frame.setLocationRelativeTo(null);
-            frame.setIcon("/icon.png");
+            frame.setIconFromResources("icon.png");
             frame.open();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);

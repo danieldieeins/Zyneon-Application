@@ -1,7 +1,7 @@
 package live.nerotv.zyneon.app.application.backend.instance;
 
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
+import live.nerotv.shademebaby.file.Config;
 
 public class ForgeInstance extends VanillaInstance {
 

@@ -3,6 +3,7 @@ package live.nerotv.zyneon.app.application.backend.utils.frame;
 import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
+import live.nerotv.shademebaby.frame.NFrame;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnectorV3;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -22,7 +23,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class ZyneonWebFrame extends ZyneonFrame {
+public class ZyneonWebFrame extends NFrame {
 
     private final CefApp app;
     private Component ui;

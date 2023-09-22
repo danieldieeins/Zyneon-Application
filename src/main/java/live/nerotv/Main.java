@@ -1,7 +1,7 @@
 package live.nerotv;
 
+import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.Application;
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
 
 import java.io.File;
 import java.net.URLDecoder;

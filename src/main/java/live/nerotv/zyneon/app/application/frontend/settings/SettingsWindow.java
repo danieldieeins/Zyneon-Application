@@ -1,11 +1,11 @@
 package live.nerotv.zyneon.app.application.frontend.settings;
 
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
-import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonFrame;
+import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.frame.NFrame;
 
 import java.awt.*;
 
-public class SettingsWindow extends ZyneonFrame {
+public class SettingsWindow extends NFrame {
 
     public SettingsWindow(Config modpackFile) {
         Dimension size = new Dimension(640,480);

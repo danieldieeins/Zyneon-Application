@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>1.0.0-BETA-21</version>
+    <version>1.0.0-BETA-22</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -47,13 +47,7 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>OpenLauncherAPI</artifactId>
-            <version>4.1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>4.3.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -1,8 +1,8 @@
 package live.nerotv.zyneon.app.application.frontend.settings;
 
 import com.sun.management.OperatingSystemMXBean;
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
-import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonFrame;
+import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.frame.NFrame;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -14,7 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.management.ManagementFactory;
 
-public class MemoryWindow extends ZyneonFrame {
+public class MemoryWindow extends NFrame {
 
     private final Config saveFile;
     private final String title;
@@ -110,7 +110,7 @@ public class MemoryWindow extends ZyneonFrame {
         add(textField);
         add(label);
         pack();
-        setIcon("/icon.png");
+        setIconFromResources("icon.png");
         setTitle(title);
         setVisible(true);
     }

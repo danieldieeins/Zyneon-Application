@@ -1,8 +1,9 @@
 package live.nerotv.zyneon.app.application.backend.instance;
 
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.application.backend.utils.file.Config;
-import live.nerotv.zyneon.app.application.backend.utils.file.FileUtils;
+import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.file.FileUtils;
+
 import java.io.File;
 import java.util.UUID;
 
