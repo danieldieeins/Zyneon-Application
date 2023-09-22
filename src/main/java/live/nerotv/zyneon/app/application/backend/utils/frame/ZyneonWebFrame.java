@@ -27,6 +27,7 @@ public class ZyneonWebFrame extends NWebFrame {
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
+        setIconFromResources("icon.png");
         setSize(1280,820);
     }
 
