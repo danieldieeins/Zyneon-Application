@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>1.0.0-BETA-22</version>
+    <version>1.0.0-BETA-23</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -47,13 +47,7 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>OpenLauncherAPI</artifactId>
-            <version>4.3.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.friwi</groupId>
-            <artifactId>jcefmaven</artifactId>
-            <version>110.0.25</version>
+            <version>4.4.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

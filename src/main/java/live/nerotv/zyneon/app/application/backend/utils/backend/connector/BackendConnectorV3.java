@@ -1,6 +1,7 @@
 package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
 
 import live.nerotv.Main;
+import live.nerotv.openlauncherapi.auth.AuthResolver;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.FileUtils;
@@ -28,6 +29,12 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     public BackendConnectorV3(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
         this.auth = auth;
         this.frame = frame;
+        auth.setAuthResolver(new AuthResolver() {
+            @Override
+            public void postAuth() {
+                resolveRequest("connector.sync");
+            }
+        });
     }
 
     @Override
@@ -57,6 +64,12 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             if (auth.isLoggedIn()) {
                 auth.getSaveFile().delete();
                 auth = new SimpleMicrosoftAuth();
+                auth.setAuthResolver(new AuthResolver() {
+                    @Override
+                    public void postAuth() {
+                        resolveRequest("connector.sync");
+                    }
+                });
                 Application.login();
                 if (auth.isLoggedIn()) {
                     frame.setTitle("Zyneon Application (" + Application.getVersion() + ", " + auth.getAuthInfos().getUsername() + ")");

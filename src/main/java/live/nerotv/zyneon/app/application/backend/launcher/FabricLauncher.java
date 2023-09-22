@@ -1,6 +1,7 @@
 package live.nerotv.zyneon.app.application.backend.launcher;
 
 import fr.flowarg.openlauncherlib.NoFramework;
+import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import javafx.application.Platform;
 import live.nerotv.Main;
@@ -40,6 +41,19 @@ public class FabricLauncher {
     }
 
     public boolean launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {
+        if(MinecraftVersion.getType(minecraftVersion)!=null) {
+            MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
+            if(type.equals(MinecraftVersion.Type.LEGACY)) {
+                JavaUtil.setJavaCommand(null);
+                System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre-8");
+            } else if(type.equals(MinecraftVersion.Type.SEMI_NEW)) {
+                JavaUtil.setJavaCommand(null);
+                System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre-11");
+            } else if(type.equals(MinecraftVersion.Type.NEW)) {
+                JavaUtil.setJavaCommand(null);
+                System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre");
+            }
+        }
         if(ram<1024) {
             ram = 1024;
         }
