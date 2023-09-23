@@ -25,7 +25,7 @@ public class Application {
     private static SimpleMicrosoftAuth auth;
 
     public Application() {
-        version = "1.0.0 Beta 24";
+        version = "1.0.0 Public Beta 1";
         auth = new SimpleMicrosoftAuth();
     }
     public void start() {
