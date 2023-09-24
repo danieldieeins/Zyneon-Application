@@ -45,6 +45,9 @@ public class VanillaInstance implements Instance {
     public boolean update() {
         System.out.println("TRYING TO UPDATE INSTANCE " + name + " (" + id + ")...");
         try {
+            if(new File(path+"mods/").exists()) {
+                new File(path+"mods/").delete();
+            }
             FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
             FileUtils.unzipFile(path + "/pack.zip", path);
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
