@@ -25,8 +25,10 @@ public class ForgeLauncher {
     }
 
     public boolean launch(ForgeInstance instance, int ram) {
-        if(Main.config.get("settings.memory."+instance.getID())!=null) {
-            ram = Main.config.getInteger("settings.memory."+instance.getID());
+        String id = instance.getID();
+        String ramID = id.replace(".","").replace("/","");
+        if(Main.config.get("settings.memory."+ramID)!=null) {
+            ram = Main.config.getInteger("settings.memory."+ramID);
         }
         if(!new File(instance.getPath()+"/pack.zip").exists()) {
             frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
@@ -40,6 +42,7 @@ public class ForgeLauncher {
     }
 
     public boolean launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath) {
+        frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
         if(MinecraftVersion.getType(minecraftVersion)!=null) {
             MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
             if(type.equals(MinecraftVersion.Type.LEGACY)) {
@@ -65,7 +68,6 @@ public class ForgeLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(minecraftVersion, forgeVersion, NoFramework.ModLoader.FORGE);
-                frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
                 Platform.runLater(() -> {
                     try {
                         p.waitFor();

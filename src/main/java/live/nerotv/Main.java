@@ -19,9 +19,7 @@ public class Main {
 
     public static void main(String[] args) {
         config = new Config(new File(getDirectoryPath()+"config.json"));
-        if(config.get("settings.memory.default")==null) {
-            config.set("settings.memory.default",2048);
-        }
+        config.checkEntry("settings.memory.default",1024);
         new Application().start();
     }
 

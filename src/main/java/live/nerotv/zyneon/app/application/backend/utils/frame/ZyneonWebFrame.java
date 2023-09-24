@@ -9,6 +9,10 @@ import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefDisplayHandlerAdapter;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+
 public class ZyneonWebFrame extends NWebFrame {
 
     BackendConnector backendConnector;
@@ -27,7 +31,9 @@ public class ZyneonWebFrame extends NWebFrame {
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
-        setIconFromResources("/icon.png");
+        try {
+            setIconImage(ImageIO.read(getClass().getResource("/icon.png")).getScaledInstance(32,32,Image.SCALE_SMOOTH));
+        } catch (IOException ignore) {}
         setSize(1280,820);
     }
 

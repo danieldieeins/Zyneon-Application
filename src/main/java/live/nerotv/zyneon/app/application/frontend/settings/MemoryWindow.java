@@ -28,6 +28,9 @@ public class MemoryWindow extends NFrame {
     }
 
     private void init() {
+        if(instance!=null) {
+            instance = instance.replace("/","").replace(".","");
+        }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
