@@ -78,7 +78,7 @@ public class FabricLauncher {
             } catch (Exception ignore) {}
             return true;
         } else {
-            System.out.println("Error: couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
+            Main.getLogger().error("Error: couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
             return false;
         }
     }

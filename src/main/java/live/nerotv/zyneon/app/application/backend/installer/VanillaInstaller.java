@@ -14,7 +14,7 @@ public class VanillaInstaller {
     }
 
     public boolean download(String version, Path instancePath) {
-        Main.debug("Starting download of Minecraft "+version);
+        Main.getLogger().debug("Starting download of Minecraft "+version);
         VanillaVersion vanilla = new VanillaVersion.VanillaVersionBuilder()
                 .withName(version)
                 .build();
@@ -23,10 +23,10 @@ public class VanillaInstaller {
                 .build();
         try {
             flowUpdater.update(instancePath);
-            Main.debug("Successfully downloaded Minecraft "+version);
+            Main.getLogger().debug("Successfully downloaded Minecraft "+version);
             return true;
         } catch (Exception e) {
-            System.out.println("Error: Couldn't download Minecraft "+version);
+            Main.getLogger().error("Error: Couldn't download Minecraft "+version);
             return false;
         }
     }

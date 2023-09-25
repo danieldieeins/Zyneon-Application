@@ -1,8 +1,10 @@
 package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
 
+import live.nerotv.Main;
+
 public interface BackendConnector {
 
     default void resolveRequest(String request) {
-        System.out.println("Received request: "+request);
+        Main.getLogger().log("Received request: " + request);
     }
 }

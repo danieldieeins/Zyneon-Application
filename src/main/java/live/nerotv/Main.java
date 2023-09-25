@@ -1,6 +1,7 @@
 package live.nerotv;
 
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.zyneon.app.application.Application;
 
 import java.io.File;
@@ -15,16 +16,17 @@ public class Main {
     private static String zyverse;
     private static String path;
     public static Config config;
-    private static boolean sendDebug = false;
+    private static Logger logger;
 
     public static void main(String[] args) {
         config = new Config(new File(getDirectoryPath()+"config.json"));
         config.checkEntry("settings.memory.default",1024);
+        logger = new Logger("ZyneonApplication");
         new Application().start();
     }
 
-    public static boolean isDebugEnabled() {
-        return sendDebug;
+    public static Logger getLogger() {
+        return logger;
     }
 
     public static String getDirectoryPath() {
@@ -71,11 +73,5 @@ public class Main {
             zyverse = folderPath+"/";
         }
         return URLDecoder.decode(zyverse, StandardCharsets.UTF_8);
-    }
-
-    public static void debug(String message) {
-        if(sendDebug) {
-            System.out.println("[DEBUG] " + message);
-        }
     }
 }

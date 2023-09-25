@@ -46,6 +46,10 @@ public class Application {
         }
     }
 
+    public static void setAuth(SimpleMicrosoftAuth auth_) {
+        auth = auth_;
+    }
+
     public static void login() {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");

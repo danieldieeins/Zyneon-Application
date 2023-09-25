@@ -25,7 +25,7 @@ public class ZyneonWebFrame extends NWebFrame {
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
                 if(message.contains("[Launcher-Bridge] ")) {
                     String request = message.replace("[Launcher-Bridge] ","");
-                    Main.debug("[BackendConnector] Received request: \""+request+"\"");
+                    Main.getLogger().debug("[BackendConnector] Received request: \""+request+"\"");
                     backendConnector.resolveRequest(request);
                 }
                 return super.onConsoleMessage(browser, level, message, source, line);

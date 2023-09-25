@@ -43,7 +43,7 @@ public class VanillaInstance implements Instance {
 
     @Override
     public boolean update() {
-        System.out.println("TRYING TO UPDATE INSTANCE " + name + " (" + id + ")...");
+        Main.getLogger().debug("TRYING TO UPDATE INSTANCE " + name + " (" + id + ")...");
         try {
             deleteFolder(new File(path+"mods"));
             FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
@@ -54,10 +54,10 @@ public class VanillaInstance implements Instance {
             version = json.getString("modpack.version");
             name = json.getString("modpack.name");
         } catch (Exception e) {
-            System.out.println("NOT UPDATED!");
+            Main.getLogger().debug("NOT UPDATED!");
             return false;
         }
-        System.out.println("SUCCESSFULLY UPDATED!");
+        Main.getLogger().debug("SUCCESSFULLY UPDATED!");
         return true;
     }
 

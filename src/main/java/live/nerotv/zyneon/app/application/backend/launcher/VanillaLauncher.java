@@ -78,11 +78,11 @@ public class VanillaLauncher {
 
                 return true;
             } catch (Exception e) {
-                System.out.println("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
+                Main.getLogger().error("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
                 return false;
             }
         } else {
-            System.out.println("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
+            Main.getLogger().error("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
             return false;
         }
     }

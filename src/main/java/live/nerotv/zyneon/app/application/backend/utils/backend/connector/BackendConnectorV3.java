@@ -1,7 +1,6 @@
 package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
 
 import live.nerotv.Main;
-import live.nerotv.openlauncherapi.auth.AuthResolver;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.FileUtils;
@@ -25,16 +24,13 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
 
     private SimpleMicrosoftAuth auth;
     private final ZyneonWebFrame frame;
+    private final ZyneonAuthResolver authResolver;
 
     public BackendConnectorV3(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
         this.auth = auth;
         this.frame = frame;
-        auth.setAuthResolver(new AuthResolver() {
-            @Override
-            public void postAuth() {
-                resolveRequest("connector.sync");
-            }
-        });
+        this.authResolver = new ZyneonAuthResolver(frame);
+        auth.setAuthResolver(authResolver);
     }
 
     @Override
@@ -64,12 +60,8 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             if (auth.isLoggedIn()) {
                 auth.getSaveFile().delete();
                 auth = new SimpleMicrosoftAuth();
-                auth.setAuthResolver(new AuthResolver() {
-                    @Override
-                    public void postAuth() {
-                        resolveRequest("connector.sync");
-                    }
-                });
+                Application.setAuth(auth);
+                auth.setAuthResolver(authResolver);
                 Application.login();
                 if (auth.isLoggedIn()) {
                     frame.setTitle("Zyneon Application (" + Application.getVersion() + ", " + auth.getAuthInfos().getUsername() + ")");
@@ -89,7 +81,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 frame.getBrowser().executeJavaScript("javascript:syncButton('Anmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
         } else {
-            System.out.println("REQUEST: "+request);
+            Main.getLogger().debug("REQUEST: "+request);
         }
     }
 
@@ -229,7 +221,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     }
 
     private void startZyverse() {
-        System.out.println("Downloading latest version...");
+        Main.getLogger().debug("Downloading latest version...");
         try {
             InputStream inputStream = new BufferedInputStream(new URL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/z/latest.jar").openStream());
             new File(Main.getZyversePath()).mkdirs();
@@ -250,7 +242,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
+                    Main.getLogger().debug(line);
                 }
                 int exitCode = process.waitFor();
             } catch (Exception e) {

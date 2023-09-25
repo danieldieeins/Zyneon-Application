@@ -6,6 +6,7 @@ import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
+import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
 
 import java.nio.file.Path;
@@ -71,7 +72,7 @@ public class ForgeInstaller {
             updater.update(instancePath);
             return true;
         } catch (Exception e) {
-            System.out.println("Error: Couldn't download Minecraft "+minecraftVersion+" with Forge "+forgeVersion);
+            Main.getLogger().error("Error: Couldn't download Minecraft " + minecraftVersion + " with Forge " + forgeVersion);
             return false;
         }
     }

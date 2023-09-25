@@ -4,6 +4,7 @@ import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.FabricVersion;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
+import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.backend.instance.FabricInstance;
 
 import java.nio.file.Path;
@@ -68,7 +69,7 @@ public class FabricInstaller {
             updater.update(instancePath);
             return true;
         } catch (Exception e) {
-            System.out.println("Error: Couldn't download Minecraft "+minecraftVersion+" with Fabric "+fabricVersion);
+            Main.getLogger().error("Error: Couldn't download Minecraft " + minecraftVersion + " with Fabric " + fabricVersion);
             return false;
         }
     }
