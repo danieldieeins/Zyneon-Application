@@ -27,7 +27,7 @@ public class Application {
     private static SimpleMicrosoftAuth auth;
 
     public Application() {
-        version = "1.0 Public Beta 4";
+        version = "1.0 Public Beta 5";
     }
     public void start() {
         if(Main.os.contains("macOS")) {
