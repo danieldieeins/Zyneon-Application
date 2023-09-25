@@ -48,7 +48,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         } else if(request.contains("button.worlds.")) {
             resolveInstanceRequest(InstanceAction.SHOW_WORLDS, request.replace("button.worlds.", ""));
         } else if(request.contains("button.settings.")) {
-            resolveInstanceRequest(InstanceAction.SETTINGS_MEMORY, request.replace("button.settings.", ""));
+            resolveInstanceRequest(InstanceAction.SETTINGS_MEMORY, request.replace("button.settings.", "").replace("memory","default"));
         } else if(request.contains("button.account")) {
             if(auth.isLoggedIn()) {
                 resolveRequest("button.logout");

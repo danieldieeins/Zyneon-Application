@@ -21,7 +21,9 @@ public class Main {
     public static void main(String[] args) {
         config = new Config(new File(getDirectoryPath()+"config.json"));
         config.checkEntry("settings.memory.default",1024);
+        config.checkEntry("settings.logger.debug",false);
         logger = new Logger("ZyneonApplication");
+        logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         new Application().start();
     }
 
