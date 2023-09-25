@@ -24,13 +24,10 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
 
     private SimpleMicrosoftAuth auth;
     private final ZyneonWebFrame frame;
-    private final ZyneonAuthResolver authResolver;
 
     public BackendConnectorV3(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
         this.auth = auth;
         this.frame = frame;
-        this.authResolver = new ZyneonAuthResolver(frame);
-        auth.setAuthResolver(authResolver);
     }
 
     @Override
@@ -52,16 +49,15 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         } else if(request.contains("button.account")) {
             if(auth.isLoggedIn()) {
                 resolveRequest("button.logout");
+                frame.getBrowser().reload();
                 return;
             }
+            auth = Application.getNewAuth();
             auth.startAsyncWebview();
-            resolveRequest("connector.sync");
         } else if(request.contains("button.logout")) {
             if (auth.isLoggedIn()) {
                 auth.getSaveFile().delete();
-                auth = new SimpleMicrosoftAuth();
-                Application.setAuth(auth);
-                auth.setAuthResolver(authResolver);
+                auth = Application.getNewAuth();
                 Application.login();
                 if (auth.isLoggedIn()) {
                     frame.setTitle("Zyneon Application (" + Application.getVersion() + ", " + auth.getAuthInfos().getUsername() + ")");
@@ -71,7 +67,6 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             } else {
                 frame.getBrowser().executeJavaScript("javascript:OpenModal('notLoggedIn')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
-            resolveRequest("connector.sync");
         } else if(request.contains("connector.sync")) {
             if(auth.isLoggedIn()) {
                 frame.getBrowser().executeJavaScript("javascript:syncAccount('"+auth.getAuthInfos().getUsername()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);

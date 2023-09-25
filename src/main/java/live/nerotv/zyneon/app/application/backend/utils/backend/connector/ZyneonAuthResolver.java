@@ -19,7 +19,5 @@ public class ZyneonAuthResolver implements AuthResolver {
     @Override
     public void postAuth(String name, String suid) {
         frame.getBrowser().reload();
-        frame.getBrowser().executeJavaScript("javascript:syncAccount('"+name+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-        frame.getBrowser().executeJavaScript("javascript:syncButton('Abmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
     }
 }

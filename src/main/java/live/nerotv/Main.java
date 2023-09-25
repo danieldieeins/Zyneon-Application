@@ -1,5 +1,6 @@
 package live.nerotv;
 
+import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.zyneon.app.application.Application;
@@ -24,6 +25,7 @@ public class Main {
         config.checkEntry("settings.logger.debug",false);
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
+        ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
         new Application().start();
     }
 
@@ -37,10 +39,13 @@ public class Main {
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
+                Main.os = "Windows";
                 appData = System.getenv("LOCALAPPDATA");
             } else if (os.contains("mac")) {
+                Main.os = "macOS";
                 appData = System.getProperty("user.home") + "/Library/Application Support";
             } else {
+                Main.os = "Unix";
                 appData = System.getProperty("user.home") + "/.local/share";
             }
             Path folderPath = Paths.get(appData, folderName);
@@ -54,16 +59,21 @@ public class Main {
         return URLDecoder.decode(path, StandardCharsets.UTF_8);
     }
 
+    public static String os;
+
     public static String getZyversePath() {
         if(zyverse == null) {
             String folderName = "Zyneon/Zyverse";
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
+                Main.os = "Windows";
                 appData = System.getenv("LOCALAPPDATA");
             } else if (os.contains("mac")) {
+                Main.os = "macOS";
                 appData = System.getProperty("user.home") + "/Library/Application Support";
             } else {
+                Main.os = "Unix";
                 appData = System.getProperty("user.home") + "/.local/share";
             }
             Path folderPath = Paths.get(appData, folderName);

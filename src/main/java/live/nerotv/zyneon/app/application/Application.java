@@ -3,7 +3,9 @@ package live.nerotv.zyneon.app.application;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebView;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 
@@ -26,9 +28,12 @@ public class Application {
 
     public Application() {
         version = "1.0 Public Beta 4";
-        auth = new SimpleMicrosoftAuth();
     }
     public void start() {
+        if(Main.os.contains("macOS")) {
+            new ZyneonWebView().i();
+            return;
+        }
         login();
         try {
             checkURL();
@@ -46,17 +51,20 @@ public class Application {
         }
     }
 
-    public static void setAuth(SimpleMicrosoftAuth auth_) {
-        auth = auth_;
+    public static SimpleMicrosoftAuth getNewAuth() {
+        login();
+        return auth;
     }
 
     public static void login() {
+        auth = new SimpleMicrosoftAuth();
+        auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", StandardCharsets.UTF_8));
+        auth.setAuthResolver(new ZyneonAuthResolver(frame));
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
             keyGenerator.init(256);
             byte[] key = keyGenerator.generateKey().getEncoded();
             String key_ = new String(Base64.getEncoder().encode(key));
-            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", StandardCharsets.UTF_8));
             Config saver = new Config(auth.getSaveFile());
             if(saver.get("op.k")==null) {
                 saver.set("op.k",key_);
