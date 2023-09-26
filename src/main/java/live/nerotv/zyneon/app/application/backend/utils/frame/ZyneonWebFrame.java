@@ -18,7 +18,7 @@ public class ZyneonWebFrame extends NWebFrame {
     BackendConnector backendConnector;
 
     public ZyneonWebFrame(SimpleMicrosoftAuth auth) {
-        super("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html",Main.getDirectoryPath()+"libs/jcef");
+        super("https://danieldieeins.github.io/ZyneonApplicationContent/h/PB6/index.html",Main.getDirectoryPath()+"libs/jcef");
         backendConnector = new BackendConnectorV3(auth,this);
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
@@ -34,7 +34,8 @@ public class ZyneonWebFrame extends NWebFrame {
         try {
             setIconImage(ImageIO.read(getClass().getResource("/icon.png")).getScaledInstance(32,32,Image.SCALE_SMOOTH));
         } catch (IOException ignore) {}
-        setSize(1280,820);
+        setSize(1420,820);
+        setResizable(false);
     }
 
     public BackendConnector getBackendConnector() {

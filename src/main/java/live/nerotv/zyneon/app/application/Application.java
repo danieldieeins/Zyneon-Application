@@ -10,7 +10,6 @@ import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 
 import javax.crypto.KeyGenerator;
-import java.awt.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,7 +26,7 @@ public class Application {
     private static SimpleMicrosoftAuth auth;
 
     public Application() {
-        version = "1.0 Public Beta 5";
+        version = "1.0 Public Beta 6";
     }
     public void start() {
         if(Main.os.contains("macOS")) {
@@ -37,14 +36,9 @@ public class Application {
         login();
         try {
             checkURL();
-            if(auth.isLoggedIn()) {
-                frame.setTitle("Zyneon Application ("+version+", "+auth.getAuthInfos().getUsername()+")");
-            } else {
-                frame.setTitle("Zyneon Application ("+version+")");
-            }
-            frame.setMinimumSize(new Dimension(1280,820));
+            auth.isLoggedIn();
+            frame.setTitle("Zyneon Application ("+version+")");
             frame.setLocationRelativeTo(null);
-            frame.setIconFromResources("icon.png");
             frame.setVisible(true);
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -81,7 +75,7 @@ public class Application {
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
         try {
-            URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/index.html");
+            URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/PB6/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
             frame = new ZyneonWebFrame(auth);
