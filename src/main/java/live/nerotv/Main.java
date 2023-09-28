@@ -24,7 +24,8 @@ public class Main {
 
     public static void main(String[] args) {
         v = "PB7";
-        if(!new File(getDirectoryPath()+"libs/zyneon/"+v).exists()) {
+        if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
+            new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
             FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
             new File(getDirectoryPath() + "libs/zyneon/" + v + ".zip").delete();
