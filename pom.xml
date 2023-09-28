@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>PublicBeta-6</version>
+    <version>PublicBeta-7</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -42,6 +42,12 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
             <version>21</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.danieldieeins</groupId>
+            <artifactId>OpenLauncherAPI</artifactId>
+            <version>09ee081</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

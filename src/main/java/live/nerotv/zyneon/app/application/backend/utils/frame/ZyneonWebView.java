@@ -8,6 +8,7 @@ import javafx.scene.web.WebView;
 import javax.swing.*;
 import java.awt.*;
 
+@Deprecated
 public class ZyneonWebView {
 
     public static void main(String[] args) {

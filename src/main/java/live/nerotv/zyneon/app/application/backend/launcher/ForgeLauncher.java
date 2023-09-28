@@ -31,18 +31,18 @@ public class ForgeLauncher {
             ram = Main.config.getInteger("settings.memory."+ramID);
         }
         if(!new File(instance.getPath()+"/pack.zip").exists()) {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
         if(!instance.checkVersion()) {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
         return launch(instance.getMinecraftVersion(), instance.getForgeVersion(), instance.getForgeType(), ram, Path.of(instance.getPath()));
     }
 
     public boolean launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath) {
-        frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+        frame.getBrowser().executeJavaScript("javascript:OpenModal('starting')","https://a.nerotv.live/zyneon/application/html/account.html",5);
         if(MinecraftVersion.getType(minecraftVersion)!=null) {
             MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
             if(type.equals(MinecraftVersion.Type.LEGACY)) {

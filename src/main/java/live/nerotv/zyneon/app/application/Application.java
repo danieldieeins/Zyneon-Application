@@ -26,7 +26,7 @@ public class Application {
     private static SimpleMicrosoftAuth auth;
 
     public Application() {
-        version = "1.0 Public Beta 6";
+        version = "1.0 Public Beta 7";
     }
     public void start() {
         if(Main.os.contains("macOS")) {
@@ -38,7 +38,6 @@ public class Application {
             checkURL();
             auth.isLoggedIn();
             frame.setTitle("Zyneon Application ("+version+")");
-            frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -78,7 +77,7 @@ public class Application {
             URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/PB6/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
-            frame = new ZyneonWebFrame(auth);
+            frame = new ZyneonWebFrame(auth,Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }

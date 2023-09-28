@@ -30,18 +30,18 @@ public class VanillaLauncher {
             ram = Main.config.getInteger("settings.memory."+ramID);
         }
         if(!new File(instance.getPath()+"/pack.zip").exists()) {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
         if(!instance.checkVersion()) {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('install')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
         return launch(instance.getMinecraftVersion(), ram, Path.of(instance.getPath()));
     }
 
     public boolean launch(String version, int ram, Path instancePath) {
-        frame.getBrowser().executeJavaScript("javascript:OpenModal('run')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+        frame.getBrowser().executeJavaScript("javascript:OpenModal('starting')","https://a.nerotv.live/zyneon/application/html/account.html",5);
         if(MinecraftVersion.getType(version)!=null) {
             MinecraftVersion.Type type = MinecraftVersion.getType(version);
             if(type.equals(MinecraftVersion.Type.LEGACY)) {
