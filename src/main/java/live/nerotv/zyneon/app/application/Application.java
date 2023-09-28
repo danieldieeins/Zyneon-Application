@@ -74,7 +74,7 @@ public class Application {
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
         try {
-            URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/h/PB6/index.html");
+            URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/"+Main.v+"/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
             frame = new ZyneonWebFrame(auth,Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
