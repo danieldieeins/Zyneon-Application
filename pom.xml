@@ -50,12 +50,6 @@
             <version>09ee081</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.danieldieeins</groupId>
-            <artifactId>OpenLauncherAPI</artifactId>
-            <version>09ee081</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
+import live.nerotv.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,7 @@ public class ZyneonWebView {
         Platform.runLater(() -> {
             WebView webView = new WebView();
             jfxPanel.setScene(new Scene(webView));
-            webView.getEngine().load("https://danieldieeins.github.io/ZyneonApplicationContent/h/");
+            webView.getEngine().load(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
         });
         jFrame.setVisible(true);
     }
