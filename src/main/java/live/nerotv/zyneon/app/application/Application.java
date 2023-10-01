@@ -3,6 +3,7 @@ package live.nerotv.zyneon.app.application;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.zyneon.app.application.backend.integrations.ModrinthIntegration;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebView;
@@ -33,7 +34,9 @@ public class Application {
             new ZyneonWebView().i();
             return;
         }
-        login();
+        ModrinthIntegration.main(null);
+        return;
+        /*login();
         try {
             checkURL();
             auth.isLoggedIn();
@@ -41,7 +44,7 @@ public class Application {
             frame.setVisible(true);
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public static SimpleMicrosoftAuth getNewAuth() {

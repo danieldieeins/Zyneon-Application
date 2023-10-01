@@ -16,6 +16,7 @@ import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +34,16 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
 
     @Override
     public void resolveRequest(String request) {
+        if(request.contains("modrinth")) {
+            System.out.println(request);
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI("https://modrinth.com/mod/" + request.replace("button.show.modrinth.", "")));
+                return;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         if(request.contains("button.start.")) {
             resolveInstanceRequest(InstanceAction.RUN,request.replace("button.start.",""));
         } else if(request.contains("button.screenshots.")) {

@@ -3,8 +3,10 @@ package live.nerotv.zyneon.app.application.backend.integrations;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import live.nerotv.Main;
-import live.nerotv.shademebaby.frame.NWebFrame;
+import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
+import org.cef.browser.CefBrowser;
+import org.cef.handler.CefLoadHandler;
+import org.cef.handler.CefLoadHandlerAdapter;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -15,29 +17,43 @@ import java.net.URL;
 public class ModrinthIntegration {
 
     public static void main(String[] a) {
-        JsonObject search = searchMods(Modloader.FABRIC,"1.20.1",0,50);
+        JsonObject search = searchMods(Modloader.FABRIC,"1.20.1",0,100);
         JsonArray results = search.getAsJsonArray("hits");
         System.out.println(search);
         System.out.println(results);
-        NWebFrame f = new NWebFrame("C:\\Users\\nerotvlive\\Desktop\\Application Beta 7\\search.html", Main.getDirectoryPath()+"libs/jcef");
+        ZyneonWebFrame f = new ZyneonWebFrame(null,"C:\\Users\\nerotvlive\\Desktop\\A\\search-modrinth.html");
+        CefLoadHandler loadHandler = new CefLoadHandlerAdapter() {
+            @Override
+            public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {
+                if (!isLoading) {
+                    for (int i = 0; i < results.size(); i++) {
+                        JsonObject item = results.get(i).getAsJsonObject();
+                        String id = item.get("project_id").getAsString();
+                        String slug = item.get("slug").getAsString();
+                        String modurl = "https://modrinth.com/mod/"+slug;
+                        String author = item.get("author").getAsString();
+                        String title = item.get("title").getAsString();
+                        String description = item.get("description").getAsString();
+                        String png = item.get("icon_url").getAsString();
+                        System.out.println("===============================");
+                        System.out.println("ID: "+id+" (slug: "+slug+")");
+                        System.out.println("Title: "+title+" by "+author);
+                        System.out.println("Description: "+description);
+                        System.out.println(modurl);
+                        f.getBrowser().executeJavaScript("syncModCard(\""+title+"\",\""+id+"\",\""+description+"\",\""+author+"\",\""+png+"\",\"javascript:callJavaMethod('button.show.modrinth."+slug+"')\");",f.getBrowser().getURL(),1);
+                    }
+
+                }
+            }
+        };
+        f.getClient().addLoadHandler(loadHandler);
         f.setSize(new Dimension(1280,720));
         f.setLocationRelativeTo(null);
         f.setVisible(true);
-        for (int i = 0; i < results.size(); i++) {
-            JsonObject item = results.get(i).getAsJsonObject();
-            String id = item.get("project_id").getAsString();
-            String slug = item.get("slug").getAsString();
-            String author = item.get("author").getAsString();
-            String title = item.get("title").getAsString();
-            String description = item.get("description").getAsString();
-            System.out.println("===============================");
-            System.out.println("ID: "+id+" (slug: "+slug+")");
-            System.out.println("Title: "+title+" by "+author);
-            System.out.println("Description: "+description);
-        }
     }
 
     private static JsonObject getObject(String url) {
+        System.out.println(url);
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestMethod("GET");
