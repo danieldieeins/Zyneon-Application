@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.application.backend.integrations;
+package live.nerotv.zyneon.app.application.backend.integrations.modrinth;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -17,7 +17,7 @@ import java.net.URL;
 public class ModrinthIntegration {
 
     public static void main(String[] a) {
-        JsonObject search = searchMods(Modloader.FABRIC,"1.20.1",0,100);
+        JsonObject search = searchMods("Blockbuster",Modloader.FORGE,"1.12.2",0,100);
         JsonArray results = search.getAsJsonArray("hits");
         System.out.println(search);
         System.out.println(results);
@@ -40,7 +40,10 @@ public class ModrinthIntegration {
                         System.out.println("Title: "+title+" by "+author);
                         System.out.println("Description: "+description);
                         System.out.println(modurl);
-                        f.getBrowser().executeJavaScript("syncModCard(\""+title+"\",\""+id+"\",\""+description+"\",\""+author+"\",\""+png+"\",\"javascript:callJavaMethod('button.show.modrinth."+slug+"')\");",f.getBrowser().getURL(),1);
+                        String js = "syncModCard(\""+title+"\",\""+id+"\",\""+description+"\",\""+author+"\",\""+png+"\",\"javascript:callJavaMethod('button.show.modrinth."+slug+"')\",'1.20.1');";
+                        System.out.println(js);
+                        f.getBrowser().executeJavaScript(js,f.getBrowser().getURL(),1);
+                        f.getBrowser().setZoomLevel(-2);
                     }
 
                 }
@@ -75,14 +78,14 @@ public class ModrinthIntegration {
 
     public static JsonObject searchMods(String query, Modloader loader, String version, int offset, int limit) {
         try {
-            return getObject("https://api.modrinth.com/v2/search?query="+query.toLowerCase()+"&=facets=[[%22categories:"+loader.toString().toLowerCase()+"%22],[%22versions:"+version+"%22],[%22project_type:mod%22]&offset="+offset+"&limit="+limit);
+            return getObject("https://api.modrinth.com/v2/search?query="+query.toLowerCase()+"&facets=[[%22categories:"+loader.toString().toLowerCase()+"%22],[%22versions:"+version+"%22],[%22project_type:mod%22]]&offset="+offset+"&limit="+limit);
         } catch (Exception ignore) {}
         return null;
     }
 
     public static JsonObject searchMods(Modloader loader, String version, int offset, int limit) {
         try {
-            return getObject("https://api.modrinth.com/v2/search?=facets=[[%22categories:"+loader.toString().toLowerCase()+"%22],[%22versions:"+version+"%22],[%22project_type:mod%22]&offset="+offset+"&limit="+limit);
+            return getObject("https://api.modrinth.com/v2/search?facets=[[%22categories:"+loader.toString().toLowerCase()+"%22],[%22versions:"+version+"%22],[%22project_type:mod%22]]&offset="+offset+"&limit="+limit);
         } catch (Exception ignore) {}
         return null;
     }

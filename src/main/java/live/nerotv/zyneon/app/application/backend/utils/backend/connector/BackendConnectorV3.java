@@ -35,6 +35,10 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     @Override
     public void resolveRequest(String request) {
         if(request.contains("modrinth")) {
+            if(request.contains(".install.mod.")) {
+                System.out.println(request);
+                return;
+            }
             System.out.println(request);
             Desktop desktop = Desktop.getDesktop();
             try {

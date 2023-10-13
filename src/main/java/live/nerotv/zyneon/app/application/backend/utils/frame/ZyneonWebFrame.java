@@ -40,6 +40,10 @@ public class ZyneonWebFrame extends NWebFrame {
         setLocationRelativeTo(null);
     }
 
+    public void openModrinth() {
+
+    }
+
     public BackendConnector getBackendConnector() {
         return backendConnector;
     }

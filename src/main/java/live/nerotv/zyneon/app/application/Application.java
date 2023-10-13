@@ -3,7 +3,9 @@ package live.nerotv.zyneon.app.application;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.zyneon.app.application.backend.integrations.ModrinthIntegration;
+import live.nerotv.zyneon.app.application.backend.instance.Instance;
+import live.nerotv.zyneon.app.application.backend.integrations.modrinth.ModrinthIntegration;
+import live.nerotv.zyneon.app.application.backend.integrations.modrinth.ModrinthSearchPanel;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebView;
@@ -27,24 +29,28 @@ public class Application {
     private static SimpleMicrosoftAuth auth;
 
     public Application() {
-        version = "1.0 Public Beta 7";
+        version = "1.0 Public Beta 8";
     }
     public void start() {
         if(Main.os.contains("macOS")) {
             new ZyneonWebView().i();
             return;
         }
-        ModrinthIntegration.main(null);
-        return;
-        /*login();
+        login();
         try {
             checkURL();
             auth.isLoggedIn();
             frame.setTitle("Zyneon Application ("+version+")");
             frame.setVisible(true);
+            new ModrinthSearchPanel("Backpack", new Instance() {
+                @Override
+                public String getVersion() {
+                    return "1.12.2";
+                }
+            }, ModrinthIntegration.Modloader.FORGE).show();
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
     public static SimpleMicrosoftAuth getNewAuth() {
