@@ -4,10 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zyneonstudios</groupId>
-    <artifactId>application</artifactId>
+    <groupId>live.nerotv</groupId>
+    <artifactId>ZyneonApplication</artifactId>
     <version>PublicBeta-8</version>
-    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
