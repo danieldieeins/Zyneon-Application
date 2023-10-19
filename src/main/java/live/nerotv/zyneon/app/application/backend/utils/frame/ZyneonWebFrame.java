@@ -1,7 +1,6 @@
 package live.nerotv.zyneon.app.application.backend.utils.frame;
 
 import live.nerotv.Main;
-import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.frame.NWebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnector;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnectorV3;
@@ -13,10 +12,10 @@ public class ZyneonWebFrame extends NWebFrame {
 
     BackendConnector backendConnector;
 
-    public ZyneonWebFrame(SimpleMicrosoftAuth auth, String url) {
+    public ZyneonWebFrame(String url) {
         //super("https://danieldieeins.github.io/ZyneonApplicationContent/h/PB6/index.html",Main.getDirectoryPath()+"libs/jcef");
         super(url,Main.getDirectoryPath()+"libs/jcef");
-        backendConnector = new BackendConnectorV3(auth,this);
+        backendConnector = new BackendConnectorV3(this);
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {

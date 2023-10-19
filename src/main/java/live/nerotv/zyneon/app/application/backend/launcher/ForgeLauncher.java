@@ -6,7 +6,7 @@ import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import javafx.application.Platform;
 import live.nerotv.Main;
-import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
+import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.ForgeInstaller;
 import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
@@ -17,10 +17,8 @@ import java.nio.file.Path;
 public class ForgeLauncher {
 
     private ZyneonWebFrame frame;
-    private SimpleMicrosoftAuth auth;
 
-    public ForgeLauncher(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
-        this.auth = auth;
+    public ForgeLauncher(ZyneonWebFrame frame) {
         this.frame = frame;
     }
 
@@ -56,13 +54,13 @@ public class ForgeLauncher {
                 System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre");
             }
         }
-        if(ram<1024) {
-            ram = 1024;
+        if(ram<512) {
+            ram = 512;
         }
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    auth.getAuthInfos(),
+                    Application.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");

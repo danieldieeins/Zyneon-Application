@@ -1,7 +1,6 @@
 package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
 
 import live.nerotv.Main;
-import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.FileUtils;
 import live.nerotv.zyneon.app.application.Application;
@@ -15,27 +14,27 @@ import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.language.Language;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class BackendConnectorV3 implements BackendConnectorV2 {
 
-    private SimpleMicrosoftAuth auth;
     private final ZyneonWebFrame frame;
 
-    public BackendConnectorV3(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
-        this.auth = auth;
+    public BackendConnectorV3(ZyneonWebFrame frame) {
         this.frame = frame;
     }
 
     @Override
     public void resolveRequest(String request) {
-        if(request.contains("modrinth")) {
-            if(request.contains(".install.mod.")) {
+        if (request.contains("modrinth")) {
+            if (request.contains(".install.mod.")) {
                 System.out.println(request);
                 return;
             }
@@ -48,82 +47,176 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 throw new RuntimeException(e);
             }
         }
-        if(request.contains("button.start.")) {
-            resolveInstanceRequest(InstanceAction.RUN,request.replace("button.start.",""));
-        } else if(request.contains("button.screenshots.")) {
-            resolveInstanceRequest(InstanceAction.SHOW_SCREENSHOTS,request.replace("button.screenshots.",""));
-        } else if(request.contains("button.game.zyverse")) {
+        if (request.contains("button.start.")) {
+            resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
+        } else if (request.equalsIgnoreCase("button.starttab")) {
+            if (Main.starttab.equalsIgnoreCase("start")) {
+                Main.config.set("settings.starttab", "instances");
+                Main.starttab = "instances";
+            } else {
+                Main.config.set("settings.starttab", "start");
+                Main.starttab = "start";
+            }
+            frame.getBrowser().reload();
+        } else if (request.equalsIgnoreCase("button.language")) {
+            String lang = Main.config.getString("settings.language");
+            if (lang.equalsIgnoreCase("auto")) {
+                Main.config.set("settings.language", "german");
+                Main.language = "german";
+            } else if (lang.equalsIgnoreCase("german")) {
+                Main.config.set("settings.language", "english");
+                Main.language = "english";
+            } else {
+                Main.config.set("settings.language", "auto");
+                if (System.getProperty("user.language").equalsIgnoreCase("de")) {
+                    Main.language = "german";
+                } else {
+                    Main.language = "english";
+                }
+            }
+            frame.getBrowser().reload();
+        } else if (request.equalsIgnoreCase("button.username")) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(URI.create("https://www.minecraft.net/de-de/msaprofile/mygames/editprofile"));
+                } catch (IOException ignore) {
+                }
+            }
+        } else if (request.equalsIgnoreCase("button.skin")) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(URI.create("https://www.minecraft.net/de-de/msaprofile/mygames/editskin"));
+                } catch (IOException ignore) {
+                }
+            }
+        } else if (request.equalsIgnoreCase("button.laby")) {
+            if (Application.auth.isLoggedIn()) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(URI.create("https://laby.net/@" + Application.auth.getAuthInfos().getUsername()));
+                    } catch (IOException ignore) {
+                    }
+                }
+            } else {
+                Application.login();
+                SwingUtilities.invokeLater(() -> {
+                    Application.auth.startAsyncWebview();
+                });
+            }
+        } else if (request.contains("button.screenshots.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_SCREENSHOTS, request.replace("button.screenshots.", ""));
+        } else if (request.contains("button.game.zyverse")) {
             startZyverse();
-        } else if(request.contains("button.zyneonplus.")) {
-            Main.config.set("settings.zyneonplus",request.replace("button.zyneonplus.",""));
-            frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus"+Main.config.getString("settings.zyneonplus")+".html");
-        } else if(request.contains("button.zyneonplus")) {
-            if(Main.config.getString("settings.zyneonplus")!=null) {
+        } else if (request.contains("button.zyneonplus.")) {
+            Main.config.set("settings.zyneonplus", request.replace("button.zyneonplus.", ""));
+            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus" + Main.config.getString("settings.zyneonplus") + ".html");
+        } else if (request.contains("button.zyneonplus")) {
+            if (Main.config.getString("settings.zyneonplus") != null) {
                 String zyn = Main.config.getString("settings.zyneonplus");
                 if (zyn.contains("dynamic")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplusdynamic.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplusdynamic.html");
                     return;
                 } else if (zyn.contains("1202")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1202.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1202.html");
                     return;
                 } else if (zyn.contains("1201")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1201.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1201.html");
                     return;
                 } else if (zyn.contains("1194")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1194.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1194.html");
                     return;
                 } else if (zyn.contains("1182")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1182.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1182.html");
                     return;
                 } else if (zyn.contains("1171")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1171.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1171.html");
                     return;
                 } else if (zyn.contains("1165")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1165.html");
+                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1165.html");
                     return;
                 }
             }
-            frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplusversions.html");
-        } else if(request.contains("button.resourcepacks.")) {
-            resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS,request.replace("button.resourcepacks.",""));
-        } else if(request.contains("button.shaders.")) {
-            resolveInstanceRequest(InstanceAction.SHOW_SHADERS,request.replace("button.shaders.",""));
-        } else if(request.contains("button.worlds.")) {
+            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplusversions.html");
+        } else if (request.contains("button.resourcepacks.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
+        } else if (request.contains("button.shaders.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_SHADERS, request.replace("button.shaders.", ""));
+        } else if (request.contains("button.worlds.")) {
             resolveInstanceRequest(InstanceAction.SHOW_WORLDS, request.replace("button.worlds.", ""));
-        } else if(request.contains("button.settings.")) {
-            resolveInstanceRequest(InstanceAction.SETTINGS_MEMORY, request.replace("button.settings.", "").replace("memory","default"));
-        } else if(request.contains("button.account")) {
-            if(auth.isLoggedIn()) {
+        } else if (request.contains("button.settings.")) {
+            resolveInstanceRequest(InstanceAction.SETTINGS_MEMORY, request.replace("button.settings.", "").replace("memory", "default"));
+        } else if (request.contains("button.account")) {
+            if (Application.auth.isLoggedIn()) {
                 resolveRequest("button.logout");
                 frame.getBrowser().reload();
                 return;
             }
-            auth = Application.getNewAuth();
-            auth.startAsyncWebview();
-        } else if(request.contains("button.logout")) {
-            if (auth.isLoggedIn()) {
-                auth.getSaveFile().delete();
-                auth = Application.getNewAuth();
+            Application.login();
+            SwingUtilities.invokeLater(() -> {
+                Application.auth.startAsyncWebview();
+            });
+        } else if (request.contains("button.logout")) {
+            if (Application.auth.isLoggedIn()) {
+                Application.auth.getSaveFile().delete();
                 Application.login();
-                if (auth.isLoggedIn()) {
-                    frame.setTitle("Zyneon Application (" + Application.getVersion() + ", " + auth.getAuthInfos().getUsername() + ")");
+                if (Application.auth.isLoggedIn()) {
+                    frame.setTitle("Zyneon Application (" + Application.getVersion() + ", " + Application.auth.getAuthInfos().getUsername() + ")");
                 } else {
                     frame.setTitle("Zyneon Application (" + Application.getVersion() + ")");
                 }
             }
-        } else if(request.contains("connector.sync")) {
-            //syncLanguage();
+        } else if (request.contains("connector.sync")) {
+            if (request.contains("instance")) {
+                syncInstance(request.replace("connector.syncinstance.", ""));
+                return;
+            }
             Language.syncLanguage();
-            if(auth.isLoggedIn()) {
-                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+auth.getAuthInfos().getUsername()+"','"+auth.getAuthInfos().getUuid()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            if (Application.auth.isLoggedIn()) {
+                frame.getBrowser().executeJavaScript("javascript:syncAccount('" + Application.auth.getAuthInfos().getUsername() + "','" + Application.auth.getAuthInfos().getUuid() + "')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                 frame.getBrowser().executeJavaScript("javascript:syncButton('Abmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             } else {
-                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+ Language.getNotLoggedIn() +"','null')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:syncAccount('" + Language.getNotLoggedIn() + "','null')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                 frame.getBrowser().executeJavaScript("javascript:syncButton('Anmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
+        } else if(request.equalsIgnoreCase("connector.profilesync")) {
+            if(Application.auth.isLoggedIn()) {
+                frame.getBrowser().executeJavaScript("javascript:syncProfilesAlt('" + Application.auth.getAuthInfos().getUsername() + "','" + Application.auth.getAuthInfos().getUuid() + "')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                Application.getFrame().getBrowser().executeJavaScript("javascript:syncLanguage('profiles.html#alt1','profiles.html#"+Application.auth.getAuthInfos().getUuid()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            }
         } else {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('notimplemented')","https://a.nerotv.live/zyneon/application/html/account.html",5);
-            Main.getLogger().error("REQUEST NOT RESOLVED: "+request);
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('notimplemented')", "https://a.nerotv.live/zyneon/application/html/account.html", 5);
+            Main.getLogger().error("REQUEST NOT RESOLVED: " + request);
+        }
+    }
+
+    private void syncInstance(String instance) {
+        Main.getLogger().debug("REQUESTED INSTANCE SYNC: "+instance);
+        if(new File(Main.getDirectoryPath()+"instances/"+instance+"/zyneonInstance.json").exists()) {
+            Config config = new Config(Main.getDirectoryPath()+"instances/"+instance+"/zyneonInstance.json");
+            Language.sync("%instance_version%",config.getString("modpack.version"));
+            Language.sync("%instance_mcversion%",config.getString("modpack.minecraft"));
+            if(config.getString("modpack.fabric")!=null) {
+                Language.sync("instance_modloader","Fabric "+config.getString("modpack.fabric"));
+            } else {
+                Language.sync("instance_modloader", "Forge ("+config.getString("modpack.forge.type")+") "+config.getString("modpack.forge.version"));
+            }
+        } else {
+            Language.sync("%instance_version%",Language.getNotInstalled());
+            try {
+                String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instance + ".json";
+                new File(Main.getDirectoryPath()+"temp/").mkdirs();
+                Config json = new Config(FileUtils.downloadFile(url, Main.getDirectoryPath() + "temp/" + UUID.randomUUID() + ".json"));
+                Language.sync("%instance_mcversion%",json.getString("modpack.minecraft"));
+                if(json.getString("modpack.fabric")!=null) {
+                    Language.sync("instance_modloader","Fabric "+json.getString("modpack.fabric"));
+                } else {
+                    Language.sync("instance_modloader", "Forge ("+json.getString("modpack.forge.type")+") "+json.getString("modpack.forge.version"));
+                }
+                json.getJsonFile().delete();
+            } catch (Exception e) {
+                Language.sync("%instance_mcversion%", "?");
+                Language.sync("%instance_modloader%", "?");
+            }
         }
     }
 
@@ -139,12 +232,14 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         }
     }
 
-    @Override @Deprecated
+    @Override
+    @Deprecated
     public boolean startInstance(String s) {
         return runInstance(s);
     }
 
-    @Override @Deprecated
+    @Override
+    @Deprecated
     public boolean startZyneonPlus(String s, int r) {
         return startInstance(s);
     }
@@ -155,27 +250,27 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             if (new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
                 instanceJson = new Config(new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json"));
             } else {
-                new File(Main.getDirectoryPath()+"instances/"+instanceString+"/").mkdirs();
-                File file = FileUtils.downloadFile("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/"+instanceString+".json",Main.getDirectoryPath()+"instances/"+instanceString+"/zyneonInstance.json");
+                new File(Main.getDirectoryPath() + "instances/" + instanceString + "/").mkdirs();
+                File file = FileUtils.downloadFile("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json", Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json");
                 instanceJson = new Config(file);
             }
             if (instanceJson.getString("modpack.fabric") != null) {
-                new FabricLauncher(auth, frame).launch(new FabricInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+                new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
             } else if (instanceJson.getString("modpack.forge.version") != null && instanceJson.getString("modpack.forge.type") != null) {
-                new ForgeLauncher(auth, frame).launch(new ForgeInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+                new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
             } else {
-                new VanillaLauncher(auth, frame).launch(new VanillaInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+                new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
             }
             return true;
         } else {
             if (new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
                 Config instanceJson = new Config(new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json"));
                 if (instanceJson.getString("modpack.fabric") != null) {
-                    new FabricLauncher(auth, frame).launch(new FabricInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+                    new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
                 } else if (instanceJson.getString("modpack.forge.version") != null && instanceJson.getString("modpack.forge.type") != null) {
-                    new ForgeLauncher(auth, frame).launch(new ForgeInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+                    new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
                 } else {
-                    new VanillaLauncher(auth, frame).launch(new VanillaInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+                    new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
                 }
                 return true;
             }
@@ -184,82 +279,87 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     }
 
     public void openInstanceFolder(String instance) {
-        File folder = new File(Main.getDirectoryPath()+"instances/"+instance+"/");
+        File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/");
         folder.mkdirs();
-        if(folder.exists()) {
-            if(Desktop.isDesktopSupported()) {
+        if (folder.exists()) {
+            if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
-                if(desktop.isSupported(Desktop.Action.OPEN)) {
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
                     try {
                         desktop.open(folder);
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
             }
         }
     }
 
     private void openScreenshotsFolder(String instance) {
-        File folder = new File(Main.getDirectoryPath()+"instances/"+instance+"/screenshots/");
+        File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/screenshots/");
         folder.mkdirs();
-        if(folder.exists()) {
-            if(Desktop.isDesktopSupported()) {
+        if (folder.exists()) {
+            if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
-                if(desktop.isSupported(Desktop.Action.OPEN)) {
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
                     try {
                         desktop.open(folder);
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
             }
         }
     }
 
     private void openResourcePacksFolder(String instance) {
-        File folder = new File(Main.getDirectoryPath()+"instances/"+instance+"/resourcepacks/");
+        File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/resourcepacks/");
         folder.mkdirs();
-        if(folder.exists()) {
-            if(Desktop.isDesktopSupported()) {
+        if (folder.exists()) {
+            if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
-                if(desktop.isSupported(Desktop.Action.OPEN)) {
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
                     try {
                         desktop.open(folder);
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
             }
         }
     }
 
     private void openShadersFolder(String instance) {
-        File folder = new File(Main.getDirectoryPath()+"instances/"+instance+"/shaderpacks/");
+        File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/shaderpacks/");
         folder.mkdirs();
-        if(folder.exists()) {
-            if(Desktop.isDesktopSupported()) {
+        if (folder.exists()) {
+            if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
-                if(desktop.isSupported(Desktop.Action.OPEN)) {
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
                     try {
                         desktop.open(folder);
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
             }
         }
     }
 
     private void openWorldsFolder(String instance) {
-        File folder = new File(Main.getDirectoryPath()+"instances/"+instance+"/saves/");
+        File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/saves/");
         folder.mkdirs();
-        if(folder.exists()) {
-            if(Desktop.isDesktopSupported()) {
+        if (folder.exists()) {
+            if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
-                if(desktop.isSupported(Desktop.Action.OPEN)) {
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
                     try {
                         desktop.open(folder);
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
             }
         }
     }
 
     private void openMemorySettings(String instance) {
-        new MemoryWindow(Main.config,"RAM Einstellen ("+instance+")",instance);
+        new MemoryWindow(Main.config, "RAM Einstellen (" + instance + ")", instance);
     }
 
     private void startZyverse() {

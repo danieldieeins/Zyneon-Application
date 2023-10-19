@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>PublicBeta-8</version>
+    <version>PublicBeta-8.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -46,8 +46,26 @@
         </dependency>
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
-            <artifactId>OpenLauncherAPI</artifactId>
-            <version>4.4.3</version>
+            <artifactId>ShadeMeBaby</artifactId>
+            <version>f31577e</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.flowarg</groupId>
+            <artifactId>flowupdater</artifactId>
+            <version>LATEST</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.flowarg</groupId>
+            <artifactId>openlauncherlib</artifactId>
+            <version>LATEST</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.FlowArg</groupId>
+            <artifactId>OpenAuth</artifactId>
+            <version>c66a19d</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

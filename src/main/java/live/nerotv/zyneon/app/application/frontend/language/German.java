@@ -1,6 +1,8 @@
 package live.nerotv.zyneon.app.application.frontend.language;
 
-import live.nerotv.zyneon.app.application.Application;
+import live.nerotv.Main;
+
+import static live.nerotv.zyneon.app.application.frontend.language.Language.sync;
 
 public class German {
 
@@ -18,7 +20,7 @@ public class German {
 
         //Instanzübersicht (instance view)
         sync("create","Neu");
-        sync("instances_create","Instanz erstellen");
+        sync("instances_create","Instanz importieren");
         sync("instances_new","Instance Creator");
 
         //Zyneon+ (zyneonplus instance)
@@ -28,7 +30,7 @@ public class German {
         sync("worlds","Welten");
         sync("description","Beschreibung");
         sync("zyneonplus_slogan","Erlebe Minecraft wie noch nie zuvor!");
-        sync("zyneonplus_latest_versiontext","%instance_mcversion%<br>Klicke auf Version wählen um Zyneon+ für andere Minecraft-Versionen zu spielen");
+        sync("zyneonplus_latest_versiontext","Klicke auf Version wählen um Zyneon+ für andere Minecraft-Versionen zu spielen");
         sync("zyneonplus_description", "Dieses Pack bietet dir die perfekte Optimierung und die besten Features.\\u003cbr\\u003eEgal ob du mit deinen Freunden spielen willst, oder einfach allein - Zyneon+ ist für dich da. \\u003cbr\\u003e\\u003cbr\\u003eLade deine Freunde online in deine eigentlich-Einzelspieler-Welt ein, ganz ohne Server.\\u003cbr\\u003eSpiele mit den aktuellsten Shadern und; oder Resourcepacks. Ändere deinen Skin - und das ingame. \\u003cbr\\u003e\\u003cbr\\u003eDie Möglichkeiten sind grenzenlos - erlebe dein Abenteuer und das mit der besten Performance!");
 
         //Zyneon+ Versionen (zyneonplus versions)
@@ -52,6 +54,16 @@ public class German {
         sync("setting_memory_button","Arbeitsspeicher einstellen");
         sync("setting_language_title","Sprache:");
         sync("setting_language_description","Wähle die Application-Sprache aus, indem du auf den \"Deutsch\"-Knopf drückst.");
+        if(Main.config.getString("settings.language").equalsIgnoreCase("auto")) {
+            sync("setting_language_button", "Automatisch (German)");
+        } else {
+            sync("setting_language_button", "Deutsch (German)");
+        }
+        if(Main.starttab.equalsIgnoreCase("start")) {
+            sync("setting_starttab_button", "Startseite");
+        } else {
+            sync("setting_starttab_button", "Instanzenübersicht");
+        }
 
         //Profilverwaltung (profiles)
         sync("add_account","Account hinzufügen");
@@ -73,11 +85,5 @@ public class German {
 
         //Fehlende Übersetzung auf Englisch zurücksetzen (Set fallback language to english)
         English.syncLanguage();
-    }
-
-    private static void sync(String path, String string) {
-        path = path.replace("%","");
-        path = "%"+path+"%";
-        Application.getFrame().getBrowser().executeJavaScript("javascript:syncLanguage('" + path + "','" + string + "')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
     }
 }

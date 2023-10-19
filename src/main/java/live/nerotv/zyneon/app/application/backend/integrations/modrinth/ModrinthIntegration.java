@@ -21,7 +21,7 @@ public class ModrinthIntegration {
         JsonArray results = search.getAsJsonArray("hits");
         System.out.println(search);
         System.out.println(results);
-        ZyneonWebFrame f = new ZyneonWebFrame(null,"C:\\Users\\nerotvlive\\Desktop\\A\\search-modrinth.html");
+        ZyneonWebFrame f = new ZyneonWebFrame("C:\\Users\\nerotvlive\\Desktop\\A\\search-modrinth.html");
         CefLoadHandler loadHandler = new CefLoadHandlerAdapter() {
             @Override
             public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {

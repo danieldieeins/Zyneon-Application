@@ -5,7 +5,7 @@ import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import javafx.application.Platform;
 import live.nerotv.Main;
-import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
+import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.VanillaInstaller;
 import live.nerotv.zyneon.app.application.backend.instance.Instance;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
@@ -16,10 +16,8 @@ import java.nio.file.Path;
 public class VanillaLauncher {
 
     private ZyneonWebFrame frame;
-    private SimpleMicrosoftAuth auth;
 
-    public VanillaLauncher(SimpleMicrosoftAuth auth, ZyneonWebFrame frame) {
-        this.auth = auth;
+    public VanillaLauncher(ZyneonWebFrame frame) {
         this.frame = frame;
     }
 
@@ -55,13 +53,13 @@ public class VanillaLauncher {
                 System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre");
             }
         }
-        if(ram<1024) {
-            ram = 1024;
+        if(ram<512) {
+            ram = 512;
         }
         if(new VanillaInstaller().download(version,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
-                    auth.getAuthInfos(),
+                    Application.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");

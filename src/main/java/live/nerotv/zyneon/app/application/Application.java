@@ -1,9 +1,8 @@
 package live.nerotv.zyneon.app.application;
 
 import live.nerotv.Main;
-import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
+import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebView;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -11,6 +10,7 @@ import me.friwi.jcefmaven.UnsupportedPlatformException;
 
 import javax.crypto.KeyGenerator;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -27,11 +27,12 @@ public class Application {
 
     private static String version;
     private static ZyneonWebFrame frame;
-    private static SimpleMicrosoftAuth auth;
+    public static MicrosoftAuth auth;
 
-    public Application() {
-        version = "1.0 Public Beta 8";
+    public Application(String v) {
+        version = v;
     }
+
     public void start() {
         if(Main.os.contains("macOS")) {
             new ZyneonWebView().i();
@@ -57,32 +58,28 @@ public class Application {
         }
     }
 
-    public static SimpleMicrosoftAuth getNewAuth() {
-        login();
-        return auth;
-    }
-
     public static void login() {
-        auth = new SimpleMicrosoftAuth();
-        auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json", StandardCharsets.UTF_8));
-        auth.setAuthResolver(new ZyneonAuthResolver(frame));
-        try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(256);
-            byte[] key = keyGenerator.generateKey().getEncoded();
-            String key_ = new String(Base64.getEncoder().encode(key));
-            Config saver = new Config(auth.getSaveFile());
-            if(saver.get("op.k")==null) {
-                saver.set("op.k",key_);
-            } else {
-                key_ = (String)saver.get("op.k");
-                key = Base64.getDecoder().decode(key_);
+        SwingUtilities.invokeLater(() -> {
+            auth = new MicrosoftAuth();
+            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath() + "libs/opapi/arun.json", StandardCharsets.UTF_8));
+            try {
+                KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+                keyGenerator.init(256);
+                byte[] key = keyGenerator.generateKey().getEncoded();
+                String key_ = new String(Base64.getEncoder().encode(key));
+                Config saver = new Config(auth.getSaveFile());
+                if (saver.get("op.k") == null) {
+                    saver.set("op.k", key_);
+                } else {
+                    key_ = (String) saver.get("op.k");
+                    key = Base64.getDecoder().decode(key_);
+                }
+                auth.setKey(key);
+                auth.isLoggedIn();
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
             }
-            auth.setKey(key);
-            auth.isLoggedIn();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        });
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
@@ -90,7 +87,11 @@ public class Application {
             URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/"+Main.v+"/index.html");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
-            frame = new ZyneonWebFrame(auth,Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
+            String start = "index.html";
+            if(Main.starttab.equalsIgnoreCase("instances")) {
+                start = "instances.html";
+            }
+            frame = new ZyneonWebFrame(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/"+start);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }

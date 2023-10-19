@@ -1,6 +1,8 @@
 package live.nerotv.zyneon.app.application.frontend.language;
 
-import live.nerotv.zyneon.app.application.Application;
+import live.nerotv.Main;
+
+import static live.nerotv.zyneon.app.application.frontend.language.Language.sync;
 
 public class English {
 
@@ -18,7 +20,7 @@ public class English {
 
         //instance view
         sync("create","New");
-        sync("instances_create","Create an instance");
+        sync("instances_create","Import instance");
         sync("instances_new","Instance creator");
 
         //zyneonplus instance
@@ -28,7 +30,7 @@ public class English {
         sync("worlds","Worlds");
         sync("description","Description");
         sync("zyneonplus_slogan","Experience Minecraft like never before!");
-        sync("zyneonplus_latest_versiontext","%instance_mcversion%<br>Click on Change version to play Zyneon+ for other Minecraft versions");
+        sync("zyneonplus_latest_versiontext","Click on Change version to play Zyneon+ for other Minecraft versions");
         sync("zyneonplus_description", "This pack offers you the perfect optimization and the best features. Whether you want to play with your friends or just alone - Zyneon+ is there for you. \\u003cbr\\u003e\\u003cbr\\u003eInvite your friends online to your actual single-player world, without any server.\\u003cbr\\u003ePlay with the latest shaders and; or resource packs. Change your skin - and in-game. \\u003cbr\\u003e\\u003cbr\\u003eThe possibilities are limitless - experience your adventure and with the best performance!");
 
         //zyneonplus versions
@@ -52,6 +54,16 @@ public class English {
         sync("setting_memory_button","Global memory");
         sync("setting_language_title","Language:");
         sync("setting_language_description","Select your language by clicking the \"English\" button.");
+        if(Main.config.getString("settings.language").equalsIgnoreCase("auto")) {
+            sync("setting_language_button", "Automatic (english)");
+        } else {
+            sync("setting_language_button", "English");
+        }
+        if(Main.starttab.equalsIgnoreCase("start")) {
+            sync("setting_starttab_button", "Start/News");
+        } else {
+            sync("setting_starttab_button", "Instances");
+        }
 
         //profiles
         sync("add_account","Add account");
@@ -70,11 +82,5 @@ public class English {
         sync("starting_text","The instance will be started.<br>It may be that updates still need to be completed - then the application will not respond for a moment, but that is completely normal - just wait a moment.<br><br>You can close this message if you like.");
         sync("close","Close");
         sync("close","Close");
-    }
-
-    private static void sync(String path, String string) {
-        path = path.replace("%","");
-        path = "%"+path+"%";
-        Application.getFrame().getBrowser().executeJavaScript("javascript:syncLanguage('" + path + "','" + string + "')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
     }
 }

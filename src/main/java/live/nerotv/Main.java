@@ -21,30 +21,39 @@ public class Main {
     private static Logger logger;
     public static String v;
     public static String language = "english";
+    public static String starttab = "start";
 
     public static void main(String[] args) {
-        v = "PB8";
+        v = "PB8.1";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
             FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
             new File(getDirectoryPath() + "libs/zyneon/" + v + ".zip").delete();
         }
-        if(System.getProperty("user.language").equalsIgnoreCase("de")) {
-            language = "german";
-        }
         config = new Config(new File(getDirectoryPath() + "config.json"));
+        config.checkEntry("settings.starttab","start");
+        starttab = config.getString("settings.starttab");
+        config.checkEntry("settings.language","auto");
+        if(!config.getString("settings.language").equalsIgnoreCase("auto")) {
+            language = config.getString("settings.language");
+        } else {
+            if (System.getProperty("user.language").equalsIgnoreCase("de")) {
+                language = "german";
+            }
+        }
         config.checkEntry("settings.memory.default", 1024);
         config.checkEntry("settings.logger.debug", false);
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
-        new Application().start();
+        new Application("1.0 Public Beta 8.1").start();
     }
 
     public static Logger getLogger() {
         return logger;
     }
+
 
     public static String getDirectoryPath() {
         if (path == null) {
