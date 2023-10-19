@@ -5,12 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zyneonstudios</groupId>
-    <artifactId>old-application</artifactId>
+    <artifactId>application</artifactId>
     <version>PublicBeta-8</version>
     <packaging>pom</packaging>
-    <modules>
-        <module>application</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

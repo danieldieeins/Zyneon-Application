@@ -30,7 +30,7 @@ public class ModrinthSearchPanel {
         browser = client.createBrowser("https://danieldieeins.github.io/ZyneonApplicationContent/h/search/search-modrinth.html",false,false);
         ui = browser.getUIComponent();
         try {
-            frame.setIconImage(ImageIO.read(getClass().getResource("/icon.png")).getScaledInstance(32,32,Image.SCALE_SMOOTH));
+            frame.setIconImage(ImageIO.read(getClass().getResource("/logo.png")).getScaledInstance(32,32,Image.SCALE_SMOOTH));
         } catch (IOException ignore) {}
         frame.getContentPane().add(ui,BorderLayout.CENTER);
         frame.setSize(1280,720);

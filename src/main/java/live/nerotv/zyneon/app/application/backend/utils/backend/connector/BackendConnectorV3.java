@@ -12,6 +12,7 @@ import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
+import live.nerotv.zyneon.app.application.frontend.language.Language;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 
 import java.awt.*;
@@ -20,7 +21,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 public class BackendConnectorV3 implements BackendConnectorV2 {
 
@@ -60,7 +60,10 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         } else if(request.contains("button.zyneonplus")) {
             if(Main.config.getString("settings.zyneonplus")!=null) {
                 String zyn = Main.config.getString("settings.zyneonplus");
-                if (zyn.contains("1202")) {
+                if (zyn.contains("dynamic")) {
+                    frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplusdynamic.html");
+                    return;
+                } else if (zyn.contains("1202")) {
                     frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/zyneonplus1202.html");
                     return;
                 } else if (zyn.contains("1201")) {
@@ -109,16 +112,18 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 }
             }
         } else if(request.contains("connector.sync")) {
-            syncLanguage();
+            //syncLanguage();
+            Language.syncLanguage();
             if(auth.isLoggedIn()) {
-                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+auth.getAuthInfos().getUsername()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+auth.getAuthInfos().getUsername()+"','"+auth.getAuthInfos().getUuid()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                 frame.getBrowser().executeJavaScript("javascript:syncButton('Abmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             } else {
-                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+Main.language.getString("account.notLoggedIn")+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:syncAccount('"+ Language.getNotLoggedIn() +"','null')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                 frame.getBrowser().executeJavaScript("javascript:syncButton('Anmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
         } else {
-            Main.getLogger().debug("REQUEST: "+request);
+            frame.getBrowser().executeJavaScript("javascript:OpenModal('notimplemented')","https://a.nerotv.live/zyneon/application/html/account.html",5);
+            Main.getLogger().error("REQUEST NOT RESOLVED: "+request);
         }
     }
 
@@ -287,57 +292,6 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private void syncLanguage() {
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("%start%");
-        strings.add("%profile%");
-        strings.add("%zyneonplus_button%");
-        strings.add("%zyneonplus_text%");
-        strings.add("%installing_title%");
-        strings.add("%installing_text%");
-        strings.add("%starting_title%");
-        strings.add("%starting_text%");
-        strings.add("%news_value%");
-        strings.add("%news_value%");
-        strings.add("%news_value%");
-        strings.add("%news_upcoming%");
-        strings.add("%news_instance_creator%");
-        strings.add("%news_instance_importer%");
-        strings.add("%news_probably_more%");
-        strings.add("%news_pb7%");
-        strings.add("%news_changelog_pb7%");
-        strings.add("%news_pb6%");
-        strings.add("%news_changelog_pb6%");
-        strings.add("%news_pb5%");
-        strings.add("%news_changelog_pb5%");
-        strings.add("%news_pb4%");
-        strings.add("%news_changelog_pb4%");
-        strings.add("%news_pb3%");
-        strings.add("%news_changelog_pb3%");
-        strings.add("%news_pb2%");
-        strings.add("%news_changelog_pb2%");
-        strings.add("%news_pb1%");
-        strings.add("%news_changelog_pb1%");
-        strings.add("%start%");
-        strings.add("%close%");
-        strings.add("%zyneonplus_select_version%");
-        strings.add("%zyneonplus_change_version%");
-        strings.add("%zyneonplus_slogan%");
-        strings.add("%zyneonplus_description%");
-        strings.add("%zyneonplus_versiontext%");
-        strings.add("%play%");
-        strings.add("%worlds%");
-        strings.add("%description%");
-        for(String path:strings) {
-            String string = Main.language.getString(path.replace("-", ".").replace("_", ".").replace("%",""));
-            Main.getLogger().debug("(syncLanguage) path: "+path+", converted: "+path.replace("-", ".").replace("_", "."));
-            if (string != null) {
-                frame.getBrowser().executeJavaScript("javascript:syncLanguage('" + path + "','" + string + "')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-            }
-            Main.getLogger().debug("(syncLanguage) value: "+string);
         }
     }
 

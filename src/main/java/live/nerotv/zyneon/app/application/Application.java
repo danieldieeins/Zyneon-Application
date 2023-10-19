@@ -3,9 +3,6 @@ package live.nerotv.zyneon.app.application;
 import live.nerotv.Main;
 import live.nerotv.openlauncherapi.auth.SimpleMicrosoftAuth;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.zyneon.app.application.backend.instance.Instance;
-import live.nerotv.zyneon.app.application.backend.integrations.modrinth.ModrinthIntegration;
-import live.nerotv.zyneon.app.application.backend.integrations.modrinth.ModrinthSearchPanel;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebView;
@@ -13,6 +10,10 @@ import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 
 import javax.crypto.KeyGenerator;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -42,12 +43,15 @@ public class Application {
             auth.isLoggedIn();
             frame.setTitle("Zyneon Application ("+version+")");
             frame.setVisible(true);
-            new ModrinthSearchPanel("Backpack", new Instance() {
+            frame.addWindowListener(new WindowAdapter() {
                 @Override
-                public String getVersion() {
-                    return "1.12.2";
+                public void windowClosed(WindowEvent e) {
+                    System.exit(0);
                 }
-            }, ModrinthIntegration.Modloader.FORGE).show();
+            });
+            try {
+                frame.setIconImage(ImageIO.read(getClass().getResource("/logo.png")).getScaledInstance(32,32, Image.SCALE_SMOOTH));
+            } catch (IOException ignore) {}
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
