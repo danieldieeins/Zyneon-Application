@@ -32,4 +32,11 @@ public class Language {
         }
         return "Not installed";
     }
+
+    public static String getShow() {
+        if(Main.language.equalsIgnoreCase("german")) {
+            return "Verwalten";
+        }
+        return "Manage";
+    }
 }

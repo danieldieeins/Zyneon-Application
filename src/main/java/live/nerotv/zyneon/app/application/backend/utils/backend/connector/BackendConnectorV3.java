@@ -13,6 +13,9 @@ import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.language.Language;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
+import org.cef.browser.CefBrowser;
+import org.cef.handler.CefLoadHandler;
+import org.cef.handler.CefLoadHandlerAdapter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,12 +31,91 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     private final ZyneonWebFrame frame;
 
     public BackendConnectorV3(ZyneonWebFrame frame) {
+        CefLoadHandler loadHandler = new CefLoadHandlerAdapter() {
+            @Override
+            public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {
+                if (!isLoading) {
+                    URLLoadedEvent();
+                }
+            }
+        };
+        frame.getClient().addLoadHandler(loadHandler);
         this.frame = frame;
+    }
+
+    public void URLLoadedEvent() {
+        if(frame.getBrowser().getURL().toLowerCase().endsWith("instances.html")) {
+            loadInstances();
+        }
+    }
+
+    public void loadInstances() {
+        final File instances = new File(Main.getDirectoryPath()+"instances");
+        for (final File instance:instances.listFiles()) {
+            if(instance.isDirectory()) {
+                File file = new File(instance.getPath()+"/zyneonInstance.json");
+                if(file.exists()) {
+                    Config config = new Config(file);
+                    String id = config.getString("modpack.id");
+                    String name = config.getString("modpack.name");
+                    String version = config.getString("modpack.version");
+                    String minecraft = config.getString("modpack.minecraft");
+                    String modloader;
+                    String mlversion="";
+                    if(config.getString("modpack.forge.version")!=null) {
+                        modloader = "Forge";
+                        mlversion = config.getString("modpack.forge.version");
+                    } else if(config.getString("modpack.fabric")!=null) {
+                        modloader = "Fabric";
+                        mlversion = config.getString("modpack.fabric");
+                    } else {
+                        modloader = "Vanilla";
+                    }
+                    frame.getBrowser().executeJavaScript("syncInstance(\""+id+"\",\""+name+"\",\""+version+"\",\""+modloader+"\",\""+mlversion+"\",\""+minecraft+"\",\""+Language.getShow()+"\")",frame.getBrowser().getURL(),1);
+                }
+            }
+        }
+    }
+
+    private void listFilesForFolder(final File folder) {
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                listFilesForFolder(fileEntry);
+            } else {
+                System.out.println(fileEntry.getName());
+            }
+        }
     }
 
     @Override
     public void resolveRequest(String request) {
-        if (request.contains("modrinth")) {
+        if (request.contains("button.minimize")) {
+            frame.setState(Frame.ICONIFIED);
+        } else if(request.contains("button.instancesettings.")) {
+            String id = request.replace("button.instancesettings.","").toLowerCase();
+            File file = new File(Main.getDirectoryPath()+"instances/"+id+"/zyneonInstance.json");
+            if(file.exists()) {
+                Config config = new Config(file);
+                String modloader;
+                if(config.getString("modpack.forge.version")!=null) {
+                    modloader = "Forge";
+                    String mlversion = config.getString("modpack.forge.version");
+                    modloader = modloader+" "+mlversion;
+                } else if(config.getString("modpack.fabric")!=null) {
+                    modloader = "Fabric";
+                    String mlversion = config.getString("modpack.fabric");
+                    modloader = modloader+" "+mlversion;
+                } else {
+                    modloader = "Vanilla";
+                }
+                String instanceString = "instance-settings.html?instance=%name%&id=%id%&modloader=%20%modloader%&version=%minecraft%%20"
+                        .replace("%name%",config.getString("modpack.name"))
+                        .replace("%modloader%",modloader)
+                        .replace("%minecraft%",config.getString("modpack.minecraft"))
+                        .replace("%id%",config.getString("modpack.id"));
+                frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+instanceString);
+            }
+        } else if (request.contains("modrinth")) {
             if (request.contains(".install.mod.")) {
                 System.out.println(request);
                 return;
@@ -42,12 +124,70 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             Desktop desktop = Desktop.getDesktop();
             try {
                 desktop.browse(new URI("https://modrinth.com/mod/" + request.replace("button.show.modrinth.", "")));
-                return;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-        if (request.contains("button.start.")) {
+        } else if (request.contains("button.instance.")) {
+            String id = request.replace("button.instance.","").toLowerCase();
+            File file = new File(Main.getDirectoryPath()+"instances/"+id+"/zyneonInstance.json");
+            if(file.exists()) {
+                Config config = new Config(file);
+                String modloader;
+                if(config.getString("modpack.forge.version")!=null) {
+                    modloader = "Forge";
+                    String mlversion = config.getString("modpack.forge.version");
+                    modloader = modloader+" "+mlversion;
+                } else if(config.getString("modpack.fabric")!=null) {
+                    modloader = "Fabric";
+                    String mlversion = config.getString("modpack.fabric");
+                    modloader = modloader+" "+mlversion;
+                } else {
+                    modloader = "Vanilla";
+                }
+                String instanceString = "instance.html?instance=%name%&id=%id%&modloader=%20%modloader%&version=%minecraft%%20"
+                        .replace("%name%",config.getString("modpack.name"))
+                        .replace("%modloader%",modloader)
+                        .replace("%minecraft%",config.getString("modpack.minecraft"))
+                        .replace("%id%",config.getString("modpack.id"));
+                frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+instanceString);
+            }
+        } else if (request.contains("button.ic.start")) {
+            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+"creator.html");
+        } else if (request.contains("button.creator.create.")) {
+            String[] creator = request.replace("button.creator.create.","").split("\\.", 2);
+            String name = creator[0];
+            String version = creator[1];
+            File instance = new File(Main.getDirectoryPath()+"instances/"+name+"/");
+            if(!instance.exists()) {
+                instance.mkdirs();
+                File file = new File(Main.getDirectoryPath()+"instances/"+name+"/zyneonInstance.json");
+                Config config = new Config(file);
+                config.set("modpack.id",name);
+                config.set("modpack.name",name);
+                config.set("modpack.version",1.0);
+                config.set("modpack.minecraft",version);
+                config.set("modpack.instance","instances/"+name+"/");
+                String modloader;
+                if(config.getString("modpack.forge.version")!=null) {
+                    modloader = "Forge";
+                    String mlversion = config.getString("modpack.forge.version");
+                    modloader = modloader+" "+mlversion;
+                } else if(config.getString("modpack.fabric")!=null) {
+                    modloader = "Fabric";
+                    String mlversion = config.getString("modpack.fabric");
+                    modloader = modloader+" "+mlversion;
+                } else {
+                    modloader = "Vanilla";
+                }
+                String instanceString = "instance.html?instance=%name%&id=%id%&modloader=%20%modloader%&version=%minecraft%%20"
+                        .replace("%name%",config.getString("modpack.name"))
+                        .replace("%modloader%",modloader)
+                        .replace("%minecraft%",config.getString("modpack.minecraft"))
+                        .replace("%id%",config.getString("modpack.id"));
+                frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+instanceString);
+            }
+        } else if (request.contains("button.start.")) {
+            System.out.println(request);
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
         } else if (request.equalsIgnoreCase("button.starttab")) {
             if (Main.starttab.equalsIgnoreCase("start")) {
@@ -82,6 +222,8 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 } catch (IOException ignore) {
                 }
             }
+        } else if (request.equalsIgnoreCase("button.instances")) {
+            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/instances.html");
         } else if (request.equalsIgnoreCase("button.skin")) {
             if (Desktop.isDesktopSupported()) {
                 try {
@@ -103,6 +245,10 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                     Application.auth.startAsyncWebview();
                 });
             }
+        } else if (request.contains("button.mods.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_MODS, request.replace("button.mods.", ""));
+        } else if (request.contains("button.folder.")) {
+            resolveInstanceRequest(InstanceAction.OPEN_FOLDER, request.replace("button.folder.", ""));
         } else if (request.contains("button.screenshots.")) {
             resolveInstanceRequest(InstanceAction.SHOW_SCREENSHOTS, request.replace("button.screenshots.", ""));
         } else if (request.contains("button.game.zyverse")) {
@@ -225,6 +371,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             case RUN -> runInstance(instance);
             case OPEN_FOLDER -> openInstanceFolder(instance);
             case SHOW_SCREENSHOTS -> openScreenshotsFolder(instance);
+            case SHOW_MODS -> openModsFolder(instance);
             case SHOW_RESOURCEPACKS -> openResourcePacksFolder(instance);
             case SHOW_WORLDS -> openWorldsFolder(instance);
             case SHOW_SHADERS -> openShadersFolder(instance);
@@ -251,7 +398,8 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 instanceJson = new Config(new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json"));
             } else {
                 new File(Main.getDirectoryPath() + "instances/" + instanceString + "/").mkdirs();
-                File file = FileUtils.downloadFile("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json", Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json");
+                String s = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json";
+                File file = FileUtils.downloadFile(s, Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json");
                 instanceJson = new Config(file);
             }
             if (instanceJson.getString("modpack.fabric") != null) {
@@ -263,8 +411,9 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             }
             return true;
         } else {
-            if (new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
-                Config instanceJson = new Config(new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json"));
+            File file = new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json");
+            if (file.exists()) {
+                Config instanceJson = new Config(file);
                 if (instanceJson.getString("modpack.fabric") != null) {
                     new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
                 } else if (instanceJson.getString("modpack.forge.version") != null && instanceJson.getString("modpack.forge.type") != null) {
@@ -280,6 +429,22 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
 
     public void openInstanceFolder(String instance) {
         File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/");
+        folder.mkdirs();
+        if (folder.exists()) {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
+                    try {
+                        desktop.open(folder);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        }
+    }
+
+    private void openModsFolder(String instance) {
+        File folder = new File(Main.getDirectoryPath() + "instances/" + instance + "/mods/");
         folder.mkdirs();
         if (folder.exists()) {
             if (Desktop.isDesktopSupported()) {
@@ -399,6 +564,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         RUN,
         OPEN_FOLDER,
         SHOW_SCREENSHOTS,
+        SHOW_MODS,
         SHOW_RESOURCEPACKS,
         SHOW_SHADERS,
         SHOW_WORLDS,

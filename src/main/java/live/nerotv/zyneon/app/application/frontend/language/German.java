@@ -40,11 +40,12 @@ public class German {
 
         //Project'Z (projectz)
         sync("projectz_slogan","Das neue Zyneon Studios Projekt!");
-        //sync("projectz_description","Die Moderne erwartet dich in einem Tech-basierten Modpack!");
+        sync("projectz_description","Die Moderne erwartet dich in einem Tech-basierten Modpack!");
         sync("projectz_button","Ansehen");
 
         //Instanzseitze (instance)
         sync("official","Offiziell");
+        sync("language","german");
 
         //Einstellungen (settings)
         sync("setting_starttab_title","Start-Tab:");

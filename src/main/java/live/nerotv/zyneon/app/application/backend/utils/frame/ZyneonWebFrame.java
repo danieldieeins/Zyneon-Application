@@ -1,14 +1,13 @@
 package live.nerotv.zyneon.app.application.backend.utils.frame;
 
 import live.nerotv.Main;
-import live.nerotv.shademebaby.frame.NWebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnector;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnectorV3;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefDisplayHandlerAdapter;
 
-public class ZyneonWebFrame extends NWebFrame {
+public class ZyneonWebFrame extends WebFrame {
 
     BackendConnector backendConnector;
 

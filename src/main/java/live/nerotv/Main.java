@@ -5,6 +5,7 @@ import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.FileUtils;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.zyneon.app.application.Application;
+import live.nerotv.zyneon.app.application.frontend.ZyneonSplash;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -22,9 +23,12 @@ public class Main {
     public static String v;
     public static String language = "english";
     public static String starttab = "start";
+    public static ZyneonSplash splash;
 
     public static void main(String[] args) {
-        v = "PB8.1";
+        splash = new ZyneonSplash();
+        splash.setVisible(true);
+        v = "PB9";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
@@ -47,7 +51,7 @@ public class Main {
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
-        new Application("1.0 Public Beta 8.1").start();
+        new Application("1.0 Public Beta 9").start();
     }
 
     public static Logger getLogger() {

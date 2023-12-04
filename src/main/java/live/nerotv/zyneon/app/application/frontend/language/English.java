@@ -45,6 +45,7 @@ public class English {
 
         //instance
         sync("official","Official");
+        sync("language","english");
 
         //settings
         sync("setting_starttab_title","Start tab:");

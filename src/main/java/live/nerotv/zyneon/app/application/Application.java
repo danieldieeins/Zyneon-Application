@@ -44,6 +44,7 @@ public class Application {
             auth.isLoggedIn();
             frame.setTitle("Zyneon Application ("+version+")");
             frame.setVisible(true);
+            Main.splash.setVisible(false);
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
