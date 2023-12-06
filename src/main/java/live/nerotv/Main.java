@@ -28,7 +28,7 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB9";
+        v = "PB9.1";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
