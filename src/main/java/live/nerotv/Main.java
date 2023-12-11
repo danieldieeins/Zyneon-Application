@@ -28,8 +28,9 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB9.1";
+        v = "PB10";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
+
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
             FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
@@ -51,7 +52,7 @@ public class Main {
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
-        new Application("1.0 Public Beta 9").start();
+        new Application("1.0 Public Beta 10").start();
     }
 
     public static Logger getLogger() {
