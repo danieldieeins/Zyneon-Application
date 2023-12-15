@@ -4,7 +4,6 @@ import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
-import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebView;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 
@@ -34,10 +33,6 @@ public class Application {
     }
 
     public void start() {
-        if(Main.os.contains("macOS")) {
-            new ZyneonWebView().i();
-            return;
-        }
         login();
         try {
             checkURL();
