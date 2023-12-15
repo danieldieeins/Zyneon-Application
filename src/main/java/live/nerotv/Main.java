@@ -5,6 +5,7 @@ import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.FileUtils;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.zyneon.app.application.Application;
+import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
 import live.nerotv.zyneon.app.application.frontend.ZyneonSplash;
 
 import java.io.File;
@@ -52,6 +53,9 @@ public class Main {
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
+        new File(getDirectoryPath()+"updater.json").delete();
+        new File(getDirectoryPath()+"version.json").delete();
+        FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         new Application("1.0 Public Beta 10").start();
     }
 
