@@ -19,6 +19,7 @@ import org.cef.handler.CefLoadHandlerAdapter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
@@ -91,6 +92,24 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     public void resolveRequest(String request) {
         if (request.contains("button.minimize")) {
             frame.setState(Frame.ICONIFIED);
+        } else if(request.contains("button.lightmode")) {
+            frame.titlebar.setBackground(Color.decode("#ffffff"));
+            frame.title.setForeground(Color.BLACK);
+            frame.close.setForeground(Color.BLACK);
+            frame.close.setBackground(Color.decode("#ededed"));
+            frame.getBrowser().executeJavaScript("turnOnLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+        } else if(request.contains("button.darkmode")) {
+            frame.titlebar.setBackground(Color.decode("#03000b"));
+            frame.title.setForeground(Color.WHITE);
+            frame.close.setForeground(Color.WHITE);
+            frame.close.setBackground(Color.BLACK);
+            frame.getBrowser().executeJavaScript("turnOffLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+        } else if(request.contains("button.refresh")) {
+            frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
+        } else if(request.contains("button.close")) {
+            SwingUtilities.invokeLater(() -> {
+                frame.getInstance().dispatchEvent(new WindowEvent(frame.getInstance(), WindowEvent.WINDOW_CLOSING));
+            });
         } else if(request.contains("button.instancesettings.")) {
             String id = request.replace("button.instancesettings.","").toLowerCase();
             File file = new File(Main.getDirectoryPath()+"instances/"+id+"/zyneonInstance.json");
@@ -231,6 +250,34 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 } catch (IOException ignore) {
                 }
             }
+        } else if (request.equalsIgnoreCase("button.website")) {
+            if (Application.auth.isLoggedIn()) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(URI.create("https://www.zyneonstudios.com/home"));
+                    } catch (IOException ignore) {
+                    }
+                }
+            } else {
+                Application.login();
+                SwingUtilities.invokeLater(() -> {
+                    Application.auth.startAsyncWebview();
+                });
+            }
+        } else if (request.equalsIgnoreCase("button.discord")) {
+            if (Application.auth.isLoggedIn()) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(URI.create("https://discord.gg/Q2AEWfesZW"));
+                    } catch (IOException ignore) {
+                    }
+                }
+            } else {
+                Application.login();
+                SwingUtilities.invokeLater(() -> {
+                    Application.auth.startAsyncWebview();
+                });
+            }
         } else if (request.equalsIgnoreCase("button.laby")) {
             if (Application.auth.isLoggedIn()) {
                 if (Desktop.isDesktopSupported()) {
@@ -318,11 +365,9 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             }
             Language.syncLanguage();
             if (Application.auth.isLoggedIn()) {
-                frame.getBrowser().executeJavaScript("javascript:syncAccount('" + Application.auth.getAuthInfos().getUsername() + "','" + Application.auth.getAuthInfos().getUuid() + "')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-                frame.getBrowser().executeJavaScript("javascript:syncButton('Abmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:login('"+Application.auth.getAuthInfos().getUsername()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             } else {
-                frame.getBrowser().executeJavaScript("javascript:syncAccount('" + Language.getNotLoggedIn() + "','null')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-                frame.getBrowser().executeJavaScript("javascript:syncButton('Anmelden')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                frame.getBrowser().executeJavaScript("javascript:logout()", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             }
         } else if(request.equalsIgnoreCase("connector.profilesync")) {
             if(Application.auth.isLoggedIn()) {

@@ -26,7 +26,7 @@ public class ZyneonWebFrame extends WebFrame {
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
-        setSize(1420,820);
+        setSize(1200,720);
         setResizable(false);
         setLocationRelativeTo(null);
     }

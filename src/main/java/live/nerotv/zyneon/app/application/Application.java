@@ -85,7 +85,7 @@ public class Application {
             connection.setRequestMethod("HEAD");
             String start = "index.html";
             if(Main.starttab.equalsIgnoreCase("instances")) {
-                start = "instances.html";
+                start = "index.html#instances";
             }
             frame = new ZyneonWebFrame(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/"+start);
         } catch (UnknownHostException e) {
