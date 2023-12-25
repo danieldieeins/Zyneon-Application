@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB10.5/PB11";
+        v = "PB11";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
 
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
