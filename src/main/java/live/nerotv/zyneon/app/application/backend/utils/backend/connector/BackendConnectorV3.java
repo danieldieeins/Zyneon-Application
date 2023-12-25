@@ -302,34 +302,13 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             startZyverse();
         } else if (request.contains("button.zyneonplus.")) {
             Main.config.set("settings.zyneonplus", request.replace("button.zyneonplus.", ""));
-            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus" + Main.config.getString("settings.zyneonplus") + ".html");
+            frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version="+Main.config.getString("settings.zyneonplus")+"\");","",1);
         } else if (request.contains("button.zyneonplus")) {
             if (Main.config.getString("settings.zyneonplus") != null) {
-                String zyn = Main.config.getString("settings.zyneonplus");
-                if (zyn.contains("dynamic")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplusdynamic.html");
-                    return;
-                } else if (zyn.contains("1202")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1202.html");
-                    return;
-                } else if (zyn.contains("1201")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1201.html");
-                    return;
-                } else if (zyn.contains("1194")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1194.html");
-                    return;
-                } else if (zyn.contains("1182")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1182.html");
-                    return;
-                } else if (zyn.contains("1171")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1171.html");
-                    return;
-                } else if (zyn.contains("1165")) {
-                    frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplus1165.html");
-                    return;
-                }
+                frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version="+Main.config.getString("settings.zyneonplus")+"\");","",1);
+            } else {
+                frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version=dynamic);", "", 1);
             }
-            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/zyneonplusversions.html");
         } else if (request.contains("button.resourcepacks.")) {
             resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
         } else if (request.contains("button.shaders.")) {

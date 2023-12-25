@@ -2,7 +2,6 @@ package live.nerotv.zyneon.app.application.backend.utils.frame;
 
 import javafx.application.Platform;
 import live.nerotv.shademebaby.ShadeMeBaby;
-import live.nerotv.zyneon.app.application.Application;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
@@ -13,6 +12,7 @@ import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 import org.cef.handler.CefFocusHandlerAdapter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -103,8 +103,8 @@ public class WebFrame extends JFrame {
             }
         });
 
-        title = new JLabel("   Zyneon Application v"+ Application.getVersion(), JLabel.LEFT);
-        title.setForeground(Color.WHITE);
+        title = new JLabel("   Zyneon Application", JLabel.LEFT);
+        title.setForeground(Color.decode("#999999"));
         titlebar.add(title, BorderLayout.CENTER);
         titlebar.add(close,BorderLayout.EAST);
 
