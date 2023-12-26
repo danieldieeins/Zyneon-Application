@@ -71,6 +71,8 @@ public class WebFrame extends JFrame {
 
     public JButton close;
 
+    public JButton minimize;
+
     private void init(String url, String jcefPath) throws UnsupportedPlatformException, IOException, CefInitializationException, InterruptedException {
         browserFocus = true;
 
@@ -80,12 +82,12 @@ public class WebFrame extends JFrame {
         titlebar.setBackground(Color.decode("#03000b"));
 
         close = new JButton("X");
-        close.setBackground(Color.BLACK);
+        close.setBackground(Color.decode("#03000b"));
         close.setContentAreaFilled(true);
         close.setBorderPainted(false);
         close.setFocusPainted(false);
         close.addMouseListener(new MouseAdapter() {
-            Color color = Color.BLACK;
+            Color color = Color.decode("#03000b");
             public void mouseEntered(MouseEvent e) {
                 color = close.getBackground();
                 close.setBackground(Color.RED);
@@ -103,10 +105,41 @@ public class WebFrame extends JFrame {
             }
         });
 
+        minimize = new JButton("-");
+        minimize.setBackground(Color.decode("#03000b"));
+        minimize.setContentAreaFilled(true);
+        minimize.setBorderPainted(false);
+        minimize.setFocusPainted(false);
+        minimize.addMouseListener(new MouseAdapter() {
+            Color color = Color.decode("#03000b");
+            public void mouseEntered(MouseEvent e) {
+                color = minimize.getBackground();
+                minimize.setBackground(Color.WHITE);
+                minimize.setForeground(Color.BLACK);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                minimize.setBackground(color);
+                minimize.setForeground(Color.WHITE);
+            }
+        });
+        minimize.setForeground(Color.WHITE);
+        minimize.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setState(Frame.ICONIFIED);
+            }
+        });
+
         title = new JLabel("   Zyneon Application", JLabel.LEFT);
         title.setForeground(Color.decode("#999999"));
         titlebar.add(title, BorderLayout.CENTER);
-        titlebar.add(close,BorderLayout.EAST);
+
+        JPanel buttons = new JPanel(new BorderLayout());
+        buttons.add(minimize,BorderLayout.WEST);
+        buttons.add(close,BorderLayout.EAST);
+
+        titlebar.add(buttons,BorderLayout.EAST);
 
         titlebar.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
