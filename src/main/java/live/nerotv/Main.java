@@ -29,9 +29,9 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB13";
+        v = "PB13.1";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
-
+            FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
             FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
@@ -56,7 +56,7 @@ public class Main {
         new File(getDirectoryPath()+"updater.json").delete();
         new File(getDirectoryPath()+"version.json").delete();
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 13").start();
+        new Application("1.0 Public Beta 13.1").start();
     }
 
     public static Logger getLogger() {
