@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB11";
+        v = "PB13";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
 
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
@@ -56,7 +56,7 @@ public class Main {
         new File(getDirectoryPath()+"updater.json").delete();
         new File(getDirectoryPath()+"version.json").delete();
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 11").start();
+        new Application("1.0 Public Beta 13").start();
     }
 
     public static Logger getLogger() {

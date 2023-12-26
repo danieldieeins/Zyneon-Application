@@ -88,22 +88,54 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         }
     }
 
+    private String theme = "dark";
+
+    public static String addHyphensToUUID(String uuidString) {
+        StringBuilder sb = new StringBuilder(uuidString);
+        sb.insert(8, "-");
+        sb.insert(13, "-");
+        sb.insert(18, "-");
+        sb.insert(23, "-");
+        return sb.toString();
+    }
+
+    private void syncSettings(String type) {
+        type = type.toLowerCase();
+        if(type.equals("general")) {
+            frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=start.html&general-tab="+Main.starttab+"&general-theme="+theme+"');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+        } else if(type.equals("global")) {
+            frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=global.html&memory="+Main.config.getInteger("settings.memory.default")+"');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+        } else if(type.equals("profile")) {
+            if(Application.auth.isLoggedIn()) {
+                frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=profile.html&username=" + Application.auth.getAuthInfos().getUsername() + "&uuid=" + addHyphensToUUID(Application.auth.getAuthInfos().getUuid()) + "');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            } else {
+                frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=login.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            }
+        }
+    }
+
     @Override
     public void resolveRequest(String request) {
         if (request.contains("button.minimize")) {
             frame.setState(Frame.ICONIFIED);
+        } else if(request.contains("sync.settings.")) {
+            syncSettings(request.replace("sync.settings.",""));
         } else if(request.contains("button.lightmode")) {
+            theme = "light";
             frame.titlebar.setBackground(Color.decode("#ffffff"));
             frame.title.setForeground(Color.BLACK);
             frame.close.setForeground(Color.BLACK);
             frame.close.setBackground(Color.decode("#ededed"));
             frame.getBrowser().executeJavaScript("turnOnLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            syncSettings("general");
         } else if(request.contains("button.darkmode")) {
+            theme = "dark";
             frame.titlebar.setBackground(Color.decode("#03000b"));
-            frame.title.setForeground(Color.WHITE);
+            frame.title.setForeground(Color.decode("#999999"));
             frame.close.setForeground(Color.WHITE);
             frame.close.setBackground(Color.BLACK);
             frame.getBrowser().executeJavaScript("turnOffLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            syncSettings("general");
         } else if(request.contains("button.refresh")) {
             frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
         } else if(request.contains("button.close")) {
@@ -208,15 +240,16 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
         } else if (request.contains("button.start.")) {
             System.out.println(request);
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
-        } else if (request.equalsIgnoreCase("button.starttab")) {
-            if (Main.starttab.equalsIgnoreCase("start")) {
+        } else if (request.contains("button.starttab.")) {
+            String tab = request.replace("button.starttab.","");
+            if(tab.equalsIgnoreCase("instances")) {
                 Main.config.set("settings.starttab", "instances");
                 Main.starttab = "instances";
             } else {
                 Main.config.set("settings.starttab", "start");
                 Main.starttab = "start";
             }
-            frame.getBrowser().reload();
+            syncSettings("general");
         } else if (request.equalsIgnoreCase("button.language")) {
             String lang = Main.config.getString("settings.language");
             if (lang.equalsIgnoreCase("auto")) {
@@ -307,7 +340,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             if (Main.config.getString("settings.zyneonplus") != null) {
                 frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version="+Main.config.getString("settings.zyneonplus")+"\");","",1);
             } else {
-                frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version=dynamic);", "", 1);
+                frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version=dynamic\");", "", 1);
             }
         } else if (request.contains("button.resourcepacks.")) {
             resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
