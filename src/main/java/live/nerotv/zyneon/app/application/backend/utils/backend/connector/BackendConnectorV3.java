@@ -137,7 +137,14 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
             frame.getBrowser().executeJavaScript("turnOffLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
             syncSettings("general");
         } else if(request.contains("button.refresh")) {
-            frame.getBrowser().loadURL(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html");
+            frame.getBrowser().reload();
+        } else if(request.contains("button.minecraftwiki")) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(URI.create("https://minecraft.wiki"));
+                } catch (IOException ignore) {
+                }
+            }
         } else if(request.contains("button.close")) {
             SwingUtilities.invokeLater(() -> {
                 frame.getInstance().dispatchEvent(new WindowEvent(frame.getInstance(), WindowEvent.WINDOW_CLOSING));
@@ -449,6 +456,9 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     }
 
     public boolean runInstance(String instanceString) {
+        if(!Application.auth.isLoggedIn()) {
+            syncSettings("profile");
+        }
         if (instanceString.startsWith("official/")) {
             Config instanceJson;
             if (new File(Main.getDirectoryPath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
