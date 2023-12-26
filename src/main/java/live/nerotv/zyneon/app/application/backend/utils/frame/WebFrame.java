@@ -105,7 +105,7 @@ public class WebFrame extends JFrame {
             }
         });
 
-        minimize = new JButton("-");
+        minimize = new JButton("_");
         minimize.setBackground(Color.decode("#03000b"));
         minimize.setContentAreaFilled(true);
         minimize.setBorderPainted(false);
