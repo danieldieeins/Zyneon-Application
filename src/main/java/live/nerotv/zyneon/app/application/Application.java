@@ -87,7 +87,8 @@ public class Application {
             if(Main.starttab.equalsIgnoreCase("instances")) {
                 start = "index.html?tab=instances.html";
             }
-            frame = new ZyneonWebFrame(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/"+start);
+            String home = "file://"+Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/"+start;
+            frame = new ZyneonWebFrame(home);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }

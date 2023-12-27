@@ -56,7 +56,7 @@ public class Main {
         new File(getDirectoryPath()+"updater.json").delete();
         new File(getDirectoryPath()+"version.json").delete();
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 13.3").start();
+        new Application("1.0 Public Beta 13.4").start();
     }
 
     public static Logger getLogger() {
