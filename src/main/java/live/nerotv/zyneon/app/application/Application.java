@@ -14,10 +14,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -79,19 +76,12 @@ public class Application {
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
-        try {
-            URL url = new URL("https://danieldieeins.github.io/ZyneonApplicationContent/"+Main.v+"/index.html");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            String start = "index.html";
-            if(Main.starttab.equalsIgnoreCase("instances")) {
-                start = "index.html?tab=instances.html";
-            }
-            String home = "file://"+Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/"+start;
-            frame = new ZyneonWebFrame(home);
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
+        String start = "index.html";
+        if (Main.starttab.equalsIgnoreCase("instances")) {
+            start = "index.html?tab=instances.html";
         }
+        String home = "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/" + start;
+        frame = new ZyneonWebFrame(home);
     }
 
     public static String getVersion() {
