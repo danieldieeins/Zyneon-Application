@@ -1,6 +1,7 @@
 package live.nerotv.zyneon.app.application.backend.utils.frame;
 
 import javafx.application.Platform;
+import live.nerotv.Main;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -11,6 +12,12 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
+import org.cef.callback.CefBeforeDownloadCallback;
+import org.cef.callback.CefDownloadItem;
+import org.cef.callback.CefDownloadItemCallback;
+import org.cef.callback.CefDragData;
+import org.cef.handler.CefDownloadHandler;
+import org.cef.handler.CefDragHandler;
 import org.cef.handler.CefFocusHandlerAdapter;
 
 import javax.swing.*;
@@ -167,7 +174,13 @@ public class WebFrame extends JFrame {
                 if (state == CefApp.CefAppState.TERMINATED) Platform.exit();
             }
         });
+        File cache = new File(Main.getDirectoryPath()+"libs/jcef/cache/");
+        if(cache.mkdirs()) {
+            Main.getLogger().debug("JCEF cache: "+cache.getAbsolutePath());
+        }
+        builder.getCefSettings().cache_path = Main.getDirectoryPath()+"libs/jcef/cache/";
         builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
+        builder.getCefSettings().persist_session_cookies = true;
         builder.setInstallDir(installDir);
         builder.install();
         builder.getCefSettings().windowless_rendering_enabled = false;
@@ -175,7 +188,24 @@ public class WebFrame extends JFrame {
         client = app.createClient();
         CefMessageRouter messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);
+        client.addDownloadHandler(new CefDownloadHandler() {
+            @Override
+            public void onBeforeDownload(CefBrowser browser, CefDownloadItem item, String s, CefBeforeDownloadCallback callback) {
+                callback.Continue(s,true);
+            }
+
+            @Override
+            public void onDownloadUpdated(CefBrowser cefBrowser, CefDownloadItem cefDownloadItem, CefDownloadItemCallback cefDownloadItemCallback) {
+
+            }
+        });
         browser = client.createBrowser(url, false, false);
+        client.addDragHandler(new CefDragHandler() {
+            @Override
+            public boolean onDragEnter(CefBrowser cefBrowser, CefDragData dragData, int i) {
+                return dragData.isFile();
+            }
+        });
         ui = browser.getUIComponent();
         client.addFocusHandler(new CefFocusHandlerAdapter() {
             @Override
