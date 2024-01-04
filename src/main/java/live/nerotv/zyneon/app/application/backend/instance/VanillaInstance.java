@@ -48,9 +48,10 @@ public class VanillaInstance implements Instance {
             Main.getLogger().debug("DELETING OLD MODS");
             deleteFolder(new File(path+"/mods"));
             Main.getLogger().debug("CHECKING IF PACK.ZIP EXISTS...");
-            if(new File(path+"/pack.zip").exists()) {
+            File pack = new File(path+"/pack.zip");
+            if(pack.exists()) {
                 Main.getLogger().debug("DELETING PACK.ZIP...");
-                new File(path + "/pack.zip").delete();
+                Main.getLogger().debug("PACK.ZIP DELETED: "+pack.delete());
             }
             Main.getLogger().debug("DOWNLOADING NEW PACK.ZIP...");
             FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
