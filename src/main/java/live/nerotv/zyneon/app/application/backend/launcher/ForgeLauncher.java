@@ -74,16 +74,11 @@ public class ForgeLauncher {
                         e.printStackTrace();
                     }
                 });
-
-                return true;
-            } catch (Exception e) {
-                Main.getLogger().error("Error: couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
-                return false;
-            }
+            } catch (Exception ignore) {}
+            return false;
         } else {
             Main.getLogger().error("Error: couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
             return false;
         }
     }
-
 }

@@ -45,10 +45,18 @@ public class VanillaInstance implements Instance {
     public boolean update() {
         Main.getLogger().debug("TRYING TO UPDATE INSTANCE " + name + " (" + id + ")...");
         try {
+            Main.getLogger().debug("DELETING OLD MODS");
             deleteFolder(new File(path+"/mods"));
-            new File(path+"/pack.zip").delete();
+            Main.getLogger().debug("CHECKING IF PACK.ZIP EXISTS...");
+            if(new File(path+"/pack.zip").exists()) {
+                Main.getLogger().debug("DELETING PACK.ZIP...");
+                new File(path + "/pack.zip").delete();
+            }
+            Main.getLogger().debug("DOWNLOADING NEW PACK.ZIP...");
             FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
+            Main.getLogger().debug("UNZIPPING PACK.ZIP...");
             FileUtils.unzipFile(path + "/pack.zip", path);
+            Main.getLogger().debug("UPDATING JSON...");
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
             json = new Config(FileUtils.downloadFile(url, path + "/zyneonInstance.json"));
             minecraftVersion = json.getString("modpack.minecraft");
