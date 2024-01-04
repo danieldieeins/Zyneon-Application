@@ -178,9 +178,9 @@ public class WebFrame extends JFrame {
         if(cache.mkdirs()) {
             Main.getLogger().debug("JCEF cache: "+cache.getAbsolutePath());
         }
-        builder.getCefSettings().cache_path = Main.getDirectoryPath()+"libs/jcef/cache/";
+        //builder.getCefSettings().cache_path = Main.getDirectoryPath()+"libs/jcef/cache/";
         builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
-        builder.getCefSettings().persist_session_cookies = true;
+        //builder.getCefSettings().persist_session_cookies = true;
         builder.setInstallDir(installDir);
         builder.install();
         builder.getCefSettings().windowless_rendering_enabled = false;
