@@ -45,23 +45,26 @@ public class VanillaInstance implements Instance {
     public boolean update() {
         Main.getLogger().debug("TRYING TO UPDATE INSTANCE " + name + " (" + id + ")...");
         try {
+            String v = json.getString("modpack.version");
             Main.getLogger().debug("DELETING OLD MODS");
             deleteFolder(new File(path+"/mods"));
             Main.getLogger().debug("CHECKING IF PACK.ZIP EXISTS...");
-            File pack = new File(path+"/pack.zip");
+            File pack = new File(path+"/pack-"+v+".zip");
             if(pack.exists()) {
                 Main.getLogger().debug("DELETING PACK.ZIP...");
                 Main.getLogger().debug("PACK.ZIP DELETED: "+pack.delete());
+            } else {
+                throw new RuntimeException("CANNOT DELETE PACK.ZIP. UPDATE CANCELLED.");
             }
-            Main.getLogger().debug("DOWNLOADING NEW PACK.ZIP...");
-            FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
-            Main.getLogger().debug("UNZIPPING PACK.ZIP...");
-            FileUtils.unzipFile(path + "/pack.zip", path);
-            Main.getLogger().debug("UPDATING JSON...");
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
             json = new Config(FileUtils.downloadFile(url, path + "/zyneonInstance.json"));
-            minecraftVersion = json.getString("modpack.minecraft");
             version = json.getString("modpack.version");
+            Main.getLogger().debug("DOWNLOADING NEW PACK.ZIP...");
+            FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack-"+version+".zip");
+            Main.getLogger().debug("UNZIPPING PACK.ZIP...");
+            FileUtils.unzipFile(path + "/pack"+version+".zip", path);
+            Main.getLogger().debug("UPDATING JSON...");
+            minecraftVersion = json.getString("modpack.minecraft");
             name = json.getString("modpack.name");
         } catch (Exception e) {
             Main.getLogger().debug("NOT UPDATED!");
