@@ -11,7 +11,6 @@ import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
-import live.nerotv.zyneon.app.application.frontend.language.Language;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefLoadHandler;
@@ -25,7 +24,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 public class BackendConnectorV3 implements BackendConnectorV2 {
 
@@ -51,31 +49,7 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
     }
 
     public void loadInstances() {
-        final File instances = new File(Main.getDirectoryPath()+"instances");
-        for (final File instance:instances.listFiles()) {
-            if(instance.isDirectory()) {
-                File file = new File(instance.getPath()+"/zyneonInstance.json");
-                if(file.exists()) {
-                    Config config = new Config(file);
-                    String id = config.getString("modpack.id");
-                    String name = config.getString("modpack.name");
-                    String version = config.getString("modpack.version");
-                    String minecraft = config.getString("modpack.minecraft");
-                    String modloader;
-                    String mlversion="";
-                    if(config.getString("modpack.forge.version")!=null) {
-                        modloader = "Forge";
-                        mlversion = config.getString("modpack.forge.version");
-                    } else if(config.getString("modpack.fabric")!=null) {
-                        modloader = "Fabric";
-                        mlversion = config.getString("modpack.fabric");
-                    } else {
-                        modloader = "Vanilla";
-                    }
-                    frame.getBrowser().executeJavaScript("syncInstance(\""+id+"\",\""+name+"\",\""+version+"\",\""+modloader+"\",\""+mlversion+"\",\""+minecraft+"\",\""+Language.getShow()+"\")",frame.getBrowser().getURL(),1);
-                }
-            }
-        }
+        Main.getLogger().debug("loadInstances Request");
     }
 
     private void listFilesForFolder(final File folder) {
@@ -396,7 +370,6 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
                 syncInstance(request.replace("connector.syncinstance.", ""));
                 return;
             }
-            Language.syncLanguage();
             if (Application.auth.isLoggedIn()) {
                 frame.getBrowser().executeJavaScript("javascript:login('"+Application.auth.getAuthInfos().getUsername()+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                 frame.getBrowser().executeJavaScript("javascript:drive('"+Application.auth.getAuthInfos().getUuid().replace("-","")+"')", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
@@ -416,33 +389,6 @@ public class BackendConnectorV3 implements BackendConnectorV2 {
 
     private void syncInstance(String instance) {
         Main.getLogger().debug("REQUESTED INSTANCE SYNC: "+instance);
-        if(new File(Main.getDirectoryPath()+"instances/"+instance+"/zyneonInstance.json").exists()) {
-            Config config = new Config(Main.getDirectoryPath()+"instances/"+instance+"/zyneonInstance.json");
-            Language.sync("%instance_version%",config.getString("modpack.version"));
-            Language.sync("%instance_mcversion%",config.getString("modpack.minecraft"));
-            if(config.getString("modpack.fabric")!=null) {
-                Language.sync("instance_modloader","Fabric "+config.getString("modpack.fabric"));
-            } else {
-                Language.sync("instance_modloader", "Forge ("+config.getString("modpack.forge.type")+") "+config.getString("modpack.forge.version"));
-            }
-        } else {
-            Language.sync("%instance_version%",Language.getNotInstalled());
-            try {
-                String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instance + ".json";
-                new File(Main.getDirectoryPath()+"temp/").mkdirs();
-                Config json = new Config(FileUtils.downloadFile(url, Main.getDirectoryPath() + "temp/" + UUID.randomUUID() + ".json"));
-                Language.sync("%instance_mcversion%",json.getString("modpack.minecraft"));
-                if(json.getString("modpack.fabric")!=null) {
-                    Language.sync("instance_modloader","Fabric "+json.getString("modpack.fabric"));
-                } else {
-                    Language.sync("instance_modloader", "Forge ("+json.getString("modpack.forge.type")+") "+json.getString("modpack.forge.version"));
-                }
-                json.getJsonFile().delete();
-            } catch (Exception e) {
-                Language.sync("%instance_mcversion%", "?");
-                Language.sync("%instance_modloader%", "?");
-            }
-        }
     }
 
     public void resolveInstanceRequest(InstanceAction action, String instance) {
