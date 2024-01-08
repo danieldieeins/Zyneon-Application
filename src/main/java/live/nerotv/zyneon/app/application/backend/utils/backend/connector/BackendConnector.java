@@ -417,7 +417,7 @@ public class BackendConnector {
         try {
             chooser = new JFileChooser(Main.getInstancePath());
         } catch (Exception ignore) {
-            chooser = new JFileChooser();
+            chooser = new JFileChooser(Main.getDirectoryPath());
         }
         chooser.setDialogTitle("Select instances installation path");
         chooser.setMultiSelectionEnabled(false);
