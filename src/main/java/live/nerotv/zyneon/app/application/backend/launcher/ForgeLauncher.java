@@ -16,7 +16,7 @@ import java.nio.file.Path;
 
 public class ForgeLauncher {
 
-    private ZyneonWebFrame frame;
+    private final ZyneonWebFrame frame;
 
     public ForgeLauncher(ZyneonWebFrame frame) {
         this.frame = frame;
@@ -75,10 +75,9 @@ public class ForgeLauncher {
                     }
                 });
             } catch (Exception ignore) {}
-            return false;
         } else {
             Main.getLogger().error("Error: couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
-            return false;
         }
+        return false;
     }
 }

@@ -15,7 +15,7 @@ import java.nio.file.Path;
 
 public class FabricLauncher {
 
-    private ZyneonWebFrame frame;
+    private final ZyneonWebFrame frame;
 
     public FabricLauncher(ZyneonWebFrame frame) {
         this.frame = frame;

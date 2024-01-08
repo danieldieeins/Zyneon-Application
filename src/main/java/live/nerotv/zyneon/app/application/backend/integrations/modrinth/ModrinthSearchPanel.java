@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+@Deprecated
 public class ModrinthSearchPanel {
 
     private final Instance instance;

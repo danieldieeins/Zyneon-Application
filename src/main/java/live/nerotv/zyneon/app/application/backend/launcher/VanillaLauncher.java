@@ -9,13 +9,12 @@ import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.VanillaInstaller;
 import live.nerotv.zyneon.app.application.backend.instance.Instance;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
-
 import java.io.File;
 import java.nio.file.Path;
 
 public class VanillaLauncher {
 
-    private ZyneonWebFrame frame;
+    private final ZyneonWebFrame frame;
 
     public VanillaLauncher(ZyneonWebFrame frame) {
         this.frame = frame;

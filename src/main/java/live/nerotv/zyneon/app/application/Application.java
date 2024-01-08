@@ -6,7 +6,6 @@ import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
-
 import javax.crypto.KeyGenerator;
 import javax.imageio.ImageIO;
 import javax.swing.*;

@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 
 public class Main {
 
-    private static String zyverse;
     private static String path;
     public static Config config;
     private static Logger logger;
@@ -25,11 +24,12 @@ public class Main {
     public static String language = "english";
     public static String starttab = "start";
     public static ZyneonSplash splash;
+    public static String os;
 
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB15.1";
+        v = "PB16";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
@@ -56,7 +56,7 @@ public class Main {
         new File(getDirectoryPath()+"updater.json").delete();
         new File(getDirectoryPath()+"version.json").delete();
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 15.9").start();
+        new Application("1.0 Public Beta 16").start();
     }
 
     public static Logger getLogger() {
@@ -88,37 +88,5 @@ public class Main {
             path = folderPath + "/";
         }
         return URLDecoder.decode(path, StandardCharsets.UTF_8);
-    }
-
-    public static String os;
-
-    public static String getZyversePath() {
-        if (zyverse == null) {
-            String folderName = "Zyneon/Zyverse";
-            String appData;
-            String os = System.getProperty("os.name").toLowerCase();
-            if (os.contains("win")) {
-                Main.os = "Windows";
-                appData = System.getenv("LOCALAPPDATA");
-            } else if (os.contains("mac")) {
-                Main.os = "macOS";
-                appData = System.getProperty("user.home") + "/Library/Application Support";
-            } else {
-                Main.os = "Unix";
-                appData = System.getProperty("user.home") + "/.local/share";
-            }
-            Path folderPath = Paths.get(appData, folderName);
-            try {
-                Files.createDirectories(folderPath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            zyverse = folderPath + "/";
-        }
-        return URLDecoder.decode(zyverse, StandardCharsets.UTF_8);
-    }
-
-    public static void close() {
-        System.exit(0);
     }
 }

@@ -42,7 +42,7 @@ public class MemoryWindow extends NFrame {
 
         OperatingSystemMXBean os = (OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
         long c = 1024L*1024L;
-        long maxValue = os.getTotalPhysicalMemorySize()/c;
+        long maxValue = os.getTotalMemorySize() /c;
 
         int minValue = 0;
         int initialValue = 0;

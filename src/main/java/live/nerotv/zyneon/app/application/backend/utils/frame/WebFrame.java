@@ -29,11 +29,9 @@ import java.io.IOException;
 public class WebFrame extends JFrame {
 
     private CefApp app;
-    private Component ui;
     private CefClient client;
     private CefBrowser browser;
     private boolean browserFocus;
-    private CefAppBuilder builder;
     private static Point mouseDownCompCoords;
 
     public WebFrame(String url, String jcefPath) {
@@ -52,24 +50,12 @@ public class WebFrame extends JFrame {
         return this;
     }
 
-    public Component getUI() {
-        return ui;
-    }
-
     public CefClient getClient() {
         return client;
     }
 
-    public boolean browserHasFocus() {
-        return browserFocus;
-    }
-
     public CefBrowser getBrowser() {
         return browser;
-    }
-
-    public CefAppBuilder getBuilder() {
-        return builder;
     }
 
     public JPanel titlebar;
@@ -167,7 +153,7 @@ public class WebFrame extends JFrame {
 
         File installDir = new File(jcefPath);
         ShadeMeBaby.getLogger().debug("NEED_JCEF_INSTALL: "+installDir.mkdirs());
-        builder = new CefAppBuilder();
+        CefAppBuilder builder = new CefAppBuilder();
         builder.setAppHandler(new MavenCefAppHandlerAdapter() {
             @Override @Deprecated
             public void stateHasChanged(CefApp.CefAppState state) {
@@ -206,7 +192,7 @@ public class WebFrame extends JFrame {
                 return dragData.isFile();
             }
         });
-        ui = browser.getUIComponent();
+        Component ui = browser.getUIComponent();
         client.addFocusHandler(new CefFocusHandlerAdapter() {
             @Override
             public void onGotFocus(CefBrowser browser) {

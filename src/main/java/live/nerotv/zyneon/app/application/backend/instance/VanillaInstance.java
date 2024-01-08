@@ -49,7 +49,6 @@ public class VanillaInstance implements Instance {
             File pack = new File(path+"/pack.zip");
             File mods = new File(path+"/mods/");
 
-            //CHECKING FOR PACK AND DELETE IF IT EXISTS
             Main.getLogger().log("CHECKING FOR INSTANCE PACK FILE...");
             if(pack.exists()) {
                 Main.getLogger().log("FOUND OLD INSTANCE PACK FILE!");
@@ -57,7 +56,6 @@ public class VanillaInstance implements Instance {
                 if(pack.delete()) {
                     Main.getLogger().log("DELETED OLD INSTANCE PACK FILE!");
                 } else {
-                    //SECOND TRY
                     if(pack.delete()) {
                         Main.getLogger().log("DELETED OLD INSTANCE PACK FILE!");
                     } else {
@@ -69,7 +67,6 @@ public class VanillaInstance implements Instance {
                 Main.getLogger().log("NO OLD INSTANCE PACK FILE FOUND!");
             }
 
-            //UPDATING JSON
             Main.getLogger().log("UPDATING INSTANCE JSON FILE...");
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
             json = new Config(FileUtils.downloadFile(url, path + "/zyneonInstance.json"));
@@ -78,20 +75,16 @@ public class VanillaInstance implements Instance {
             name = json.getString("modpack.name");
             Main.getLogger().log("UPDATED INSTANCE JSON FILE!");
 
-            //DOWNLOADING NEW PACK
             Main.getLogger().log("DOWNLOADING NEW INSTANCE PACK FILE...");
             pack = FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
             Main.getLogger().log("DOWNLOADED NEW INSTANCE PACK FILE!");
 
-            //DELETING MODS
             Main.getLogger().log("DELETING OLD MODS...");
             if(!mods.mkdirs()) {
                 FileUtil.deleteFolder(mods);
             }
             Main.getLogger().log("DELETED OLD MODS!");
 
-
-            //UNZIPPING NEW PACK
             Main.getLogger().log("UNZIPPING NEW INSTANCE PACK FILE...");
             if(FileUtils.unzipFile(pack.getPath(),path)) {
                 Main.getLogger().log("SUCCESSFULLY UNZIPPED NEW INSTANCE PACK FILE!");
