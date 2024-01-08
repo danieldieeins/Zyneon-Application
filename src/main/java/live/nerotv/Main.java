@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 public class Main {
 
     private static String path;
+    public static String instances;
     public static Config config;
     private static Logger logger;
     public static String v;
@@ -29,7 +30,7 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB16.1";
+        v = "PB17";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
@@ -56,13 +57,12 @@ public class Main {
         new File(getDirectoryPath()+"updater.json").delete();
         new File(getDirectoryPath()+"version.json").delete();
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 16.1").start();
+        new Application("1.0 Public Beta 17").start();
     }
 
     public static Logger getLogger() {
         return logger;
     }
-
 
     public static String getDirectoryPath() {
         if (path == null) {
@@ -88,5 +88,30 @@ public class Main {
             path = folderPath + "/";
         }
         return URLDecoder.decode(path, StandardCharsets.UTF_8);
+    }
+
+    public static String getInstancePath() {
+        if(instances==null) {
+            config.checkEntry("settings.path.instances","default");
+            if(config.getString("settings.path.instances").equals("default")) {
+                Application.getFrame().getBrowser().executeJavaScript("changeFrame('settings/select-instance-path.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                throw new RuntimeException("No instance path");
+            } else {
+                try {
+                    String path = config.getString("settings.path.instances");
+                    if(!path.toLowerCase().contains("zyneon")) {
+                        path = path+"/Zyneon/";
+                    }
+                    File instanceFolder = new File(URLDecoder.decode(path, StandardCharsets.UTF_8));
+                    getLogger().debug("Instance path created: "+instanceFolder.mkdirs());
+                    instances = instanceFolder.getAbsolutePath();
+                } catch (Exception e) {
+                    getLogger().error("Instance path invalid - Please select a new one! Falling back to default path.");
+                    Application.getFrame().getBrowser().executeJavaScript("changeFrame('settings/select-instance-path.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                    throw new RuntimeException("No instance path");
+                }
+            }
+        }
+        return instances.replace("\\","/")+"/";
     }
 }

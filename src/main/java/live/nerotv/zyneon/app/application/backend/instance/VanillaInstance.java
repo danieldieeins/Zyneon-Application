@@ -23,7 +23,7 @@ public class VanillaInstance implements Instance {
         name = json.getString("modpack.name");
         version = json.getString("modpack.version");
         minecraftVersion = json.getString("modpack.minecraft");
-        path = Main.getDirectoryPath() + json.getString("modpack.instance");
+        path = Main.getInstancePath() + json.getString("modpack.instance");
     }
 
     @Override

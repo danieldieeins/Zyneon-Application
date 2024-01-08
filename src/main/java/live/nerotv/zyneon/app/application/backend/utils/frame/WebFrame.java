@@ -15,9 +15,7 @@ import org.cef.browser.CefMessageRouter;
 import org.cef.callback.CefBeforeDownloadCallback;
 import org.cef.callback.CefDownloadItem;
 import org.cef.callback.CefDownloadItemCallback;
-import org.cef.callback.CefDragData;
 import org.cef.handler.CefDownloadHandler;
-import org.cef.handler.CefDragHandler;
 import org.cef.handler.CefFocusHandlerAdapter;
 
 import javax.swing.*;
@@ -186,12 +184,7 @@ public class WebFrame extends JFrame {
             }
         });
         browser = client.createBrowser(url, false, false);
-        client.addDragHandler(new CefDragHandler() {
-            @Override
-            public boolean onDragEnter(CefBrowser cefBrowser, CefDragData dragData, int i) {
-                return dragData.isFile();
-            }
-        });
+        client.addDragHandler((cefBrowser, dragData, i) -> dragData.isFile());
         Component ui = browser.getUIComponent();
         client.addFocusHandler(new CefFocusHandlerAdapter() {
             @Override
