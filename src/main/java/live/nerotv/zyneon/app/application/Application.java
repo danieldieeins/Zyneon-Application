@@ -17,6 +17,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Objects;
 
 public class Application {
 
@@ -43,7 +44,7 @@ public class Application {
                 }
             });
             try {
-                frame.setIconImage(ImageIO.read(getClass().getResource("/logo.png")).getScaledInstance(32,32, Image.SCALE_SMOOTH));
+                frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32,32, Image.SCALE_SMOOTH));
             } catch (IOException ignore) {}
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);

@@ -22,7 +22,6 @@ public class Main {
     public static Config config;
     private static Logger logger;
     public static String v;
-    public static String language = "english";
     public static String starttab = "start";
     public static ZyneonSplash splash;
     public static String os;
@@ -30,34 +29,27 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        v = "PB17";
+        v = "PB17.1";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
-            new File(getDirectoryPath()+"libs/zyneon/").mkdirs();
+            getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
             FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
             FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
-            new File(getDirectoryPath() + "libs/zyneon/" + v + ".zip").delete();
+            getLogger().debug("Deleted UI ZIP File: "+new File(getDirectoryPath() + "libs/zyneon/" + v + ".zip").delete());
         }
         config = new Config(new File(getDirectoryPath() + "config.json"));
         config.checkEntry("settings.starttab","start");
         starttab = config.getString("settings.starttab");
         config.checkEntry("settings.language","auto");
-        if(!config.getString("settings.language").equalsIgnoreCase("auto")) {
-            language = config.getString("settings.language");
-        } else {
-            if (System.getProperty("user.language").equalsIgnoreCase("de")) {
-                language = "german";
-            }
-        }
         config.checkEntry("settings.memory.default", 1024);
         config.checkEntry("settings.logger.debug", false);
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
-        new File(getDirectoryPath()+"updater.json").delete();
-        new File(getDirectoryPath()+"version.json").delete();
+        getLogger().debug("Deleted old updater json: "+new File(getDirectoryPath()+"updater.json").delete());
+        getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 17").start();
+        new Application("1.0 Public Beta 17.1").start();
     }
 
     public static Logger getLogger() {
@@ -83,7 +75,7 @@ public class Main {
             try {
                 Files.createDirectories(folderPath);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
             }
             path = folderPath + "/";
         }

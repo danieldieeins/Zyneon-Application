@@ -89,12 +89,7 @@ public class WebFrame extends JFrame {
             }
         });
         close.setForeground(Color.WHITE);
-        close.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getInstance().dispatchEvent(new WindowEvent(getInstance(), WindowEvent.WINDOW_CLOSING));
-            }
-        });
+        close.addActionListener(e -> getInstance().dispatchEvent(new WindowEvent(getInstance(), WindowEvent.WINDOW_CLOSING)));
 
         minimize = new JButton("_");
         minimize.setBackground(Color.decode("#03000b"));
@@ -115,12 +110,7 @@ public class WebFrame extends JFrame {
             }
         });
         minimize.setForeground(Color.WHITE);
-        minimize.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setState(Frame.ICONIFIED);
-            }
-        });
+        minimize.addActionListener(e -> setState(Frame.ICONIFIED));
 
         title = new JLabel("   Zyneon Application", JLabel.LEFT);
         title.setForeground(Color.decode("#999999"));

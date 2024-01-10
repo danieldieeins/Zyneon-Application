@@ -2,6 +2,7 @@ package live.nerotv.zyneon.app.application.backend.instance;
 
 import live.nerotv.shademebaby.file.Config;
 
+@SuppressWarnings("all")
 public interface Instance {
 
     default boolean checkVersion() {

@@ -3,15 +3,10 @@ package live.nerotv.zyneon.app.application.backend.installer;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
 import live.nerotv.Main;
-import live.nerotv.zyneon.app.application.backend.instance.Instance;
 
 import java.nio.file.Path;
 
 public class VanillaInstaller {
-
-    public boolean downloadInstance(Instance instance) {
-        return download(instance.getMinecraftVersion(),Path.of(instance.getPath()));
-    }
 
     public boolean download(String version, Path instancePath) {
         Main.getLogger().debug("Starting download of Minecraft "+version);

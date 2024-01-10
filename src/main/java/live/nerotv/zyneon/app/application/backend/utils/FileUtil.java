@@ -4,6 +4,7 @@ import java.io.File;
 
 public class FileUtil {
 
+    @SuppressWarnings("all")
     public static void deleteFolder(File folder) {
         File[] files = folder.listFiles();
         if(files!=null) {

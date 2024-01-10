@@ -26,7 +26,7 @@ public class VanillaInstance implements Instance {
         path = Main.getInstancePath() + json.getString("modpack.instance");
     }
 
-    @Override
+    @Override @SuppressWarnings("all")
     public boolean checkVersion() {
         try {
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";

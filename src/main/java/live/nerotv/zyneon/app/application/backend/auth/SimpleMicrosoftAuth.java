@@ -17,7 +17,7 @@ public class SimpleMicrosoftAuth {
     private AuthInfos authInfos;
     private File saveFile;
     private byte[] key;
-    private ZyneonAuthResolver resolver;
+    private final ZyneonAuthResolver resolver;
 
     public SimpleMicrosoftAuth() {
         saveFile = null;
@@ -25,25 +25,14 @@ public class SimpleMicrosoftAuth {
         resolver = new ZyneonAuthResolver();
     }
 
-    public ZyneonAuthResolver getAuthResolver() {
-        return resolver;
-    }
-
-    public void setAuthResolver(ZyneonAuthResolver resolver) {
-        this.resolver = resolver;
-    }
-
     public void setKey(byte[] newKey) {
         key = newKey;
     }
 
+    @SuppressWarnings("all")
     public void setSaveFilePath(String newPath) {
         saveFile = new File(newPath);
         new File(saveFile.getParent()).mkdirs();
-    }
-
-    public void setSaveFile(File newSaveFile) {
-        saveFile = newSaveFile;
     }
 
     public boolean isLoggedIn() {
@@ -66,7 +55,7 @@ public class SimpleMicrosoftAuth {
                         byte[] refresh = AESUtil.encrypt(key, response.getRefreshToken().getBytes());
                         byte[] uniqueID = AESUtil.encrypt(key, response.getProfile().getId().getBytes());
                         byte[] name = AESUtil.encrypt(key, response.getProfile().getName().getBytes());
-                        resolver.postAuth(response.getProfile().getName(),response.getProfile().getId());
+                        resolver.postAuth();
                         saver.set("opapi.ms.a", new String(access));
                         saver.set("opapi.ms.r", new String(refresh));
                         saver.set("opapi.ms.u", new String(uniqueID));
@@ -101,7 +90,7 @@ public class SimpleMicrosoftAuth {
                         byte[] refresh = AESUtil.encrypt(key, response.getRefreshToken().getBytes());
                         byte[] uniqueID = AESUtil.encrypt(key, response.getProfile().getId().getBytes());
                         byte[] name = AESUtil.encrypt(key, response.getProfile().getName().getBytes());
-                        resolver.postAuth(response.getProfile().getName(),response.getProfile().getId());
+                        resolver.postAuth();
                         Config saver = new Config(saveFile);
                         saver.set("opapi.ms.a", new String(access));
                         saver.set("opapi.ms.r", new String(refresh));
@@ -109,7 +98,7 @@ public class SimpleMicrosoftAuth {
                         saver.set("opapi.ms.n", new String(name));
                     } catch (Exception e) {
                         System.out.println("[ERROR] couldn't save login credentials: " + e.getMessage());
-                        resolver.postAuth(null,null);
+                        resolver.postAuth();
                     }
                 }
             }
@@ -122,13 +111,5 @@ public class SimpleMicrosoftAuth {
 
     public File getSaveFile() {
         return saveFile;
-    }
-
-    public void end() {
-        authInfos = null;
-        saveFile = null;
-        key = null;
-        resolver = null;
-        System.gc();
     }
 }

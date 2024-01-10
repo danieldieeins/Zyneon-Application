@@ -21,7 +21,7 @@ public class FabricLauncher {
         this.frame = frame;
     }
 
-    public boolean launch(FabricInstance instance, int ram) {
+    public void launch(FabricInstance instance, int ram) {
         String id = instance.getID();
         String ramID = id.replace(".","").replace("/","");
         if(Main.config.get("settings.memory."+ramID)!=null) {
@@ -35,13 +35,13 @@ public class FabricLauncher {
             frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
-        return launch(instance.getMinecraftVersion(), instance.getFabricVersion(), ram, Path.of(instance.getPath()));
+        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), ram, Path.of(instance.getPath()));
     }
 
-    public boolean launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {
+    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {
         frame.getBrowser().executeJavaScript("javascript:OpenModal('starting')","https://a.nerotv.live/zyneon/application/html/account.html",5);
-        if(MinecraftVersion.getType(minecraftVersion)!=null) {
-            MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
+        MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
+        if(type!=null) {
             if(type.equals(MinecraftVersion.Type.LEGACY)) {
                 JavaUtil.setJavaCommand(null);
                 System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre-8");
@@ -70,14 +70,12 @@ public class FabricLauncher {
                         p.waitFor();
                         Platform.exit();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException(e.getMessage());
                     }
                 });
             } catch (Exception ignore) {}
-            return true;
         } else {
             Main.getLogger().error("Error: couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
-            return false;
         }
     }
 }

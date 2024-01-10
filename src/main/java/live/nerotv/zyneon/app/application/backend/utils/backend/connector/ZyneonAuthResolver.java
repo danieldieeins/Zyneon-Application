@@ -8,7 +8,7 @@ public class ZyneonAuthResolver {
 
     public void preAuth() {}
 
-    public void postAuth(String name, String suid) {
+    public void postAuth() {
         Application.getFrame().getBrowser().reload();
     }
 }
