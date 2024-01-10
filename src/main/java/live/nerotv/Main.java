@@ -29,6 +29,10 @@ public class Main {
     public static void main(String[] args) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
+        initConfig();
+        starttab = config.getString("settings.starttab");
+        logger = new Logger("ZyneonApplication");
+        logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         v = "PB17.1";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
@@ -37,19 +41,19 @@ public class Main {
             FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
             getLogger().debug("Deleted UI ZIP File: "+new File(getDirectoryPath() + "libs/zyneon/" + v + ".zip").delete());
         }
-        config = new Config(new File(getDirectoryPath() + "config.json"));
-        config.checkEntry("settings.starttab","start");
-        starttab = config.getString("settings.starttab");
-        config.checkEntry("settings.language","auto");
-        config.checkEntry("settings.memory.default", 1024);
-        config.checkEntry("settings.logger.debug", false);
-        logger = new Logger("ZyneonApplication");
-        logger.setDebugEnabled(config.getBool("settings.logger.debug"));
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
         getLogger().debug("Deleted old updater json: "+new File(getDirectoryPath()+"updater.json").delete());
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         new Application("1.0 Public Beta 17.1").start();
+    }
+
+    private static void initConfig() {
+        config = new Config(new File(getDirectoryPath() + "config.json"));
+        config.checkEntry("settings.starttab","start");
+        config.checkEntry("settings.language","auto");
+        config.checkEntry("settings.memory.default", 1024);
+        config.checkEntry("settings.logger.debug", false);
     }
 
     public static Logger getLogger() {
