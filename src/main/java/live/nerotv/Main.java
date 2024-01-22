@@ -33,7 +33,7 @@ public class Main {
         starttab = config.getString("settings.starttab");
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
-        v = "PB17.3";
+        v = "PB18";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
@@ -45,7 +45,7 @@ public class Main {
         getLogger().debug("Deleted old updater json: "+new File(getDirectoryPath()+"updater.json").delete());
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 17.3").start();
+        new Application("1.0 Public Beta 18").start();
     }
 
     private static void initConfig() {
