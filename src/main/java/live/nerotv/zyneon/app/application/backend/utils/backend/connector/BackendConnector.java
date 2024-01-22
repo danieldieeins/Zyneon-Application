@@ -205,9 +205,12 @@ public class BackendConnector {
             String[] creator = request.replace("button.creator.create.","").split("\\.", 5);
             String name = creator[0];
             String version = creator[1];
+            version = version.replace("%DOT%",".");
             String minecraft = creator[2];
+            minecraft = minecraft.replace("%DOT%",".");
             String modloader = creator[3];
             String mlversion = creator[4];
+            mlversion = mlversion.replace("%DOT%",".");
             String id = name.toLowerCase().replaceAll("[^a-z0-9]", "");
             File instancePath = new File(Main.getInstancePath()+"instances/"+id+"/");
             if(!instancePath.exists()) {
