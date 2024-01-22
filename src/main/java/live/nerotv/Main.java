@@ -33,7 +33,7 @@ public class Main {
         starttab = config.getString("settings.starttab");
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
-        v = "PB17.2";
+        v = "PB17.2a";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
