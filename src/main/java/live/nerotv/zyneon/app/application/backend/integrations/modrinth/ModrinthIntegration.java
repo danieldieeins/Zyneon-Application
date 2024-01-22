@@ -18,10 +18,30 @@ import java.net.URL;
 public class ModrinthIntegration {
 
     public static void main(String[] a) {
-        JsonObject search = searchMods("Blockbuster",Modloader.FORGE,"1.12.2",0,100);
+        JsonObject search = searchMods(Modloader.FORGE,"1.12.2",0,100);
         JsonArray results = search.getAsJsonArray("hits");
         System.out.println(search);
         System.out.println(results);
+        for (int i = 0; i < results.size(); i++) {
+            JsonObject item = results.get(i).getAsJsonObject();
+            String id = item.get("project_id").getAsString();
+            String slug = item.get("slug").getAsString();
+            String modurl = "https://modrinth.com/mod/"+slug;
+            String author = item.get("author").getAsString();
+            String title = item.get("title").getAsString();
+            String description = item.get("description").getAsString();
+            String png = item.get("icon_url").getAsString();
+            System.out.println("===============================");
+            System.out.println("ID: "+id);
+            System.out.println("Slug: "+slug);
+            System.out.println("Author: "+author);
+            System.out.println("Title: "+title);
+            System.out.println("PNG: "+png);
+            System.out.println("Description: "+description);
+            System.out.println(modurl);
+            String js = "syncModCard(\""+title+"\",\""+id+"\",\""+description+"\",\""+author+"\",\""+png+"\",\"javascript:callJavaMethod('button.show.modrinth."+slug+"')\",'1.20.1');";
+            System.out.println(js);
+        }
         ZyneonWebFrame f = new ZyneonWebFrame("C:\\Users\\nerotvlive\\Desktop\\A\\search-modrinth.html");
         CefLoadHandler loadHandler = new CefLoadHandlerAdapter() {
             @Override

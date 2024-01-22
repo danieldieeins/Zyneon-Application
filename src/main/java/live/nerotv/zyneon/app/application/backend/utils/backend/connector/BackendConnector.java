@@ -11,6 +11,7 @@ import live.nerotv.zyneon.app.application.backend.instance.VanillaInstance;
 import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
+import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 import org.cef.browser.CefBrowser;
@@ -201,9 +202,17 @@ public class BackendConnector {
                         .replace("%id%",config.getString("modpack.id"));
                 frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+instanceString);
             }
+        } else if (request.contains("button.delete.")) {
+            request = request.replace("button.delete.","");
+            File instance = new File(Main.getInstancePath()+"instances/"+request+"/");
+            if(instance.exists()) {
+                FileUtil.deleteFolder(instance);
+                resolveRequest("button.refresh.instances");
+            }
         } else if (request.contains("button.creator.create.")) {
             String[] creator = request.replace("button.creator.create.","").split("\\.", 5);
             String name = creator[0];
+            name = name.replace("%DOT%",".");
             String version = creator[1];
             version = version.replace("%DOT%",".");
             String minecraft = creator[2];
@@ -229,7 +238,7 @@ public class BackendConnector {
                     } else {
                         instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
                     }
-                } else {
+                } else if(modloader.equalsIgnoreCase("fabric")) {
                     instance.set("modpack.fabric",mlversion);
                 }
                 instance.set("modpack.instance","instances/"+id+"/");
