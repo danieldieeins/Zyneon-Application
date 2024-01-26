@@ -1,0 +1,348 @@
+:root {
+    --background: #00000000;
+    --background2: #00000000;
+    --background-accent: #00000000;
+    --highlight: #00000000;
+    --color: #00000000;
+    --color-dim: #00000000;
+    --inverted: #00000000;
+
+    --accent: #7f34f8;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    80% { transform: rotate(0deg); }
+    85% { transform: rotate(5deg); }
+    95% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@font-face {
+    font-family: LTHoopRegular;
+    src: url("../../fonts/lthoop-regular.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    font-family: LTHoopRegular, serif;
+}
+
+body {
+    background: black;
+}
+
+.content-rows {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.menu {
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 0 0.8rem #000;
+    background: var(--background-accent);
+    transition: 0.5s;
+    padding: 1rem;
+    width: 2.25rem;
+}
+
+.menu#submenu {
+    z-index: 99;
+    background: var(--background2);
+}
+
+.menu#submenu.active {
+    width: 16rem;
+}
+
+.menu#main {
+    z-index: 100;
+}
+
+.menu.active {
+    width: 16rem;
+}
+
+.menu .menu-title {
+    display: none;
+}
+
+.menu.active .menu-title {
+    display: flex;
+}
+
+.menu .menu-title img {
+    height: 2.5rem;
+}
+
+.menu .menu-title p {
+    color: var(--color);
+}
+
+.menu i {
+    color: var(--color);
+    font-size: 1.5rem;
+}
+
+.menu i#switch {
+    position: absolute;
+    top: 1rem;
+    right: 1.4rem;
+
+}
+
+.menu i#switch:hover {
+    cursor: pointer;
+}
+
+.menu ul {
+    position: absolute;
+    top: 3.6rem;
+    left: 0.75rem;
+    list-style: none;
+    transition: 0.5s;
+}
+
+.menu#submenu ul {
+    top: 0.8rem;
+}
+
+.menu.active ul {
+    position: absolute;
+    top: 4rem;
+    list-style: none;
+    transition: 0.5s;
+}
+
+.menu#submenu.active ul {
+    top: 0.8rem;
+}
+
+.menu ul li {
+    padding-bottom: 1rem;
+}
+
+.menu.active ul li {
+    padding: 1rem 1rem 0 1rem;
+}
+
+.menu ul li.subtitle {
+    color: var(--color-dim);
+    display: none;
+}
+
+.menu.active ul li.subtitle {
+    display: inherit;
+}
+
+
+.menu ul li a {
+    text-decoration: none;
+}
+
+.menu ul li a .menu-item {
+    position: relative;
+    display: flex;
+    padding: 0.6rem;
+    width: 1.51rem;
+    border-radius: 0.5rem;
+}
+
+.menu.active ul li a .menu-item {
+    position: relative;
+    width: 13.5rem;
+    transition: 0.5s;
+    color: var(--color);
+    white-space: nowrap;
+}
+
+
+.menu ul li a .menu-item:hover {
+    background: var(--highlight);
+    box-shadow: 0 0 0.8rem var(--highlight);
+    transition: 0.5s;
+}
+
+.menu ul li a .menu-item#exit:hover {
+    background: red;
+    box-shadow: 0 0 0.8rem red;
+    transition: 0.5s;
+    animation: wiggle 0.1s linear infinite;
+}
+
+.menu ul li a .menu-item span {
+    padding: 0.17rem 0 0 0.75rem;
+    font-size: 1.1rem;
+    display: none;
+    white-space: nowrap;
+}
+
+.menu ul li a .menu-item:hover span {
+    color: var(--inverted);
+}
+
+.menu ul li a .menu-item:hover i {
+    color: var(--inverted);
+}
+
+.menu ul li a .menu-item#refresh:hover i {
+    animation: rotate 10s linear infinite;
+    color: var(--inverted);
+}
+
+.menu ul li a .menu-item#selected:hover span {
+    color: var(--color);
+}
+
+.menu ul li a .menu-item#selected:hover i {
+    color: var(--color);
+}
+
+.menu ul li a .menu-item#active:hover span {
+    color: var(--color);
+}
+
+.menu ul li a .menu-item#active:hover i {
+    color: var(--color);
+}
+
+.menu ul li a .menu-item#exit:hover span {
+    color: #ffb0b0;
+}
+
+.menu ul li a .menu-item#exit:hover i {
+    color: #ffb0b0;
+}
+
+
+.menu ul li a .menu-item i {
+    position: relative;
+    top: 0.07rem;
+}
+
+
+.menu.active ul li a .menu-item span {
+    display: inline;
+    background: none;
+    box-shadow: none;
+    max-width: 11.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.menu ul li a .menu-item#selected {
+    color: var(--color);
+    background: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+}
+
+.menu ul li a .menu-item#active {
+    color: var(--color);
+    background: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+}
+
+.menu .profile {
+    position: absolute;
+    display: flex;
+    padding: 1rem;
+    bottom: 0;
+    left: 0;
+}
+
+.menu .profile img {
+    position: absolute;
+    left: 0.4rem;
+    bottom: 0.5rem;
+    height: 3.5rem;
+    display: none;
+}
+
+.menu .profile img.active {
+    display: inherit;
+}
+
+.menu .profile i {
+    animation: rotate 05s linear infinite;
+    position: absolute;
+    left: 0.85rem;
+    bottom: 0.9rem;
+    font-size: 2.5rem;
+    display: inherit;
+    z-index: 1;
+}
+
+.menu .profile i.active {
+    display: none;
+}
+
+.menu .profile p.username {
+    position: absolute;
+    color: var(--color);
+    left: 4.5rem;
+    bottom: 2.3rem;
+    display: none;
+}
+
+.menu.active .profile p.username {
+    display: inherit;
+}
+
+.menu .profile a {
+    position: absolute;
+    text-decoration: none;
+    color: var(--color-dim);
+    left: 4.5rem;
+    bottom: 1.2rem;
+    display: none;
+}
+
+.menu.active .profile a {
+    display: inherit;
+}
+
+.menu .profile a:hover {
+    position: absolute;
+    text-decoration: none;
+    transition: 0.5s;
+    color: var(--color);
+    left: 5.5rem;
+    bottom: 1.7rem;
+}
+
+.menu .info {
+    white-space: nowrap;
+    position: absolute;
+    color: var(--color-dim);
+    left: 1rem;
+    bottom: 1rem;
+    display: none;
+}
+
+.menu.active .info {
+    display: inherit;
+}
+
+.menu .info p.app {
+    color: var(--color);
+}
+
+.bold {
+    font-weight: 1000;
+}
+
+.content {
+    position: relative;
+    background: var(--background);
+    flex-grow: 1;
+    width: 100%;
+}

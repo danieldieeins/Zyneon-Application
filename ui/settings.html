@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News ▪ Zyneon Application</title>
+    <link rel="stylesheet" href="assets/zyneon/css/style.css">
+    <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
+    <script src="assets/zyneon/js/functions.js"></script>
+    <script>toggleTheme();</script>
+</head>
+<body>
+    <div class="content-rows" id="top">
+        <div class="menu" id="main">
+            <div class="menu-title">
+                <img src="assets/zyneon/images/logo.png" alt="Zyneon Studios logo">
+                <p>Zyneon<br>Application</p>
+            </div>
+            <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
+            <ul>
+                <li>
+                    <a href="index.html#top">
+                        <div class="menu-item">
+                            <i class="bx bxs-home"></i>
+                            <span class="menu-item">News & updates</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="instances.html#top">
+                        <div class="menu-item">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <span class="menu-item">Instances</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#top">
+                        <div class="menu-item" id="selected">
+                            <i class="bx bxs-cog"></i>
+                            <span class="menu-item">Settings</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="profile" onclick="activateMenu();">
+                <i class='bx bx-loader'></i>
+                <img class="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
+                <p class="username">connecting...</p>
+                <a href="settings.html#profile"><p>loading...</p></a>
+            </div>
+        </div>
+        <div class="menu" id="submenu">
+            <ul>
+                <li class="subtitle">
+                    <span class="bold">Application Settings</span>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item" id="active">
+                            <i class='bx bx-compass' ></i>
+                            <span class="menu-item">General settings</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item">
+                            <i class='bx bx-globe' ></i>
+                            <span class="menu-item">Global settings</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item">
+                            <i class='bx bxs-user' ></i>
+                            <span class="menu-item">Profile settings</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="subtitle">
+                    <span class="bold">Actions</span>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item" id="refresh">
+                            <i class='bx bx-refresh'></i>
+                            <span class="menu-text">Refresh application</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item" id="exit">
+                            <i class='bx bxs-exit' ></i>
+                            <span class="menu-text">Exit application</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="info">
+                <p class="app">Zyneon Application</p>
+                <p class="version">Public Beta 19 ▪ Kopfschmerzen</p>
+            </div>
+        </div>
+        <script>deactivateMenu();</script>
+        <div class="content">
+
+        </div>
+    </div>
+</body>
+</html>

@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
+@Deprecated
 public class SimpleMicrosoftAuth {
 
     private AuthInfos authInfos;

@@ -4,6 +4,7 @@ import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 
 import java.io.File;
 
+@Deprecated
 public class MicrosoftAuth {
 
     private final SimpleMicrosoftAuth sa;
