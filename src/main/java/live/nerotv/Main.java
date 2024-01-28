@@ -21,7 +21,7 @@ public class Main {
     public static String instances;
     public static Config config;
     private static Logger logger;
-    public static String v;
+    public static String version;
     public static String starttab = "start";
     public static ZyneonSplash splash;
     public static String os;
@@ -33,19 +33,20 @@ public class Main {
         starttab = config.getString("settings.starttab");
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
-        v = "PB19";
-        if(!new File(getDirectoryPath()+"libs/zyneon/"+v+"/index.html").exists()) {
+        version = "2024.2-beta.1";
+        if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
-            FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + v + "/content.zip", getDirectoryPath() + "libs/zyneon/" + v + ".zip");
-            FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + v + ".zip", getDirectoryPath() + "libs/zyneon/" + v);
-            getLogger().debug("Deleted UI ZIP File: "+new File(getDirectoryPath() + "libs/zyneon/" + v + ".zip").delete());
+            FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");
+            FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + version + ".zip", getDirectoryPath() + "libs/zyneon/" + version);
+            getLogger().debug("Deleted UI ZIP File: "+new File(getDirectoryPath() + "libs/zyneon/" + version + ".zip").delete());
         }
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
         getLogger().debug("Deleted old updater json: "+new File(getDirectoryPath()+"updater.json").delete());
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        new Application("1.0 Public Beta 19").start();
+        config.checkEntry("settings.appearance.theme","zyneon");
+        new Application(version+" ▪ Argrium²").start();
     }
 
     private static void initConfig() {
@@ -90,7 +91,7 @@ public class Main {
         if(instances==null) {
             config.checkEntry("settings.path.instances","default");
             if(config.getString("settings.path.instances").equals("default")) {
-                Application.getFrame().getBrowser().executeJavaScript("changeFrame('settings/select-instance-path.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"&tab=select");
                 throw new RuntimeException("No instance path");
             } else {
                 try {

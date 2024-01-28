@@ -30,7 +30,6 @@ public class WebFrame extends JFrame {
     private CefClient client;
     private CefBrowser browser;
     private boolean browserFocus;
-    private static Point mouseDownCompCoords;
 
     public WebFrame(String url, String jcefPath) {
         try {
@@ -56,89 +55,8 @@ public class WebFrame extends JFrame {
         return browser;
     }
 
-    public JPanel titlebar;
-
-    public JLabel title;
-
-    public JButton close;
-
-    public JButton minimize;
-
     private void init(String url, String jcefPath) throws UnsupportedPlatformException, IOException, CefInitializationException, InterruptedException {
         browserFocus = true;
-
-
-        this.setUndecorated(true);
-        titlebar = new JPanel(new BorderLayout());
-        titlebar.setBackground(Color.decode("#03000b"));
-
-        close = new JButton("X");
-        close.setBackground(Color.decode("#03000b"));
-        close.setContentAreaFilled(true);
-        close.setBorderPainted(false);
-        close.setFocusPainted(false);
-        close.addMouseListener(new MouseAdapter() {
-            Color color = Color.decode("#03000b");
-            public void mouseEntered(MouseEvent e) {
-                color = close.getBackground();
-                close.setBackground(Color.RED);
-            }
-
-            public void mouseExited(MouseEvent e) {
-                close.setBackground(color);
-            }
-        });
-        close.setForeground(Color.WHITE);
-        close.addActionListener(e -> getInstance().dispatchEvent(new WindowEvent(getInstance(), WindowEvent.WINDOW_CLOSING)));
-
-        minimize = new JButton("_");
-        minimize.setBackground(Color.decode("#03000b"));
-        minimize.setContentAreaFilled(true);
-        minimize.setBorderPainted(false);
-        minimize.setFocusPainted(false);
-        minimize.addMouseListener(new MouseAdapter() {
-            Color color = Color.decode("#03000b");
-            public void mouseEntered(MouseEvent e) {
-                color = minimize.getBackground();
-                minimize.setBackground(Color.WHITE);
-                minimize.setForeground(Color.BLACK);
-            }
-
-            public void mouseExited(MouseEvent e) {
-                minimize.setBackground(color);
-                minimize.setForeground(Color.WHITE);
-            }
-        });
-        minimize.setForeground(Color.WHITE);
-        minimize.addActionListener(e -> setState(Frame.ICONIFIED));
-
-        title = new JLabel("   Zyneon Application", JLabel.LEFT);
-        title.setForeground(Color.decode("#999999"));
-        titlebar.add(title, BorderLayout.CENTER);
-
-        JPanel buttons = new JPanel(new BorderLayout());
-        buttons.add(minimize,BorderLayout.WEST);
-        buttons.add(close,BorderLayout.EAST);
-
-        titlebar.add(buttons,BorderLayout.EAST);
-
-        titlebar.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                mouseDownCompCoords = e.getPoint();
-            }
-        });
-
-        titlebar.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                Point currCoords = e.getLocationOnScreen();
-                WebFrame.this.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
-            }
-        });
-
-
-        this.getContentPane().add(titlebar,BorderLayout.NORTH);
-
-
         File installDir = new File(jcefPath);
         ShadeMeBaby.getLogger().debug("NEED_JCEF_INSTALL: "+installDir.mkdirs());
         CefAppBuilder builder = new CefAppBuilder();
@@ -198,5 +116,23 @@ public class WebFrame extends JFrame {
                 dispose();
             }
         });
+    }
+
+    public void setTitlebar(String title, Color background, Color foreground) {
+        setTitle(title);
+        setTitleBackground(background);
+        setTitleForeground(foreground);
+    }
+    public void setTitleBackground(Color color) {
+        setBackground(color);
+        getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
+    }
+
+    public void setTitleForeground(Color color) {
+        getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
+    }
+
+    public void executeJavaScript(String command) {
+        browser.executeJavaScript(command,browser.getURL(),5);
     }
 }

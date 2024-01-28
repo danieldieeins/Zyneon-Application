@@ -1,5 +1,10 @@
 package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
@@ -25,6 +30,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -57,8 +63,6 @@ public class BackendConnector {
         Main.getLogger().debug("loadInstances Request");
     }
 
-    private String theme = "dark";
-
     public static String addHyphensToUUID(String uuidString) {
         StringBuilder sb = new StringBuilder(uuidString);
         sb.insert(8, "-");
@@ -71,16 +75,26 @@ public class BackendConnector {
     private void syncSettings(String type) {
         type = type.toLowerCase();
         switch (type) {
-            case "general" ->
-                    frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=start.html&general-tab=" + Main.starttab + "&general-theme=" + theme + "');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-            case "global" ->
-                    frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=global.html&memory=" + Main.config.getInteger("settings.memory.default") + "&path=" + Main.getInstancePath().replace(":/", ":") + "');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-            case "profile" -> {
-                if (Application.auth.isLoggedIn()) {
-                    frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=profile.html&username=" + Application.auth.getAuthInfos().getUsername() + "&uuid=" + addHyphensToUUID(Application.auth.getAuthInfos().getUuid()) + "');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-                } else {
-                    frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=login.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+            case "general" -> {
+                String tab = "start";
+                if(Application.getStartURL().toLowerCase().contains("instances.html")) {
+                    tab = "instances";
                 }
+                frame.executeJavaScript("syncGeneral('"+tab+"');");
+            }
+            case "global" -> {
+                frame.executeJavaScript("syncGlobal('"+Main.config.getString("settings.memory.default").replace(".0","")+" MB','"+Main.getInstancePath()+"')");
+            }
+            case "profile" -> {
+                if(Application.auth.isLoggedIn()) {
+                    frame.executeJavaScript("syncProfile('"+Application.auth.getAuthInfos().getUsername()+"','"+addHyphensToUUID(Application.auth.getAuthInfos().getUuid())+"');");
+                } else {
+                    frame.executeJavaScript("syncLogin();");
+                    frame.executeJavaScript("logout();");
+                }
+            }
+            case "version" -> {
+                frame.executeJavaScript("syncApp('"+Application.version+"');");
             }
         }
     }
@@ -98,39 +112,59 @@ public class BackendConnector {
             }
         } else if(request.contains("load.")) {
             request = request.replace("load.","");
-            frame.getBrowser().loadURL("file://"+Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/index.html?tab="+request);
+            frame.getBrowser().loadURL("file://"+Main.getDirectoryPath()+"libs/zyneon/"+Main.version +"/index.html?tab="+request);
         } else if (request.contains("button.minimize")) {
             frame.setState(Frame.ICONIFIED);
         } else if(request.equals("button.copy.uuid")) {
             StringSelection uuid = new StringSelection(addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid,uuid);
+        } else if(request.contains("sync.instances.list")) {
+            String filePath = Main.getDirectoryPath()+"libs/zyneon/instances.json";
+            Gson gson = new Gson();
+            try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
+                JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+                JsonArray instances = jsonObject.getAsJsonArray("instances");
+                for (JsonElement element : instances) {
+                    JsonObject instance = element.getAsJsonObject();
+                    String png = "assets/zyneon/images/instances/"+instance.get("id").toString().replace("\"","")+".png";
+                    if(new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/"+png).exists()) {
+                        frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
+                    } else {
+                        frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ");");
+                    }
+                }
+            } catch (IOException e) {
+                Main.getLogger().error(e.getMessage());
+            }
+        } else if(request.contains("sync.login")) {
+            if(Application.auth.isLoggedIn()) {
+                frame.executeJavaScript("login('" + Application.auth.getAuthInfos().getUsername() + "');");
+            } else {
+                frame.executeJavaScript("logout();");
+            }
         } else if(request.contains("sync.settings.")) {
             syncSettings(request.replace("sync.settings.",""));
-        } else if(request.contains("button.lightmode")) {
-            theme = "light";
-            frame.titlebar.setBackground(Color.decode("#ffffff"));
-            frame.title.setForeground(Color.BLACK);
-            frame.close.setForeground(Color.BLACK);
-            frame.close.setBackground(Color.decode("#ededed"));
-            frame.getBrowser().executeJavaScript("turnOnLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-            syncSettings("general");
-        } else if(request.contains("button.darkmode")) {
-            theme = "dark";
-            frame.titlebar.setBackground(Color.decode("#03000b"));
-            frame.title.setForeground(Color.decode("#999999"));
-            frame.close.setForeground(Color.WHITE);
-            frame.close.setBackground(Color.BLACK);
-            frame.getBrowser().executeJavaScript("turnOffLights();", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
-            syncSettings("general");
+        } else if(request.contains("button.theme.light")) {
+            Application.theme = "light";
+            Main.config.set("settings.appearance.theme",Application.theme);
+            frame.setTitlebar("Zyneon Application",Color.white,Color.black);
+        } else if(request.contains("button.theme.zyneon")) {
+            Application.theme = "zyneon";
+            Main.config.set("settings.appearance.theme",Application.theme);
+            frame.setTitlebar("Zyneon Application",Color.decode("#050113"),Color.white);
+        } else if(request.contains("button.theme.dark")) {
+            Application.theme = "dark";
+            Main.config.set("settings.appearance.theme",Application.theme);
+            frame.setTitlebar("Zyneon Application",Color.black,Color.white);
         } else if(request.contains("button.connect")) {
             frame.getBrowser().loadURL("https://drive.zyneonstudios.com/app/index.html#");
         } else if(request.contains("button.refresh")) {
             if(request.contains(".instances")) {
                 Application.loadInstances();
-                frame.getBrowser().loadURL("file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/index.html?tab=instances.html");
+                frame.getBrowser().loadURL(Application.getInstancesURL());
             } else {
-                frame.getBrowser().reload();
+                frame.getBrowser().loadURL(Application.getStartURL());
             }
         } else if(request.contains("button.minecraftwiki")) {
             if (Desktop.isDesktopSupported()) {
@@ -138,7 +172,7 @@ public class BackendConnector {
                     Desktop.getDesktop().browse(URI.create("https://minecraft.wiki"));
                 } catch (IOException ignore) {}
             }
-        } else if(request.contains("button.close")) {
+        } else if(request.contains("button.exit")) {
             SwingUtilities.invokeLater(() -> {
                 frame.getInstance().dispatchEvent(new WindowEvent(frame.getInstance(), WindowEvent.WINDOW_CLOSING));
             });
@@ -164,43 +198,42 @@ public class BackendConnector {
                         .replace("%modloader%",modloader)
                         .replace("%minecraft%",config.getString("modpack.minecraft"))
                         .replace("%id%",config.getString("modpack.id"));
-                frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+instanceString);
-            }
-        } else if (request.contains("modrinth")) {
-            if (request.contains(".install.mod.")) {
-                System.out.println(request);
-                return;
-            }
-            System.out.println(request);
-            Desktop desktop = Desktop.getDesktop();
-            try {
-                desktop.browse(new URI("https://modrinth.com/mod/" + request.replace("button.show.modrinth.", "")));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/"+instanceString);
             }
         } else if (request.contains("button.instance.")) {
             String id = request.replace("button.instance.","").toLowerCase();
             File file = new File(Main.getInstancePath()+"instances/"+id+"/zyneonInstance.json");
             if(file.exists()) {
-                Config config = new Config(file);
-                String modloader;
-                if(config.getString("modpack.forge.version")!=null) {
-                    modloader = "Forge";
-                    String mlversion = config.getString("modpack.forge.version");
-                    modloader = modloader+" "+mlversion;
-                } else if(config.getString("modpack.fabric")!=null) {
-                    modloader = "Fabric";
-                    String mlversion = config.getString("modpack.fabric");
-                    modloader = modloader+" "+mlversion;
-                } else {
-                    modloader = "Vanilla";
+                Config instance = new Config(file);
+
+                File icon = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/assets/zyneon/images/instances/"+id+".png");
+                File logo = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/assets/zyneon/images/instances/"+id+"-logo.png");
+                File background = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/assets/zyneon/images/instances/"+id+".webp");
+                String icon_ = "";
+                String logo_ = "";
+                String background_ = "";
+                if(icon.exists()) {
+                    icon_ = "assets/zyneon/images/instances/"+id+".png";
                 }
-                String instanceString = "instance.html?instance=%name%&id=%id%&modloader=%20%modloader%&version=%minecraft%%20"
-                        .replace("%name%",config.getString("modpack.name"))
-                        .replace("%modloader%",modloader)
-                        .replace("%minecraft%",config.getString("modpack.minecraft"))
-                        .replace("%id%",config.getString("modpack.id"));
-                frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/"+instanceString);
+                if(logo.exists()) {
+                    logo_ = "assets/zyneon/images/instances/"+id+"-logo.png";
+                }
+                if(background.exists()) {
+                    background_ = "assets/zyneon/images/instances/"+id+".webp";
+                }
+                frame.executeJavaScript("syncTitle('"+instance.get("modpack.name")+"','"+icon_+"');");
+                frame.executeJavaScript("syncLogo('"+logo_+"');");
+                frame.executeJavaScript("syncBackground('"+background_+"');");
+                String modloader = "Vanilla";
+                String mlversion = "No mods";
+                if(instance.getString("modpack.forge.version")!=null) {
+                    modloader = "Forge";
+                    mlversion = instance.getString("modpack.forge.version")+" ("+instance.getString("modpack.forge.type").toLowerCase()+")";
+                } else if(instance.getString("modpack.fabric")!=null) {
+                    modloader = "Fabric";
+                    mlversion = instance.getString("modpack.fabric");
+                }
+                frame.executeJavaScript("syncDock('"+id+"','"+instance.get("modpack.version")+"','"+instance.get("modpack.minecraft")+"','"+modloader+"','"+mlversion+"');");
             }
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.","");
@@ -245,7 +278,7 @@ public class BackendConnector {
             }
             resolveRequest("button.refresh.instances");
         } else if (request.contains("button.start.")) {
-            System.out.println(request);
+            Main.getLogger().debug("Trying to start instance "+request.replace("button.start.",""));
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
         } else if (request.contains("button.starttab.")) {
             String tab = request.replace("button.starttab.","");
@@ -265,7 +298,7 @@ public class BackendConnector {
                 }
             }
         } else if (request.equalsIgnoreCase("button.instances")) {
-            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/instances.html");
+            frame.getBrowser().loadURL(Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/instances.html");
         } else if (request.equalsIgnoreCase("button.skin")) {
             if (Desktop.isDesktopSupported()) {
                 try {
@@ -355,7 +388,7 @@ public class BackendConnector {
                             instancesPath=instancesPath+"/Zyneon";
                         }
                         Main.instances = instancesPath;
-                        frame.getBrowser().executeJavaScript("changeFrame('settings.html?tab=global.html&memory="+Main.config.getInteger("settings.memory.default")+"&path="+Main.getInstancePath().replace(":/",":")+"');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                        frame.getBrowser().loadURL(Application.getSettingsURL()+"&tab=global");
                     }
                 });
             }
@@ -373,11 +406,6 @@ public class BackendConnector {
             if (Application.auth.isLoggedIn()) {
                 Main.getLogger().debug("Deleted login: "+Application.auth.getSaveFile().delete());
                 Application.login();
-                if (Application.auth.isLoggedIn()) {
-                    frame.setTitle("Zyneon Application (" + Application.getVersion() + ", " + Application.auth.getAuthInfos().getUsername() + ")");
-                } else {
-                    frame.setTitle("Zyneon Application (" + Application.getVersion() + ")");
-                }
             }
         } else if (request.contains("connector.sync")) {
             if (request.contains("instance")) {

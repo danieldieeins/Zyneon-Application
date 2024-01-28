@@ -1,9 +1,9 @@
 package live.nerotv.zyneon.app.application;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
-import live.nerotv.zyneon.app.application.backend.utils.HTTPServer;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
@@ -19,34 +19,34 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.*;
 
 public class Application {
 
-    private static String version;
     private static ZyneonWebFrame frame;
     public static MicrosoftAuth auth;
     public static Config instances;
+    public static String version;
+    public static String theme;
 
-    public Application(String v) {
-        version = v;
+    public Application(String ver) {
+        version = ver;
+        theme = Main.config.getString("settings.appearance.theme");
     }
 
     public void start() {
         login();
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            FlatDarkLaf.setup();
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            /*UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());*/
             loadInstances();
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                new HTTPServer(1624).run();
-            });
         } catch (Exception ignore) {}
         try {
             checkURL();
             auth.isLoggedIn();
-            frame.setTitle("Zyneon Application ("+version+")");
+            frame.setTitlebar("Zyneon Application",Color.decode("#050113"),Color.white);
             frame.setVisible(true);
             Main.splash.setVisible(false);
             frame.addWindowListener(new WindowAdapter() {
@@ -64,7 +64,7 @@ public class Application {
     }
 
     public static void loadInstances() {
-        File file = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.v+"/assets/json/instances.json");
+        File file = new File(Main.getDirectoryPath()+"libs/zyneon/instances.json");
         Main.getLogger().debug("Created instance json path: "+file.getParentFile().mkdirs());
         if(file.exists()) {
             Main.getLogger().debug("Deleted old instance json: "+file.delete());
@@ -158,17 +158,27 @@ public class Application {
         });
     }
 
-    private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
-        String start = "index.html";
+    public static String getStartURL() {
         if (Main.starttab.equalsIgnoreCase("instances")) {
-            start = "index.html?tab=instances.html";
+            return getInstancesURL();
         }
-        String home = "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.v + "/" + start;
-        frame = new ZyneonWebFrame(home);
+        return getNewsURL();
     }
 
-    public static String getVersion() {
-        return version;
+    public static String getNewsURL() {
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "index.html?theme="+theme;
+    }
+
+    public static String getInstancesURL() {
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html?theme="+theme;
+    }
+
+    public static String getSettingsURL() {
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html?theme="+theme;
+    }
+
+    private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
+        frame = new ZyneonWebFrame(getStartURL());
     }
 
     public static ZyneonWebFrame getFrame() {

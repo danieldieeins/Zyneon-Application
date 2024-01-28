@@ -4,6 +4,7 @@ package live.nerotv.zyneon.app.application.backend.auth;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
+import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.utils.AESUtil;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
@@ -98,7 +99,7 @@ public class SimpleMicrosoftAuth {
                         saver.set("opapi.ms.u", new String(uniqueID));
                         saver.set("opapi.ms.n", new String(name));
                     } catch (Exception e) {
-                        System.out.println("[ERROR] couldn't save login credentials: " + e.getMessage());
+                        Main.getLogger().error("Couldn't save login credentials: "+e.getMessage());
                         resolver.postAuth();
                     }
                 }

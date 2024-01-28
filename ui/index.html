@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="assets/zyneon/css/style.css">
     <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
     <script src="assets/zyneon/js/functions.js"></script>
-    <script>toggleTheme();</script>
+    <script>syncTheme();</script>
 </head>
 <body>
     <div class="content-rows" id="top">
@@ -17,11 +17,8 @@
             </div>
             <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
             <ul>
-                <li class="subtitle">
-                    <span class="bold">Public Beta 19</span>
-                </li>
                 <li>
-                    <a href="#top">
+                    <a>
                         <div class="menu-item" id="selected">
                             <i class="bx bxs-home"></i>
                             <span class="menu-item">News & updates</span>
@@ -29,7 +26,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="instances.html#top">
+                    <a onclick="link('instances.html');">
                         <div class="menu-item">
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <span class="menu-item">Instances</span>
@@ -37,52 +34,81 @@
                     </a>
                 </li>
                 <li>
-                    <a href="settings.html#top">
+                    <a onclick="link('settings.html');">
                         <div class="menu-item">
                             <i class="bx bxs-cog"></i>
                             <span class="menu-item">Settings</span>
                         </div>
                     </a>
                 </li>
+            </ul>
+            <div class="profile" onclick="toggleMenu();">
+                <i class='bx bx-loader' id="loading"></i>
+                <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
+                <p class="username" id="username">connecting...</p>
+                <a onclick="link('settings.html?tab=profile');" id="loginlogout"><p>loading...</p></a>
+            </div>
+        </div>
+        <div class="menu" id="submenu">
+            <ul>
                 <li class="subtitle">
-                    <span class="bold">External links</span>
+                    <span class="bold">News & updates</span>
                 </li>
                 <li>
-                    <a>
-                        <div class="menu-item">
-                            <i class='bx bxs-hdd'></i>
-                            <span class="menu-item">Zyneon Drive</span>
+                    <a onclick="syncNews();">
+                        <div class="menu-item" id="news-button">
+                            <i class='bx bxs-news' ></i>
+                            <span class="menu-item">News</span>
                         </div>
                     </a>
                 </li>
                 <li>
-                    <a>
-                        <div class="menu-item">
-                            <i class='bx bxs-book'></i>
-                            <span class="menu-item">Minecraft Wiki</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <div class="menu-item">
-                            <i class='bx bxl-discord-alt' ></i>
-                            <span class="menu-item">Discord server</span>
+                    <a onclick="syncUpdates();">
+                        <div class="menu-item" id="updates-button">
+                            <i class='bx bxs-archive-in' ></i>
+                            <span class="menu-item">Application updates</span>
                         </div>
                     </a>
                 </li>
             </ul>
-            <div class="profile" onclick="activateMenu();">
-                <i class='bx bx-loader'></i>
-                <img class="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
-                <p class="username">connecting...</p>
-                <a href="settings.html#profile"><p>loading...</p></a>
-            </div>
         </div>
-        <script>activateMenu();</script>
         <div class="content">
-
+            <div id="news">
+                <div class="card">
+                    <h1>News</h1>
+                </div>
+                <div class="card" id="news-card">
+                    <h2>Title</h2>
+                    <h3>content</h3>
+                </div>
+            </div>
+            <div id="updates">
+                <div class="card">
+                    <h1>Updates</h1>
+                </div>
+                <div class="card" id="updates-card">
+                    <h2>Title</h2>
+                    <h3>content</h3>
+                </div>
+                <div class="card" id="2024.2-beta.1">
+                    <h2>2024.2-beta.1</h2>
+                    <h3>Info: With this version of the application we restart the versioning. The old public beta phase is over, and we are now preparing for the full version. The plan is for the first full version to come in February 2024. That's why this is version 2024.2-beta.1 - as it is the first beta for the upcoming version in month 2.</h3>
+                    <h3>Added:<br>
+                        + Added window resizing functionality.
+                    </h3>
+                    <h3>Changed:<br>
+                        • The entire user interface has been rewritten from scratch.<br>
+                        • The appearance of the pop-up windows has been redesigned.
+                    </h3>
+                    <h3>Removed:<br>
+                        - HTTPServer (Webserver)
+                    </h3>
+                    <h3>Bugfixes: too much</h3>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+<script src="assets/zyneon/js/index.js"></script>
+<script>syncApplication(); syncNews();</script>
 </html>

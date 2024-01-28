@@ -1,17 +1,23 @@
 :root {
     --background: #00000000;
     --background2: #00000000;
+    --background3: #00000000;
+    --background4: #00000000;
     --background-accent: #00000000;
     --highlight: #00000000;
     --color: #00000000;
     --color-dim: #00000000;
+    --color-dim-less: #00000000;
     --inverted: #00000000;
-
     --accent: #7f34f8;
 }
 
 @keyframes rotate {
     100% { transform: rotate(360deg); }
+}
+
+@keyframes negative-rotate {
+    100% { transform: rotate(-360deg); }
 }
 
 @keyframes wiggle {
@@ -36,6 +42,7 @@
 
 body {
     background: black;
+    overflow: hidden;
 }
 
 .content-rows {
@@ -46,6 +53,7 @@ body {
 }
 
 .menu {
+    overflow: hidden;
     flex-shrink: 0;
     position: relative;
     box-shadow: 0 0 0.8rem #000;
@@ -56,6 +64,7 @@ body {
 }
 
 .menu#submenu {
+    overflow-y: scroll;
     z-index: 99;
     background: var(--background2);
 }
@@ -97,11 +106,15 @@ body {
     position: absolute;
     top: 1rem;
     right: 1.4rem;
-
 }
 
 .menu i#switch:hover {
     cursor: pointer;
+}
+
+.menu ul li img {
+    width: 24px;
+    height: 24px;
 }
 
 .menu ul {
@@ -123,6 +136,10 @@ body {
     transition: 0.5s;
 }
 
+.menu.active ul li#list-template {
+    display: none;
+}
+
 .menu#submenu.active ul {
     top: 0.8rem;
 }
@@ -138,6 +155,12 @@ body {
 .menu ul li.subtitle {
     color: var(--color-dim);
     display: none;
+}
+
+.menu ul li.subtitle span {
+    font-weight: 500;
+    max-width: 10rem;
+    white-space: nowrap;
 }
 
 .menu.active ul li.subtitle {
@@ -170,6 +193,7 @@ body {
     background: var(--highlight);
     box-shadow: 0 0 0.8rem var(--highlight);
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .menu ul li a .menu-item#exit:hover {
@@ -195,24 +219,24 @@ body {
 }
 
 .menu ul li a .menu-item#refresh:hover i {
-    animation: rotate 10s linear infinite;
+    animation: negative-rotate 10s linear infinite;
     color: var(--inverted);
 }
 
-.menu ul li a .menu-item#selected:hover span {
-    color: var(--color);
+.menu ul li a .menu-item#selected span {
+    color: #fff;
 }
 
-.menu ul li a .menu-item#selected:hover i {
-    color: var(--color);
+.menu ul li a .menu-item#selected i {
+    color: #fff;
 }
 
-.menu ul li a .menu-item#active:hover span {
-    color: var(--color);
+.menu ul li a .menu-item.active span {
+    color: #fff;
 }
 
-.menu ul li a .menu-item#active:hover i {
-    color: var(--color);
+.menu ul li a .menu-item.active i {
+    color: #fff;
 }
 
 .menu ul li a .menu-item#exit:hover span {
@@ -240,13 +264,13 @@ body {
 }
 
 .menu ul li a .menu-item#selected {
-    color: var(--color);
+    color: #fff;
     background: var(--accent);
     box-shadow: 0 0 0.8rem var(--accent);
 }
 
-.menu ul li a .menu-item#active {
-    color: var(--color);
+.menu ul li a .menu-item.active {
+    color: #fff;
     background: var(--accent);
     box-shadow: 0 0 0.8rem var(--accent);
 }
@@ -295,6 +319,7 @@ body {
 
 .menu.active .profile p.username {
     display: inherit;
+    width: 20rem;
 }
 
 .menu .profile a {
@@ -315,8 +340,6 @@ body {
     text-decoration: none;
     transition: 0.5s;
     color: var(--color);
-    left: 5.5rem;
-    bottom: 1.7rem;
 }
 
 .menu .info {
@@ -330,10 +353,11 @@ body {
 
 .menu.active .info {
     display: inherit;
+    left: 1.5rem;
 }
 
 .menu .info p.app {
-    color: var(--color);
+    color: var(--color-dim-less);
 }
 
 .bold {
@@ -341,8 +365,442 @@ body {
 }
 
 .content {
+    overflow: auto;
     position: relative;
+    padding: 1.5rem;
     background: var(--background);
     flex-grow: 1;
     width: 100%;
+}
+
+.content a.button {
+    text-decoration: none;
+    font-size: 1.05rem;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.8rem #000;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background-accent);
+}
+
+.content a.button:hover {
+    cursor: pointer;
+    font-size: large;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+    z-index: 999;
+}
+
+.content a.button.active {
+    color: var(--inverted);
+    background-color: var(--highlight);
+}
+
+.content a.button.active:hover {
+    color: var(--inverted);
+    background-color: var(--highlight);
+}
+
+.content #general {
+    display: inherit;
+}
+
+.content #general .start-tab {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #general .start-tab a.button:hover {
+    font-size: 1.05rem;
+}
+
+.content #general .start-tab a.button#general-tab-start {
+    position: relative;
+    margin-right: -0.25rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    box-shadow: none;
+}
+
+.content #general .start-tab a.button#general-tab-instances {
+    position: relative;
+    border-radius: 0 0.5rem 0.5rem 0 ;
+    box-shadow: none;
+}
+
+.content #general #appearance .theme {
+    position: absolute;
+    right: 2rem;
+    top: 13.965rem;
+}
+
+.content #general #appearance .theme a.button:hover {
+    font-size: 1.05rem;
+}
+
+.content #general #appearance .theme a.button#appearance-theme-light {
+    position: relative;
+    margin-right: -0.25rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    box-shadow: none;
+}
+
+.content #general #appearance .theme a.button#appearance-theme-dark {
+    position: relative;
+    margin-right: -0.25rem;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.content #general #appearance .theme a.button#appearance-theme-zyneon {
+    position: relative;
+    border-radius: 0 0.5rem 0.5rem 0 ;
+    box-shadow: none;
+}
+
+.content #general #appearance .language {
+    position: absolute;
+    right: 2rem;
+    top: 16.97rem;
+}
+
+.content #general #appearance .language a.button#appearance-language-english {
+    box-shadow: none;
+}
+
+.content #general #appearance .language a.button#appearance-language-english:hover {
+    box-shadow: none;
+    color: var(--color);
+    background: var(--background-accent);
+    cursor: not-allowed;
+    font-size: 1.05rem;
+}
+
+.content #global {
+    display: none;
+}
+
+.content #global a.button {
+    display: none;
+    box-shadow: none;
+}
+
+.content #global .instance-path {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #global .instance-path p {
+    padding-right: 1rem;
+    color: var(--color-dim);
+    position: relative;
+    display: inline;
+}
+
+.content #global .instance-path p:hover {
+    color: var(--color);
+    transition: 0.5s;
+}
+
+.content #global .instance-path a {
+    position: relative;
+    display: inline;
+}
+
+.content #global .memory {
+    position: absolute;
+    right: 2rem;
+    top: 9.05rem;
+}
+
+.content #global .memory p {
+    padding-right: 1rem;
+    color: var(--color-dim);
+    position: relative;
+    display: inline;
+}
+
+.content #global .memory a {
+    position: relative;
+    display: inline;
+}
+
+.content #global a:hover {
+    font-size: 1.05rem;
+    box-shadow: none;
+}
+
+.content #profile {
+    display: none;
+}
+
+.content #profile .account a.button {
+    font-size: 1.05rem;
+    color: white;
+    background: #ff2e2e;
+    box-shadow: none;
+}
+
+.content #profile .account a.button:hover {
+    font-size: 1.05rem;
+    color: white;
+    background: red;
+    box-shadow: none;
+}
+
+.content #path-select .login a.button {
+    font-size: 1.05rem;
+    box-shadow: none;
+}
+
+.content #path-select .login a.button:hover {
+    font-size: 1.05rem;
+    box-shadow: none;
+}
+
+.content #path-select .login {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #path-select .login a {
+    position: relative;
+    display: inline;
+}
+
+.content #fallback .login a.button {
+    font-size: 1.05rem;
+    color: #000000;
+    background: #6bff25;
+    box-shadow: none;
+}
+
+.content #fallback .login a.button:hover {
+    font-size: 1.05rem;
+    color: black;
+    background: #14ff00;
+    box-shadow: none;
+}
+
+.content #fallback .login {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #fallback .login a {
+    position: relative;
+    display: inline;
+}
+
+.content #profile .account {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #profile .account p {
+    padding-right: 1rem;
+    color: var(--color-dim);
+    position: relative;
+    display: inline;
+}
+
+.content #profile .account p:hover {
+    color: var(--color);
+    transition: 0.5s;
+}
+
+.content #profile .account a {
+    position: relative;
+    display: inline;
+}
+
+.content #profile .actions {
+    position: relative;
+}
+
+.content #profile .actions img {
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    width: 30%;
+    min-width: 250px;
+    min-height: 250px;
+}
+
+.content #profile .actions .card {
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    width: 65%;
+}
+
+p#uuid:hover {
+    cursor: pointer;
+
+}
+
+p#instance-path-string:hover {
+    cursor: pointer;
+}
+
+.content #profile .actions .card h3:hover {
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+}
+
+.content .card {
+    border-radius: 0.5rem;
+    background: var(--background2);
+    box-shadow: 0 0 0.8rem #000;
+    margin-bottom: 1.5rem;
+}
+
+.content .card h1 {
+    padding: 1rem 1rem 0.75rem 1rem;
+    color: var(--color);
+}
+
+.content .card h2 {
+    padding: 1rem 1rem 0.75rem 1rem;
+    color: var(--color);
+}
+
+.content .card h3 {
+    padding: 1rem 1rem 0.75rem 1rem;
+    font-weight: 100;
+    color: var(--color-dim-less);
+}
+
+.content .card .background {
+    background: var(--background3);
+}
+
+.content .card .bottom {
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.content .card .background-bottom {
+    border-radius: 0 0 0.5rem 0.5rem;
+    background: var(--background3);
+}
+
+.content .card#news-card {
+    display: none;
+}
+
+.content .card#updates-card {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5rem #000;
+    border-radius: 1rem;
+}
+
+.content #instance-view {
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);;
+    display: none;
+}
+
+.content .card .title {
+    display: flex;
+}
+
+.content .card .title img {
+    height: 3rem;
+    width: 3rem;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+.content .sidebyside {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-height: 50%;
+}
+
+.content .sidebyside img {
+    width: 50%;
+    max-width: 400px;
+    max-height: 215px;
+}
+
+.content .sidebyside #description-card {
+    position: absolute;
+    right: 0;
+    width: 50%;
+}
+
+.content .sidebyside #description-card .card {
+    padding: 1rem;
+    background: var(--background-accent);
+    opacity: 0.6;
+}
+
+.content .sidebyside #description-card .card span {
+    color: var(--color);
+}
+
+.content .sidebyside #description-card .card p {
+    padding-top: 0.25rem;
+    color: var(--color-dim-less);
+}
+
+.content .dock {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 8rem;
+    width: 100%;
+    box-shadow: 0 0 0.8rem #000;
+    z-index: 99;
+    background: var(--background4);
+}
+
+.content .dock a.button#launch {
+    position: absolute;
+    right: 1.3rem;
+    bottom: 1.5rem;
+    color: #fff;
+    background: #6b38bd;
+    box-shadow: 0 0 0.6rem #ffffff40;
+    padding: 1rem 1.1rem 0.85rem 1rem;
+    font-size: 2.5rem;
+}
+
+.content .dock a.button#launch:hover {
+    background: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+}
+
+.content .dock .instance-infos {
+    font-size: 1.05rem;
+    padding: 2rem;
+    color: var(--color-dim);
 }

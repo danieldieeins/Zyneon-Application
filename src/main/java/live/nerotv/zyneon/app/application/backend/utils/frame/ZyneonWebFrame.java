@@ -6,6 +6,8 @@ import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefDisplayHandlerAdapter;
 
+import java.awt.*;
+
 public class ZyneonWebFrame extends WebFrame {
 
     public ZyneonWebFrame(String url) {
@@ -22,8 +24,9 @@ public class ZyneonWebFrame extends WebFrame {
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
-        setSize(1200,720);
-        setResizable(false);
+        setMinimumSize(new Dimension(960,500));
+        setSize(new Dimension(1200,720));
+        setResizable(true);
         setLocationRelativeTo(null);
     }
 }
