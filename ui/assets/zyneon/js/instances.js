@@ -1,5 +1,9 @@
 let highlighted = document.getElementById("top");
 
+document.getElementById('values').addEventListener('submit', function(event) {
+    event.preventDefault();
+});
+
 function highlight(id) {
     const element = document.getElementById(id);
     const newHighlight = element.querySelector("div");
@@ -164,9 +168,5 @@ function validateInstanceCreator() {
 
         callJavaMethod('button.creator.create.'+fN+'.'+fV+'.'+fM+'.'+fL+'.'+fK);
     }
-}
-
-$('#values').submit(function () {
-    validateInstanceCreator();
     return false;
-});
+}

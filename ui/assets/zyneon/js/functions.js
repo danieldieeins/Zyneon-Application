@@ -72,7 +72,15 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim", "#00000085");
         root.style.setProperty("--color-dim-less", "#00000099");
         root.style.setProperty("--inverted", "#fff");
-    } else if (newTheme === "dark") {
+    } else if (newTheme === "zyneon") {
+        setTheme("dark");
+        theme = "zyneon";
+        root.style.setProperty('--background', '#140c28');
+        root.style.setProperty('--background2', '#0d061c');
+        root.style.setProperty('--background3', '#120925');
+        root.style.setProperty('--background4', '#060112');
+        root.style.setProperty('--background-accent', '#050113');
+    } else {
         theme = "dark";
         root.style.setProperty('--background', '#181818');
         root.style.setProperty('--background2', '#101010');
@@ -84,14 +92,6 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim", "#ffffff60");
         root.style.setProperty("--color-dim-less", "#ffffff90");
         root.style.setProperty("--inverted", "#000");
-    } else {
-        setTheme("dark");
-        theme = "zyneon";
-        root.style.setProperty('--background', '#140c28');
-        root.style.setProperty('--background2', '#0d061c');
-        root.style.setProperty('--background3', '#120925');
-        root.style.setProperty('--background4', '#060112');
-        root.style.setProperty('--background-accent', '#050113');
     }
     callJavaMethod('button.theme.' + theme);
 }
