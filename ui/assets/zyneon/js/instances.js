@@ -1,3 +1,19 @@
+let highlighted = document.getElementById("top");
+
+function highlight(id) {
+    const element = document.getElementById(id);
+    const newHighlight = element.querySelector("div");
+    if(newHighlight) {
+        if(highlighted !== null) {
+            if(highlighted !== undefined) {
+                highlighted.classList.remove("active");
+            }
+        }
+        highlighted = newHighlight;
+        newHighlight.classList.add("active");
+    }
+}
+
 function syncInstanceList() {
     callJavaMethod("sync.instances.list");
     const urlParams = new URLSearchParams(window.location.search);
@@ -33,7 +49,28 @@ function addInstanceToList(id,name,png) {
 }
 
 function syncInstance(id) {
+    document.getElementById("instance-adder").style.display = "none";
     document.getElementById("instance-view").style.display = "inherit";
+
+    document.getElementById("open-resourcepacks").onclick = function () { callJavaMethod("button.resourcepacks."+id); };
+    document.getElementById("open-screenshots").onclick = function () { callJavaMethod("button.screenshots."+id); };
+    document.getElementById("open-shaderpacks").onclick = function () { callJavaMethod("button.shaders."+id); };
+    document.getElementById("open-worlds").onclick = function () { callJavaMethod("button.worlds."+id); };
+    document.getElementById("open-instance").onclick = function () { callJavaMethod("button.folder."+id); };
+    document.getElementById("open-mods").onclick = function () { callJavaMethod("button.mods."+id); };
+
+    if(id.includes("official/")) {
+        document.getElementById("open-instance").style.display = "none";
+        document.getElementById("open-mods").style.display = "none";
+    } else {
+        document.getElementById("open-instance").style.display = "inherit";
+        document.getElementById("open-mods").style.display = "inherit";
+    }
+
+    document.getElementById("configure-memory").onclick = function () { callJavaMethod("button.settings."+id); };
+    document.getElementById("delete-instance").onclick = function () { callJavaMethod("button.delete."+id); };
+
+    highlight(id);
     callJavaMethod("button.instance." + id);
 }
 
@@ -86,4 +123,45 @@ function syncDock(id,version,minecraft,modloader,mlversion) {
     document.getElementById("launch").onclick = function () {
         callJavaMethod("button.start."+id);
     };
+}
+
+function addInstance() {
+    document.getElementById("instance-view").style.display = "none";
+    document.getElementById("instance-adder").style.display = "inherit";
+}
+
+function installZyneonPlus() {
+    callJavaMethod("button.install.official/zyneonplus/"+document.getElementById("zyneonplus-version").value);
+}
+
+function validateInstanceCreator() {
+    const instanceCreator = document.getElementById('values');
+    if (instanceCreator.checkValidity()) {
+        const name = document.getElementById('creator-name');
+        const version = document.getElementById('creator-version');
+        const minecraft = document.getElementById('creator-minecraft');
+        const modloader = document.getElementById('creator-modloader');
+        const mlversion = document.getElementById('creator-mlversion');
+
+        const n = name.value;
+        const v = version.value;
+        const m = minecraft.value;
+        let l;
+        let k;
+        if(mlversion.value!=null) {
+            l = modloader.value;
+            k = mlversion.value;
+        } else {
+            l = "Vanilla";
+            k = "";
+        }
+
+        const fN = n.replace(/\./g, "%DOT%");
+        const fV = v.replace(/\./g, "%DOT%");
+        const fM = m.replace(/\./g, "%DOT%");
+        const fL = l.replace(/\./g, "");
+        const fK = k.replace(/\./g, "%DOT%");
+
+        callJavaMethod('button.creator.create.'+fN+'.'+fV+'.'+fM+'.'+fL+'.'+fK);
+    }
 }

@@ -136,7 +136,7 @@ body {
     transition: 0.5s;
 }
 
-.menu.active ul li#list-template {
+.menu ul li#list-template {
     display: none;
 }
 
@@ -668,6 +668,69 @@ p#instance-path-string:hover {
     color: var(--color);
 }
 
+.content #instance-view .card#title-card .buttons {
+    position: absolute;
+    right: 2rem;
+    top: 2.325rem;
+    display: flex;
+}
+
+.content #instance-view .card#title-card .buttons a.button {
+    position: relative;
+    cursor: inherit;
+    background: none;
+    color: var(--color-dim-less);
+    font-size: 1.5rem;
+    padding: 0.9rem 0.9rem 0.7rem 0.9rem;
+    box-shadow: none;
+}
+
+.content #instance-view .card#title-card .buttons .folder-dropdown .card {
+    position: absolute;
+    left: 0;
+    display: none;
+    z-index: 1000;
+}
+
+.content #instance-view .card#title-card .buttons .settings-dropdown .card {
+    position: absolute;
+    right: 0;
+    display: none;
+    z-index: 1000;
+}
+
+.content #instance-view .card#title-card .buttons .folder-dropdown:hover .card {
+    display: inherit;
+}
+
+.content #instance-view .card#title-card .buttons .settings-dropdown:hover .card {
+    display: inherit;
+}
+
+.content #instance-view .card#title-card .buttons .card h3:hover {
+    border-radius: inherit;
+    color: var(--inverted);
+    background: var(--color);
+    box-shadow: 0 0 0.8rem #fff;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content #instance-view .card#title-card .buttons .card h3#delete-instance:hover {
+    color: white;
+    background: red;
+    box-shadow: 0 0 0.8rem red;
+    animation: wiggle 0.1s linear infinite;
+}
+
+
+.content #instance-view .card#title-card .buttons a.button:hover {
+    background: var(--color);
+    color: var(--inverted);
+    box-shadow: 0 0 0.4rem #fff;
+    transition: 0.25s;
+}
+
 .content .card h2 {
     padding: 1rem 1rem 0.75rem 1rem;
     color: var(--color);
@@ -687,8 +750,123 @@ p#instance-path-string:hover {
     border-radius: 0 0 0.5rem 0.5rem;
 }
 
+.content #instance-adder .card h3 a.button {
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 a.button:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+}
+
+.content #instance-adder .card h3 input#creator-name {
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background2);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 input#creator-version {
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background2);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder {
+    display: none;
+}
+
+.content #instance-adder .card h3 select#creator-minecraft {
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background2);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 select#creator-modloader {
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background2);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 input#creator-mlversion {
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background2);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 input#create {
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background-accent);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 input#create:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+}
+
+.content #instance-adder .card input#creator-name {
+    display: inline;
+}
+
+.content #instance-adder .card h3 select {
+    font-size: 1.2rem;
+    color: var(--color-dim-less);
+    background: var(--background-accent);
+    border-radius: 0.5rem;
+    border-style: none;
+    padding: 0.4rem 0.5rem 0.325rem 0.5rem;
+}
+
 .content .card .background-bottom {
     border-radius: 0 0 0.5rem 0.5rem;
+    background: var(--background3);
+}
+
+.content .card .background-top {
+    border-radius:0.5rem 0.5rem 0 0;
     background: var(--background3);
 }
 
@@ -770,6 +948,10 @@ p#instance-path-string:hover {
 .content .sidebyside #description-card .card p {
     padding-top: 0.25rem;
     color: var(--color-dim-less);
+}
+
+.content #instance-view .card#title-card {
+    background: var(--background4);
 }
 
 .content .dock {

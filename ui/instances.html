@@ -63,7 +63,7 @@
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a onclick="addInstance();">
                         <div class="menu-item">
                             <i class='bx bx-plus' ></i>
                             <span class="menu-item">Add instance</span>
@@ -85,9 +85,29 @@
         </div>
         <div class="content">
             <div id="instance-view">
-                <div class="card">
+                <div class="card" id="title-card">
                     <div class="title">
                         <img alt="instance-icon" id="icon" src="assets/zyneon/images/instances/default.png"><h1 id="title">loading...</h1>
+                    </div>
+                    <div class="buttons">
+                        <div class="folder-dropdown">
+                            <a class="button">Folder</a>
+                            <div class="card">
+                                <h3 id="open-resourcepacks">Open resource packs</h3>
+                                <h3 id="open-screenshots">Open screenshots</h3>
+                                <h3 id="open-shaderpacks">Open shader packs</h3>
+                                <h3 id="open-worlds">Open worlds</h3>
+                                <h3 id="open-instance">Open instance folder</h3>
+                                <h3 id="open-mods">Open mods folder</h3>
+                            </div>
+                        </div>
+                        <div class="settings-dropdown">
+                            <a class="button">Settings</a>
+                            <div class="card">
+                                <h3 id="configure-memory">Configure Memory</h3>
+                                <h3 id="delete-instance">Delete instance</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="sidebyside">
@@ -106,6 +126,173 @@
                         <p><i class='bx bx-code-block' ></i> <span id="modloader">Modloader</span>: <span id="mlversion">loading...</span></p>
                     </div>
                     <a class="button" id="launch"><i class='bx bxs-rocket'></i> LAUNCH</a>
+                </div>
+            </div>
+            <div id="instance-adder">
+                <div class="card">
+                    <h1>Select an official instance</h1>
+                </div>
+                <div id="zyneonplus-instance" class="card">
+                    <h2 class="background-top">Zyneon+</h2>
+                    <h3 class="background-bottom">Play Minecraft in an optimized way with more FPS, shaders, simple online play and more!</h3>
+                    <h3>
+                        <label>
+                            <select id="zyneonplus-version">
+                                <option value="dynamic">Latest (recommended)</option>
+                                <option value="vr">Latest VR (dynamic)</option>
+                                <option value="1.20">1.20.4 (static)</option>
+                                <option value="1.19">1.19.4 (static)</option>
+                                <option value="1.18">1.18.2 (static)</option>
+                                <option value="1.17">1.17.1 (static)</option>
+                                <option value="1.16">1.16.5 (static)</option>
+                                <option value="1.12" disabled>1.12.2 (static)</option>
+                                <option value="1.8" disabled>1.8.9 (static)</option>
+                            </select>
+                        </label>
+                        <a class="button" onclick="installZyneonPlus();">Install</a>
+                    </h3>
+                </div>
+                <div id="projectz-instance" class="card">
+                    <h2 class="background-top">Project'Z Beta</h2>
+                    <h3 class="background-bottom">Try Zyneon's newest modpack!</h3>
+                    <h3><a class="button" onclick="callJavaMethod('button.install.official/projectz');">Install</a></h3>
+                </div><br>
+                <div class="card">
+                    <h1 class="background-top">Create your own instance</h1>
+                </div>
+                <div class="card">
+                    <h2 class="background-top">Instance creator</h2>
+
+                    <form id="values">
+                        <div id="form" class="background-bottom">
+                            <h3>Instance name: <label><input type="text" id="creator-name" maxlength="32" required></label></h3>
+                            <h3>Instance version: <label><input type="text" id="creator-version" required></label></h3>
+                            <h3>
+                                Minecraft Version:
+                                <label>
+                                    <select id="creator-minecraft" required>
+                                        <option value="1.20.4">1.20.4 (latest)</option>
+                                        <option value="1.20.3">1.20.3</option>
+                                        <option value="1.20.2">1.20.2</option>
+                                        <option value="1.20.1">1.20.1</option>
+                                        <option value="1.20.0">1.20.0</option>
+
+                                        <option value="1.19.4">1.19.4</option>
+                                        <option value="1.19.3">1.19.3</option>
+                                        <option value="1.19.2">1.19.2</option>
+                                        <option value="1.19.1">1.19.1</option>
+                                        <option value="1.19.0">1.19.0</option>
+
+                                        <option value="1.18.2">1.18.2</option>
+                                        <option value="1.18.1">1.18.1</option>
+                                        <option value="1.18.0">1.18.0</option>
+
+                                        <option value="1.17.1">1.17.1</option>
+                                        <option value="1.17.0">1.17.0</option>
+
+                                        <option value="1.16.5">1.16.5</option>
+                                        <option value="1.16.4">1.16.4</option>
+                                        <option value="1.16.3">1.16.3</option>
+                                        <option value="1.16.2">1.16.2</option>
+                                        <option value="1.16.1">1.16.1</option>
+                                        <option value="1.16.0">1.16.0</option>
+
+                                        <option value="1.15.2">1.15.2</option>
+                                        <option value="1.15.1">1.15.1</option>
+                                        <option value="1.15.0">1.15.0</option>
+
+                                        <option value="1.14.4">1.14.4</option>
+                                        <option value="1.14.3">1.14.3</option>
+                                        <option value="1.14.2">1.14.2</option>
+                                        <option value="1.14.1">1.14.1</option>
+                                        <option value="1.14.0">1.14.0</option>
+
+                                        <option value="1.13.2">1.13.2</option>
+                                        <option value="1.13.1">1.13.1</option>
+                                        <option value="1.13.0">1.13.0</option>
+
+                                        <option value="1.12.2" disabled>1.12.2 (not starting yet)</option>
+                                        <option value="1.12.1" disabled>1.12.1 (not starting yet)</option>
+                                        <option value="1.12.0" disabled>1.12.0 (not starting yet)</option>
+
+                                        <option value="1.11.2" disabled>1.11.2 (not starting yet)</option>
+                                        <option value="1.11.1" disabled>1.11.1 (not starting yet)</option>
+                                        <option value="1.11.0" disabled>1.11.0 (not starting yet)</option>
+
+                                        <option value="1.10.2" disabled>1.10.2 (not starting yet)</option>
+                                        <option value="1.10.1" disabled>1.10.1 (not starting yet)</option>
+                                        <option value="1.10.0" disabled>1.10.0 (not starting yet)</option>
+
+                                        <option value="1.9.4" disabled>1.9.4 (not starting yet)</option>
+                                        <option value="1.9.3" disabled>1.9.3 (not starting yet)</option>
+                                        <option value="1.9.2" disabled>1.9.2 (not starting yet)</option>
+                                        <option value="1.9.1" disabled>1.9.1 (not starting yet)</option>
+                                        <option value="1.9.0" disabled>1.9.0 (not starting yet)</option>
+
+                                        <option value="1.8.9" disabled>1.8.9 (not starting yet)</option>
+                                        <option value="1.8.8" disabled>1.8.8 (not starting yet)</option>
+                                        <option value="1.8.7" disabled>1.8.7 (not starting yet)</option>
+                                        <option value="1.8.6" disabled>1.8.6 (not starting yet)</option>
+                                        <option value="1.8.5" disabled>1.8.5 (not starting yet)</option>
+                                        <option value="1.8.4" disabled>1.8.4 (not starting yet)</option>
+                                        <option value="1.8.3" disabled>1.8.3 (not starting yet)</option>
+                                        <option value="1.8.2" disabled>1.8.2 (not starting yet)</option>
+                                        <option value="1.8.1" disabled>1.8.1 (not starting yet)</option>
+                                        <option value="1.8.0" disabled>1.8.0 (not starting yet)</option>
+
+                                        <option value="1.7.10" disabled>1.7.10 (not starting yet)</option>
+                                        <option value="1.7.9" disabled>1.7.9 (not starting yet)</option>
+                                        <option value="1.7.8" disabled>1.7.8 (not starting yet)</option>
+                                        <option value="1.7.7" disabled>1.7.7 (not starting yet)</option>
+                                        <option value="1.7.6" disabled>1.7.6 (not starting yet)</option>
+                                        <option value="1.7.5" disabled>1.7.5 (not starting yet)</option>
+                                        <option value="1.7.4" disabled>1.7.4 (not starting yet)</option>
+                                        <option value="1.7.3" disabled>1.7.3 (not starting yet)</option>
+                                        <option value="1.7.2" disabled>1.7.2 (not starting yet)</option>
+                                        <option value="1.7.1" disabled>1.7.1 (not starting yet)</option>
+                                        <option value="1.7.0" disabled>1.7.0 (not starting yet)</option>
+
+                                        <option value="1.6.4" disabled>1.6.4 (not starting yet)</option>
+                                        <option value="1.6.3" disabled>1.6.3 (not starting yet)</option>
+                                        <option value="1.6.2" disabled>1.6.2 (not starting yet)</option>
+                                        <option value="1.6.1" disabled>1.6.1 (not starting yet)</option>
+                                        <option value="1.6.0" disabled>1.6.0 (not starting yet)</option>
+
+                                        <option value="1.5.2">1.5.2</option>
+                                        <option value="1.5.1">1.5.1</option>
+                                        <option value="1.5.0">1.5.0</option>
+
+                                        <option value="1.4.7">1.4.7</option>
+                                        <option value="1.4.6">1.4.6</option>
+                                        <option value="1.4.5">1.4.5</option>
+                                        <option value="1.4.4">1.4.4</option>
+                                        <option value="1.4.1">1.4.1</option>
+                                        <option value="1.4.0">1.4.0</option>
+
+                                        <option value="1.3.2">1.3.2</option>
+                                        <option value="1.3.1">1.3.1</option>
+
+                                        <option value="1.2.5">1.2.5</option>
+                                        <option value="1.2.4">1.2.4</option>
+                                        <option value="1.2.3">1.2.3</option>
+                                        <option value="1.2.1">1.2.1</option>
+                                    </select>
+                                </label>
+                            </h3>
+                            <h3>
+                                Modloader:
+                                <label>
+                                    <select id="creator-modloader" required>
+                                        <option value="Vanilla">None (vanilla)</option>
+                                        <option value="Fabric">Fabric</option>
+                                        <option value="Forge">Forge</option>
+                                    </select>
+                                </label>
+                            </h3>
+                            <h3 id="bottom2">Modloader Version: <label><input type="text" id="creator-mlversion"></label></h3>
+                        </div>
+                        <h3><input type="submit" id="create" value="Create instance" onclick="validateInstanceCreator();"></h3>
+                    </form>
                 </div>
             </div>
         </div>

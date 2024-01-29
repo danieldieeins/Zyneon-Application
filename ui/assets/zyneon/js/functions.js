@@ -77,7 +77,7 @@ function setTheme(newTheme) {
         root.style.setProperty('--background', '#181818');
         root.style.setProperty('--background2', '#101010');
         root.style.setProperty('--background3', '#1a1a1a');
-        root.style.setProperty('--background4', '#0c0c0c');
+        root.style.setProperty('--background4', '#080808');
         root.style.setProperty('--background-accent', '#000');
         root.style.setProperty("--highlight", "#fff");
         root.style.setProperty("--color", "#fff");

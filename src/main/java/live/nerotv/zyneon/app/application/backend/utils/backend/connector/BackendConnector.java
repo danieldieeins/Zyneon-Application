@@ -120,6 +120,7 @@ public class BackendConnector {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid,uuid);
         } else if(request.contains("sync.instances.list")) {
+            Main.getInstancePath();
             String filePath = Main.getDirectoryPath()+"libs/zyneon/instances.json";
             Gson gson = new Gson();
             try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
@@ -367,6 +368,13 @@ public class BackendConnector {
             } else {
                 frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version=dynamic\");", "", 1);
             }
+        } else if (request.contains("button.install.")) {
+            String id = request.replace("button.install.","");
+            String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
+            File instance = new File(Main.getInstancePath()+"instances/"+id+"/");
+            Main.getLogger().debug("Created instance path: "+instance.mkdirs());
+            FileUtils.downloadFile(url,URLDecoder.decode(instance.getAbsolutePath()+"/zyneonInstance.json",StandardCharsets.UTF_8));
+            resolveRequest("button.refresh.instances");
         } else if (request.contains("button.resourcepacks.")) {
             resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
         } else if (request.contains("button.shaders.")) {
@@ -388,6 +396,7 @@ public class BackendConnector {
                             instancesPath=instancesPath+"/Zyneon";
                         }
                         Main.instances = instancesPath;
+                        Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getSettingsURL()+"&tab=global");
                     }
                 });
