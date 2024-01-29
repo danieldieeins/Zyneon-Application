@@ -165,3 +165,8 @@ function validateInstanceCreator() {
         callJavaMethod('button.creator.create.'+fN+'.'+fV+'.'+fM+'.'+fL+'.'+fK);
     }
 }
+
+$('#values').submit(function () {
+    validateInstanceCreator();
+    return false;
+});

@@ -273,11 +273,12 @@ public class BackendConnector {
                         instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
                     }
                 } else if(modloader.equalsIgnoreCase("fabric")) {
-                    instance.set("modpack.fabric",mlversion);
+                    instance.set("modpack.fabric",mlversion.replace("old","").replace("neo",""));
                 }
                 instance.set("modpack.instance","instances/"+id+"/");
             }
-            resolveRequest("button.refresh.instances");
+            loadInstances();
+            frame.getBrowser().loadURL(Application.getInstancesURL());
         } else if (request.contains("button.start.")) {
             Main.getLogger().debug("Trying to start instance "+request.replace("button.start.",""));
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
