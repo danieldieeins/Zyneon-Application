@@ -4,6 +4,10 @@ document.getElementById('values').addEventListener('submit', function(event) {
     event.preventDefault();
 });
 
+document.getElementById('settings').addEventListener('submit', function(event) {
+    event.preventDefault();
+});
+
 function highlight(id) {
     const element = document.getElementById(id);
     const newHighlight = element.querySelector("div");
@@ -22,8 +26,7 @@ function syncInstanceList() {
     callJavaMethod("sync.instances.list");
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("tab")!=null) {
-        const id = urlParams.get("tab");
-        document.getElementById(id).querySelector("div").classList.add("active");
+        syncInstance(urlParams.get("tab"));
     }
 }
 
@@ -53,6 +56,7 @@ function addInstanceToList(id,name,png) {
 }
 
 function syncInstance(id) {
+    closeSettings();
     document.getElementById("instance-adder").style.display = "none";
     document.getElementById("instance-view").style.display = "inherit";
 
@@ -66,9 +70,13 @@ function syncInstance(id) {
     if(id.includes("official/")) {
         document.getElementById("open-instance").style.display = "none";
         document.getElementById("open-mods").style.display = "none";
+        document.getElementById("local-settings").style.display = "none";
+        document.getElementById("local-appearance").style.display = "none";
     } else {
         document.getElementById("open-instance").style.display = "inherit";
         document.getElementById("open-mods").style.display = "inherit";
+        document.getElementById("local-settings").style.display = "inherit";
+        document.getElementById("local-appearance").style.display = "inherit";
     }
 
     document.getElementById("configure-memory").onclick = function () { callJavaMethod("button.settings."+id); };
@@ -104,7 +112,7 @@ function syncLogo(png) {
 }
 
 function syncDescription(description) {
-    document.getElementById("description").innerText = name;
+    document.getElementById("description").innerText = description;
 }
 
 function syncBackground(png) {
@@ -129,6 +137,59 @@ function syncDock(id,version,minecraft,modloader,mlversion) {
     };
 }
 
+function syncSettings(id,ram,name,version,description,minecraft,modloader,mlversion,icon,logo,background) {
+    document.getElementById("settings-name").value = name;
+    document.getElementById("settings-version").value = version;
+    document.getElementById("settings-description").value = description;
+    document.getElementById("settings-minecraft").value = minecraft;
+    document.getElementById("settings-modloader").value = modloader;
+    document.getElementById("settings-mlversion").value = mlversion;
+    document.getElementById("memory-int").innerText = ram;
+    document.getElementById("memory-int").style.display = "inline";
+    document.getElementById("settings-save").onclick = function () { updateInstance(id); };
+    document.getElementById("configure-icon").onclick = function () { callJavaMethod("button.change.icon."+id); };
+    document.getElementById("configure-logo").onclick = function () { callJavaMethod("button.change.logo."+id); };
+    document.getElementById("configure-background").onclick = function () { callJavaMethod("button.change.background."+id); };
+    if(icon !== undefined) {
+        if(icon !== "") {
+            document.getElementById("show-icon").style.display = "inline";
+            document.getElementById("show-icon").onclick = function () { callJavaMethod("button.icon."+id); };
+        }
+    }
+    if(logo !== undefined) {
+        if(logo !== "") {
+            document.getElementById("show-logo").style.display = "inline";
+            document.getElementById("show-logo").onclick = function () { callJavaMethod("button.logo."+id); };
+        }
+    }
+    if(background !== undefined) {
+        if(background !== "") {
+            document.getElementById("show-background").style.display = "inline";
+            document.getElementById("show-background").onclick = function () { callJavaMethod("button.background."+id); };
+        }
+    }
+}
+
+function showSettings() {
+    document.getElementById("sidebyside").style.display = "none";
+    document.getElementById("instance-settings").style.display = "inherit";
+    document.getElementById("configure-instance").innerText = "Close settings";
+}
+
+function closeSettings() {
+    document.getElementById("instance-settings").style.display = "none";
+    document.getElementById("sidebyside").style.display = "inherit";
+    document.getElementById("configure-instance").innerText = "Settings";
+}
+
+function toggleSettings() {
+    if(document.getElementById("instance-settings").style.display === "none") {
+        showSettings();
+    } else {
+        closeSettings();
+    }
+}
+
 function addInstance() {
     document.getElementById("instance-view").style.display = "none";
     document.getElementById("instance-adder").style.display = "inherit";
@@ -136,6 +197,11 @@ function addInstance() {
 
 function installZyneonPlus() {
     callJavaMethod("button.install.official/zyneonplus/"+document.getElementById("zyneonplus-version").value);
+}
+
+function installInstanceID() {
+    id = document.getElementById("id").value;
+    callJavaMethod('button.install.'+id);
 }
 
 function validateInstanceCreator() {
@@ -167,6 +233,42 @@ function validateInstanceCreator() {
         const fK = k.replace(/\./g, "%DOT%");
 
         callJavaMethod('button.creator.create.'+fN+'.'+fV+'.'+fM+'.'+fL+'.'+fK);
+    }
+    return false;
+}
+
+function updateInstance(id) {
+    const instanceCreator = document.getElementById('settings');
+    if (instanceCreator.checkValidity()) {
+        const name = document.getElementById('settings-name');
+        const version = document.getElementById('settings-version');
+        const minecraft = document.getElementById('settings-minecraft');
+        const modloader = document.getElementById('settings-modloader');
+        const mlversion = document.getElementById('settings-mlversion');
+        const description = document.getElementById('settings-description');
+
+        const n = name.value;
+        const v = version.value;
+        const m = minecraft.value;
+        let l;
+        let k;
+        const d = description.value;
+        if(mlversion.value!=null) {
+            l = modloader.value;
+            k = mlversion.value;
+        } else {
+            l = "Vanilla";
+            k = "";
+        }
+
+        const fN = n.replace(/\./g, "%DOT%");
+        const fV = v.replace(/\./g, "%DOT%");
+        const fM = m.replace(/\./g, "%DOT%");
+        const dS = d.replace(/\./g, "%DOT%");
+        const fL = l.replace(/\./g, "");
+        const fK = k.replace(/\./g, "%DOT%");
+
+        callJavaMethod('button.creator.update.'+id+'.'+fN+'.'+fV+'.'+fM+'.'+fL+'.'+fK+'.'+dS);
     }
     return false;
 }

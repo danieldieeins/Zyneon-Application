@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>2024.2-beta.1-hotfix.1</version>
+    <version>2024.2-beta.2</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

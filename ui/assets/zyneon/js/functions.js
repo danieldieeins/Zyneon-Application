@@ -108,3 +108,15 @@ function link(url) {
     }
     window.location.href = url;
 }
+
+function addVersionsToMinecraftSelect(id) {
+    callJavaMethod("sync.select.minecraft."+id);
+}
+
+function addToSelect(selectID,value,name) {
+    const select = document.getElementById(selectID);
+    const option = document.createElement("option");
+    option.text = name;
+    option.value = value;
+    select.add(option);
+}

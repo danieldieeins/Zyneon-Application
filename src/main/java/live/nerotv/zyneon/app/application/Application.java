@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
+import live.nerotv.zyneon.app.application.backend.launcher.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
@@ -44,6 +45,7 @@ public class Application {
             loadInstances();
         } catch (Exception ignore) {}
         try {
+            MinecraftVersion.syncVersions();
             checkURL();
             auth.isLoggedIn();
             frame.setTitlebar("Zyneon Application",Color.decode("#050113"),Color.white);

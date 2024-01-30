@@ -15,6 +15,7 @@ import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
 import live.nerotv.zyneon.app.application.backend.instance.VanillaInstance;
 import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
+import live.nerotv.zyneon.app.application.backend.launcher.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
@@ -206,7 +207,27 @@ public class BackendConnector {
             File file = new File(Main.getInstancePath()+"instances/"+id+"/zyneonInstance.json");
             if(file.exists()) {
                 Config instance = new Config(file);
-
+                String name = instance.getString("modpack.name");
+                String version = instance.getString("modpack.version");
+                String description;
+                if(id.contains("official/")) {
+                    description = "This instance is outdated. Try to update.";
+                } else {
+                    description = "This is an instance created by YOU!";
+                }
+                if(instance.getString("modpack.description")!=null) {
+                    description = instance.getString("modpack.description").replace("\"","''");
+                }
+                String minecraft = instance.getString("modpack.minecraft");
+                String modloader = "Vanilla";
+                String mlversion = "No mods";
+                if(instance.getString("modpack.forge.version")!=null) {
+                    modloader = "Forge";
+                    mlversion = instance.getString("modpack.forge.version");
+                } else if(instance.getString("modpack.fabric")!=null) {
+                    modloader = "Fabric";
+                    mlversion = instance.getString("modpack.fabric");
+                }
                 File icon = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/assets/zyneon/images/instances/"+id+".png");
                 File logo = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/assets/zyneon/images/instances/"+id+"-logo.png");
                 File background = new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/assets/zyneon/images/instances/"+id+".webp");
@@ -222,19 +243,19 @@ public class BackendConnector {
                 if(background.exists()) {
                     background_ = "assets/zyneon/images/instances/"+id+".webp";
                 }
-                frame.executeJavaScript("syncTitle('"+instance.get("modpack.name")+"','"+icon_+"');");
+                frame.executeJavaScript("syncDescription(\""+description+"\");");
+                frame.executeJavaScript("syncTitle('"+name+"','"+icon_+"');");
                 frame.executeJavaScript("syncLogo('"+logo_+"');");
                 frame.executeJavaScript("syncBackground('"+background_+"');");
-                String modloader = "Vanilla";
-                String mlversion = "No mods";
-                if(instance.getString("modpack.forge.version")!=null) {
-                    modloader = "Forge";
-                    mlversion = instance.getString("modpack.forge.version")+" ("+instance.getString("modpack.forge.type").toLowerCase()+")";
-                } else if(instance.getString("modpack.fabric")!=null) {
-                    modloader = "Fabric";
-                    mlversion = instance.getString("modpack.fabric");
+                frame.executeJavaScript("syncDock('"+id+"','"+version+"','"+minecraft+"','"+modloader+"','"+mlversion+"');");
+
+                int ram = Main.memory;
+                String ramID = id.replace(".","").replace("/","");
+                if(Main.config.get("settings.memory."+ramID)!=null) {
+                    ram = Main.config.getInteger("settings.memory."+ramID);
                 }
-                frame.executeJavaScript("syncDock('"+id+"','"+instance.get("modpack.version")+"','"+instance.get("modpack.minecraft")+"','"+modloader+"','"+mlversion+"');");
+
+                frame.executeJavaScript("syncSettings(\""+id+"\",\""+ram+" MB\",\""+name+"\",\""+version+"\",\""+description+"\",\""+minecraft+"\",\""+modloader+"\",\""+mlversion+"\",\"\",\"\",\"\");");
             }
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.","");
@@ -243,6 +264,48 @@ public class BackendConnector {
                 FileUtil.deleteFolder(instance);
                 resolveRequest("button.refresh.instances");
             }
+        } else if (request.contains("sync.select.minecraft.")) {
+            String id = request.replace("sync.select.minecraft.","");
+            for(String version: MinecraftVersion.supportedVersions) {
+                frame.executeJavaScript("addToSelect('"+id+"','"+version.toLowerCase().replace(" (latest)","")+"','"+version+"')");
+            }
+        } else if (request.contains("button.creator.update.")) {
+            String[] creator = request.replace("button.creator.update.","").split("\\.", 7);
+            String id = creator[0];
+            String name = creator[1];
+            name = name.replace("%DOT%",".");
+            String version = creator[2];
+            version = version.replace("%DOT%",".");
+            String minecraft = creator[3];
+            minecraft = minecraft.replace("%DOT%",".");
+            String modloader = creator[4];
+            String mlversion = creator[5];
+            mlversion = mlversion.replace("%DOT%",".");
+            String description = creator[6];
+            description = description.replace("%DOT%",".");
+            File instancePath = new File(Main.getInstancePath()+"instances/"+id+"/");
+            if(instancePath.exists()) {
+                Main.getLogger().debug("Created instance path: "+instancePath.mkdirs());
+                Config instance = new Config(instancePath.getAbsolutePath()+"/zyneonInstance.json");
+                instance.set("modpack.name",name);
+                instance.set("modpack.version",version);
+                instance.set("modpack.description",description);
+                instance.set("modpack.minecraft",minecraft);
+                if(modloader.equalsIgnoreCase("forge")) {
+                    instance.set("modpack.forge.version",mlversion);
+                    if(mlversion.toLowerCase().startsWith("old")) {
+                        instance.set("modpack.forge.type", ForgeVersionType.OLD.toString());
+                    } else if(mlversion.toLowerCase().startsWith("neo")) {
+                        instance.set("modpack.forge.type", ForgeVersionType.NEO_FORGE.toString());
+                    } else {
+                        instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
+                    }
+                } else if(modloader.equalsIgnoreCase("fabric")) {
+                    instance.set("modpack.fabric",mlversion.replace("old","").replace("neo",""));
+                }
+                instance.set("modpack.instance","instances/"+id+"/");
+            }
+            resolveRequest("button.refresh.instances");
         } else if (request.contains("button.creator.create.")) {
             String[] creator = request.replace("button.creator.create.","").split("\\.", 5);
             String name = creator[0];
@@ -277,8 +340,7 @@ public class BackendConnector {
                 }
                 instance.set("modpack.instance","instances/"+id+"/");
             }
-            loadInstances();
-            frame.getBrowser().loadURL(Application.getInstancesURL());
+            resolveRequest("button.refresh.instances");
         } else if (request.contains("button.start.")) {
             Main.getLogger().debug("Trying to start instance "+request.replace("button.start.",""));
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));

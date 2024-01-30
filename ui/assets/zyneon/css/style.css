@@ -670,8 +670,8 @@ p#instance-path-string:hover {
 
 .content #instance-view .card#title-card .buttons {
     position: absolute;
-    right: 2rem;
-    top: 2.325rem;
+    right: 0.5rem;
+    top: 1.3rem;
     display: flex;
 }
 
@@ -716,7 +716,103 @@ p#instance-path-string:hover {
     transition: 0.25s;
 }
 
-.content #instance-view .card#title-card .buttons .card h3#delete-instance:hover {
+.content #instance-view #instance-settings {
+    position: absolute;
+    top: 4rem;
+    right: 0.25rem;
+    width: calc(100% - 1.95rem);
+    height: calc(100% - 13.5rem);
+    padding: 2rem 0.5rem 1rem 1.1rem;
+    overflow-y: auto;
+    z-index: 0;
+}
+
+.content #instance-view #instance-settings .card {
+    box-shadow: 0 0 0.4rem black;
+}
+
+.content #instance-view #instance-settings h3 {
+    position: relative;
+}
+
+.content #instance-view #instance-settings h3 a#show-icon, a#memory-int, a#show-logo, a#show-background {
+    text-decoration: none;
+    color: var(--color-dim);
+    position: absolute;
+    right: 7rem;
+    display: none;
+}
+
+.content #instance-view #instance-settings h3 a#show-icon:hover, a#memory-int, a#show-logo:hover, a#show-background:hover {
+    color: var(--color);
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+
+
+.content #instance-view #instance-settings h3 a#memory-int {
+    text-decoration: none;
+    color: var(--color-dim);
+    position: absolute;
+    right: 7rem;
+    display: inline;
+}
+
+.content #instance-view #instance-settings h3 a#memory-int:hover {
+    cursor: inherit;
+}
+
+.content #instance-view #instance-settings h3 input,select {
+    position: absolute;
+    right: 0.7rem;
+    top: 0.7rem;
+    border-style: none;
+    text-decoration: none;
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background4);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-view #instance-settings h3 input#settings-save {
+    position: absolute;
+    left: 0.7rem;
+    top: 0.55rem;
+    right: inherit;
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background-accent);
+    font-size: 1.1rem;
+    box-shadow: none;
+}
+
+.content #instance-view #instance-settings h3 input#settings-save:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+}
+
+.content #instance-view #instance-settings h3 a.button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.content #instance-view #instance-settings h3 a.button:hover {
+    font-size: 1.05rem;
+}
+
+.content #instance-view #instance-settings h3 a.button#delete-instance:hover {
     color: white;
     background: red;
     box-shadow: 0 0 0.8rem red;
@@ -791,19 +887,8 @@ p#instance-path-string:hover {
     display: none;
 }
 
-.content #instance-adder .card h3 select#creator-minecraft {
-    border-style: none;
-    text-decoration: none;
-    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
-    border-radius: 0.5rem;
-    z-index: 5;
-    color: var(--color);
-    background-color: var(--background2);
-    font-size: 1.2rem;
-    box-shadow: none;
-}
-
-.content #instance-adder .card h3 select#creator-modloader {
+.content #instance-adder .card h3 select#creator-minecraft,select#creator-modloader {
+    position: inherit;
     border-style: none;
     text-decoration: none;
     padding: 0.5rem 0.5rem 0.325rem 0.5rem;
@@ -851,7 +936,8 @@ p#instance-path-string:hover {
     display: inline;
 }
 
-.content #instance-adder .card h3 select {
+.content #instance-adder .card h3 select,input {
+    position: inherit;
     font-size: 1.2rem;
     color: var(--color-dim-less);
     background: var(--background-accent);
@@ -906,6 +992,10 @@ p#instance-path-string:hover {
     display: none;
 }
 
+.content #instance-view .card#title-card a.button#configure-instance {
+    cursor: pointer;
+}
+
 .content .card .title {
     display: flex;
 }
@@ -931,6 +1021,7 @@ p#instance-path-string:hover {
 
 .content .sidebyside #description-card {
     position: absolute;
+    top: 0;
     right: 0;
     width: 50%;
 }
@@ -951,6 +1042,8 @@ p#instance-path-string:hover {
 }
 
 .content #instance-view .card#title-card {
+    position: relative;
+    z-index: 100;
     background: var(--background4);
 }
 

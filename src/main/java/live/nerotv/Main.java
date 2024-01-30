@@ -25,6 +25,7 @@ public class Main {
     public static String starttab = "start";
     public static ZyneonSplash splash;
     public static String os;
+    public static int memory;
 
     public static void main(String[] args) {
         splash = new ZyneonSplash();
@@ -33,7 +34,7 @@ public class Main {
         starttab = config.getString("settings.starttab");
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
-        version = "2024.2-beta.1-hotfix.1";
+        version = "2024.2-beta.2";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
@@ -46,7 +47,7 @@ public class Main {
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         config.checkEntry("settings.appearance.theme","zyneon");
-        new Application(version+" ▪ Argrium").start();
+        new Application(version+" ▪ Argrium²").start();
     }
 
     private static void initConfig() {
@@ -54,6 +55,7 @@ public class Main {
         config.checkEntry("settings.starttab","start");
         config.checkEntry("settings.language","auto");
         config.checkEntry("settings.memory.default", 1024);
+        memory = config.getInteger("settings.memory.default");
         config.checkEntry("settings.logger.debug", false);
     }
 
