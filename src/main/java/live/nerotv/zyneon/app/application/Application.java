@@ -121,6 +121,9 @@ public class Application {
             String name = instanceJson.getString("modpack.name");
             String version = instanceJson.getString("modpack.version");
             String minecraft = instanceJson.getString("modpack.minecraft");
+            if(instanceJson.getString("modpack.icon")!=null) {
+                instance_.put("icon",instanceJson.getString("modpack.icon"));
+            }
             String modloader = "Vanilla";
             if(instanceJson.getString("modpack.forge.version")!=null) {
                 modloader = "Forge "+instanceJson.getString("modpack.forge.version");

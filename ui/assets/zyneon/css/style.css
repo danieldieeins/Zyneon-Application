@@ -1014,16 +1014,14 @@ p#instance-path-string:hover {
 }
 
 .content .sidebyside img {
-    width: 50%;
-    max-width: 400px;
-    max-height: 215px;
+    width: 49%;
 }
 
 .content .sidebyside #description-card {
     position: absolute;
     top: 0;
     right: 0;
-    width: 50%;
+    width: 49%;
 }
 
 .content .sidebyside #description-card .card {

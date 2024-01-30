@@ -24,6 +24,9 @@ function highlight(id) {
 
 function syncInstanceList() {
     callJavaMethod("sync.instances.list");
+}
+
+function loadTab() {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("tab")!=null) {
         syncInstance(urlParams.get("tab"));

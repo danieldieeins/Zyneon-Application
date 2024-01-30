@@ -18,6 +18,7 @@ import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
+import live.nerotv.zyneon.app.application.backend.utils.frame.StringUtil;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 import org.cef.browser.CefBrowser;
@@ -36,6 +37,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class BackendConnector {
 
@@ -132,6 +135,9 @@ public class BackendConnector {
                     String png = "assets/zyneon/images/instances/"+instance.get("id").toString().replace("\"","")+".png";
                     if(new File(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/"+png).exists()) {
                         frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
+                    } else if(instance.get("icon")!=null) {
+                        png = StringUtil.getURLFromFile(instance.get("icon").toString().replace("\"",""));
+                        frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
                     } else {
                         frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ");");
                     }
@@ -139,6 +145,7 @@ public class BackendConnector {
             } catch (IOException e) {
                 Main.getLogger().error(e.getMessage());
             }
+            frame.executeJavaScript("loadTab();");
         } else if(request.contains("sync.login")) {
             if(Application.auth.isLoggedIn()) {
                 frame.executeJavaScript("login('" + Application.auth.getAuthInfos().getUsername() + "');");
@@ -236,12 +243,18 @@ public class BackendConnector {
                 String background_ = "";
                 if(icon.exists()) {
                     icon_ = "assets/zyneon/images/instances/"+id+".png";
+                } else if(instance.getString("modpack.icon")!=null) {
+                    icon_ = StringUtil.getURLFromFile(instance.getString("modpack.icon"));
                 }
                 if(logo.exists()) {
                     logo_ = "assets/zyneon/images/instances/"+id+"-logo.png";
+                } else if(instance.getString("modpack.logo")!=null) {
+                    logo_ = StringUtil.getURLFromFile(instance.getString("modpack.logo"));
                 }
                 if(background.exists()) {
                     background_ = "assets/zyneon/images/instances/"+id+".webp";
+                } else if(instance.getString("modpack.background")!=null) {
+                    background_ = StringUtil.getURLFromFile(instance.getString("modpack.background"));
                 }
                 frame.executeJavaScript("syncDescription(\""+description+"\");");
                 frame.executeJavaScript("syncTitle('"+name+"','"+icon_+"');");
@@ -255,7 +268,7 @@ public class BackendConnector {
                     ram = Main.config.getInteger("settings.memory."+ramID);
                 }
 
-                frame.executeJavaScript("syncSettings(\""+id+"\",\""+ram+" MB\",\""+name+"\",\""+version+"\",\""+description+"\",\""+minecraft+"\",\""+modloader+"\",\""+mlversion+"\",\"\",\"\",\"\");");
+                frame.executeJavaScript("syncSettings(\""+id+"\",\""+ram+" MB\",\""+name+"\",\""+version+"\",\""+description+"\",\""+minecraft+"\",\""+modloader+"\",\""+mlversion+"\",\""+icon_+"\",\""+logo_+"\",\""+background_+"\");");
             }
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.","");
@@ -305,7 +318,8 @@ public class BackendConnector {
                 }
                 instance.set("modpack.instance","instances/"+id+"/");
             }
-            resolveRequest("button.refresh.instances");
+            Application.loadInstances();
+            frame.getBrowser().loadURL(Application.getInstancesURL()+"&tab="+id);
         } else if (request.contains("button.creator.create.")) {
             String[] creator = request.replace("button.creator.create.","").split("\\.", 5);
             String name = creator[0];
@@ -412,6 +426,12 @@ public class BackendConnector {
                     Application.auth.startAsyncWebview();
                 });
             }
+        } else if (request.contains("button.icon.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_ICON, request.replace("button.icon.", ""));
+        } else if (request.contains("button.logo.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_LOGO, request.replace("button.logo.", ""));
+        } else if (request.contains("button.background.")) {
+            resolveInstanceRequest(InstanceAction.SHOW_BACKGROUND, request.replace("button.background.", ""));
         } else if (request.contains("button.mods.")) {
             resolveInstanceRequest(InstanceAction.SHOW_MODS, request.replace("button.mods.", ""));
         } else if (request.contains("button.folder.")) {
@@ -431,6 +451,123 @@ public class BackendConnector {
             } else {
                 frame.getBrowser().executeJavaScript("changeFrame(\"instances.html?version=dynamic\");", "", 1);
             }
+        } else if (request.contains("button.change.icon.")) {
+            String id = request.replace("button.change.icon.","");
+            SwingUtilities.invokeLater(() -> {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Select an image file");
+                chooser.setMultiSelectionEnabled(false);
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                chooser.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "png","jpeg","jpg","webp");
+                chooser.addChoosableFileFilter(filter);
+                int answer = chooser.showOpenDialog(null);
+                if(answer == JFileChooser.APPROVE_OPTION) {
+                    String path = URLDecoder.decode(chooser.getSelectedFile().getAbsolutePath().replace("\\","/"), StandardCharsets.UTF_8);
+                    try {
+                        String extension;
+                        if(path.toLowerCase().endsWith(".jpeg")) {
+                            extension = ".jpeg";
+                        } else if(path.toLowerCase().endsWith(".jpg")) {
+                            extension = ".jpg";
+                        } else if(path.toLowerCase().endsWith(".webp")) {
+                            extension = ".webp";
+                        } else {
+                            extension = ".png";
+                        }
+                        File file = new File(URLDecoder.decode(Main.getInstancePath()+"instances/"+id+"/zyneonIcon"+extension,StandardCharsets.UTF_8));
+                        if(file.exists()) {
+                            Main.getLogger().debug("Deleted old icon: "+file.delete());
+                        }
+                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Main.getInstancePath()+"instances/"+id+"/zyneonIcon"+extension,StandardCharsets.UTF_8)));
+                        Config instance = new Config(Main.getInstancePath()+"instances/"+id+"/zyneonInstance.json");
+                        instance.set("modpack.icon",file.getAbsolutePath().replace("\\","/"));
+                        Application.loadInstances();
+                        frame.getBrowser().loadURL(Application.getInstancesURL()+"&tab="+id);
+                    } catch (Exception e) {
+                        Main.getLogger().error("An error occurred (Icon-chooser): "+e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        } else if (request.contains("button.change.logo.")) {
+            String id = request.replace("button.change.logo.","");
+            SwingUtilities.invokeLater(() -> {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Select an image file");
+                chooser.setMultiSelectionEnabled(false);
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                chooser.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "png","jpeg","jpg","webp");
+                chooser.addChoosableFileFilter(filter);
+                int answer = chooser.showOpenDialog(null);
+                if(answer == JFileChooser.APPROVE_OPTION) {
+                    String path = URLDecoder.decode(chooser.getSelectedFile().getAbsolutePath().replace("\\","/"), StandardCharsets.UTF_8);
+                    try {
+                        String extension;
+                        if(path.toLowerCase().endsWith(".jpeg")) {
+                            extension = ".jpeg";
+                        } else if(path.toLowerCase().endsWith(".jpg")) {
+                            extension = ".jpg";
+                        } else if(path.toLowerCase().endsWith(".webp")) {
+                            extension = ".webp";
+                        } else {
+                            extension = ".png";
+                        }
+                        File file = new File(URLDecoder.decode(Main.getInstancePath()+"instances/"+id+"/zyneonLogo"+extension,StandardCharsets.UTF_8));
+                        if(file.exists()) {
+                            Main.getLogger().debug("Deleted old logo: "+file.delete());
+                        }
+                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Main.getInstancePath()+"instances/"+id+"/zyneonLogo"+extension,StandardCharsets.UTF_8)));
+                        Config instance = new Config(Main.getInstancePath()+"instances/"+id+"/zyneonInstance.json");
+                        instance.set("modpack.logo",file.getAbsolutePath().replace("\\","/"));
+                        Application.loadInstances();
+                        frame.getBrowser().loadURL(Application.getInstancesURL()+"&tab="+id);
+                    } catch (Exception e) {
+                        Main.getLogger().error("An error occurred (Logo-chooser): "+e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        } else if (request.contains("button.change.background.")) {
+            String id = request.replace("button.change.background.","");
+            SwingUtilities.invokeLater(() -> {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Select an image file");
+                chooser.setMultiSelectionEnabled(false);
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                chooser.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "png","jpeg","jpg","webp");
+                chooser.addChoosableFileFilter(filter);
+                int answer = chooser.showOpenDialog(null);
+                if(answer == JFileChooser.APPROVE_OPTION) {
+                    String path = URLDecoder.decode(chooser.getSelectedFile().getAbsolutePath().replace("\\","/"), StandardCharsets.UTF_8);
+                    try {
+                        String extension;
+                        if(path.toLowerCase().endsWith(".jpeg")) {
+                            extension = ".jpeg";
+                        } else if(path.toLowerCase().endsWith(".jpg")) {
+                            extension = ".jpg";
+                        } else if(path.toLowerCase().endsWith(".webp")) {
+                            extension = ".webp";
+                        } else {
+                            extension = ".png";
+                        }
+                        File file = new File(URLDecoder.decode(Main.getInstancePath()+"instances/"+id+"/zyneonBackground"+extension,StandardCharsets.UTF_8));
+                        if(file.exists()) {
+                            Main.getLogger().debug("Deleted old background: "+file.delete());
+                        }
+                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Main.getInstancePath()+"instances/"+id+"/zyneonBackground"+extension,StandardCharsets.UTF_8)));
+                        Config instance = new Config(Main.getInstancePath()+"instances/"+id+"/zyneonInstance.json");
+                        instance.set("modpack.background",file.getAbsolutePath().replace("\\","/"));
+                        Application.loadInstances();
+                        frame.getBrowser().loadURL(Application.getInstancesURL()+"&tab="+id);
+                    } catch (Exception e) {
+                        Main.getLogger().error("An error occurred (Background-chooser): "+e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
         } else if (request.contains("button.install.")) {
             String id = request.replace("button.install.","");
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
@@ -450,7 +587,7 @@ public class BackendConnector {
             request = request.replace("button.path.","").toLowerCase();
             if(request.equals("instances")) {
                 SwingUtilities.invokeLater(() -> {
-                    JFileChooser chooser = getJFileChooser();
+                    JFileChooser chooser = getJDirectoryChooser();
                     int answer = chooser.showOpenDialog(null);
                     if(answer == JFileChooser.APPROVE_OPTION) {
                         String instancesPath = URLDecoder.decode(chooser.getSelectedFile().getAbsolutePath().replace("\\","/"), StandardCharsets.UTF_8);
@@ -500,7 +637,7 @@ public class BackendConnector {
         }
     }
 
-    private static JFileChooser getJFileChooser() {
+    private static JFileChooser getJDirectoryChooser() {
         JFileChooser chooser;
         try {
             chooser = new JFileChooser(Main.getInstancePath());
@@ -530,6 +667,9 @@ public class BackendConnector {
             case SHOW_WORLDS -> openWorldsFolder(instance);
             case SHOW_SHADERS -> openShadersFolder(instance);
             case SETTINGS_MEMORY -> openMemorySettings(instance);
+            case SHOW_ICON -> openIcon(instance);
+            case SHOW_LOGO -> openLogo(instance);
+            case SHOW_BACKGROUND -> openBackground(instance);
         }
     }
 
@@ -585,6 +725,36 @@ public class BackendConnector {
         createIfNotExist(folder);
     }
 
+    private void openIcon(String instance) {
+        Config instance_ = new Config(Main.getInstancePath()+"instances/"+instance+"/zyneonInstance.json");
+        if(instance_.getString("modpack.icon")!=null) {
+            File png = new File(URLDecoder.decode(instance_.getString("modpack.icon"),StandardCharsets.UTF_8));
+            if(png.exists()) {
+                createIfNotExist(png);
+            }
+        }
+    }
+
+    private void openLogo(String instance) {
+        Config instance_ = new Config(Main.getInstancePath()+"instances/"+instance+"/zyneonInstance.json");
+        if(instance_.getString("modpack.logo")!=null) {
+            File png = new File(URLDecoder.decode(instance_.getString("modpack.logo"),StandardCharsets.UTF_8));
+            if(png.exists()) {
+                createIfNotExist(png);
+            }
+        }
+    }
+
+    private void openBackground(String instance) {
+        Config instance_ = new Config(Main.getInstancePath()+"instances/"+instance+"/zyneonInstance.json");
+        if(instance_.getString("modpack.background")!=null) {
+            File png = new File(URLDecoder.decode(instance_.getString("modpack.background"),StandardCharsets.UTF_8));
+            if(png.exists()) {
+                createIfNotExist(png);
+            }
+        }
+    }
+
     private void openScreenshotsFolder(String instance) {
         File folder = new File(Main.getInstancePath() + "instances/" + instance + "/screenshots/");
         createIfNotExist(folder);
@@ -632,6 +802,9 @@ public class BackendConnector {
         SHOW_RESOURCEPACKS,
         SHOW_SHADERS,
         SHOW_WORLDS,
-        SETTINGS_MEMORY
+        SETTINGS_MEMORY,
+        SHOW_ICON,
+        SHOW_LOGO,
+        SHOW_BACKGROUND
     }
 }
