@@ -44,6 +44,12 @@ function addInstanceToList(id,name,png) {
             syncInstance(id);
         }
     }
+    const i = instance.querySelector("i");
+    if(i) {
+        if(!id.includes("official/")) {
+            i.style.display = "none";
+        }
+    }
     const span = instance.querySelector("span");
     if (span) {
         span.innerText = name;
@@ -62,7 +68,6 @@ function syncInstance(id) {
     closeSettings();
     document.getElementById("instance-adder").style.display = "none";
     document.getElementById("instance-view").style.display = "inherit";
-
     document.getElementById("open-resourcepacks").onclick = function () { callJavaMethod("button.resourcepacks."+id); };
     document.getElementById("open-screenshots").onclick = function () { callJavaMethod("button.screenshots."+id); };
     document.getElementById("open-shaderpacks").onclick = function () { callJavaMethod("button.shaders."+id); };
@@ -75,7 +80,9 @@ function syncInstance(id) {
         document.getElementById("open-mods").style.display = "none";
         document.getElementById("local-settings").style.display = "none";
         document.getElementById("local-appearance").style.display = "none";
+        document.getElementById("check").style.display = "inherit";
     } else {
+        document.getElementById("check").style.display = "none";
         document.getElementById("open-instance").style.display = "inherit";
         document.getElementById("open-mods").style.display = "inherit";
         document.getElementById("local-settings").style.display = "inherit";

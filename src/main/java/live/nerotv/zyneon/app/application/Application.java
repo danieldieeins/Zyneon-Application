@@ -80,7 +80,9 @@ public class Application {
         if(officialInstances!=null) {
             for(File instance:officialInstances) {
                 if(instance.isDirectory()) {
-                    if (instance.getName().equals("zyneonplus")) {
+                    if(!instance.getName().equals("zyneonplus")) {
+                        saveInstance(instanceList, instance);
+                    } else {
                         File[] zyneonInstances = instance.listFiles();
                         if (zyneonInstances != null) {
                             for (File zynstance : zyneonInstances) {
@@ -89,8 +91,6 @@ public class Application {
                                 }
                             }
                         }
-                    } else {
-                        saveInstance(instanceList, instance);
                     }
                 }
             }

@@ -668,6 +668,12 @@ p#instance-path-string:hover {
     color: var(--color);
 }
 
+.content #instance-view .card#title-card i#check {
+    padding: 1.25rem 1.25rem 1.25rem 0;
+    font-size: 1.5rem;
+    color: var(--color-dim);
+}
+
 .content #instance-view .card#title-card .buttons {
     position: absolute;
     right: 0.5rem;
@@ -1014,6 +1020,7 @@ p#instance-path-string:hover {
 }
 
 .content .sidebyside img {
+    border-radius: 0.5rem;
     width: 49%;
 }
 
