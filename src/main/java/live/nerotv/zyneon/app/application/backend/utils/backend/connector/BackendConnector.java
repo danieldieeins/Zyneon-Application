@@ -21,9 +21,6 @@ import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
 import live.nerotv.zyneon.app.application.backend.utils.frame.StringUtil;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
-import org.cef.browser.CefBrowser;
-import org.cef.handler.CefLoadHandler;
-import org.cef.handler.CefLoadHandlerAdapter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -45,35 +42,7 @@ public class BackendConnector {
     private final ZyneonWebFrame frame;
 
     public BackendConnector(ZyneonWebFrame frame) {
-        CefLoadHandler loadHandler = new CefLoadHandlerAdapter() {
-            @Override
-            public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {
-                if (!isLoading) {
-                    URLLoadedEvent();
-                }
-            }
-        };
-        frame.getClient().addLoadHandler(loadHandler);
         this.frame = frame;
-    }
-
-    public void URLLoadedEvent() {
-        if(frame.getBrowser().getURL().toLowerCase().endsWith("instances.html")) {
-            loadInstances();
-        }
-    }
-
-    public void loadInstances() {
-        Main.getLogger().debug("loadInstances Request");
-    }
-
-    public static String addHyphensToUUID(String uuidString) {
-        StringBuilder sb = new StringBuilder(uuidString);
-        sb.insert(8, "-");
-        sb.insert(13, "-");
-        sb.insert(18, "-");
-        sb.insert(23, "-");
-        return sb.toString();
     }
 
     private void syncSettings(String type) {
@@ -91,7 +60,7 @@ public class BackendConnector {
             }
             case "profile" -> {
                 if(Application.auth.isLoggedIn()) {
-                    frame.executeJavaScript("syncProfile('"+Application.auth.getAuthInfos().getUsername()+"','"+addHyphensToUUID(Application.auth.getAuthInfos().getUuid())+"');");
+                    frame.executeJavaScript("syncProfile('"+Application.auth.getAuthInfos().getUsername()+"','"+StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid())+"');");
                 } else {
                     frame.executeJavaScript("syncLogin();");
                     frame.executeJavaScript("logout();");
@@ -120,7 +89,7 @@ public class BackendConnector {
         } else if (request.contains("button.minimize")) {
             frame.setState(Frame.ICONIFIED);
         } else if(request.equals("button.copy.uuid")) {
-            StringSelection uuid = new StringSelection(addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
+            StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid,uuid);
         } else if(request.contains("sync.instances.list")) {
@@ -305,16 +274,25 @@ public class BackendConnector {
                 instance.set("modpack.description",description);
                 instance.set("modpack.minecraft",minecraft);
                 if(modloader.equalsIgnoreCase("forge")) {
-                    instance.set("modpack.forge.version",mlversion);
                     if(mlversion.toLowerCase().startsWith("old")) {
+                        instance.delete("modpack.fabric");
                         instance.set("modpack.forge.type", ForgeVersionType.OLD.toString());
+                        instance.set("modpack.forge.version",mlversion.replace("old",""));
                     } else if(mlversion.toLowerCase().startsWith("neo")) {
+                        instance.delete("modpack.fabric");
                         instance.set("modpack.forge.type", ForgeVersionType.NEO_FORGE.toString());
+                        instance.set("modpack.forge.version",mlversion.replace("neo",""));
                     } else {
+                        instance.delete("modpack.fabric");
                         instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
+                        instance.set("modpack.forge.version",mlversion.replace("new",""));
                     }
                 } else if(modloader.equalsIgnoreCase("fabric")) {
+                    instance.delete("modpack.forge");
                     instance.set("modpack.fabric",mlversion.replace("old","").replace("neo",""));
+                } else {
+                    instance.delete("modpack.fabric");
+                    instance.delete("modpack.forge");
                 }
                 instance.set("modpack.instance","instances/"+id+"/");
             }
@@ -341,13 +319,15 @@ public class BackendConnector {
                 instance.set("modpack.version",version);
                 instance.set("modpack.minecraft",minecraft);
                 if(modloader.equalsIgnoreCase("forge")) {
-                    instance.set("modpack.forge.version",mlversion);
                     if(mlversion.toLowerCase().startsWith("old")) {
                         instance.set("modpack.forge.type", ForgeVersionType.OLD.toString());
+                        instance.set("modpack.forge.version",mlversion.replace("old",""));
                     } else if(mlversion.toLowerCase().startsWith("neo")) {
                         instance.set("modpack.forge.type", ForgeVersionType.NEO_FORGE.toString());
+                        instance.set("modpack.forge.version",mlversion.replace("neo",""));
                     } else {
                         instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
+                        instance.set("modpack.forge.version",mlversion.replace("new",""));
                     }
                 } else if(modloader.equalsIgnoreCase("fabric")) {
                     instance.set("modpack.fabric",mlversion.replace("old","").replace("neo",""));

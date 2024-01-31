@@ -3,7 +3,6 @@ package live.nerotv.zyneon.app.application.backend.launcher;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
-import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.FabricInstaller;
@@ -62,20 +61,16 @@ public class FabricLauncher {
                     Application.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
+            framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process p = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
-                Platform.runLater(() -> {
-                    try {
-                        p.waitFor();
-                        Platform.exit();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e.getMessage());
-                    }
-                });
-            } catch (Exception ignore) {}
+            } catch (Exception e) {
+                Main.getLogger().error("Couldn't start: "+e.getMessage());
+                throw new RuntimeException(e);
+            }
         } else {
-            Main.getLogger().error("Error: couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
+            Main.getLogger().error("Error: couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
         }
     }
 }

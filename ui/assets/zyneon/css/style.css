@@ -144,6 +144,15 @@ body {
     top: 0.8rem;
 }
 
+.menu#submenu ul li a div i {
+    color: var(--color-dim);
+}
+
+.menu#submenu ul li a:hover div i {
+    color: var(--inverted);
+    transition: 0.5s;
+}
+
 .menu ul li {
     padding-bottom: 1rem;
 }

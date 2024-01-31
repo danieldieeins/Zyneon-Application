@@ -16,4 +16,13 @@ public class StringUtil {
     public static String getURLFromFile(File file) {
         return getURLFromFile(file.getAbsolutePath());
     }
+
+    public static String addHyphensToUUID(String uuidString) {
+        StringBuilder sb = new StringBuilder(uuidString);
+        sb.insert(8, "-");
+        sb.insert(13, "-");
+        sb.insert(18, "-");
+        sb.insert(23, "-");
+        return sb.toString();
+    }
 }

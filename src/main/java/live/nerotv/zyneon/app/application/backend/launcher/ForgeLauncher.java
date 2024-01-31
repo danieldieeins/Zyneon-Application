@@ -1,10 +1,9 @@
 package live.nerotv.zyneon.app.application.backend.launcher;
 
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
-import fr.flowarg.openlauncherlib.NoFramework;
-import fr.theshark34.openlauncherlib.JavaUtil;
-import fr.theshark34.openlauncherlib.minecraft.GameFolder;
-import javafx.application.Platform;
+import fr327.flowarg.openlauncherlib.NoFramework;
+import fr327.theshark34.openlauncherlib.JavaUtil;
+import fr327.theshark34.openlauncherlib.minecraft.GameFolder;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.ForgeInstaller;
@@ -58,23 +57,30 @@ public class ForgeLauncher {
             ram = 512;
         }
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
+            NoFramework.ModLoader forge;
+            if(forgeType==ForgeVersionType.OLD) {
+                forge = NoFramework.ModLoader.OLD_FORGE;
+            } else if(forgeType==ForgeVersionType.NEO_FORGE) {
+                forge = NoFramework.ModLoader.NEO_FORGE;
+            } else {
+                forge = NoFramework.ModLoader.FORGE;
+            }
             NoFramework framework = new NoFramework(
                     instancePath,
                     Application.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
+            if(minecraftVersion.equals("1.7.10")) {
+                framework.setCustomModLoaderJsonFileName("1.7.10-Forge"+forgeVersion+".json");
+            }
+            framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
-                Process p = framework.launch(minecraftVersion, forgeVersion, NoFramework.ModLoader.FORGE);
-                Platform.runLater(() -> {
-                    try {
-                        p.waitFor();
-                        Platform.exit();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e.getMessage());
-                    }
-                });
-            } catch (Exception ignore) {}
+                Process p = framework.launch(minecraftVersion, forgeVersion, forge);
+            } catch (Exception e) {
+                Main.getLogger().error("Couldn't start: "+e.getMessage());
+                throw new RuntimeException(e);
+            }
         } else {
             Main.getLogger().error("Error: couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
         }

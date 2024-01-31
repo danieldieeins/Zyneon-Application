@@ -3,7 +3,6 @@ package live.nerotv.zyneon.app.application.backend.launcher;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
-import javafx.application.Platform;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.VanillaInstaller;
@@ -61,20 +60,13 @@ public class VanillaLauncher {
                     Application.auth.getAuthInfos(),
                     GameFolder.FLOW_UPDATER
             );
-            framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
+            framework.getAdditionalVmArgs().add("-Xms512M");
+            framework.getAdditionalVmArgs().add("-Xmx4096M");
             try {
-                Process p = framework.launch(version, version, NoFramework.ModLoader.VANILLA);
-                Platform.runLater(() -> {
-                    try {
-                        p.waitFor();
-                        Platform.exit();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e.getMessage());
-                    }
-                });
-
+                Process p = framework.launch(version, "", NoFramework.ModLoader.VANILLA);
             } catch (Exception e) {
-                Main.getLogger().error("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
+                Main.getLogger().error("Couldn't start: "+e.getMessage());
+                throw new RuntimeException(e);
             }
         } else {
             Main.getLogger().error("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
