@@ -144,15 +144,6 @@ body {
     top: 0.8rem;
 }
 
-.menu#submenu ul li a div i {
-    color: var(--color-dim);
-}
-
-.menu#submenu ul li a:hover div i {
-    color: var(--inverted);
-    transition: 0.5s;
-}
-
 .menu ul li {
     padding-bottom: 1rem;
 }
@@ -181,6 +172,21 @@ body {
     text-decoration: none;
 }
 
+.menu ul li a .instance-item {
+    position: relative;
+    display: flex;
+    padding: 0.6rem;
+    width: 1.51rem;
+    border-radius: 0.5rem;
+}
+
+.menu.active ul li a .instance-item {
+    position: relative;
+    width: 13.5rem;
+    transition: 0.5s;
+    white-space: nowrap;
+}
+
 .menu ul li a .menu-item {
     position: relative;
     display: flex;
@@ -193,8 +199,32 @@ body {
     position: relative;
     width: 13.5rem;
     transition: 0.5s;
-    color: var(--color);
     white-space: nowrap;
+}
+
+.menu ul li a .instance-item:hover {
+    background: var(--highlight);
+    box-shadow: 0 0 0.8rem var(--highlight);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.menu ul li a .instance-item span {
+    padding: 0.17rem 0 0 0.75rem;
+    font-size: 1.1rem;
+    display: none;
+    white-space: nowrap;
+}
+
+.menu.active ul li a .instance-item span {
+    display: inline;
+    color: var(--color);
+}
+
+.menu.active ul li a .instance-item:hover span {
+    color: var(--inverted);
+    background: none;
+    box-shadow: none;
 }
 
 
@@ -205,13 +235,6 @@ body {
     cursor: pointer;
 }
 
-.menu ul li a .menu-item#exit:hover {
-    background: red;
-    box-shadow: 0 0 0.8rem red;
-    transition: 0.5s;
-    animation: wiggle 0.1s linear infinite;
-}
-
 .menu ul li a .menu-item span {
     padding: 0.17rem 0 0 0.75rem;
     font-size: 1.1rem;
@@ -219,24 +242,18 @@ body {
     white-space: nowrap;
 }
 
-.menu ul li a .menu-item:hover span {
+.menu.active ul li a .menu-item span {
+    display: inline;
+    color: var(--color);
+}
+
+.menu.active ul li a .menu-item:hover span {
     color: var(--inverted);
+    background: none;
+    box-shadow: none;
 }
 
-.menu ul li a .menu-item:hover i {
-    color: var(--inverted);
-}
-
-.menu ul li a .menu-item#refresh:hover i {
-    animation: negative-rotate 10s linear infinite;
-    color: var(--inverted);
-}
-
-.menu ul li a .menu-item#selected span {
-    color: #fff;
-}
-
-.menu ul li a .menu-item#selected i {
+.menu ul li a .menu-item#selected span,i {
     color: #fff;
 }
 
@@ -244,24 +261,72 @@ body {
     color: #fff;
 }
 
-.menu ul li a .menu-item.active i {
+.menu ul li a .instance-item#selected span {
     color: #fff;
 }
 
-.menu ul li a .menu-item#exit:hover span {
-    color: #ffb0b0;
+.menu ul li a .instance-item.active span {
+    color: #fff;
 }
 
-.menu ul li a .menu-item#exit:hover i {
-    color: #ffb0b0;
+.menu ul li a .menu-item#exit:hover {
+    background: red;
+    box-shadow: 0 0 0.8rem red;
+    transition: 0.5s;
+    animation: wiggle 0.1s linear infinite;
 }
 
+.menu ul li a .menu-item#refresh:hover i {
+    animation: negative-rotate 10s linear infinite;
+    color: var(--inverted);
+}
 
 .menu ul li a .menu-item i {
     position: relative;
     top: 0.07rem;
 }
 
+.menu ul li a .menu-item.active i {
+    color: #fff;
+}
+
+.menu#submenu ul li a .menu-item i {
+    color: var(--color);
+}
+
+.menu#submenu ul li a .menu-item:hover i {
+    color: var(--inverted);
+    transition: 0.5s;
+}
+
+.menu#submenu ul li a .menu-item.active:hover i {
+    color: var(--color);
+}
+
+.menu#submenu ul li a .instance-item i {
+    color: var(--color-dim);
+}
+
+.menu#submenu ul li a .instance-item:hover i {
+    color: var(--inverted);
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.menu#submenu ul li a .instance-item.active:hover i {
+    color: var(--color-dim);
+    opacity: 1;
+}
+
+
+.menu.active ul li a .instance-item span {
+    display: inline;
+    background: none;
+    box-shadow: none;
+    max-width: 11.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
 .menu.active ul li a .menu-item span {
     display: inline;
@@ -272,16 +337,32 @@ body {
     overflow: hidden;
 }
 
-.menu ul li a .menu-item#selected {
+.menu ul li a .menu-item.active,.menu-item#selected,.instance-item.active,.instance-item#selected {
     color: #fff;
     background: var(--accent);
     box-shadow: 0 0 0.8rem var(--accent);
 }
 
-.menu ul li a .menu-item.active {
+.menu ul li a .instance-item.active,.instance-item#selected {
     color: #fff;
     background: var(--accent);
     box-shadow: 0 0 0.8rem var(--accent);
+}
+
+.menu ul li a .menu-item#exit:hover span {
+    color: #ffb0b0;
+}
+
+.menu ul li a .menu-item#exit:hover i {
+    color: #ffb0b0;
+}
+
+.menu ul li a .menu-item.active:hover span,i {
+    color: #fff;
+}
+
+.menu ul li a .instance-item.active:hover span,i {
+    color: #fff;
 }
 
 .menu .profile {
@@ -298,6 +379,10 @@ body {
     bottom: 0.5rem;
     height: 3.5rem;
     display: none;
+}
+
+.menu .profile:hover {
+    animation: wiggle 1s linear infinite;
 }
 
 .menu .profile img.active {
@@ -866,6 +951,10 @@ p#instance-path-string:hover {
     box-shadow: none;
 }
 
+.content #instance-adder .card h3 a.button {
+    position: relative;
+}
+
 .content #instance-adder .card h3 a.button:hover {
     cursor: pointer;
     color: #fff;
@@ -874,60 +963,36 @@ p#instance-path-string:hover {
     transition: 0.25s;
 }
 
-.content #instance-adder .card h3 input#creator-name {
+.content #instance-adder .card h3 {
+    position: relative;
+}
+
+.content #instance-adder .card#instance-creator h3 input,select {
+    position: absolute;
+    top: 0.6rem;
+    right: 1rem;
     border-style: none;
     text-decoration: none;
     padding: 0.5rem 0.5rem 0.325rem 0.5rem;
     border-radius: 0.5rem;
-    z-index: 5;
+    width: 16rem;
     color: var(--color);
-    background-color: var(--background2);
+    background-color: var(--background4);
     font-size: 1.2rem;
     box-shadow: none;
 }
 
-.content #instance-adder .card h3 input#creator-version {
-    border-style: none;
-    text-decoration: none;
-    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
-    border-radius: 0.5rem;
-    z-index: 5;
-    color: var(--color);
-    background-color: var(--background2);
-    font-size: 1.2rem;
-    box-shadow: none;
+.content #instance-adder .card h3 select#creator-minecraft,select#creator-modloader {
+    width: 17rem;
 }
 
 .content #instance-adder {
     display: none;
 }
 
-.content #instance-adder .card h3 select#creator-minecraft,select#creator-modloader {
-    position: inherit;
-    border-style: none;
-    text-decoration: none;
-    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
-    border-radius: 0.5rem;
-    z-index: 5;
-    color: var(--color);
-    background-color: var(--background2);
-    font-size: 1.2rem;
-    box-shadow: none;
-}
-
-.content #instance-adder .card h3 input#creator-mlversion {
-    border-style: none;
-    text-decoration: none;
-    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
-    border-radius: 0.5rem;
-    z-index: 5;
-    color: var(--color);
-    background-color: var(--background2);
-    font-size: 1.2rem;
-    box-shadow: none;
-}
-
 .content #instance-adder .card h3 input#create {
+    position: initial;
+    width: inherit;
     border-style: none;
     text-decoration: none;
     padding: 0.5rem 0.5rem 0.325rem 0.5rem;
@@ -951,14 +1016,15 @@ p#instance-path-string:hover {
     display: inline;
 }
 
-.content #instance-adder .card h3 select,input {
-    position: inherit;
-    font-size: 1.2rem;
-    color: var(--color-dim-less);
-    background: var(--background-accent);
+.content #instance-adder .card h3 select#zyneonplus-version,input#id {
+    position: initial;
+    font-size: 1.1rem;
     border-radius: 0.5rem;
+    width: 16rem;
+    color: var(--color);
+    background-color: var(--inverted);
     border-style: none;
-    padding: 0.4rem 0.5rem 0.325rem 0.5rem;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
 }
 
 .content .card .background-bottom {
@@ -1005,6 +1071,10 @@ p#instance-path-string:hover {
     width: calc(100% - 2rem);
     height: calc(100% - 2rem);;
     display: none;
+}
+
+.content #instance-view i {
+    color: var(--color-dim);
 }
 
 .content #instance-view .card#title-card a.button#configure-instance {
@@ -1086,6 +1156,7 @@ p#instance-path-string:hover {
 .content .dock a.button#launch:hover {
     background: var(--accent);
     box-shadow: 0 0 0.8rem var(--accent);
+    animation: wiggle 2.5s linear infinite;
 }
 
 .content .dock .instance-infos {

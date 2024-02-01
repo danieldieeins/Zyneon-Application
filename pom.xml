@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>2024.2-beta.3</version>
+    <version>2024.2-beta.4</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>openlauncherlib</artifactId>
-            <version>3.2.8</version>
+            <version>3.2.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

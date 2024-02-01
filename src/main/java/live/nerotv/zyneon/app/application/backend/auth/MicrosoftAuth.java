@@ -1,6 +1,6 @@
 package live.nerotv.zyneon.app.application.backend.auth;
 
-import fr327.theshark34.openlauncherlib.minecraft.AuthInfos;
+import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 
 import java.io.File;
 

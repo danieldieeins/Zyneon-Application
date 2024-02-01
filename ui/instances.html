@@ -75,7 +75,7 @@
                 </li>
                 <li id="list-template">
                     <a>
-                        <div class="menu-item">
+                        <div class="instance-item">
                             <img alt="instance-icon" src="assets/zyneon/images/instances/default.png">
                             <span class="menu-item">Instance</span><i class='bx bxs-check-circle'></i>
                         </div>
@@ -199,20 +199,19 @@
                     <h2 class="background-top">Zyneon+</h2>
                     <h3 class="background-bottom">Play Minecraft in an optimized way with more FPS, shaders, simple online play and more!</h3>
                     <h3>
-                        <label>
-                            <select id="zyneonplus-version">
-                                <option value="dynamic">Latest (recommended)</option>
-                                <option value="vr">Latest VR (dynamic)</option>
-                                <option value="1.20">1.20.4 (static)</option>
-                                <option value="1.19">1.19.4 (static)</option>
-                                <option value="1.18">1.18.2 (static)</option>
-                                <option value="1.17">1.17.1 (static)</option>
-                                <option value="1.16">1.16.5 (static)</option>
-                                <option value="1.12" disabled>1.12.2 (static)</option>
-                                <option value="1.8" disabled>1.8.9 (static)</option>
-                            </select>
-                        </label>
-                        <a class="button" onclick="installZyneonPlus();">Install</a>
+                        <label for="zyneonplus-version"></label>
+                        <select id="zyneonplus-version">
+                            <option value="dynamic">Latest (recommended)</option>
+                            <option value="vr">Latest VR (dynamic)</option>
+                            <option value="1.20">1.20.4 (static)</option>
+                            <option value="1.19">1.19.4 (static)</option>
+                            <option value="1.18">1.18.2 (static)</option>
+                            <option value="1.17">1.17.1 (static)</option>
+                            <option value="1.16">1.16.5 (static)</option>
+                            <option value="1.12" disabled>1.12.2 (static)</option>
+                            <option value="1.8" disabled>1.8.9 (static)</option>
+                        </select>
+                        <a id="install-zyneonplus" class="button" onclick="installZyneonPlus();">Install</a>
                     </h3>
                 </div>
                 <div id="projectz-instance" class="card">
@@ -223,7 +222,7 @@
                 <div class="card">
                     <h1>Create your own instance</h1>
                 </div>
-                <div class="card">
+                <div class="card" id="instance-creator">
                     <h2 class="background-top">Instance creator</h2>
 
                     <form id="values">
@@ -247,7 +246,7 @@
                                     </select>
                                 </label>
                             </h3>
-                            <h3 id="bottom2">Modloader version: <label><input type="text" id="creator-mlversion"></label></h3>
+                            <h3 id="bottom2">Modloader version: <label><input type="text" id="creator-mlversion"></label><br><br></h3>
                         </div>
                         <h3><input type="submit" id="create" value="Create instance" onclick="validateInstanceCreator();"></h3>
                     </form>

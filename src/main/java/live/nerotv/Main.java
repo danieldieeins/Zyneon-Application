@@ -34,7 +34,7 @@ public class Main {
         starttab = config.getString("settings.starttab");
         logger = new Logger("ZyneonApplication");
         logger.setDebugEnabled(config.getBool("settings.logger.debug"));
-        version = "2024.2-beta.3";
+        version = "2024.2-beta.4";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
@@ -47,7 +47,7 @@ public class Main {
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         config.checkEntry("settings.appearance.theme","zyneon");
-        new Application(version+" ▪ Argrium² Hotfix 1").start();
+        new Application(version+" ▪ Baumium").start();
     }
 
     private static void initConfig() {

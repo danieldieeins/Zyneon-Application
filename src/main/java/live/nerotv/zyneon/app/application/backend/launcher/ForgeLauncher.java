@@ -1,9 +1,9 @@
 package live.nerotv.zyneon.app.application.backend.launcher;
 
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
-import fr327.flowarg.openlauncherlib.NoFramework;
-import fr327.theshark34.openlauncherlib.JavaUtil;
-import fr327.theshark34.openlauncherlib.minecraft.GameFolder;
+import fr.flowarg.openlauncherlib.NoFramework;
+import fr.theshark34.openlauncherlib.JavaUtil;
+import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.installer.ForgeInstaller;
