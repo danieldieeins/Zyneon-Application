@@ -8,6 +8,10 @@ document.addEventListener('dragstart', function(e){
     e.preventDefault();
 });
 
+function openInBrowser(url) {
+    callJavaMethod("browser."+url);
+}
+
 function toggleMenu() {
     let menu = document.querySelector(".menu");
     menu.classList.toggle('active');

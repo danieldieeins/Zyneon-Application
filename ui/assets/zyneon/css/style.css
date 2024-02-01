@@ -235,6 +235,16 @@ body {
     cursor: pointer;
 }
 
+.menu ul li a .menu-item:hover i {
+    color: var(--inverted);
+    transition: 0.5s;
+}
+
+.menu ul li a .menu-item#selected:hover i {
+    color: var(--color);
+}
+
+
 .menu ul li a .menu-item span {
     padding: 0.17rem 0 0 0.75rem;
     font-size: 1.1rem;
@@ -1151,6 +1161,10 @@ p#instance-path-string:hover {
     box-shadow: 0 0 0.6rem #ffffff40;
     padding: 1rem 1.1rem 0.85rem 1rem;
     font-size: 2.5rem;
+}
+
+.content .dock a.button#launch i {
+    color: #fff;
 }
 
 .content .dock a.button#launch:hover {

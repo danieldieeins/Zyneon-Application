@@ -46,7 +46,7 @@ public class Main {
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         config.checkEntry("settings.appearance.theme","zyneon");
-        new Application(version+" ▪ Baumium").start();
+        new Application(version+" ▪ Zynium").start();
     }
 
     private static void initConfig() {

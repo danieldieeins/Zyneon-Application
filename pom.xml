@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>2024.2-beta.4</version>
+    <version>2024.2-beta.5</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -16,22 +16,29 @@
 
     <repositories>
         <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-        <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
     <dependencies>
+        <!--GitHub repositories from me-->
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>ShadeMeBaby</artifactId>
             <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <!--GitHub repositories by FlowArg-->
+        <dependency>
+            <groupId>com.github.FlowArg</groupId>
+            <artifactId>OpenAuth</artifactId>
+            <version>c66a19d</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Central repositories by FlowArg-->
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>flowupdater</artifactId>
@@ -42,12 +49,6 @@
             <groupId>fr.flowarg</groupId>
             <artifactId>openlauncherlib</artifactId>
             <version>3.2.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.FlowArg</groupId>
-            <artifactId>OpenAuth</artifactId>
-            <version>c66a19d</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
