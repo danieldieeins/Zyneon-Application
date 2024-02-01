@@ -6,7 +6,7 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.zyneon.app.application.backend.utils.AESUtil;
+import live.nerotv.shademebaby.utils.AESUtil;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.ZyneonAuthResolver;
 
 import javax.swing.*;

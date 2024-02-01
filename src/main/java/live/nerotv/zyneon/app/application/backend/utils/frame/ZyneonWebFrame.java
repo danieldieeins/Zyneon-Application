@@ -1,6 +1,7 @@
 package live.nerotv.zyneon.app.application.backend.utils.frame;
 
 import live.nerotv.Main;
+import live.nerotv.shademebaby.frame.WebFrame;
 import live.nerotv.zyneon.app.application.backend.utils.backend.connector.BackendConnector;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
@@ -28,5 +29,19 @@ public class ZyneonWebFrame extends WebFrame {
         setSize(new Dimension(1200,720));
         setResizable(true);
         setLocationRelativeTo(null);
+    }
+
+    public void setTitlebar(String title, Color background, Color foreground) {
+        setTitle(title);
+        setTitleBackground(background);
+        setTitleForeground(foreground);
+    }
+    public void setTitleBackground(Color color) {
+        setBackground(color);
+        getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
+    }
+
+    public void setTitleForeground(Color color) {
+        getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
     }
 }

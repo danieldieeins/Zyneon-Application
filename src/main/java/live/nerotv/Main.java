@@ -2,10 +2,9 @@ package live.nerotv;
 
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.shademebaby.file.FileUtils;
 import live.nerotv.shademebaby.logger.Logger;
+import live.nerotv.shademebaby.utils.FileUtil;
 import live.nerotv.zyneon.app.application.Application;
-import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
 import live.nerotv.zyneon.app.application.frontend.ZyneonSplash;
 
 import java.io.File;
@@ -38,8 +37,8 @@ public class Main {
         if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/index.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
-            FileUtils.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");
-            FileUtils.unzipFile(getDirectoryPath() + "libs/zyneon/" + version + ".zip", getDirectoryPath() + "libs/zyneon/" + version);
+            FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");
+            FileUtil.unzipFile(getDirectoryPath() + "libs/zyneon/" + version + ".zip", getDirectoryPath() + "libs/zyneon/" + version);
             getLogger().debug("Deleted UI ZIP File: "+new File(getDirectoryPath() + "libs/zyneon/" + version + ".zip").delete());
         }
         ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));

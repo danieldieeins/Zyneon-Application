@@ -8,7 +8,8 @@ import com.google.gson.stream.JsonReader;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.shademebaby.file.FileUtils;
+import live.nerotv.shademebaby.utils.FileUtil;
+import live.nerotv.shademebaby.utils.StringUtil;
 import live.nerotv.zyneon.app.application.Application;
 import live.nerotv.zyneon.app.application.backend.instance.FabricInstance;
 import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
@@ -17,8 +18,6 @@ import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
-import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
-import live.nerotv.zyneon.app.application.backend.utils.frame.StringUtil;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
 
@@ -60,7 +59,7 @@ public class BackendConnector {
             }
             case "profile" -> {
                 if(Application.auth.isLoggedIn()) {
-                    frame.executeJavaScript("syncProfile('"+Application.auth.getAuthInfos().getUsername()+"','"+StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid())+"');");
+                    frame.executeJavaScript("syncProfile('"+Application.auth.getAuthInfos().getUsername()+"','"+ StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid())+"');");
                 } else {
                     frame.executeJavaScript("syncLogin();");
                     frame.executeJavaScript("logout();");
@@ -553,7 +552,7 @@ public class BackendConnector {
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
             File instance = new File(Main.getInstancePath()+"instances/"+id+"/");
             Main.getLogger().debug("Created instance path: "+instance.mkdirs());
-            FileUtils.downloadFile(url,URLDecoder.decode(instance.getAbsolutePath()+"/zyneonInstance.json",StandardCharsets.UTF_8));
+            FileUtil.downloadFile(url,URLDecoder.decode(instance.getAbsolutePath()+"/zyneonInstance.json",StandardCharsets.UTF_8));
             resolveRequest("button.refresh.instances");
         } else if (request.contains("button.resourcepacks.")) {
             resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
@@ -664,7 +663,7 @@ public class BackendConnector {
             } else {
                 Main.getLogger().debug("Created instance path: "+new File(Main.getInstancePath() + "instances/" + instanceString + "/").mkdirs());
                 String s = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json";
-                File file = FileUtils.downloadFile(s, Main.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
+                File file = FileUtil.downloadFile(s, Main.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
                 instanceJson = new Config(file);
             }
             launch(instanceJson);

@@ -2,8 +2,7 @@ package live.nerotv.zyneon.app.application.backend.instance;
 
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.shademebaby.file.FileUtils;
-import live.nerotv.zyneon.app.application.backend.utils.FileUtil;
+import live.nerotv.shademebaby.utils.FileUtil;
 
 import java.io.File;
 import java.util.UUID;
@@ -31,7 +30,7 @@ public class VanillaInstance implements Instance {
         try {
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
             new File(Main.getDirectoryPath()+"temp/").mkdirs();
-            Config json = new Config(FileUtils.downloadFile(url, Main.getDirectoryPath() + "temp/" + UUID.randomUUID() + ".json"));
+            Config json = new Config(FileUtil.downloadFile(url, Main.getDirectoryPath() + "temp/" + UUID.randomUUID() + ".json"));
             String version = json.getString("modpack.version");
             String installed = this.json.getString("modpack.version");
             json.getJsonFile().delete();
@@ -70,14 +69,14 @@ public class VanillaInstance implements Instance {
 
                 Main.getLogger().log("UPDATING INSTANCE JSON FILE...");
                 String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
-                json = new Config(FileUtils.downloadFile(url, path + "/zyneonInstance.json"));
+                json = new Config(FileUtil.downloadFile(url, path + "/zyneonInstance.json"));
                 version = json.getString("modpack.version");
                 minecraftVersion = json.getString("modpack.minecraft");
                 name = json.getString("modpack.name");
                 Main.getLogger().log("UPDATED INSTANCE JSON FILE!");
 
                 Main.getLogger().log("DOWNLOADING NEW INSTANCE PACK FILE...");
-                pack = FileUtils.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
+                pack = FileUtil.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
                 Main.getLogger().log("DOWNLOADED NEW INSTANCE PACK FILE!");
 
                 Main.getLogger().log("DELETING OLD MODS...");
@@ -87,7 +86,7 @@ public class VanillaInstance implements Instance {
                 Main.getLogger().log("DELETED OLD MODS!");
 
                 Main.getLogger().log("UNZIPPING NEW INSTANCE PACK FILE...");
-                if (FileUtils.unzipFile(pack.getPath(), path)) {
+                if (FileUtil.unzipFile(pack.getPath(), path)) {
                     Main.getLogger().log("SUCCESSFULLY UNZIPPED NEW INSTANCE PACK FILE!");
                 } else {
                     Main.getLogger().log("COULDN'T UNZIP NEW INSTANCE PACK FILE!");
