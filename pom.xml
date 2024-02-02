@@ -6,7 +6,7 @@
 
     <groupId>live.nerotv</groupId>
     <artifactId>ZyneonApplication</artifactId>
-    <version>2024.2-beta.5</version>
+    <version>2024.2-beta.6</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>Zyneon-Auth</artifactId>
-            <version>2024.2.2</version>
+            <version>2024.2</version>
             <scope>compile</scope>
         </dependency>
 

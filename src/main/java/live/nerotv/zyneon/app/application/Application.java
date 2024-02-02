@@ -144,6 +144,9 @@ public class Application {
             auth = new MicrosoftAuth();
             auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath() + "libs/opapi/arnu.json", StandardCharsets.UTF_8));
             try {
+                new File(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json")).delete();
+            } catch (Exception ignore) {}
+            try {
                 KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
                 keyGenerator.init(256);
                 byte[] key = keyGenerator.generateKey().getEncoded();

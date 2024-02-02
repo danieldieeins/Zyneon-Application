@@ -313,9 +313,15 @@ body {
     color: var(--color);
 }
 
-.menu#submenu ul li a .instance-item i {
+.menu#submenu.active ul li a .instance-item i {
     color: var(--color-dim);
+    display: inherit;
 }
+
+.menu#submenu ul li a .instance-item i {
+    display: none;
+}
+
 
 .menu#submenu ul li a .instance-item:hover i {
     color: var(--inverted);
