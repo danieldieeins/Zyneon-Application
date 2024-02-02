@@ -5,6 +5,7 @@ import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import live.nerotv.Main;
 import live.nerotv.zyneon.app.application.Application;
+import live.nerotv.zyneon.app.application.backend.framework.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.installer.FabricInstaller;
 import live.nerotv.zyneon.app.application.backend.instance.FabricInstance;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;

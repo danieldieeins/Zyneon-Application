@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.application.backend.utils.backend.connector;
+package live.nerotv.zyneon.app.application.backend.utils.backend;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -16,7 +16,7 @@ import live.nerotv.zyneon.app.application.backend.instance.ForgeInstance;
 import live.nerotv.zyneon.app.application.backend.instance.VanillaInstance;
 import live.nerotv.zyneon.app.application.backend.launcher.FabricLauncher;
 import live.nerotv.zyneon.app.application.backend.launcher.ForgeLauncher;
-import live.nerotv.zyneon.app.application.backend.launcher.MinecraftVersion;
+import live.nerotv.zyneon.app.application.backend.framework.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.launcher.VanillaLauncher;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.zyneon.app.application.frontend.settings.MemoryWindow;
@@ -36,11 +36,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class BackendConnector {
+public class Connector {
 
     private final ZyneonWebFrame frame;
 
-    public BackendConnector(ZyneonWebFrame frame) {
+    public Connector(ZyneonWebFrame frame) {
         this.frame = frame;
     }
 
@@ -509,15 +509,16 @@ public class BackendConnector {
         } else if (request.contains("button.account")) {
             if (Application.auth.isLoggedIn()) {
                 resolveRequest("button.logout");
-                frame.getBrowser().reload();
                 return;
             }
-            Application.login();
-            SwingUtilities.invokeLater(() -> Application.auth.startAsyncWebview());
+            SwingUtilities.invokeLater(() -> Application.auth.login());
         } else if (request.contains("button.logout")) {
             if (Application.auth.isLoggedIn()) {
+                Config saver = new Config(Application.auth.getSaveFile());
+                saver.delete("opapi.ms");
                 Main.getLogger().debug("Deleted login: " + Application.auth.getSaveFile().delete());
                 Application.login();
+                frame.getBrowser().loadURL(Application.getSettingsURL()+"&tab=profile");
             }
         } else {
             Main.getLogger().error("REQUEST NOT RESOLVED: " + request);

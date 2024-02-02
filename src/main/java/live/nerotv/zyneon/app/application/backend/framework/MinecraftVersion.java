@@ -1,4 +1,4 @@
-package live.nerotv.zyneon.app.application.backend.launcher;
+package live.nerotv.zyneon.app.application.backend.framework;
 
 import java.util.ArrayList;
 

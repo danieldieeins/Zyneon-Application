@@ -4,7 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
-import live.nerotv.zyneon.app.application.backend.launcher.MinecraftVersion;
+import live.nerotv.zyneon.app.application.backend.framework.MinecraftVersion;
 import live.nerotv.zyneon.app.application.backend.utils.frame.ZyneonWebFrame;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
@@ -142,7 +142,7 @@ public class Application {
     public static void login() {
         SwingUtilities.invokeLater(() -> {
             auth = new MicrosoftAuth();
-            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath() + "libs/opapi/arun.json", StandardCharsets.UTF_8));
+            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath() + "libs/opapi/arnu.json", StandardCharsets.UTF_8));
             try {
                 KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
                 keyGenerator.init(256);

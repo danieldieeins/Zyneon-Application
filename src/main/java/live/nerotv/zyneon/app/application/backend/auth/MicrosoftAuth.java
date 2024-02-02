@@ -4,36 +4,35 @@ import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 
 import java.io.File;
 
-@Deprecated
 public class MicrosoftAuth {
 
-    private final SimpleMicrosoftAuth sa;
+    private final Authenticator authenticator;
 
     public MicrosoftAuth() {
-        sa = new SimpleMicrosoftAuth();
+        authenticator = new Authenticator();
     }
 
     public AuthInfos getAuthInfos() {
-        return sa.getAuthInfos();
+        return authenticator.getAuthInfos();
     }
 
     public boolean isLoggedIn() {
-        return sa.isLoggedIn();
+        return authenticator.isLoggedIn();
     }
 
-    public void startAsyncWebview() {
-        sa.startAsyncWebview();
+    public void login() {
+        authenticator.login();
     }
 
     public void setSaveFilePath(String path) {
-        sa.setSaveFilePath(path);
+        authenticator.setSaveFilePath(path);
     }
 
     public File getSaveFile() {
-        return sa.getSaveFile();
+        return authenticator.getSaveFile();
     }
 
     public void setKey(byte[] key) {
-        sa.setKey(key);
+        authenticator.setKey(key);
     }
 }

@@ -26,15 +26,13 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>ShadeMeBaby</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--GitHub repositories by FlowArg-->
         <dependency>
-            <groupId>com.github.FlowArg</groupId>
-            <artifactId>OpenAuth</artifactId>
-            <version>c66a19d</version>
+            <groupId>com.github.danieldieeins</groupId>
+            <artifactId>Zyneon-Auth</artifactId>
+            <version>2024.2.2</version>
             <scope>compile</scope>
         </dependency>
 
@@ -42,7 +40,7 @@
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>flowupdater</artifactId>
-            <version>LATEST</version>
+            <version>1.8.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
