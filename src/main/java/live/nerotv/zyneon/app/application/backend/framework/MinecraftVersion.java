@@ -110,11 +110,11 @@ public class MinecraftVersion {
 
     public static Type getType(String version) {
         int i = Integer.parseInt(version.split("\\.")[1]);
-        if(i<13) {
+        if(i<18) {
+            System.out.println(version+": LEGACY ("+i+")");
             return Type.LEGACY;
-        } else if(i<18) {
-            return Type.SEMI_NEW;
         } else {
+            System.out.println(version+": NEW ("+i+")");
             return Type.NEW;
         }
     }
