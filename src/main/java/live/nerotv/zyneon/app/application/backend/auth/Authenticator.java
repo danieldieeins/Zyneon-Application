@@ -16,7 +16,7 @@ public class Authenticator {
     private File saveFile;
     private byte[] key;
     private AuthResolver resolver;
-    private boolean isLoggedIn;
+    private Boolean isLoggedIn;
     private Config saver;
 
     public Authenticator() {
@@ -124,5 +124,15 @@ public class Authenticator {
                 }
             }
         }
+    }
+
+    public void destroy() {
+        authInfos = null;
+        saveFile = null;
+        key = null;
+        resolver = null;
+        isLoggedIn = null;
+        saver = null;
+        System.gc();
     }
 }

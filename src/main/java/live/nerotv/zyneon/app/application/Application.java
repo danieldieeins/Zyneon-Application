@@ -43,12 +43,13 @@ public class Application {
             UIManager.setLookAndFeel(new FlatDarkLaf());
             /*UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());*/
             loadInstances();
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
         try {
             MinecraftVersion.syncVersions();
             checkURL();
             auth.isLoggedIn();
-            frame.setTitlebar("Zyneon Application",Color.decode("#050113"),Color.white);
+            frame.setTitlebar("Zyneon Application", Color.decode("#050113"), Color.white);
             frame.setVisible(true);
             Main.splash.setVisible(false);
             frame.addWindowListener(new WindowAdapter() {
@@ -58,29 +59,30 @@ public class Application {
                 }
             });
             try {
-                frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32,32, Image.SCALE_SMOOTH));
-            } catch (IOException ignore) {}
+                frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            } catch (IOException ignore) {
+            }
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static void loadInstances() {
-        File file = new File(Main.getDirectoryPath()+"libs/zyneon/instances.json");
-        Main.getLogger().debug("Created instance json path: "+file.getParentFile().mkdirs());
-        if(file.exists()) {
-            Main.getLogger().debug("Deleted old instance json: "+file.delete());
+        File file = new File(Main.getDirectoryPath() + "libs/zyneon/instances.json");
+        Main.getLogger().debug("Created instance json path: " + file.getParentFile().mkdirs());
+        if (file.exists()) {
+            Main.getLogger().debug("Deleted old instance json: " + file.delete());
         }
         instances = new Config(file);
         List<Map<String, Object>> instanceList = new ArrayList<>();
 
-        File officialPath = new File(Main.getInstancePath()+"instances/official/");
-        Main.getLogger().debug("Created official instance path: "+officialPath.mkdirs());
+        File officialPath = new File(Main.getInstancePath() + "instances/official/");
+        Main.getLogger().debug("Created official instance path: " + officialPath.mkdirs());
         File[] officialInstances = officialPath.listFiles();
-        if(officialInstances!=null) {
-            for(File instance:officialInstances) {
-                if(instance.isDirectory()) {
-                    if(!instance.getName().equals("zyneonplus")) {
+        if (officialInstances != null) {
+            for (File instance : officialInstances) {
+                if (instance.isDirectory()) {
+                    if (!instance.getName().equals("zyneonplus")) {
                         saveInstance(instanceList, instance);
                     } else {
                         File[] zyneonInstances = instance.listFiles();
@@ -96,74 +98,57 @@ public class Application {
             }
         }
 
-        File unofficialPath = new File(Main.getInstancePath()+"instances/");
-        Main.getLogger().debug("Created unofficial instance path: "+unofficialPath.mkdirs());
+        File unofficialPath = new File(Main.getInstancePath() + "instances/");
+        Main.getLogger().debug("Created unofficial instance path: " + unofficialPath.mkdirs());
         File[] unofficialInstances = unofficialPath.listFiles();
-        if(unofficialInstances!=null) {
-            for(File instance:unofficialInstances) {
-                if(instance.isDirectory()) {
-                    if(!instance.getName().equalsIgnoreCase("official")) {
+        if (unofficialInstances != null) {
+            for (File instance : unofficialInstances) {
+                if (instance.isDirectory()) {
+                    if (!instance.getName().equalsIgnoreCase("official")) {
                         saveInstance(instanceList, instance);
                     }
                 }
             }
         }
 
-        instances.set("instances",instanceList);
+        instances.set("instances", instanceList);
     }
 
     private static void saveInstance(List<Map<String, Object>> instanceList, File instance) {
-        File instanceFile = new File(instance+"/zyneonInstance.json");
-        if(instanceFile.exists()) {
+        File instanceFile = new File(instance + "/zyneonInstance.json");
+        if (instanceFile.exists()) {
             Map<String, Object> instance_ = new HashMap<>();
             Config instanceJson = new Config(instanceFile);
             String id = instanceJson.getString("modpack.id");
             String name = instanceJson.getString("modpack.name");
             String version = instanceJson.getString("modpack.version");
             String minecraft = instanceJson.getString("modpack.minecraft");
-            if(instanceJson.getString("modpack.icon")!=null) {
-                instance_.put("icon",instanceJson.getString("modpack.icon"));
+            if (instanceJson.getString("modpack.icon") != null) {
+                instance_.put("icon", instanceJson.getString("modpack.icon"));
             }
             String modloader = "Vanilla";
-            if(instanceJson.getString("modpack.forge.version")!=null) {
-                modloader = "Forge "+instanceJson.getString("modpack.forge.version");
-            } else if(instanceJson.getString("modpack.fabric")!=null) {
-                modloader = "Fabric "+instanceJson.getString("modpack.fabric");
+            if (instanceJson.getString("modpack.forge.version") != null) {
+                modloader = "Forge " + instanceJson.getString("modpack.forge.version");
+            } else if (instanceJson.getString("modpack.fabric") != null) {
+                modloader = "Fabric " + instanceJson.getString("modpack.fabric");
             }
-            instance_.put("id",id);
-            instance_.put("name",name);
-            instance_.put("version",version);
-            instance_.put("minecraft",minecraft);
-            instance_.put("modloader",modloader);
+            instance_.put("id", id);
+            instance_.put("name", name);
+            instance_.put("version", version);
+            instance_.put("minecraft", minecraft);
+            instance_.put("modloader", modloader);
             instanceList.add(instance_);
         }
     }
 
     public static void login() {
-        SwingUtilities.invokeLater(() -> {
-            auth = new MicrosoftAuth();
-            auth.setSaveFilePath(URLDecoder.decode(Main.getDirectoryPath() + "libs/opapi/arnu.json", StandardCharsets.UTF_8));
-            try {
-                new File(URLDecoder.decode(Main.getDirectoryPath()+"libs/opapi/arun.json")).delete();
-            } catch (Exception ignore) {}
-            try {
-                KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-                keyGenerator.init(256);
-                byte[] key = keyGenerator.generateKey().getEncoded();
-                String key_ = new String(Base64.getEncoder().encode(key));
-                Config saver = new Config(auth.getSaveFile());
-                if (saver.get("op.k") == null) {
-                    saver.set("op.k", key_);
-                } else {
-                    key_ = (String) saver.get("op.k");
-                    key = Base64.getDecoder().decode(key_);
-                }
-                auth.setKey(key);
-                auth.isLoggedIn();
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        if (auth != null) {
+            auth.destroy();
+            auth = null;
+            System.gc();
+        }
+        auth = new MicrosoftAuth();
+
     }
 
     public static String getStartURL() {
@@ -174,15 +159,15 @@ public class Application {
     }
 
     public static String getNewsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "index.html?theme="+theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "index.html?theme=" + theme;
     }
 
     public static String getInstancesURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html?theme="+theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html?theme=" + theme;
     }
 
     public static String getSettingsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html?theme="+theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html?theme=" + theme;
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
