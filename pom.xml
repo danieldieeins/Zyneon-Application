@@ -12,5 +12,6 @@
     <modules>
         <module>application-main</module>
         <module>application-ui</module>
+        <module>application-updater</module>
     </modules>
 </project>
