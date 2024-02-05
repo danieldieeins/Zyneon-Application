@@ -3,14 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.zyneonstudios</groupId>
+        <artifactId>application-parent</artifactId>
+        <version>2024.2</version>
+    </parent>
 
-    <groupId>com.zyneonstudios</groupId>
-    <artifactId>application-parent</artifactId>
-    <version>2024.2</version>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>application-main</module>
-        <module>application-ui</module>
-    </modules>
+    <artifactId>application-ui</artifactId>
+    <version>LATEST</version>
 </project>
