@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News ▪ Zyneon Application</title>
+    <link rel="stylesheet" href="assets/zyneon/css/style.css">
+    <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
+    <script src="assets/zyneon/js/functions.js"></script>
+    <script>syncTheme();</script>
+</head>
+<body>
+    <div class="content-rows" id="top">
+        <div class="menu" id="main">
+            <div class="menu-title">
+                <img src="assets/zyneon/images/logo.png" alt="Zyneon Studios logo">
+                <p>Zyneon<br>Application</p>
+            </div>
+            <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
+            <ul>
+                <li>
+                    <a onclick="link('index.html');">
+                        <div class="menu-item">
+                            <i class="bx bxs-home"></i>
+                            <span class="menu-item">News & updates</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="link('instances.html');">
+                        <div class="menu-item">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <span class="menu-item">Instances</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item" id="selected">
+                            <i class="bx bxs-cog"></i>
+                            <span class="menu-item">Settings</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="profile" onclick="toggleMenu();">
+                <i class='bx bx-loader' id="loading"></i>
+                <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
+                <p class="username" id="username">connecting...</p>
+                <a onclick="link('settings.html?tab=profile');" id="loginlogout"><p>loading...</p></a>
+            </div>
+        </div>
+        <div class="menu" id="submenu">
+            <ul>
+                <li class="subtitle">
+                    <span class="bold">Application settings</span>
+                </li>
+                <li>
+                    <a onclick="syncGeneralSettings();">
+                        <div class="menu-item" id="general-settings">
+                            <i class='bx bx-compass' ></i>
+                            <span class="menu-item">General settings</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="syncGlobalSettings();">
+                        <div class="menu-item" id="global-settings">
+                            <i class='bx bx-globe' ></i>
+                            <span class="menu-item">Global settings</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="syncProfileSettings();">
+                        <div class="menu-item" id="profile-settings">
+                            <i class='bx bxs-user' ></i>
+                            <span class="menu-item">Profile settings</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="syncAbout();">
+                        <div class="menu-item" id="about">
+                            <i class='bx bxs-info-circle'></i>
+                            <span class="menu-item">About Zyneon App</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="subtitle">
+                    <span class="bold">Actions</span>
+                </li>
+                <li>
+                    <a onclick="callJavaMethod('button.refresh');">
+                        <div class="menu-item" id="refresh">
+                            <i class='bx bx-refresh'></i>
+                            <span class="menu-text">Refresh application</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="callJavaMethod('button.exit');">
+                        <div class="menu-item" id="exit">
+                            <i class='bx bxs-exit' ></i>
+                            <span class="menu-text">Exit application</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="info">
+                <p class="app">Zyneon Application</p>
+                <p class="version" id="app-version">loading...</p>
+            </div>
+        </div>
+        <div class="content">
+            <div id="general">
+                <div class="card">
+                    <h2>General settings</h2>
+                    <h3 class="background-bottom">Start tab</h3>
+                    <div class="start-tab">
+                        <a class="button" id="general-tab-start" onclick="callJavaMethod('button.starttab.start');">News</a>
+                        <a class="button" id="general-tab-instances" onclick="callJavaMethod('button.starttab.instances');">Instances</a>
+                    </div>
+                </div>
+                <div class="card" id="appearance">
+                    <h2>Appearance</h2>
+                    <h3 class="background">Theme</h3>
+                    <div class="theme">
+                        <a class="button" id="appearance-theme-light" onclick="setTheme('light'); link('settings.html');">Light</a>
+                        <a class="button" id="appearance-theme-dark" onclick="setTheme('dark'); link('settings.html');">Dark</a>
+                        <a class="button" id="appearance-theme-zyneon" onclick="setTheme('zyneon'); link('settings.html');">Zyneon</a>
+                    </div>
+                    <h3 class="bottom">Language</h3>
+                    <div class="language">
+                        <a class="button" id="appearance-language-english"><i class='bx bxs-lock-alt'></i> English</a>
+                    </div>
+                </div>
+            </div>
+            <div id="global">
+                <div class="card">
+                    <h2>Global settings</h2>
+                    <h3 class="background">Instance path</h3>
+                    <div class="instance-path">
+                        <p id="instance-path-string" onclick="callJavaMethod('button.folder.instances');">loading...</p>
+                        <a class="button" id="button-instance-path" onclick="callJavaMethod('button.path.instances');">Configure</a>
+                    </div>
+                    <h3 class="bottom">Global memory</h3>
+                    <div class="memory">
+                        <p id="memory-int">loading...</p>
+                        <a class="button" id="button-memory" onclick="callJavaMethod('button.settings.default');">Configure</a>
+                    </div>
+                </div>
+            </div>
+            <div id="profile">
+                <div class="card">
+                    <h2>Profile settings</h2>
+                    <h3 class="background-bottom" id="user-name">loading...</h3>
+                    <div class="account">
+                        <p id="uuid" onclick="callJavaMethod('button.copy.uuid');">loading...</p>
+                        <a class="button" onclick="callJavaMethod('button.account');">Logout</a>
+                    </div>
+                </div>
+                <div class="actions">
+                    <img alt="User image" id="user-image" src="assets/zyneon/images/steve.png">
+                    <div class="card">
+                        <h2>Quick actions</h2>
+                        <h3 class="background" onclick="callJavaMethod('button.laby')"><i class='bx bx-right-arrow-alt'></i> LABY.net (profile infos)</h3>
+                        <h3 onclick="callJavaMethod('button.username');"><i class='bx bx-right-arrow-alt'></i> Change Minecraft username</h3>
+                        <h3 class="background-bottom" onclick="callJavaMethod('button.skin');"><i class='bx bx-right-arrow-alt'></i> Change Minecraft skin</h3>
+                    </div>
+                </div>
+            </div>
+            <div id="fallback">
+                <div class="card">
+                    <h2>Profile settings</h2>
+                    <h3 class="background-bottom">Please log in to continue.</h3>
+                    <div class="login">
+                        <a class="button" onclick="callJavaMethod('button.account');">Login</a>
+                    </div>
+                </div>
+            </div>
+            <div id="path-select">
+                <div class="card">
+                    <h2>Hey, your action is required!</h2>
+                    <h3 class="background-bottom">Please select an instance installation path to continue.</h3>
+                    <div class="login">
+                        <a class="button" onclick="callJavaMethod('button.path.instances');">Select path</a>
+                    </div>
+                </div>
+            </div>
+            <div id="about-app">
+                <div class="card">
+                    <h1>About Zyneon App</h1>
+                </div>
+                <div class="card">
+                    <h2>Zyneon Application</h2>
+                    <h3 class="background">Developers: nerotvlive</h3>
+                    <h3>This is an open source project by Zyneon Studios. (GPL-3.0 license)<br><br><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application');" target="_blank" class="button">View Code on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/ZyneonApplicationContent');" target="_blank" class="button">View Content on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/blob/master/LICENSE.md');" target="_blank" class="button">View license</a><br></h3>
+                </div>
+                <div class="card">
+                    <h2>Dependencies</h2>
+                    <h3 class="background">ShadeMeBaby v1.2.0 by nerotvlive (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/danieldieeins/ShadeMeBaby');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/ShadeMeBaby/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                    <h3>FlowUpdater v1.8.3 by FlowArg (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3 class="background">OpenLauncherLib v3.2.9 by FlowArg (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3>ZyneonAuth v2024.2 by officialPlocki (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Auth');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Auth/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="assets/zyneon/js/settings.js"></script>
+<script>syncApplication(); syncVersion(); syncSettings();</script>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News ▪ Zyneon Application</title>
+    <link rel="stylesheet" href="assets/zyneon/css/style.css">
+    <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
+    <script src="assets/zyneon/js/functions.js"></script>
+    <script>syncTheme();</script>
+</head>
+<body>
+    <div class="content-rows" id="top">
+        <div class="menu" id="main">
+            <div class="menu-title">
+                <img src="assets/zyneon/images/logo.png" alt="Zyneon Studios logo">
+                <p>Zyneon<br>Application</p>
+            </div>
+            <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
+            <ul>
+                <li>
+                    <a onclick="link('index.html');">
+                        <div class="menu-item">
+                            <i class="bx bxs-home"></i>
+                            <span class="menu-item">News & updates</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div class="menu-item" id="selected">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <span class="menu-item">Instances</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="link('settings.html');">
+                        <div class="menu-item">
+                            <i class="bx bxs-cog"></i>
+                            <span class="menu-item">Settings</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <div class="profile" onclick="toggleMenu();">
+                <i class='bx bx-loader' id="loading"></i>
+                <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
+                <p class="username" id="username">connecting...</p>
+                <a onclick="link('settings.html?tab=profile');" id="loginlogout"><p>loading...</p></a>
+            </div>
+        </div>
+        <div class="menu" id="submenu">
+            <ul>
+                <li class="subtitle">
+                    <span class="bold">Instance actions</span>
+                </li>
+                <li>
+                    <a onclick="callJavaMethod('button.refresh.instances');">
+                        <div class="menu-item" id="refresh">
+                            <i class='bx bx-refresh'></i>
+                            <span class="menu-item">Refresh instances</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="addInstance();">
+                        <div class="menu-item">
+                            <i class='bx bx-plus' ></i>
+                            <span class="menu-item">Add instance</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="subtitle">
+                    <span class="bold">Instances</span>
+                </li>
+                <li id="list-template">
+                    <a>
+                        <div class="instance-item">
+                            <img alt="instance-icon" src="assets/zyneon/images/instances/default.png">
+                            <span class="menu-item">Instance</span><i class='bx bxs-check-circle'></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <div id="instance-view">
+                <div class="card" id="title-card">
+                    <div class="title">
+                        <img alt="instance-icon" id="icon" src="assets/zyneon/images/instances/default.png"><h1 id="title">loading...</h1><i id="check" class='bx bxs-check-circle'></i>
+                    </div>
+                    <div class="buttons">
+                        <div class="folder-dropdown">
+                            <a class="button">Folder</a>
+                            <div class="card">
+                                <h3 id="open-resourcepacks">Open resource packs</h3>
+                                <h3 id="open-screenshots">Open screenshots</h3>
+                                <h3 id="open-shaderpacks">Open shader packs</h3>
+                                <h3 id="open-worlds">Open worlds</h3>
+                                <h3 id="open-instance">Open instance folder</h3>
+                                <h3 id="open-mods">Open mods folder</h3>
+                            </div>
+                        </div>
+                        <div class="settings-dropdown">
+                            <a class="button" id="configure-instance" onclick="toggleSettings();">Settings</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebyside" id="sidebyside">
+                    <img alt="instance-logo" id="logo" src="assets/zyneon/images/instances/default-logo.png">
+                    <div id="description-card">
+                        <div class="card">
+                            <span>Instance description</span>
+                            <p id="description">loading...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="instance-settings">
+                    <div class="card">
+                        <h2>JVM settings</h2>
+                        <h3 class="background-bottom">Memory (RAM):
+                            <a id="memory-int">0 MB</a>
+                            <a class="button" id="configure-memory">Configure</a>
+                        </h3>
+                    </div>
+                    <div class="card" id="local-settings">
+                        <h2>Instance settings</h2>
+                        <form id="settings">
+                            <h3 class="background">Instance name:
+                                <label>
+                                    <input type="text" id="settings-name" maxlength="32" required>
+                                </label>
+                            </h3>
+                            <h3>Instance version:
+                                <label>
+                                    <input type="text" id="settings-version" maxlength="32" required>
+                                </label>
+                            </h3>
+                            <h3 class="background">Instance description:
+                                <label>
+                                    <input type="text" id="settings-description" maxlength="256" required>
+                                </label>
+                            </h3>
+                            <h3>Minecraft version:
+                                <label>
+                                    <select id="settings-minecraft" required>
+
+                                    </select>
+                                    <script>addVersionsToMinecraftSelect("settings-minecraft");</script>
+                                </label>
+                            </h3>
+                            <h3 class="background">Modloader:
+                                <label>
+                                    <select id="settings-modloader" required>
+                                        <option value="Vanilla">None (vanilla)</option>
+                                        <option value="Fabric">Fabric</option>
+                                        <option value="Forge">Forge</option>
+                                    </select>
+                                </label>
+                            </h3>
+                            <h3>Modloader version: <label><input type="text" id="settings-mlversion"></label></h3>
+                            <h3 class="background-bottom"><label><input type="submit" id="settings-save" value="Save changes"></label>-</h3>
+                        </form>
+                    </div>
+                    <div class="card" id="local-appearance">
+                        <h2>Instance appearance</h2>
+                        <h3 class="background">Instance icon:
+                            <a id="show-icon">Show icon image</a>
+                            <a class="button" id="configure-icon">Configure</a>
+                        </h3>
+                        <h3>Instance logo:
+                            <a id="show-logo">Show logo image</a>
+                            <a class="button" id="configure-logo">Configure</a>
+                        </h3>
+                        <h3 class="background-bottom">Instance background:
+                            <a id="show-background">Show background image</a>
+                            <a class="button" id="configure-background">Configure</a>
+                        </h3>
+                    </div>
+                    <div class="card">
+                        <h2>Danger zone</h2>
+                        <h3 class="background-bottom">Delete instance (this can't be undone): <a class="button" id="delete-instance">Delete instance</a></h3>
+                    </div>
+                </div>
+                <div class="dock">
+                    <div class="instance-infos">
+                        <p><i class='bx bx-info-circle' ></i> Version: <span id="version">loading...</span></p>
+                        <p><i class='bx bx-cube' ></i> Minecraft: <span id="minecraft">loading...</span></p>
+                        <p><i class='bx bx-code-block' ></i> <span id="modloader">Modloader</span>: <span id="mlversion">loading...</span></p>
+                    </div>
+                    <a class="button" id="launch"><i class='bx bxs-rocket'></i> LAUNCH</a>
+                </div>
+            </div>
+            <div id="instance-adder">
+                <div class="card">
+                    <h1>Select an official instance</h1>
+                </div>
+                <div id="zyneonplus-instance" class="card">
+                    <h2 class="background-top">Zyneon+</h2>
+                    <h3 class="background-bottom">Play Minecraft in an optimized way with more FPS, shaders, simple online play and more!</h3>
+                    <h3>
+                        <label for="zyneonplus-version"></label>
+                        <select id="zyneonplus-version">
+                            <option value="dynamic">Latest (recommended)</option>
+                            <option value="vr">Latest VR (dynamic)</option>
+                            <option value="1.20">1.20.4 (static)</option>
+                            <option value="1.19">1.19.4 (static)</option>
+                            <option value="1.18">1.18.2 (static)</option>
+                            <option value="1.17">1.17.1 (static)</option>
+                            <option value="1.16">1.16.5 (static)</option>
+                            <option value="1.12" disabled>1.12.2 (static)</option>
+                            <option value="1.8" disabled>1.8.9 (static)</option>
+                        </select>
+                        <a id="install-zyneonplus" class="button" onclick="installZyneonPlus();">Install</a>
+                    </h3>
+                </div>
+                <div id="projectz-instance" class="card">
+                    <h2 class="background-top">Project'Z Beta</h2>
+                    <h3 class="background-bottom">Try Zyneon's newest modpack!</h3>
+                    <h3><a class="button" onclick="callJavaMethod('button.install.official/projectz');">Install</a></h3>
+                </div><br>
+                <div class="card">
+                    <h1>Create your own instance</h1>
+                </div>
+                <div class="card" id="instance-creator">
+                    <h2 class="background-top">Instance creator</h2>
+
+                    <form id="values">
+                        <div id="form" class="background-bottom">
+                            <h3>Instance name: <label><input type="text" id="creator-name" maxlength="32" required></label></h3>
+                            <h3>Instance version: <label><input type="text" id="creator-version" required></label></h3>
+                            <h3>
+                                Minecraft version:
+                                <label>
+                                    <select id="creator-minecraft" required></select>
+                                    <script>addVersionsToMinecraftSelect("creator-minecraft");</script>
+                                </label>
+                            </h3>
+                            <h3>
+                                Modloader:
+                                <label>
+                                    <select id="creator-modloader" required>
+                                        <option value="Vanilla">None (vanilla)</option>
+                                        <option value="Fabric">Fabric</option>
+                                        <option value="Forge">Forge</option>
+                                    </select>
+                                </label>
+                            </h3>
+                            <h3 id="bottom2">Modloader version: <label><input type="text" id="creator-mlversion"></label><br><br></h3>
+                        </div>
+                        <h3><input type="submit" id="create" value="Create instance" onclick="validateInstanceCreator();"></h3>
+                    </form>
+                </div><br>
+                <div class="card">
+                    <h1>Import an instance</h1>
+                </div>
+                <div id="get-by-id" class="card">
+                    <h2 class="background-top">Get an instance by id</h2>
+                    <h3 class="background-bottom">If you know an instance id, you can try to install the instance here!</h3>
+                    <h3>
+                        <label>
+                            <input type="text" id="id">
+                        </label>
+                        <a class="button" onclick="installInstanceID();">Install</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="assets/zyneon/js/instances.js"></script>
+<script>syncApplication(); syncInstanceList();</script>
+</html>

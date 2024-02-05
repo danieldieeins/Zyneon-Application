@@ -1,0 +1,1186 @@
+:root {
+    --background: #00000000;
+    --background2: #00000000;
+    --background3: #00000000;
+    --background4: #00000000;
+    --background-accent: #00000000;
+    --highlight: #00000000;
+    --color: #00000000;
+    --color-dim: #00000000;
+    --color-dim-less: #00000000;
+    --inverted: #00000000;
+    --accent: #7f34f8;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes negative-rotate {
+    100% { transform: rotate(-360deg); }
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    80% { transform: rotate(0deg); }
+    85% { transform: rotate(5deg); }
+    95% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@font-face {
+    font-family: LTHoopRegular;
+    src: url("../../fonts/lthoop-regular.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    font-family: LTHoopRegular, serif;
+}
+
+body {
+    background: black;
+    overflow: hidden;
+}
+
+.content-rows {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.menu {
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 0 0.8rem #000;
+    background: var(--background-accent);
+    transition: 0.5s;
+    padding: 1rem;
+    width: 2.25rem;
+}
+
+.menu#submenu {
+    overflow-y: scroll;
+    z-index: 99;
+    background: var(--background2);
+}
+
+.menu#submenu.active {
+    width: 16rem;
+}
+
+.menu#main {
+    z-index: 100;
+}
+
+.menu.active {
+    width: 16rem;
+}
+
+.menu .menu-title {
+    display: none;
+}
+
+.menu.active .menu-title {
+    display: flex;
+}
+
+.menu .menu-title img {
+    height: 2.5rem;
+}
+
+.menu .menu-title p {
+    color: var(--color);
+}
+
+.menu i {
+    color: var(--color);
+    font-size: 1.5rem;
+}
+
+.menu i#switch {
+    position: absolute;
+    top: 1rem;
+    right: 1.4rem;
+}
+
+.menu i#switch:hover {
+    cursor: pointer;
+}
+
+.menu ul li img {
+    width: 24px;
+    height: 24px;
+}
+
+.menu ul {
+    position: absolute;
+    top: 3.6rem;
+    left: 0.75rem;
+    list-style: none;
+    transition: 0.5s;
+}
+
+.menu#submenu ul {
+    top: 0.8rem;
+}
+
+.menu.active ul {
+    position: absolute;
+    top: 4rem;
+    list-style: none;
+    transition: 0.5s;
+}
+
+.menu ul li#list-template {
+    display: none;
+}
+
+.menu#submenu.active ul {
+    top: 0.8rem;
+}
+
+.menu ul li {
+    padding-bottom: 1rem;
+}
+
+.menu.active ul li {
+    padding: 1rem 1rem 0 1rem;
+}
+
+.menu ul li.subtitle {
+    color: var(--color-dim);
+    display: none;
+}
+
+.menu ul li.subtitle span {
+    font-weight: 500;
+    max-width: 10rem;
+    white-space: nowrap;
+}
+
+.menu.active ul li.subtitle {
+    display: inherit;
+}
+
+
+.menu ul li a {
+    text-decoration: none;
+}
+
+.menu ul li a .instance-item {
+    position: relative;
+    display: flex;
+    padding: 0.6rem;
+    width: 1.51rem;
+    border-radius: 0.5rem;
+}
+
+.menu.active ul li a .instance-item {
+    position: relative;
+    width: 13.5rem;
+    transition: 0.5s;
+    white-space: nowrap;
+}
+
+.menu ul li a .menu-item {
+    position: relative;
+    display: flex;
+    padding: 0.6rem;
+    width: 1.51rem;
+    border-radius: 0.5rem;
+}
+
+.menu.active ul li a .menu-item {
+    position: relative;
+    width: 13.5rem;
+    transition: 0.5s;
+    white-space: nowrap;
+}
+
+.menu ul li a .instance-item:hover {
+    background: var(--highlight);
+    box-shadow: 0 0 0.8rem var(--highlight);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.menu ul li a .instance-item span {
+    padding: 0.17rem 0 0 0.75rem;
+    font-size: 1.1rem;
+    display: none;
+    white-space: nowrap;
+}
+
+.menu.active ul li a .instance-item span {
+    display: inline;
+    color: var(--color);
+}
+
+.menu.active ul li a .instance-item:hover span {
+    color: var(--inverted);
+    background: none;
+    box-shadow: none;
+}
+
+
+.menu ul li a .menu-item:hover {
+    background: var(--highlight);
+    box-shadow: 0 0 0.8rem var(--highlight);
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.menu ul li a .menu-item:hover i {
+    color: var(--inverted);
+    transition: 0.5s;
+}
+
+.menu ul li a .menu-item#selected:hover i {
+    color: var(--color);
+}
+
+
+.menu ul li a .menu-item span {
+    padding: 0.17rem 0 0 0.75rem;
+    font-size: 1.1rem;
+    display: none;
+    white-space: nowrap;
+}
+
+.menu.active ul li a .menu-item span {
+    display: inline;
+    color: var(--color);
+}
+
+.menu.active ul li a .menu-item:hover span {
+    color: var(--inverted);
+    background: none;
+    box-shadow: none;
+}
+
+.menu ul li a .menu-item#selected span,i {
+    color: #fff;
+}
+
+.menu ul li a .menu-item.active span {
+    color: #fff;
+}
+
+.menu ul li a .instance-item#selected span {
+    color: #fff;
+}
+
+.menu ul li a .instance-item.active span {
+    color: #fff;
+}
+
+.menu ul li a .menu-item#exit:hover {
+    background: red;
+    box-shadow: 0 0 0.8rem red;
+    transition: 0.5s;
+    animation: wiggle 0.1s linear infinite;
+}
+
+.menu ul li a .menu-item#refresh:hover i {
+    animation: negative-rotate 10s linear infinite;
+    color: var(--inverted);
+}
+
+.menu ul li a .menu-item i {
+    position: relative;
+    top: 0.07rem;
+}
+
+.menu ul li a .menu-item.active i {
+    color: #fff;
+}
+
+.menu#submenu ul li a .menu-item i {
+    color: var(--color);
+}
+
+.menu#submenu ul li a .menu-item:hover i {
+    color: var(--inverted);
+    transition: 0.5s;
+}
+
+.menu#submenu ul li a .menu-item.active:hover i {
+    color: var(--color);
+}
+
+.menu#submenu.active ul li a .instance-item i {
+    color: var(--color-dim);
+    display: inherit;
+}
+
+.menu#submenu ul li a .instance-item i {
+    display: none;
+}
+
+
+.menu#submenu ul li a .instance-item:hover i {
+    color: var(--inverted);
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.menu#submenu ul li a .instance-item.active:hover i {
+    color: var(--color-dim);
+    opacity: 1;
+}
+
+
+.menu.active ul li a .instance-item span {
+    display: inline;
+    background: none;
+    box-shadow: none;
+    max-width: 11.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.menu.active ul li a .menu-item span {
+    display: inline;
+    background: none;
+    box-shadow: none;
+    max-width: 11.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.menu ul li a .menu-item.active,.menu-item#selected,.instance-item.active,.instance-item#selected {
+    color: #fff;
+    background: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+}
+
+.menu ul li a .instance-item.active,.instance-item#selected {
+    color: #fff;
+    background: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+}
+
+.menu ul li a .menu-item#exit:hover span {
+    color: #ffb0b0;
+}
+
+.menu ul li a .menu-item#exit:hover i {
+    color: #ffb0b0;
+}
+
+.menu ul li a .menu-item.active:hover span,i {
+    color: #fff;
+}
+
+.menu ul li a .instance-item.active:hover span,i {
+    color: #fff;
+}
+
+.menu .profile {
+    position: absolute;
+    display: flex;
+    padding: 1rem;
+    bottom: 0;
+    left: 0;
+}
+
+.menu .profile img {
+    position: absolute;
+    left: 0.4rem;
+    bottom: 0.5rem;
+    height: 3.5rem;
+    display: none;
+}
+
+.menu .profile:hover {
+    animation: wiggle 1s linear infinite;
+}
+
+.menu .profile img.active {
+    display: inherit;
+}
+
+.menu .profile i {
+    animation: rotate 05s linear infinite;
+    position: absolute;
+    left: 0.85rem;
+    bottom: 0.9rem;
+    font-size: 2.5rem;
+    display: inherit;
+    z-index: 1;
+}
+
+.menu .profile i.active {
+    display: none;
+}
+
+.menu .profile p.username {
+    position: absolute;
+    color: var(--color);
+    left: 4.5rem;
+    bottom: 2.3rem;
+    display: none;
+}
+
+.menu.active .profile p.username {
+    display: inherit;
+    width: 20rem;
+}
+
+.menu .profile a {
+    position: absolute;
+    text-decoration: none;
+    color: var(--color-dim);
+    left: 4.5rem;
+    bottom: 1.2rem;
+    display: none;
+}
+
+.menu.active .profile a {
+    display: inherit;
+}
+
+.menu .profile a:hover {
+    position: absolute;
+    text-decoration: none;
+    transition: 0.5s;
+    color: var(--color);
+}
+
+.menu .info {
+    white-space: nowrap;
+    position: absolute;
+    color: var(--color-dim);
+    left: 1rem;
+    bottom: 1rem;
+    display: none;
+}
+
+.menu.active .info {
+    display: inherit;
+    left: 1.5rem;
+}
+
+.menu .info p.app {
+    color: var(--color-dim-less);
+}
+
+.bold {
+    font-weight: 1000;
+}
+
+.content {
+    overflow: auto;
+    position: relative;
+    padding: 1.5rem;
+    background: var(--background);
+    flex-grow: 1;
+    width: 100%;
+}
+
+.content a.button {
+    text-decoration: none;
+    font-size: 1.05rem;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.8rem #000;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background-accent);
+}
+
+.content a.button:hover {
+    cursor: pointer;
+    font-size: large;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+    z-index: 999;
+}
+
+.content a.button.active {
+    color: var(--inverted);
+    background-color: var(--highlight);
+}
+
+.content a.button.active:hover {
+    color: var(--inverted);
+    background-color: var(--highlight);
+}
+
+.content #general {
+    display: inherit;
+}
+
+.content #general .start-tab {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #general .start-tab a.button:hover {
+    font-size: 1.05rem;
+}
+
+.content #general .start-tab a.button#general-tab-start {
+    position: relative;
+    margin-right: -0.25rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    box-shadow: none;
+}
+
+.content #general .start-tab a.button#general-tab-instances {
+    position: relative;
+    border-radius: 0 0.5rem 0.5rem 0 ;
+    box-shadow: none;
+}
+
+.content #general #appearance .theme {
+    position: absolute;
+    right: 2rem;
+    top: 13.965rem;
+}
+
+.content #general #appearance .theme a.button:hover {
+    font-size: 1.05rem;
+}
+
+.content #general #appearance .theme a.button#appearance-theme-light {
+    position: relative;
+    margin-right: -0.25rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    box-shadow: none;
+}
+
+.content #general #appearance .theme a.button#appearance-theme-dark {
+    position: relative;
+    margin-right: -0.25rem;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.content #general #appearance .theme a.button#appearance-theme-zyneon {
+    position: relative;
+    border-radius: 0 0.5rem 0.5rem 0 ;
+    box-shadow: none;
+}
+
+.content #general #appearance .language {
+    position: absolute;
+    right: 2rem;
+    top: 16.97rem;
+}
+
+.content #general #appearance .language a.button#appearance-language-english {
+    box-shadow: none;
+}
+
+.content #general #appearance .language a.button#appearance-language-english:hover {
+    box-shadow: none;
+    color: var(--color);
+    background: var(--background-accent);
+    cursor: not-allowed;
+    font-size: 1.05rem;
+}
+
+.content #global {
+    display: none;
+}
+
+.content #global a.button {
+    display: none;
+    box-shadow: none;
+}
+
+.content #global .instance-path {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #global .instance-path p {
+    padding-right: 1rem;
+    color: var(--color-dim);
+    position: relative;
+    display: inline;
+}
+
+.content #global .instance-path p:hover {
+    color: var(--color);
+    transition: 0.5s;
+}
+
+.content #global .instance-path a {
+    position: relative;
+    display: inline;
+}
+
+.content #global .memory {
+    position: absolute;
+    right: 2rem;
+    top: 9.05rem;
+}
+
+.content #global .memory p {
+    padding-right: 1rem;
+    color: var(--color-dim);
+    position: relative;
+    display: inline;
+}
+
+.content #global .memory a {
+    position: relative;
+    display: inline;
+}
+
+.content #global a:hover {
+    font-size: 1.05rem;
+    box-shadow: none;
+}
+
+.content #profile {
+    display: none;
+}
+
+.content #profile .account a.button {
+    font-size: 1.05rem;
+    color: white;
+    background: #ff2e2e;
+    box-shadow: none;
+}
+
+.content #profile .account a.button:hover {
+    font-size: 1.05rem;
+    color: white;
+    background: red;
+    box-shadow: none;
+}
+
+.content #path-select .login a.button {
+    font-size: 1.05rem;
+    box-shadow: none;
+}
+
+.content #path-select .login a.button:hover {
+    font-size: 1.05rem;
+    box-shadow: none;
+}
+
+.content #path-select .login {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #path-select .login a {
+    position: relative;
+    display: inline;
+}
+
+.content #fallback .login a.button {
+    font-size: 1.05rem;
+    color: #000000;
+    background: #6bff25;
+    box-shadow: none;
+}
+
+.content #fallback .login a.button:hover {
+    font-size: 1.05rem;
+    color: black;
+    background: #14ff00;
+    box-shadow: none;
+}
+
+.content #fallback .login {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #fallback .login a {
+    position: relative;
+    display: inline;
+}
+
+.content #profile .account {
+    position: absolute;
+    right: 2rem;
+    top: 5.965rem;
+}
+
+.content #profile .account p {
+    padding-right: 1rem;
+    color: var(--color-dim);
+    position: relative;
+    display: inline;
+}
+
+.content #profile .account p:hover {
+    color: var(--color);
+    transition: 0.5s;
+}
+
+.content #profile .account a {
+    position: relative;
+    display: inline;
+}
+
+.content #profile .actions {
+    position: relative;
+}
+
+.content #profile .actions img {
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    width: 30%;
+    min-width: 250px;
+    min-height: 250px;
+}
+
+.content #profile .actions .card {
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    width: 65%;
+}
+
+p#uuid:hover {
+    cursor: pointer;
+
+}
+
+p#instance-path-string:hover {
+    cursor: pointer;
+}
+
+.content #profile .actions .card h3:hover {
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+}
+
+.content .card {
+    border-radius: 0.5rem;
+    background: var(--background2);
+    box-shadow: 0 0 0.8rem #000;
+    margin-bottom: 1.5rem;
+}
+
+.content .card h1 {
+    padding: 1rem 1rem 0.75rem 1rem;
+    color: var(--color);
+}
+
+.content #instance-view .card#title-card i#check {
+    padding: 1.25rem 1.25rem 1.25rem 0;
+    font-size: 1.5rem;
+    color: var(--color-dim);
+}
+
+.content #instance-view .card#title-card .buttons {
+    position: absolute;
+    right: 0.5rem;
+    top: 1.3rem;
+    display: flex;
+}
+
+.content #instance-view .card#title-card .buttons a.button {
+    position: relative;
+    cursor: inherit;
+    background: none;
+    color: var(--color-dim-less);
+    font-size: 1.5rem;
+    padding: 0.9rem 0.9rem 0.7rem 0.9rem;
+    box-shadow: none;
+}
+
+.content #instance-view .card#title-card .buttons .folder-dropdown .card {
+    position: absolute;
+    left: 0;
+    display: none;
+    z-index: 1000;
+}
+
+.content #instance-view .card#title-card .buttons .settings-dropdown .card {
+    position: absolute;
+    right: 0;
+    display: none;
+    z-index: 1000;
+}
+
+.content #instance-view .card#title-card .buttons .folder-dropdown:hover .card {
+    display: inherit;
+}
+
+.content #instance-view .card#title-card .buttons .settings-dropdown:hover .card {
+    display: inherit;
+}
+
+.content #instance-view .card#title-card .buttons .card h3:hover {
+    border-radius: inherit;
+    color: var(--inverted);
+    background: var(--color);
+    box-shadow: 0 0 0.8rem #fff;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content #instance-view #instance-settings {
+    position: absolute;
+    top: 4rem;
+    right: 0.25rem;
+    width: calc(100% - 1.95rem);
+    height: calc(100% - 13.5rem);
+    padding: 2rem 0.5rem 1rem 1.1rem;
+    overflow-y: auto;
+    z-index: 0;
+}
+
+.content #instance-view #instance-settings .card {
+    box-shadow: 0 0 0.4rem black;
+}
+
+.content #instance-view #instance-settings h3 {
+    position: relative;
+}
+
+.content #instance-view #instance-settings h3 a#show-icon, a#memory-int, a#show-logo, a#show-background {
+    text-decoration: none;
+    color: var(--color-dim);
+    position: absolute;
+    right: 7rem;
+    display: none;
+}
+
+.content #instance-view #instance-settings h3 a#show-icon:hover, a#memory-int, a#show-logo:hover, a#show-background:hover {
+    color: var(--color);
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+
+
+.content #instance-view #instance-settings h3 a#memory-int {
+    text-decoration: none;
+    color: var(--color-dim);
+    position: absolute;
+    right: 7rem;
+    display: inline;
+}
+
+.content #instance-view #instance-settings h3 a#memory-int:hover {
+    cursor: inherit;
+}
+
+.content #instance-view #instance-settings h3 input,select {
+    position: absolute;
+    right: 0.7rem;
+    top: 0.7rem;
+    border-style: none;
+    text-decoration: none;
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background4);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-view #instance-settings h3 input#settings-save {
+    position: absolute;
+    left: 0.7rem;
+    top: 0.55rem;
+    right: inherit;
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background-accent);
+    font-size: 1.1rem;
+    box-shadow: none;
+}
+
+.content #instance-view #instance-settings h3 input#settings-save:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+}
+
+.content #instance-view #instance-settings h3 a.button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+}
+
+.content #instance-view #instance-settings h3 a.button:hover {
+    font-size: 1.05rem;
+}
+
+.content #instance-view #instance-settings h3 a.button#delete-instance:hover {
+    color: white;
+    background: red;
+    box-shadow: 0 0 0.8rem red;
+    animation: wiggle 0.1s linear infinite;
+}
+
+
+.content #instance-view .card#title-card .buttons a.button:hover {
+    background: var(--color);
+    color: var(--inverted);
+    box-shadow: 0 0 0.4rem #fff;
+    transition: 0.25s;
+}
+
+.content .card h2 {
+    padding: 1rem 1rem 0.75rem 1rem;
+    color: var(--color);
+}
+
+.content .card h3 {
+    padding: 1rem 1rem 0.75rem 1rem;
+    font-weight: 100;
+    color: var(--color-dim-less);
+}
+
+.content .card .background {
+    background: var(--background3);
+}
+
+.content .card .bottom {
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.content #instance-adder .card h3 a.button {
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 a.button {
+    position: relative;
+}
+
+.content #instance-adder .card h3 a.button:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+}
+
+.content #instance-adder .card h3 {
+    position: relative;
+}
+
+.content #instance-adder .card#instance-creator h3 input,select {
+    position: absolute;
+    top: 0.6rem;
+    right: 1rem;
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    width: 16rem;
+    color: var(--color);
+    background-color: var(--background4);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 select#creator-minecraft,select#creator-modloader {
+    width: 17rem;
+}
+
+.content #instance-adder {
+    display: none;
+}
+
+.content #instance-adder .card h3 input#create {
+    position: initial;
+    width: inherit;
+    border-style: none;
+    text-decoration: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+    border-radius: 0.5rem;
+    z-index: 5;
+    color: var(--color);
+    background-color: var(--background-accent);
+    font-size: 1.2rem;
+    box-shadow: none;
+}
+
+.content #instance-adder .card h3 input#create:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    transition: 0.25s;
+}
+
+.content #instance-adder .card input#creator-name {
+    display: inline;
+}
+
+.content #instance-adder .card h3 select#zyneonplus-version,input#id {
+    position: initial;
+    font-size: 1.1rem;
+    border-radius: 0.5rem;
+    width: 16rem;
+    color: var(--color);
+    background-color: var(--inverted);
+    border-style: none;
+    padding: 0.5rem 0.5rem 0.325rem 0.5rem;
+}
+
+.content .card .background-bottom {
+    border-radius: 0 0 0.5rem 0.5rem;
+    background: var(--background3);
+}
+
+.content .card .background-top {
+    border-radius:0.5rem 0.5rem 0 0;
+    background: var(--background3);
+}
+
+.content .card#news-card {
+    display: none;
+}
+
+.content .card#updates-card {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5rem #000;
+    border-radius: 1rem;
+}
+
+.content #instance-view {
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);;
+    display: none;
+}
+
+.content #instance-view i {
+    color: var(--color-dim);
+}
+
+.content #instance-view .card#title-card a.button#configure-instance {
+    cursor: pointer;
+}
+
+.content .card .title {
+    display: flex;
+}
+
+.content .card .title img {
+    height: 3rem;
+    width: 3rem;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+.content .sidebyside {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-height: 50%;
+}
+
+.content .sidebyside img {
+    border-radius: 0.5rem;
+    width: 49%;
+}
+
+.content .sidebyside #description-card {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 49%;
+}
+
+.content .sidebyside #description-card .card {
+    padding: 1rem;
+    background: var(--background-accent);
+    opacity: 0.6;
+}
+
+.content .sidebyside #description-card .card span {
+    color: var(--color);
+}
+
+.content .sidebyside #description-card .card p {
+    padding-top: 0.25rem;
+    color: var(--color-dim-less);
+}
+
+.content #instance-view .card#title-card {
+    position: relative;
+    z-index: 100;
+    background: var(--background4);
+}
+
+.content .dock {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 8rem;
+    width: 100%;
+    box-shadow: 0 0 0.8rem #000;
+    z-index: 99;
+    background: var(--background4);
+}
+
+.content .dock a.button#launch {
+    position: absolute;
+    right: 1.3rem;
+    bottom: 1.5rem;
+    color: #fff;
+    background: #6b38bd;
+    box-shadow: 0 0 0.6rem #ffffff40;
+    padding: 1rem 1.1rem 0.85rem 1rem;
+    font-size: 2.5rem;
+}
+
+.content .dock a.button#launch i {
+    color: #fff;
+}
+
+.content .dock a.button#launch:hover {
+    background: var(--accent);
+    box-shadow: 0 0 0.8rem var(--accent);
+    animation: wiggle 2.5s linear infinite;
+}
+
+.content .dock .instance-infos {
+    font-size: 1.05rem;
+    padding: 2rem;
+    color: var(--color-dim);
+}
