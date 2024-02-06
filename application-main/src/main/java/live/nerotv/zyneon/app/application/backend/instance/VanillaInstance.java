@@ -3,6 +3,7 @@ package live.nerotv.zyneon.app.application.backend.instance;
 import live.nerotv.Main;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
+import live.nerotv.zyneon.app.application.Application;
 
 import java.io.File;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class VanillaInstance implements Instance {
         name = json.getString("modpack.name");
         version = json.getString("modpack.version");
         minecraftVersion = json.getString("modpack.minecraft");
-        path = Main.getInstancePath() + json.getString("modpack.instance");
+        path = Application.getInstancePath() + json.getString("modpack.instance");
     }
 
     @Override @SuppressWarnings("all")

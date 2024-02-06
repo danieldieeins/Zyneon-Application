@@ -55,7 +55,7 @@ public class Connector {
                 frame.executeJavaScript("syncGeneral('" + tab + "');");
             }
             case "global" ->
-                    frame.executeJavaScript("syncGlobal('" + Main.config.getString("settings.memory.default").replace(".0", "") + " MB','" + Main.getInstancePath() + "')");
+                    frame.executeJavaScript("syncGlobal('" + Application.config.getString("settings.memory.default").replace(".0", "") + " MB','" + Application.getInstancePath() + "')");
             case "profile" -> {
                 if (Application.auth.isLoggedIn()) {
                     frame.executeJavaScript("syncProfile('" + Application.auth.getAuthInfos().getUsername() + "','" + StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()) + "');");
@@ -74,7 +74,7 @@ public class Connector {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid, uuid);
         } else if (request.contains("sync.instances.list")) {
-            Main.getInstancePath();
+            Application.getInstancePath();
             String filePath = Main.getDirectoryPath() + "libs/zyneon/instances.json";
             Gson gson = new Gson();
             try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
@@ -106,15 +106,15 @@ public class Connector {
             syncSettings(request.replace("sync.settings.", ""));
         } else if (request.contains("button.theme.light")) {
             Application.theme = "light";
-            Main.config.set("settings.appearance.theme", Application.theme);
+            Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.white, Color.black);
         } else if (request.contains("button.theme.zyneon")) {
             Application.theme = "zyneon";
-            Main.config.set("settings.appearance.theme", Application.theme);
+            Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.decode("#050113"), Color.white);
         } else if (request.contains("button.theme.dark")) {
             Application.theme = "dark";
-            Main.config.set("settings.appearance.theme", Application.theme);
+            Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.black, Color.white);
         } else if (request.contains("button.refresh")) {
             if (request.contains(".instances")) {
@@ -127,7 +127,7 @@ public class Connector {
             SwingUtilities.invokeLater(() -> frame.getInstance().dispatchEvent(new WindowEvent(frame.getInstance(), WindowEvent.WINDOW_CLOSING)));
         } else if (request.contains("button.instance.")) {
             String id = request.replace("button.instance.", "").toLowerCase();
-            File file = new File(Main.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+            File file = new File(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
             if (file.exists()) {
                 Config instance = new Config(file);
                 String name = instance.getString("modpack.name");
@@ -178,17 +178,17 @@ public class Connector {
                 frame.executeJavaScript("syncBackground('" + background_ + "');");
                 frame.executeJavaScript("syncDock('" + id + "','" + version + "','" + minecraft + "','" + modloader + "','" + mlversion + "');");
 
-                int ram = Main.memory;
+                int ram = Application.memory;
                 String ramID = id.replace(".", "").replace("/", "");
-                if (Main.config.get("settings.memory." + ramID) != null) {
-                    ram = Main.config.getInteger("settings.memory." + ramID);
+                if (Application.config.get("settings.memory." + ramID) != null) {
+                    ram = Application.config.getInteger("settings.memory." + ramID);
                 }
 
                 frame.executeJavaScript("syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");");
             }
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.", "");
-            File instance = new File(Main.getInstancePath() + "instances/" + request + "/");
+            File instance = new File(Application.getInstancePath() + "instances/" + request + "/");
             if (instance.exists()) {
                 FileUtil.deleteFolder(instance);
                 resolveRequest("button.refresh.instances");
@@ -212,7 +212,7 @@ public class Connector {
             mlversion = mlversion.replace("%DOT%", ".");
             String description = creator[6];
             description = description.replace("%DOT%", ".");
-            File instancePath = new File(Main.getInstancePath() + "instances/" + id + "/");
+            File instancePath = new File(Application.getInstancePath() + "instances/" + id + "/");
             if (instancePath.exists()) {
                 Main.getLogger().debug("Created instance path: " + instancePath.mkdirs());
                 Config instance = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
@@ -257,7 +257,7 @@ public class Connector {
             String mlversion = creator[4];
             mlversion = mlversion.replace("%DOT%", ".");
             String id = name.toLowerCase().replaceAll("[^a-z0-9]", "");
-            File instancePath = new File(Main.getInstancePath() + "instances/" + id + "/");
+            File instancePath = new File(Application.getInstancePath() + "instances/" + id + "/");
             if (!instancePath.exists()) {
                 Main.getLogger().debug("Created instance path: " + instancePath.mkdirs());
                 Config instance = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
@@ -288,11 +288,11 @@ public class Connector {
         } else if (request.contains("button.starttab.")) {
             String tab = request.replace("button.starttab.", "");
             if (tab.equalsIgnoreCase("instances")) {
-                Main.config.set("settings.starttab", "instances");
-                Main.starttab = "instances";
+                Application.config.set("settings.starttab", "instances");
+                Application.startTab = "instances";
             } else {
-                Main.config.set("settings.starttab", "start");
-                Main.starttab = "start";
+                Application.config.set("settings.starttab", "start");
+                Application.startTab = "start";
             }
             syncSettings("general");
         } else if (request.equalsIgnoreCase("button.username")) {
@@ -372,12 +372,12 @@ public class Connector {
                         } else {
                             extension = ".png";
                         }
-                        File file = new File(URLDecoder.decode(Main.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8));
+                        File file = new File(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8));
                         if (file.exists()) {
                             Main.getLogger().debug("Deleted old icon: " + file.delete());
                         }
-                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Main.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8)));
-                        Config instance = new Config(Main.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8)));
+                        Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                         instance.set("modpack.icon", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
@@ -411,12 +411,12 @@ public class Connector {
                         } else {
                             extension = ".png";
                         }
-                        File file = new File(URLDecoder.decode(Main.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8));
+                        File file = new File(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8));
                         if (file.exists()) {
                             Main.getLogger().debug("Deleted old logo: " + file.delete());
                         }
-                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Main.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8)));
-                        Config instance = new Config(Main.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8)));
+                        Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                         instance.set("modpack.logo", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
@@ -450,12 +450,12 @@ public class Connector {
                         } else {
                             extension = ".png";
                         }
-                        File file = new File(URLDecoder.decode(Main.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8));
+                        File file = new File(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8));
                         if (file.exists()) {
                             Main.getLogger().debug("Deleted old background: " + file.delete());
                         }
-                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Main.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8)));
-                        Config instance = new Config(Main.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+                        Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8)));
+                        Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                         instance.set("modpack.background", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
@@ -476,7 +476,7 @@ public class Connector {
         } else if (request.contains("button.install.")) {
             String id = request.replace("button.install.", "");
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
-            File instance = new File(Main.getInstancePath() + "instances/" + id + "/");
+            File instance = new File(Application.getInstancePath() + "instances/" + id + "/");
             Main.getLogger().debug("Created instance path: " + instance.mkdirs());
             FileUtil.downloadFile(url, URLDecoder.decode(instance.getAbsolutePath() + "/zyneonInstance.json", StandardCharsets.UTF_8));
             resolveRequest("button.refresh.instances");
@@ -496,11 +496,11 @@ public class Connector {
                     int answer = chooser.showOpenDialog(null);
                     if (answer == JFileChooser.APPROVE_OPTION) {
                         String instancesPath = URLDecoder.decode(chooser.getSelectedFile().getAbsolutePath().replace("\\", "/"), StandardCharsets.UTF_8);
-                        Main.config.set("settings.path.instances", instancesPath);
+                        Application.config.set("settings.path.instances", instancesPath);
                         if (!instancesPath.toLowerCase().contains("zyneon")) {
                             instancesPath = instancesPath + "/Zyneon";
                         }
-                        Main.instances = instancesPath;
+                        Application.instancePath = instancesPath;
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getSettingsURL() + "&tab=global");
                     }
@@ -528,7 +528,7 @@ public class Connector {
     private static JFileChooser getJDirectoryChooser() {
         JFileChooser chooser;
         try {
-            chooser = new JFileChooser(Main.getInstancePath());
+            chooser = new JFileChooser(Application.getInstancePath());
         } catch (Exception ignore) {
             chooser = new JFileChooser(Main.getDirectoryPath());
         }
@@ -563,17 +563,17 @@ public class Connector {
         }
         if (instanceString.startsWith("official/")) {
             Config instanceJson;
-            if (new File(Main.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
-                instanceJson = new Config(new File(Main.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json"));
+            if (new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
+                instanceJson = new Config(new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json"));
             } else {
-                Main.getLogger().debug("Created instance path: " + new File(Main.getInstancePath() + "instances/" + instanceString + "/").mkdirs());
+                Main.getLogger().debug("Created instance path: " + new File(Application.getInstancePath() + "instances/" + instanceString + "/").mkdirs());
                 String s = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json";
-                File file = FileUtil.downloadFile(s, Main.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
+                File file = FileUtil.downloadFile(s, Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
                 instanceJson = new Config(file);
             }
             launch(instanceJson);
         } else {
-            File file = new File(Main.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
+            File file = new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
             if (file.exists()) {
                 Config instanceJson = new Config(file);
                 launch(instanceJson);
@@ -583,11 +583,11 @@ public class Connector {
 
     private void launch(Config instanceJson) {
         if (instanceJson.getString("modpack.fabric") != null) {
-            new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+            new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Application.config.getInteger("settings.memory.default"));
         } else if (instanceJson.getString("modpack.forge.version") != null && instanceJson.getString("modpack.forge.type") != null) {
-            new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+            new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Application.config.getInteger("settings.memory.default"));
         } else {
-            new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Main.config.getInteger("settings.memory.default"));
+            new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Application.config.getInteger("settings.memory.default"));
         }
     }
 
@@ -597,20 +597,20 @@ public class Connector {
         }
         File folder;
         if (instance.isEmpty()) {
-            folder = new File(Main.getInstancePath() + "instances/");
+            folder = new File(Application.getInstancePath() + "instances/");
         } else {
-            folder = new File(Main.getInstancePath() + "instances/" + instance + "/");
+            folder = new File(Application.getInstancePath() + "instances/" + instance + "/");
         }
         createIfNotExist(folder);
     }
 
     private void openModsFolder(String instance) {
-        File folder = new File(Main.getInstancePath() + "instances/" + instance + "/mods/");
+        File folder = new File(Application.getInstancePath() + "instances/" + instance + "/mods/");
         createIfNotExist(folder);
     }
 
     private void openIcon(String instance) {
-        Config instance_ = new Config(Main.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
+        Config instance_ = new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
         if (instance_.getString("modpack.icon") != null) {
             File png = new File(URLDecoder.decode(instance_.getString("modpack.icon"), StandardCharsets.UTF_8));
             if (png.exists()) {
@@ -620,7 +620,7 @@ public class Connector {
     }
 
     private void openLogo(String instance) {
-        Config instance_ = new Config(Main.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
+        Config instance_ = new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
         if (instance_.getString("modpack.logo") != null) {
             File png = new File(URLDecoder.decode(instance_.getString("modpack.logo"), StandardCharsets.UTF_8));
             if (png.exists()) {
@@ -630,7 +630,7 @@ public class Connector {
     }
 
     private void openBackground(String instance) {
-        Config instance_ = new Config(Main.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
+        Config instance_ = new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
         if (instance_.getString("modpack.background") != null) {
             File png = new File(URLDecoder.decode(instance_.getString("modpack.background"), StandardCharsets.UTF_8));
             if (png.exists()) {
@@ -640,22 +640,22 @@ public class Connector {
     }
 
     private void openScreenshotsFolder(String instance) {
-        File folder = new File(Main.getInstancePath() + "instances/" + instance + "/screenshots/");
+        File folder = new File(Application.getInstancePath() + "instances/" + instance + "/screenshots/");
         createIfNotExist(folder);
     }
 
     private void openResourcePacksFolder(String instance) {
-        File folder = new File(Main.getInstancePath() + "instances/" + instance + "/resourcepacks/");
+        File folder = new File(Application.getInstancePath() + "instances/" + instance + "/resourcepacks/");
         createIfNotExist(folder);
     }
 
     private void openShadersFolder(String instance) {
-        File folder = new File(Main.getInstancePath() + "instances/" + instance + "/shaderpacks/");
+        File folder = new File(Application.getInstancePath() + "instances/" + instance + "/shaderpacks/");
         createIfNotExist(folder);
     }
 
     private void openWorldsFolder(String instance) {
-        File folder = new File(Main.getInstancePath() + "instances/" + instance + "/saves/");
+        File folder = new File(Application.getInstancePath() + "instances/" + instance + "/saves/");
         createIfNotExist(folder);
     }
 
@@ -675,7 +675,7 @@ public class Connector {
     }
 
     private void openMemorySettings(String instance) {
-        new MemoryWindow(Main.config, "Configure memory (" + instance + ")", instance);
+        new MemoryWindow(Application.config, "Configure memory (" + instance + ")", instance);
     }
 
     public enum InstanceAction {

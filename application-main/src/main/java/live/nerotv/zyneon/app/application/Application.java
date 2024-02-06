@@ -2,6 +2,7 @@ package live.nerotv.zyneon.app.application;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import live.nerotv.Main;
+import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.zyneon.app.application.backend.auth.MicrosoftAuth;
 import live.nerotv.zyneon.app.application.backend.framework.MinecraftVersion;
@@ -25,15 +26,20 @@ import java.util.*;
 
 public class Application {
 
+    public static Config config;
     private static ZyneonWebFrame frame;
+    public static String startTab = "start";
+    public static int memory;
+    public static String instancePath;
     public static MicrosoftAuth auth;
     public static Config instances;
     public static String version;
     public static String theme;
 
     public Application(String ver) {
+        initConfig();
         version = ver;
-        theme = Main.config.getString("settings.appearance.theme");
+        theme = config.getString("settings.appearance.theme");
     }
 
     public void start() {
@@ -67,6 +73,20 @@ public class Application {
         }
     }
 
+    private void initConfig() {
+        config = new Config(new File(Main.getDirectoryPath() + "config.json"));
+        config.checkEntry("settings.starttab","start");
+        config.checkEntry("settings.language","auto");
+        config.checkEntry("settings.memory.default", 1024);
+        config.checkEntry("settings.logger.debug", false);
+        config.checkEntry("settings.appearance.theme","zyneon");
+
+        memory = config.getInteger("settings.memory.default");
+        startTab = config.getString("settings.starttab");
+        Main.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
+        ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
+    }
+
     public static void loadInstances() {
         File file = new File(Main.getDirectoryPath() + "libs/zyneon/instances.json");
         Main.getLogger().debug("Created instance json path: " + file.getParentFile().mkdirs());
@@ -76,7 +96,7 @@ public class Application {
         instances = new Config(file);
         List<Map<String, Object>> instanceList = new ArrayList<>();
 
-        File officialPath = new File(Main.getInstancePath() + "instances/official/");
+        File officialPath = new File(getInstancePath() + "instances/official/");
         Main.getLogger().debug("Created official instance path: " + officialPath.mkdirs());
         File[] officialInstances = officialPath.listFiles();
         if (officialInstances != null) {
@@ -98,7 +118,7 @@ public class Application {
             }
         }
 
-        File unofficialPath = new File(Main.getInstancePath() + "instances/");
+        File unofficialPath = new File(getInstancePath() + "instances/");
         Main.getLogger().debug("Created unofficial instance path: " + unofficialPath.mkdirs());
         File[] unofficialInstances = unofficialPath.listFiles();
         if (unofficialInstances != null) {
@@ -152,7 +172,7 @@ public class Application {
     }
 
     public static String getStartURL() {
-        if (Main.starttab.equalsIgnoreCase("instances")) {
+        if (startTab.equalsIgnoreCase("instances")) {
             return getInstancesURL();
         }
         return getNewsURL();
@@ -176,5 +196,30 @@ public class Application {
 
     public static ZyneonWebFrame getFrame() {
         return frame;
+    }
+
+    public static String getInstancePath() {
+        if(instancePath==null) {
+            config.checkEntry("settings.path.instances","default");
+            if(config.getString("settings.path.instances").equals("default")) {
+                Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"&tab=select");
+                throw new RuntimeException("No instance path");
+            } else {
+                try {
+                    String path = config.getString("settings.path.instances");
+                    if(!path.toLowerCase().contains("zyneon")) {
+                        path = path+"/Zyneon/";
+                    }
+                    File instanceFolder = new File(URLDecoder.decode(path, StandardCharsets.UTF_8));
+                    Main.getLogger().debug("Instance path created: "+instanceFolder.mkdirs());
+                    instancePath = instanceFolder.getAbsolutePath();
+                } catch (Exception e) {
+                    Main.getLogger().error("Instance path invalid - Please select a new one! Falling back to default path.");
+                    Application.getFrame().getBrowser().executeJavaScript("changeFrame('settings/select-instance-path.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
+                    throw new RuntimeException("No instance path");
+                }
+            }
+        }
+        return instancePath.replace("\\","/")+"/";
     }
 }

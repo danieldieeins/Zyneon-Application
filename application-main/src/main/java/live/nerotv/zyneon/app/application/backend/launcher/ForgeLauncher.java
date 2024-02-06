@@ -25,8 +25,8 @@ public class ForgeLauncher {
     public void launch(ForgeInstance instance, int ram) {
         String id = instance.getID();
         String ramID = id.replace(".","").replace("/","");
-        if(Main.config.get("settings.memory."+ramID)!=null) {
-            ram = Main.config.getInteger("settings.memory."+ramID);
+        if(Application.config.get("settings.memory."+ramID)!=null) {
+            ram = Application.config.getInteger("settings.memory."+ramID);
         }
         if(!new File(instance.getPath()+"/pack.zip").exists()) {
             frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
