@@ -29,7 +29,7 @@ public class Main {
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new Logger("ZyneonApplication");
-        version = "2024.2-beta.6c";
+        version = "2024.2-beta.7";
         if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/start.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
@@ -40,7 +40,7 @@ public class Main {
         getLogger().debug("Deleted old updater json: "+new File(getDirectoryPath()+"updater.json").delete());
         getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        Application application = new Application(version+" ▪ Zynium²");
+        Application application = new Application(version+" ▪ Webium");
         if(args.length!=0) {
             if(args[0].startsWith("--test")) {
                 String random = StringUtil.generateAlphanumericString(2)+"-"+StringUtil.generateAlphanumericString(3)+"-"+StringUtil.generateAlphanumericString(1);
