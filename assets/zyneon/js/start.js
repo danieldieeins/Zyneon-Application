@@ -8,7 +8,7 @@ function syncNews() {
     updatesbutton.classList.remove("active");
     news.style.display = "inherit";
     newsbutton.classList.add("active");
-    callJavaMethod("sync.index.news");
+    callJavaMethod("sync.start.news");
 }
 
 function syncUpdates() {
@@ -16,5 +16,5 @@ function syncUpdates() {
     newsbutton.classList.remove("active");
     updates.style.display = "inherit";
     updatesbutton.classList.add("active");
-    callJavaMethod("sync.index.updates");
+    callJavaMethod("sync.start.updates");
 }

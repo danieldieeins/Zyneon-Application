@@ -18,14 +18,14 @@
             <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
             <ul>
                 <li>
-                    <a onclick="link('index.html');">
+                    <a onclick="link('start.html');">
                         <div class="menu-item">
                             <i class="bx bxs-home"></i>
                             <span class="menu-item">News & updates</span>
                         </div>
                     </a>
                 </li>
-                <li>
+                <li id="instance-button">
                     <a onclick="link('instances.html');">
                         <div class="menu-item">
                             <i class='bx bxs-objects-horizontal-left'></i>
@@ -41,8 +41,16 @@
                         </div>
                     </a>
                 </li>
+                <li id="download-button">
+                    <a href="https://github.com/danieldieeins/Zyneon-Application/releases" target="_blank">
+                        <div class="menu-item">
+                            <i class='bx bxs-download'></i>
+                            <span class="menu-item">Download application</span>
+                        </div>
+                    </a>
+                </li>
             </ul>
-            <div class="profile" onclick="toggleMenu();">
+            <div class="profile" id="profile_" onclick="toggleMenu();">
                 <i class='bx bx-loader' id="loading"></i>
                 <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
                 <p class="username" id="username">connecting...</p>
@@ -62,7 +70,7 @@
                         </div>
                     </a>
                 </li>
-                <li>
+                <li id="global-button">
                     <a onclick="syncGlobalSettings();">
                         <div class="menu-item" id="global-settings">
                             <i class='bx bx-globe' ></i>
@@ -70,7 +78,7 @@
                         </div>
                     </a>
                 </li>
-                <li>
+                <li id="profile-button">
                     <a onclick="syncProfileSettings();">
                         <div class="menu-item" id="profile-settings">
                             <i class='bx bxs-user' ></i>
@@ -78,7 +86,7 @@
                         </div>
                     </a>
                 </li>
-                <li>
+                <li id="about-button">
                     <a onclick="syncAbout();">
                         <div class="menu-item" id="about">
                             <i class='bx bxs-info-circle'></i>
@@ -86,10 +94,10 @@
                         </div>
                     </a>
                 </li>
-                <li class="subtitle">
+                <li class="subtitle" id="actions-title">
                     <span class="bold">Actions</span>
                 </li>
-                <li>
+                <li id="refresh-button">
                     <a onclick="callJavaMethod('button.refresh');">
                         <div class="menu-item" id="refresh">
                             <i class='bx bx-refresh'></i>
@@ -97,7 +105,7 @@
                         </div>
                     </a>
                 </li>
-                <li>
+                <li id="exit-button">
                     <a onclick="callJavaMethod('button.exit');">
                         <div class="menu-item" id="exit">
                             <i class='bx bxs-exit' ></i>
@@ -115,24 +123,22 @@
             <div id="general">
                 <div class="card">
                     <h2>General settings</h2>
-                    <h3 class="background-bottom">Start tab</h3>
-                    <div class="start-tab">
+                    <h3 id="startTitle" class="background-bottom">Start tab:</h3>
+                    <div id="startTab" class="start-tab">
                         <a class="button" id="general-tab-start" onclick="callJavaMethod('button.starttab.start');">News</a>
                         <a class="button" id="general-tab-instances" onclick="callJavaMethod('button.starttab.instances');">Instances</a>
                     </div>
                 </div>
                 <div class="card" id="appearance">
                     <h2>Appearance</h2>
-                    <h3 class="background">Theme</h3>
-                    <div class="theme">
+                    <h3 class="background">Theme:
                         <a class="button" id="appearance-theme-light" onclick="setTheme('light'); link('settings.html');">Light</a>
                         <a class="button" id="appearance-theme-dark" onclick="setTheme('dark'); link('settings.html');">Dark</a>
                         <a class="button" id="appearance-theme-zyneon" onclick="setTheme('zyneon'); link('settings.html');">Zyneon</a>
-                    </div>
-                    <h3 class="bottom">Language</h3>
-                    <div class="language">
+                    </h3>
+                    <h3 class="bottom">Language:
                         <a class="button" id="appearance-language-english"><i class='bx bxs-lock-alt'></i> English</a>
-                    </div>
+                    </h3>
                 </div>
             </div>
             <div id="global">
