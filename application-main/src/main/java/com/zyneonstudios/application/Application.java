@@ -235,7 +235,6 @@ public class Application {
                     instancePath = instanceFolder.getAbsolutePath();
                 } catch (Exception e) {
                     Main.getLogger().error("[APP] Instance path invalid - Please select a new one! Falling back to default path.");
-                    Application.getFrame().getBrowser().executeJavaScript("changeFrame('settings/select-instance-path.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                     throw new RuntimeException("No instance path");
                 }
             }
