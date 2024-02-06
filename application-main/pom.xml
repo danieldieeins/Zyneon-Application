@@ -64,7 +64,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>live.nerotv.Main</mainClass>
+                            <mainClass>com.zyneonstudios.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -92,7 +92,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>live.nerotv.Main</mainClass>
+                                    <mainClass>com.zyneonstudios.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
