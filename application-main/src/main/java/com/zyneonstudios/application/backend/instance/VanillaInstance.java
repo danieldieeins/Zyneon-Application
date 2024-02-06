@@ -45,59 +45,60 @@ public class VanillaInstance implements Instance {
     @Override
     public boolean update() {
         if(json.getString("modpack.download")!=null) {
-            Main.getLogger().debug("TRYING TO UPDATE INSTANCE " + name + " (" + id + ")...");
+            Main.getLogger().log("[INSTANCE] Trying to update" + name + " (" + id + ")...");
             try {
                 File pack = new File(path + "/pack.zip");
                 File mods = new File(path + "/mods/");
 
-                Main.getLogger().log("CHECKING FOR INSTANCE PACK FILE...");
+                Main.getLogger().log("[INSTANCE] Checking if old pack file exists...");
                 if (pack.exists()) {
-                    Main.getLogger().log("FOUND OLD INSTANCE PACK FILE!");
-                    Main.getLogger().log("DELETING OLD INSTANCE PACK FILE...");
+                    Main.getLogger().log("[INSTANCE] Found old pack file!");
+                    Main.getLogger().log("[INSTANCE] Deleting old pack file...");
                     if (pack.delete()) {
-                        Main.getLogger().log("DELETED OLD INSTANCE PACK FILE!");
+                        Main.getLogger().log("[INSTANCE] Deleted old pack file!");
                     } else {
+                        Main.getLogger().debug("[INSTANCE] Failed to delete old pack file. Trying again...");
                         if (pack.delete()) {
-                            Main.getLogger().log("DELETED OLD INSTANCE PACK FILE!");
+                            Main.getLogger().log("[INSTANCE] Deleted old pack file!");
                         } else {
-                            Main.getLogger().log("COULDN'T DELETE OLD PACK FILE!");
-                            throw new RuntimeException("COULDN'T DELETE OLD PACK FILE!");
+                            Main.getLogger().error("[INSTANCE] Couldn't delete old pack file...");
+                            throw new RuntimeException("Couldn't delete file...");
                         }
                     }
                 } else {
-                    Main.getLogger().log("NO OLD INSTANCE PACK FILE FOUND!");
+                    Main.getLogger().log("[INSTANCE] No old pack file found!");
                 }
 
-                Main.getLogger().log("UPDATING INSTANCE JSON FILE...");
+                Main.getLogger().log("[INSTANCE] Updating json file...");
                 String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
                 json = new Config(FileUtil.downloadFile(url, path + "/zyneonInstance.json"));
                 version = json.getString("modpack.version");
                 minecraftVersion = json.getString("modpack.minecraft");
                 name = json.getString("modpack.name");
-                Main.getLogger().log("UPDATED INSTANCE JSON FILE!");
+                Main.getLogger().log("[INSTANCE] Updated json file!");
 
-                Main.getLogger().log("DOWNLOADING NEW INSTANCE PACK FILE...");
+                Main.getLogger().log("[INSTANCE] Downloading new pack file...");
                 pack = FileUtil.downloadFile(json.getString("modpack.download"), path + "/pack.zip");
-                Main.getLogger().log("DOWNLOADED NEW INSTANCE PACK FILE!");
+                Main.getLogger().log("[INSTANCE] New pack file downloaded!");
 
-                Main.getLogger().log("DELETING OLD MODS...");
+                Main.getLogger().log("[INSTANCE] Deleting old mods...");
                 if (!mods.mkdirs()) {
                     FileUtil.deleteFolder(mods);
                 }
-                Main.getLogger().log("DELETED OLD MODS!");
+                Main.getLogger().log("[INSTANCE] Old mods deleted!");
 
-                Main.getLogger().log("UNZIPPING NEW INSTANCE PACK FILE...");
+                Main.getLogger().log("[INSTANCE] Unzipping pack file...");
                 if (FileUtil.unzipFile(pack.getPath(), path)) {
-                    Main.getLogger().log("SUCCESSFULLY UNZIPPED NEW INSTANCE PACK FILE!");
+                    Main.getLogger().log("[INSTANCE] Pack file unzipped!");
                 } else {
-                    Main.getLogger().log("COULDN'T UNZIP NEW INSTANCE PACK FILE!");
-                    throw new RuntimeException("COULDN'T UNZIP NEW INSTANCE PACK FILE!");
+                    Main.getLogger().error("[INSTANCE] Failed to unzip pack file!");
+                    throw new RuntimeException("Couldn't unzip file...");
                 }
             } catch (Exception e) {
-                Main.getLogger().debug("COULDN'T UPDATE INSTANCE, TRYING TO CANCEL START PROCESS...");
+                Main.getLogger().error("[INSTANCE] Couldn't update. Trying to cancel start...");
                 throw new RuntimeException(e.getMessage());
             }
-            Main.getLogger().debug("SUCCESSFULLY UPDATED INSTANCE!");
+            Main.getLogger().debug("[INSTANCE] Updated instance!");
         }
         return true;
     }

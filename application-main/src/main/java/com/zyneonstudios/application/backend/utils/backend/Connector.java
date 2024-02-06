@@ -214,7 +214,7 @@ public class Connector {
             description = description.replace("%DOT%", ".");
             File instancePath = new File(Application.getInstancePath() + "instances/" + id + "/");
             if (instancePath.exists()) {
-                Main.getLogger().debug("Created instance path: " + instancePath.mkdirs());
+                Main.getLogger().debug("[CONNECTOR] Created instance path: " + instancePath.mkdirs());
                 Config instance = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
                 instance.set("modpack.name", name);
                 instance.set("modpack.version", version);
@@ -259,7 +259,7 @@ public class Connector {
             String id = name.toLowerCase().replaceAll("[^a-z0-9]", "");
             File instancePath = new File(Application.getInstancePath() + "instances/" + id + "/");
             if (!instancePath.exists()) {
-                Main.getLogger().debug("Created instance path: " + instancePath.mkdirs());
+                Main.getLogger().debug("[CONNECTOR] Created instance path: " + instancePath.mkdirs());
                 Config instance = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
                 instance.set("modpack.id", id);
                 instance.set("modpack.name", name);
@@ -283,7 +283,7 @@ public class Connector {
             }
             resolveRequest("button.refresh.instances");
         } else if (request.contains("button.start.")) {
-            Main.getLogger().debug("Trying to start instance " + request.replace("button.start.", ""));
+            Main.getLogger().debug("[CONNECTOR] Trying to start instance " + request.replace("button.start.", ""));
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
         } else if (request.contains("button.starttab.")) {
             String tab = request.replace("button.starttab.", "");
@@ -374,7 +374,7 @@ public class Connector {
                         }
                         File file = new File(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8));
                         if (file.exists()) {
-                            Main.getLogger().debug("Deleted old icon: " + file.delete());
+                            Main.getLogger().debug("[CONNECTOR] Deleted old icon: " + file.delete());
                         }
                         Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8)));
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
@@ -382,7 +382,7 @@ public class Connector {
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
                     } catch (Exception e) {
-                        Main.getLogger().error("An error occurred (Icon-chooser): " + e.getMessage());
+                        Main.getLogger().error("[CONNECTOR] An error occurred (Icon-chooser): " + e.getMessage());
                         throw new RuntimeException(e);
                     }
                 }
@@ -413,7 +413,7 @@ public class Connector {
                         }
                         File file = new File(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8));
                         if (file.exists()) {
-                            Main.getLogger().debug("Deleted old logo: " + file.delete());
+                            Main.getLogger().debug("[CONNECTOR] Deleted old logo: " + file.delete());
                         }
                         Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8)));
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
@@ -421,7 +421,7 @@ public class Connector {
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
                     } catch (Exception e) {
-                        Main.getLogger().error("An error occurred (Logo-chooser): " + e.getMessage());
+                        Main.getLogger().error("[CONNECTOR] An error occurred (Logo-chooser): " + e.getMessage());
                         throw new RuntimeException(e);
                     }
                 }
@@ -452,7 +452,7 @@ public class Connector {
                         }
                         File file = new File(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8));
                         if (file.exists()) {
-                            Main.getLogger().debug("Deleted old background: " + file.delete());
+                            Main.getLogger().debug("[CONNECTOR] Deleted old background: " + file.delete());
                         }
                         Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8)));
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
@@ -460,7 +460,7 @@ public class Connector {
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
                     } catch (Exception e) {
-                        Main.getLogger().error("An error occurred (Background-chooser): " + e.getMessage());
+                        Main.getLogger().error("[CONNECTOR] An error occurred (Background-chooser): " + e.getMessage());
                         throw new RuntimeException(e);
                     }
                 }
@@ -477,7 +477,7 @@ public class Connector {
             String id = request.replace("button.install.", "");
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
             File instance = new File(Application.getInstancePath() + "instances/" + id + "/");
-            Main.getLogger().debug("Created instance path: " + instance.mkdirs());
+            Main.getLogger().debug("[CONNECTOR] Created instance path: " + instance.mkdirs());
             FileUtil.downloadFile(url, URLDecoder.decode(instance.getAbsolutePath() + "/zyneonInstance.json", StandardCharsets.UTF_8));
             resolveRequest("button.refresh.instances");
         } else if (request.contains("button.resourcepacks.")) {
@@ -516,12 +516,12 @@ public class Connector {
             if (Application.auth.isLoggedIn()) {
                 Config saver = new Config(Application.auth.getSaveFile());
                 saver.delete("opapi.ms");
-                Main.getLogger().debug("Deleted login: " + Application.auth.getSaveFile().delete());
+                Main.getLogger().debug("[CONNECTOR] Deleted login: " + Application.auth.getSaveFile().delete());
                 Application.login();
                 frame.getBrowser().loadURL(Application.getSettingsURL()+"&tab=profile");
             }
         } else {
-            Main.getLogger().error("REQUEST NOT RESOLVED: " + request);
+            Main.getLogger().error("[CONNECTOR] REQUEST NOT RESOLVED: " + request);
         }
     }
 
@@ -566,7 +566,7 @@ public class Connector {
             if (new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
                 instanceJson = new Config(new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json"));
             } else {
-                Main.getLogger().debug("Created instance path: " + new File(Application.getInstancePath() + "instances/" + instanceString + "/").mkdirs());
+                Main.getLogger().debug("[CONNECTOR] Created instance path: " + new File(Application.getInstancePath() + "instances/" + instanceString + "/").mkdirs());
                 String s = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json";
                 File file = FileUtil.downloadFile(s, Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
                 instanceJson = new Config(file);
@@ -660,7 +660,7 @@ public class Connector {
     }
 
     private void createIfNotExist(File folder) {
-        Main.getLogger().debug("Created instance path: " + folder.mkdirs());
+        Main.getLogger().debug("[CONNECTOR] Created instance path: " + folder.mkdirs());
         if (folder.exists()) {
             if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();

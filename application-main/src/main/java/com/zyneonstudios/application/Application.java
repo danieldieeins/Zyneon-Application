@@ -35,40 +35,15 @@ public class Application {
     public static String theme;
 
     public Application(String ver) {
-        initConfig();
         version = ver;
-        theme = config.getString("settings.appearance.theme");
     }
 
-    public void start() {
-        login();
+    private void init() {
+        initConfig();
         try {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
-            /*UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());*/
-            loadInstances();
-        } catch (Exception ignore) {
-        }
-        try {
-            MinecraftVersion.syncVersions();
-            checkURL();
-            auth.isLoggedIn();
-            frame.setTitlebar("Zyneon Application", Color.decode("#050113"), Color.white);
-            frame.setVisible(true);
-            Main.splash.setVisible(false);
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            try {
-                frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-            } catch (IOException ignore) {
-            }
-        } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (Exception ignore) {}
     }
 
     private void initConfig() {
@@ -79,23 +54,65 @@ public class Application {
         config.checkEntry("settings.logger.debug", false);
         config.checkEntry("settings.appearance.theme","zyneon");
 
+        theme = config.getString("settings.appearance.theme");
         memory = config.getInteger("settings.memory.default");
         startTab = config.getString("settings.starttab");
-        ShadeMeBaby.setLogger(Main.getLogger());
-        Main.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
+        if(!Main.getLogger().isDebugEnabled()) {
+            Main.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
+            ShadeMeBaby.getLogger().setDebugEnabled(Main.getLogger().isDebugEnabled());
+        }
+    }
+
+    public void start() {
+        init();
+        if(login()) {
+            Main.getLogger().log("[APP] Logged in as: "+auth.getAuthInfos().getUsername()+" ("+auth.getAuthInfos().getUuid()+")");
+        }
+        try {
+            Main.getLogger().log("[APP] Syncing available Minecraft versions...");
+            MinecraftVersion.syncVersions();
+            Main.getLogger().log("[APP] Setting up frame and webview...");
+            checkURL();
+            Main.getLogger().log("[APP] Styling webview frame...");
+            frame.setTitlebar("Zyneon Application", Color.decode("#050113"), Color.white);
+            frame.setVisible(true);
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            try {
+                frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            } catch (IOException ignore) {}
+            Main.getLogger().log("[APP] Showing webview frame and hiding splash icon...");
+            Main.splash.setVisible(false);
+        } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
+            Main.getLogger().error("[APP] FATAL: Couldn't start Zyneon Application: "+e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Main.getLogger().log("[APP] Trying to sync installed instances...");
+            loadInstances();
+        } catch (Exception e) {
+            Main.getLogger().debug("[APP] Couldn't sync installed instances: "+e.getMessage());
+        }
+        System.gc();
+        Main.getLogger().log("[APP] Zyneon Application successfully started!");
     }
 
     public static void loadInstances() {
         File file = new File(Main.getDirectoryPath() + "libs/zyneon/instances.json");
-        Main.getLogger().debug("Created instance json path: " + file.getParentFile().mkdirs());
+        Main.getLogger().debug("[APP] Created instance json path: " + file.getParentFile().mkdirs());
         if (file.exists()) {
-            Main.getLogger().debug("Deleted old instance json: " + file.delete());
+            Main.getLogger().debug("[APP] Deleted old instance json: " + file.delete());
         }
         instances = new Config(file);
         List<Map<String, Object>> instanceList = new ArrayList<>();
 
         File officialPath = new File(getInstancePath() + "instances/official/");
-        Main.getLogger().debug("Created official instance path: " + officialPath.mkdirs());
+        Main.getLogger().debug("[APP] Created official instance path: " + officialPath.mkdirs());
         File[] officialInstances = officialPath.listFiles();
         if (officialInstances != null) {
             for (File instance : officialInstances) {
@@ -117,7 +134,7 @@ public class Application {
         }
 
         File unofficialPath = new File(getInstancePath() + "instances/");
-        Main.getLogger().debug("Created unofficial instance path: " + unofficialPath.mkdirs());
+        Main.getLogger().debug("[APP] Created unofficial instance path: " + unofficialPath.mkdirs());
         File[] unofficialInstances = unofficialPath.listFiles();
         if (unofficialInstances != null) {
             for (File instance : unofficialInstances) {
@@ -159,14 +176,19 @@ public class Application {
         }
     }
 
-    public static void login() {
-        if (auth != null) {
-            auth.destroy();
-            auth = null;
-            System.gc();
+    public static boolean login() {
+        try {
+            if (auth != null) {
+                auth.destroy();
+                auth = null;
+                System.gc();
+            }
+            auth = new MicrosoftAuth();
+            return auth.isLoggedIn();
+        } catch (Exception e) {
+            Main.getLogger().error("[APP] Couldn't login: "+e.getMessage());
+            return false;
         }
-        auth = new MicrosoftAuth();
-
     }
 
     public static String getStartURL() {
@@ -196,10 +218,6 @@ public class Application {
         return frame;
     }
 
-    public static String getOperatingSystem() {
-        return System.getProperty("os.name");
-    }
-
     public static String getInstancePath() {
         if(instancePath==null) {
             config.checkEntry("settings.path.instances","default");
@@ -213,10 +231,10 @@ public class Application {
                         path = path+"/Zyneon/";
                     }
                     File instanceFolder = new File(URLDecoder.decode(path, StandardCharsets.UTF_8));
-                    Main.getLogger().debug("Instance path created: "+instanceFolder.mkdirs());
+                    Main.getLogger().debug("[APP] Instance path created: "+instanceFolder.mkdirs());
                     instancePath = instanceFolder.getAbsolutePath();
                 } catch (Exception e) {
-                    Main.getLogger().error("Instance path invalid - Please select a new one! Falling back to default path.");
+                    Main.getLogger().error("[APP] Instance path invalid - Please select a new one! Falling back to default path.");
                     Application.getFrame().getBrowser().executeJavaScript("changeFrame('settings/select-instance-path.html');", "https://danieldieeins.github.io/ZyneonApplicationContent/h/account.html", 5);
                     throw new RuntimeException("No instance path");
                 }

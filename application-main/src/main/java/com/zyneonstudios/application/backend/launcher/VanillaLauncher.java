@@ -67,11 +67,11 @@ public class VanillaLauncher {
             try {
                 Process p = framework.launch(version, "", NoFramework.ModLoader.VANILLA);
             } catch (Exception e) {
-                Main.getLogger().error("Couldn't start: "+e.getMessage());
+                Main.getLogger().error("[LAUNCHER] Couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
                 throw new RuntimeException(e);
             }
         } else {
-            Main.getLogger().error("Error: couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
+            Main.getLogger().error("[LAUNCHER] Couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");
         }
     }
 }

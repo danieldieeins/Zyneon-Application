@@ -2,10 +2,10 @@ package com.zyneonstudios;
 
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.frontend.ZyneonSplash;
+import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 import live.nerotv.shademebaby.utils.StringUtil;
-
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -18,40 +18,60 @@ import java.util.Calendar;
 public class Main {
 
     private static String applicationPath;
+    public static ZyneonSplash splash;
     private static Logger logger;
     public static String version;
-    public static ZyneonSplash splash;
     public static String os;
 
     public static void main(String[] args) {
+        version = "2024.2-beta.7";
+        String name = "Webium";
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        logger = new Logger("ZyneonApplication");
-        version = "2024.2-beta.7";
-        if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/start.html").exists()) {
-            FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
-            getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
-            FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");
-            FileUtil.unzipFile(getDirectoryPath() + "libs/zyneon/" + version + ".zip", getDirectoryPath() + "libs/zyneon/" + version);
-            getLogger().debug("Deleted UI ZIP File: "+new File(getDirectoryPath() + "libs/zyneon/" + version + ".zip").delete());
-        }
-        getLogger().debug("Deleted old updater json: "+new File(getDirectoryPath()+"updater.json").delete());
-        getLogger().debug("Deleted old version json: "+new File(getDirectoryPath()+"version.json").delete());
+        logger = new Logger("ZYNEON");
+        String fullVersion = version+" ▪ "+name;
+        logger.log("[MAIN] Updated user interface: "+update());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        Application application = new Application(version+" ▪ Webium");
+        Application application = new Application(fullVersion);
         if(args.length!=0) {
             if(args[0].startsWith("--test")) {
                 String random = StringUtil.generateAlphanumericString(2)+"-"+StringUtil.generateAlphanumericString(3)+"-"+StringUtil.generateAlphanumericString(1);
                 String date = new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
-                application = new Application(date+" ▪ "+random);
+                fullVersion = date+" ▪ "+random;
+                application = new Application(fullVersion);
+                logger.setDebugEnabled(true);
+                ShadeMeBaby.getLogger().setDebugEnabled(true);
             }
         }
         System.gc();
+        logger.log("[MAIN] Launching Zyneon Application version "+fullVersion+"...");
         application.start();
     }
 
     public static Logger getLogger() {
         return logger;
+    }
+
+    private static boolean update() {
+        boolean updated;
+        try {
+            if (!new File(getDirectoryPath() + "libs/zyneon/" + version + "/start.html").exists()) {
+                FileUtil.deleteFolder(new File(getDirectoryPath() + "libs/zyneon/"));
+                logger.log("[MAIN] Deleted old user interface files: " + new File(getDirectoryPath() + "libs/zyneon/").mkdirs());
+                FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");
+                FileUtil.unzipFile(getDirectoryPath() + "libs/zyneon/" + version + ".zip", getDirectoryPath() + "libs/zyneon/" + version);
+                logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath() + "libs/zyneon/" + version + ".zip").delete());
+                updated = true;
+            } else {
+                updated = false;
+            }
+        } catch (Exception e) {
+            logger.error("[MAIN] Couldn't update application user interface: "+e.getMessage());
+            updated = false;
+        }
+        logger.log("[MAIN] Deleted old updater json: " + new File(getDirectoryPath() + "updater.json").delete());
+        logger.log("[MAIN] Deleted old version json: " + new File(getDirectoryPath() + "version.json").delete());
+        return updated;
     }
 
     public static String getDirectoryPath() {

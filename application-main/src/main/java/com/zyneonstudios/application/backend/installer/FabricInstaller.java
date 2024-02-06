@@ -32,7 +32,7 @@ public class FabricInstaller {
             updater.update(instancePath);
             return true;
         } catch (Exception e) {
-            Main.getLogger().error("Error: Couldn't download Minecraft " + minecraftVersion + " with Fabric " + fabricVersion);
+            Main.getLogger().error("[INSTALLER] Couldn't download Minecraft " + minecraftVersion + " with Fabric " + fabricVersion);
             return false;
         }
     }

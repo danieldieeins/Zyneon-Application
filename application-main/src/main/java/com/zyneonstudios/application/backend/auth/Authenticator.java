@@ -120,7 +120,7 @@ public class Authenticator {
                     saver.set("opapi.ms.n",new String(n));
                     saver.set("opapi.ms.u",new String(u));
                 } catch (Exception e) {
-                    Main.getLogger().error("Couldn't save login credentials: "+e.getMessage());
+                    Main.getLogger().error("[AUTH] Couldn't save login credentials: "+e.getMessage());
                 }
             }
         }

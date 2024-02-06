@@ -67,11 +67,11 @@ public class FabricLauncher {
             try {
                 Process p = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
             } catch (Exception e) {
-                Main.getLogger().error("Couldn't start: "+e.getMessage());
+                Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
                 throw new RuntimeException(e);
             }
         } else {
-            Main.getLogger().error("Error: couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
+            Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
         }
     }
 }

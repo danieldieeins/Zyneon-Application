@@ -32,11 +32,9 @@ public class ForgeInstaller {
 
         try {
             updater.update(instancePath);
-            Main.getLogger().debug("Successfully downloaded Minecraft "+minecraftVersion+" with Forge ("+type.toString()+") "+forgeVersion);
             return true;
         } catch (Exception e) {
-            Main.getLogger().error("Couldn't download Minecraft "+minecraftVersion+" with Forge ("+type.toString()+") "+forgeVersion+": "+e.getMessage());
-            e.printStackTrace();
+            Main.getLogger().error("[INSTALLER] Couldn't download Minecraft "+minecraftVersion+" with Forge ("+type.toString()+") "+forgeVersion+": "+e.getMessage());
             return false;
         }
     }

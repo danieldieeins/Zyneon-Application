@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>ShadeMeBaby</artifactId>
-            <version>2024.2</version>
+            <version>d92170d</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

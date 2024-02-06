@@ -79,11 +79,11 @@ public class ForgeLauncher {
             try {
                 Process p = framework.launch(minecraftVersion, forgeVersion, forge);
             } catch (Exception e) {
-                Main.getLogger().error("Couldn't start: "+e.getMessage());
+                Main.getLogger().error("[LAUNCHER] Couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
                 throw new RuntimeException(e);
             }
         } else {
-            Main.getLogger().error("Error: couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
+            Main.getLogger().error("[LAUNCHER] Couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
         }
     }
 }
