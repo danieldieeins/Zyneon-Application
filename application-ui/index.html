@@ -1,231 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>News ▪ Zyneon Application</title>
-    <link rel="stylesheet" href="assets/zyneon/css/style.css">
-    <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
-    <script src="assets/zyneon/js/functions.js"></script>
-    <script>syncTheme();</script>
-</head>
-<body>
-    <div class="content-rows" id="top">
-        <div class="menu" id="main">
-            <div class="menu-title">
-                <img src="assets/zyneon/images/logo.png" alt="Zyneon Studios logo">
-                <p>Zyneon<br>Application</p>
-            </div>
-            <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
-            <ul>
-                <li>
-                    <a>
-                        <div class="menu-item" id="selected">
-                            <i class="bx bxs-home"></i>
-                            <span class="menu-item">News & updates</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onclick="link('instances.html');">
-                        <div class="menu-item">
-                            <i class='bx bxs-objects-horizontal-left'></i>
-                            <span class="menu-item">Instances</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onclick="link('settings.html');">
-                        <div class="menu-item">
-                            <i class="bx bxs-cog"></i>
-                            <span class="menu-item">Settings</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            <div class="profile" onclick="toggleMenu();">
-                <i class='bx bx-loader' id="loading"></i>
-                <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
-                <p class="username" id="username">connecting...</p>
-                <a onclick="link('settings.html?tab=profile');" id="loginlogout"><p>loading...</p></a>
-            </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Zyneon Application (web version)</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                color: #fff;
+                background: #000;
+                font-family: LTHoopRegular, serif;
+                box-sizing: border-box;
+                line-height: 0;
+                user-select: none;
+            }
+
+            #content .warning {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 2rem;
+                width: 100%;
+
+                background: linear-gradient(#ff6a6a, #ff0000, #180000);
+                box-shadow: 0 0 0.8rem #000;
+
+                line-height: 1;
+                padding: 0.5rem;
+
+                z-index: 2;
+            }
+
+            #content iframe {
+                position: absolute;
+                top: 2rem;
+                left: 0;
+                width: 100%;
+                height: calc(100% - 2rem);
+                border: none;
+                z-index: 1;
+            }
+
+            @font-face {
+                font-family: LTHoopRegular;
+                src: url("assets/fonts/lthoop-regular.ttf");
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content">
+            <p class="warning">WARNING: This is a preview version of the Zyneon Application web app. This is a test version in a very early alpha state. Features are missing.</p>
+            <iframe src="start.html">You can't use the web version of Zyneon Application. Try to download it at https://github.com/danieldieeins/Zyneon-Application/releases</iframe>
         </div>
-        <div class="menu" id="submenu">
-            <ul>
-                <li class="subtitle">
-                    <span class="bold">News & updates</span>
-                </li>
-                <li>
-                    <a onclick="syncNews();">
-                        <div class="menu-item" id="news-button">
-                            <i class='bx bxs-news' ></i>
-                            <span class="menu-item">News</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onclick="syncUpdates();">
-                        <div class="menu-item" id="updates-button">
-                            <i class='bx bxs-archive-in' ></i>
-                            <span class="menu-item">Application updates</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="content">
-            <div id="news">
-                <div class="card">
-                    <h1>News</h1>
-                </div>
-                <div class="card" id="news-card">
-                    <h2>Title</h2>
-                    <h3>content</h3>
-                </div>
-                <div class="card">
-                    <h2>2024.2-beta.6 released</h2>
-                    <h3>2nd February 2024 11:50pm</h3>
-                    <h3>Info: If you are interested in seeing all the changes, click on "Application updates" to view the changelogs.</h3>
-                </div>
-                <div class="card">
-                    <h2>2024.2-beta.5 released</h2>
-                    <h3>1st February 2024 8:50pm</h3>
-                    <h3>Info: If you are interested in seeing all the changes, click on "Application updates" to view the changelogs.</h3>
-                </div>
-                <div class="card">
-                    <h2>2024.2-beta.4 released</h2>
-                    <h3>1st February 2024 3:15pm</h3>
-                    <h3>Info: If you are interested in seeing all the changes, click on "Application updates" to view the changelogs.</h3>
-                </div>
-                <div class="card">
-                    <h2>2024.2-beta.3 released</h2>
-                    <h3>31st January 2024 5:02pm</h3>
-                    <h3>Info: If you are interested in seeing all the changes, click on "Application updates" to view the changelogs.</h3>
-                </div>
-                <div class="card">
-                    <h2>2024.2-beta.2 released</h2>
-                    <h3>30th January 2024 9:15pm</h3>
-                    <h3>Info: If you are interested in seeing all the changes, click on "Application updates" to view the changelogs.</h3>
-                </div>
-                <div class="card">
-                    <h2>2024.2-beta.1 released</h2>
-                    <h3>29th January 2024 3:21am</h3>
-                    <h3>Info: With this version of the application we restart the versioning. The old public beta phase is over, and we are now preparing for the full version. The plan is for the first full version to come in February 2024. That's why this is version 2024.2-beta.1 - as it is the first beta for the upcoming version in month 2.</h3>
-                </div>
-                <div class="card">
-                    <h2>Status</h2>
-                    <h3>Connected to server.</h3>
-                </div>
-            </div>
-            <div id="updates">
-                <div class="card">
-                    <h1>Updates</h1>
-                </div>
-                <div class="card" id="updates-card">
-                    <h2>Title</h2>
-                    <h3>content</h3>
-                </div>
-                <div class="card" id="2024.2-beta.6">
-                    <h2>2024.2-beta.6 ▪ Zynium²</h2>
-                    <h3>Published on 2nd February 2024 11:50pm</h3>
-                    <h3>Added:<br>
-                        + missing Modpack assets.</h3>
-                    <h3>Changed:<br>
-                        • Changed the authentication system. All users need to re-login.</h3>
-                    <h3>Removed:</h3>
-                    <h3>Bugfixes:<br>
-                        ▪ Fixed backend bugs.</h3>
-                </div>
-                <div class="card" id="2024.2-beta.5">
-                    <h2>2024.2-beta.5 ▪ Zynium</h2>
-                    <h3>Published on 1st February 2024 8:50pm</h3>
-                    <h3>Added:<br>
-                        + Added license information and the about tab in settings.</h3>
-                    <h3>Changed:<br>
-                        • Changed button icon color for the launch button.</h3>
-                    <h3>Removed:</h3>
-                    <h3>Bugfixes:<br>
-                        ▪ Fixed backend bugs.</h3>
-                </div>
-                <div class="card" id="2024.2-beta.4">
-                    <h2>2024.2-beta.4 ▪ Baumium</h2>
-                    <h3>Published on 1st February 2024 3:15pm</h3>
-                    <h3>Added:</h3>
-                    <h3>Changed:<br>
-                        • Updated instance page, instance adder and instance view theming.</h3>
-                    <h3>Removed:</h3>
-                    <h3>Bugfixes:<br>
-                        ▪ Fixed backend bugs.</h3>
-                </div>
-                <div class="card" id="2024.2-beta.3">
-                    <h2>2024.2-beta.3 ▪ Germanium</h2>
-                    <h3>Published on 31st January 2024 5:02pm</h3>
-                    <h3>Added:<br>
-                        + Added some versions to instance creator.</h3>
-                    <h3>Changed:</h3>
-                    <h3>Removed:</h3>
-                    <h3>Bugfixes:<br>
-                        ▪ Fixed wrong color for official modpack check marks.</h3>
-                </div>
-                <div class="card" id="2024.2-beta.2">
-                    <h2>2024.2-beta.2 ▪ Argrium²</h2>
-                    <h3>Published on 30th January 2024 9:15pm</h3>
-                    <h3>Added:<br>
-                        + Instance settings<br>
-                        + You can now import instances by their id.<br>
-                        + Official instances are now marked.</h3>
-                    <h3>Changed:<br>
-                        • The configure memory button for the instances can now be found in the instance settings.<br>
-                        • The delete instance button for the instances can now be found in the instance settings.<br>
-                    </h3>
-                    <h3>Removed:<br>
-                        - Instance settings dropdown menu</h3>
-                    <h3>Bugfixes:<br>
-                        ▪ Fixed wrong version number of the previous release changelog.<br>
-                        ▪ When you create an instance, it is now displayed without having to press "Refresh instances".</h3>
-                </div>
-                <div class="card" id="2024.2-beta.1-hotfix.1">
-                    <h2>2024.2-beta.1-hotfix.1 ▪ Argrium Hotfix</h2>
-                    <h3>Published on 29th January 2024 3:21am</h3>
-                    <h3>Added:</h3>
-                    <h3>Changed:</h3>
-                    <h3>Removed:</h3>
-                    <h3>Bugfixes:<br>
-                        ▪ Fixed theming issues on instance page</h3>
-                </div>
-                <div class="card" id="2024.2-beta.1">
-                    <h2>2024.2-beta.1 ▪ Argrium</h2>
-                    <h3>Published on 29th January 2024 2:44am</h3>
-                    <h3>Info: With this version of the application we restart the versioning. The old public beta phase is over, and we are now preparing for the full version. The plan is for the first full version to come in February 2024. That's why this is version 2024.2-beta.1 - as it is the first beta for the upcoming version in month 2.</h3>
-                    <h3>Added:<br>
-                        + Added window resizing functionality.<br>
-                        + Added official instances to instance adder.<br>
-                        + Added a changelog tab to News & updates.<br>
-                        + Some buttons will start an animation on hover.<br>
-                        + New dark mode theme.<br>
-                        + New light mode theme.
-                    </h3>
-                    <h3>Changed:<br>
-                        • The entire user interface has been rewritten from scratch.<br>
-                        • The appearance of the pop-up windows has been redesigned.<br>
-                        • Renamed Start/News to News & updates.<br>
-                        • Changed the default zyneon theme.<br>
-                        • Official instances will now show up in the instances list.<br>
-                        • Not installed official instances will no longer show up in the instances list.
-                    </h3>
-                    <h3>Removed:<br>
-                        - HTTPServer (Webserver)<br>
-                        - "Official" section from instances<br>
-                        - "Resources" menu entry<br>
-                        - "Wiki" menu entry<br>
-                        - "Zyneon Drive" menu entry<br>
-                        - Old news from open beta
-                    </h3>
-                    <h3>Bugfixes: too much</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-<script src="assets/zyneon/js/index.js"></script>
-<script>syncApplication(); syncNews();</script>
+    </body>
+    <script>
+        window.addEventListener('resize', function() {
+            const viewportHeight = window.innerHeight;
+            document.getElementById('content').style.height = viewportHeight + 'px';
+        });
+
+        window.addEventListener('load', function() {
+            const viewportHeight = window.innerHeight;
+            document.getElementById('content').style.height = viewportHeight + 'px';
+        });
+    </script>
 </html>

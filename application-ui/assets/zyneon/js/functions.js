@@ -1,4 +1,4 @@
-let theme = "zyneon";
+let theme = "dark";
 
 document.addEventListener('contextmenu',function(e){
     e.preventDefault();
@@ -39,6 +39,7 @@ function syncApplication() {
 }
 
 function login(name) {
+    checkForWeb();
     document.getElementById("username").innerText = name;
     document.getElementById("profile-picture").src = "https://cravatar.eu/helmhead/"+name+"/64.png";
     document.getElementById("profile-picture").style.display = "inherit";
@@ -47,6 +48,7 @@ function login(name) {
 }
 
 function logout() {
+    checkForWeb();
     document.getElementById("username").innerText = "Not logged in";
     document.getElementById("profile-picture").src = "assets/zyneon/images/steve.png";
     document.getElementById("profile-picture").style.display = "inherit";
@@ -54,7 +56,20 @@ function logout() {
     document.getElementById("loading").style.display = "none";
 }
 
+function checkForWeb() {
+    document.getElementById("profile_").style.display = "inherit";
+    document.getElementById("instance-button").style.display = "inherit";
+    document.getElementById("download-button").style.display = "none";
+}
+
 function syncTheme() {
+    if(localStorage.getItem("theme")!==null) {
+        theme = localStorage.getItem("theme");
+    }
+    setTheme(theme);
+}
+
+function syncTheme_old() {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("theme")!=null) {
         theme = urlParams.get('theme');
@@ -97,6 +112,7 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim-less", "#ffffff90");
         root.style.setProperty("--inverted", "#000");
     }
+    localStorage.setItem('theme', theme);
     callJavaMethod('button.theme.' + theme);
 }
 
@@ -105,11 +121,6 @@ function callJavaMethod(message) {
 }
 
 function link(url) {
-    if(url.includes("?")) {
-        url=url+"&theme="+theme;
-    } else {
-        url=url+"?theme="+theme;
-    }
     window.location.href = url;
 }
 

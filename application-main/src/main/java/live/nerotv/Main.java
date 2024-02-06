@@ -30,7 +30,7 @@ public class Main {
         splash.setVisible(true);
         logger = new Logger("ZyneonApplication");
         version = "2024.2-beta.6c";
-        if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/index.html").exists()) {
+        if(!new File(getDirectoryPath()+"libs/zyneon/"+ version +"/start.html").exists()) {
             FileUtil.deleteFolder(new File(getDirectoryPath()+"libs/zyneon/"));
             getLogger().debug("Deleted old UI Files: "+new File(getDirectoryPath()+"libs/zyneon/").mkdirs());
             FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");

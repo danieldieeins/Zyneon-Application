@@ -40,18 +40,18 @@ function syncGeneralSettings() {
     const dark = document.getElementById("appearance-theme-dark");
     const light = document.getElementById("appearance-theme-light");
     const zyneon = document.getElementById("appearance-theme-zyneon");
-    if(theme==="dark") {
+    if(theme==="zyneon") {
+        dark.classList.remove("active");
         light.classList.remove("active");
-        zyneon.classList.remove("active");
-        dark.classList.add("active");
+        zyneon.classList.add("active");
     } else if(theme==="light") {
         dark.classList.remove("active");
         zyneon.classList.remove("active");
         light.classList.add("active");
     } else {
-        dark.classList.remove("active");
         light.classList.remove("active");
-        zyneon.classList.add("active");
+        zyneon.classList.remove("active");
+        dark.classList.add("active");
     }
 
     general.style.display = "inherit";
@@ -99,6 +99,14 @@ function syncVersion() {
 
 function syncApp(ver) {
     document.getElementById("app-version").innerText = ver;
+    document.getElementById("global-button").style.display = "inherit";
+    document.getElementById("profile-button").style.display = "inherit";
+    document.getElementById("about-button").style.display = "inherit";
+    document.getElementById("actions-title").style.display = "inherit";
+    document.getElementById("refresh-button").style.display = "inherit";
+    document.getElementById("exit-button").style.display = "inherit";
+    document.getElementById("startTitle").style.display = "inherit";
+    document.getElementById("startTab").style.display = "inherit";
 }
 
 function syncGeneral(start) {

@@ -18,14 +18,14 @@
             <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
             <ul>
                 <li>
-                    <a onclick="link('index.html');">
+                    <a onclick="link('start.html');">
                         <div class="menu-item">
                             <i class="bx bxs-home"></i>
                             <span class="menu-item">News & updates</span>
                         </div>
                     </a>
                 </li>
-                <li>
+                <li id="instance-button">
                     <a>
                         <div class="menu-item" id="selected">
                             <i class='bx bxs-objects-horizontal-left'></i>
@@ -41,8 +41,16 @@
                         </div>
                     </a>
                 </li>
+                <li id="download-button">
+                    <a href="https://github.com/danieldieeins/Zyneon-Application/releases" target="_blank">
+                        <div class="menu-item">
+                            <i class='bx bxs-download'></i>
+                            <span class="menu-item">Download application</span>
+                        </div>
+                    </a>
+                </li>
             </ul>
-            <div class="profile" onclick="toggleMenu();">
+            <div class="profile" id="profile_" onclick="toggleMenu();">
                 <i class='bx bx-loader' id="loading"></i>
                 <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
                 <p class="username" id="username">connecting...</p>

@@ -29,6 +29,7 @@
 }
 
 @font-face {
+    font-family: LTHoopRegular, serif;
     font-family: LTHoopRegular;
     src: url("../../fonts/lthoop-regular.ttf");
 }
@@ -304,6 +305,10 @@ body {
     color: var(--color);
 }
 
+#global-button,#profile-button,#about-button,#actions-title,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#instance-button {
+    display: none;
+}
+
 .menu#submenu ul li a .menu-item:hover i {
     color: var(--inverted);
     transition: 0.5s;
@@ -541,48 +546,51 @@ body {
     box-shadow: none;
 }
 
-.content #general #appearance .theme {
-    position: absolute;
-    right: 2rem;
-    top: 13.965rem;
-}
-
-.content #general #appearance .theme a.button:hover {
+.content #general #appearance a.button:hover {
     font-size: 1.05rem;
 }
 
-.content #general #appearance .theme a.button#appearance-theme-light {
+.content #general #appearance h3 {
     position: relative;
+}
+
+.content #general #appearance h3 a.button#appearance-theme-light {
+    position: absolute;
+    right: 8.47rem;
+    top: 0.5rem;
     margin-right: -0.25rem;
     border-radius: 0.5rem 0 0 0.5rem;
     box-shadow: none;
 }
 
-.content #general #appearance .theme a.button#appearance-theme-dark {
-    position: relative;
+.content #general #appearance h3 a.button#appearance-theme-dark {
+    position: absolute;
+    right: 5.46rem;
+    top: 0.5rem;
     margin-right: -0.25rem;
     border-radius: 0;
     box-shadow: none;
 }
 
-.content #general #appearance .theme a.button#appearance-theme-zyneon {
-    position: relative;
+.content #general #appearance h3 a.button#appearance-theme-zyneon {
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
     border-radius: 0 0.5rem 0.5rem 0 ;
     box-shadow: none;
 }
 
-.content #general #appearance .language {
+.content #general #appearance h3 a.button#appearance-language-english {
     position: absolute;
-    right: 2rem;
-    top: 16.97rem;
+    right: 1rem;
+    top: 0.5rem;
 }
 
-.content #general #appearance .language a.button#appearance-language-english {
+.content #general #appearance h3 a.button#appearance-language-english {
     box-shadow: none;
 }
 
-.content #general #appearance .language a.button#appearance-language-english:hover {
-    box-shadow: none;
+.content #general #appearance h3 a.button#appearance-language-english:hover {
     color: var(--color);
     background: var(--background-accent);
     cursor: not-allowed;

@@ -83,8 +83,8 @@ public class Application {
 
         memory = config.getInteger("settings.memory.default");
         startTab = config.getString("settings.starttab");
+        ShadeMeBaby.setLogger(Main.getLogger());
         Main.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
-        ShadeMeBaby.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
     }
 
     public static void loadInstances() {
@@ -179,7 +179,7 @@ public class Application {
     }
 
     public static String getNewsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "index.html?theme=" + theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "start.html?theme=" + theme;
     }
 
     public static String getInstancesURL() {
@@ -196,6 +196,10 @@ public class Application {
 
     public static ZyneonWebFrame getFrame() {
         return frame;
+    }
+
+    public static String getOperatingSystem() {
+        return System.getProperty("os.name");
     }
 
     public static String getInstancePath() {
