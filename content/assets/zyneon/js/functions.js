@@ -1,4 +1,5 @@
 let theme = "dark";
+let app = false;
 
 document.addEventListener('contextmenu',function(e){
     e.preventDefault();
@@ -9,7 +10,11 @@ document.addEventListener('dragstart', function(e){
 });
 
 function openInBrowser(url) {
-    callJavaMethod("browser."+url);
+    if(app) {
+        callJavaMethod("browser."+url);
+    } else {
+        link_(url);
+    }
 }
 
 function toggleMenu() {
@@ -57,6 +62,7 @@ function logout() {
 }
 
 function checkForWeb() {
+    app = false;
     document.getElementById("profile_").style.display = "inherit";
     document.getElementById("instance-button").style.display = "inherit";
     document.getElementById("download-button").style.display = "none";
@@ -121,7 +127,11 @@ function callJavaMethod(message) {
 }
 
 function link(url) {
-    window.location.href = url;
+    window.open(url, "_self");
+}
+
+function link_(url) {
+    window.open(url, "_blank");
 }
 
 function addVersionsToMinecraftSelect(id) {

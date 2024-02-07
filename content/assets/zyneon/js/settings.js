@@ -101,7 +101,6 @@ function syncApp(ver) {
     document.getElementById("app-version").innerText = ver;
     document.getElementById("global-button").style.display = "inherit";
     document.getElementById("profile-button").style.display = "inherit";
-    document.getElementById("about-button").style.display = "inherit";
     document.getElementById("actions-title").style.display = "inherit";
     document.getElementById("refresh-button").style.display = "inherit";
     document.getElementById("exit-button").style.display = "inherit";
