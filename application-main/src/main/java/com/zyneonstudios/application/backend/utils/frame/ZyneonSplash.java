@@ -1,4 +1,4 @@
-package com.zyneonstudios.application.frontend;
+package com.zyneonstudios.application.backend.utils.frame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

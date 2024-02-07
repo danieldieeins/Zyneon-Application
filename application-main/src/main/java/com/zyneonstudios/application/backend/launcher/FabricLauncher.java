@@ -2,14 +2,16 @@ package com.zyneonstudios.application.backend.launcher;
 
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.backend.framework.MinecraftVersion;
 import com.zyneonstudios.application.backend.installer.FabricInstaller;
 import com.zyneonstudios.application.backend.instance.FabricInstance;
+import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
+import com.zyneonstudios.application.backend.utils.frame.LogFrame;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 
+import javax.swing.*;
 import java.io.File;
 import java.nio.file.Path;
 
@@ -65,7 +67,13 @@ public class FabricLauncher {
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
-                Process p = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
+                Process game = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
+                LogFrame log = new LogFrame(game.getInputStream(),"Minecraft "+minecraftVersion+" (with Fabric "+fabricVersion+")");
+                Application.getFrame().setState(JFrame.ICONIFIED);
+                game.onExit().thenRun(()->{
+                    Application.getFrame().setState(JFrame.NORMAL);
+                    log.onStop();
+                });
             } catch (Exception e) {
                 Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
                 throw new RuntimeException(e);

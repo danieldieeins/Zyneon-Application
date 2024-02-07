@@ -1,7 +1,7 @@
 package com.zyneonstudios;
 
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.frontend.ZyneonSplash;
+import com.zyneonstudios.application.backend.utils.frame.ZyneonSplash;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
@@ -24,8 +24,8 @@ public class Main {
     public static String os;
 
     public static void main(String[] args) {
-        version = "2024.2-beta.7";
-        String name = "Webium";
+        version = "2024.2-beta.8";
+        String name = "Charium";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new Logger("ZYNEON");

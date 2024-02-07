@@ -3,7 +3,7 @@ package com.zyneonstudios.application;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
-import com.zyneonstudios.application.backend.framework.MinecraftVersion;
+import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
@@ -71,6 +71,12 @@ public class Application {
         try {
             Main.getLogger().log("[APP] Syncing available Minecraft versions...");
             MinecraftVersion.syncVersions();
+            try {
+                Main.getLogger().log("[APP] Trying to sync installed instances...");
+                loadInstances();
+            } catch (Exception e) {
+                Main.getLogger().debug("[APP] Couldn't sync installed instances: "+e.getMessage());
+            }
             Main.getLogger().log("[APP] Setting up frame and webview...");
             checkURL();
             Main.getLogger().log("[APP] Styling webview frame...");
@@ -90,13 +96,6 @@ public class Application {
         } catch (UnsupportedPlatformException | CefInitializationException | IOException | InterruptedException e) {
             Main.getLogger().error("[APP] FATAL: Couldn't start Zyneon Application: "+e.getMessage());
             throw new RuntimeException(e);
-        }
-
-        try {
-            Main.getLogger().log("[APP] Trying to sync installed instances...");
-            loadInstances();
-        } catch (Exception e) {
-            Main.getLogger().debug("[APP] Couldn't sync installed instances: "+e.getMessage());
         }
         System.gc();
         Main.getLogger().log("[APP] Zyneon Application successfully started!");

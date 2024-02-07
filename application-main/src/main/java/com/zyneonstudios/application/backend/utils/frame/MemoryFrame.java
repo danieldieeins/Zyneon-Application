@@ -1,4 +1,4 @@
-package com.zyneonstudios.application.frontend.settings;
+package com.zyneonstudios.application.backend.utils.frame;
 
 import com.sun.management.OperatingSystemMXBean;
 import live.nerotv.shademebaby.file.Config;
@@ -13,13 +13,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.management.ManagementFactory;
 
-public class MemoryWindow extends JFrame {
+public class MemoryFrame extends JFrame {
 
     private final Config saveFile;
     private final String title;
     private String instance;
 
-    public MemoryWindow(Config saveFile, String title, String instance) {
+    public MemoryFrame(Config saveFile, String title, String instance) {
         this.saveFile = saveFile;
         this.title = title;
         this.instance = instance;

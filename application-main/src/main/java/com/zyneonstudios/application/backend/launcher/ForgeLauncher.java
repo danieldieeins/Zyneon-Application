@@ -2,15 +2,17 @@ package com.zyneonstudios.application.backend.launcher;
 
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.backend.framework.MinecraftVersion;
+import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.installer.ForgeInstaller;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
+import com.zyneonstudios.application.backend.utils.frame.LogFrame;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 
+import javax.swing.*;
 import java.io.File;
 import java.nio.file.Path;
 
@@ -77,7 +79,13 @@ public class ForgeLauncher {
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
-                Process p = framework.launch(minecraftVersion, forgeVersion, forge);
+                Process game = framework.launch(minecraftVersion, forgeVersion, forge);
+                LogFrame log = new LogFrame(game.getInputStream(),"Minecraft "+minecraftVersion+" (with "+forgeType.toString().toLowerCase()+"Forge "+forgeVersion+")");
+                Application.getFrame().setState(JFrame.ICONIFIED);
+                game.onExit().thenRun(()->{
+                    Application.getFrame().setState(JFrame.NORMAL);
+                    log.onStop();
+                });
             } catch (Exception e) {
                 Main.getLogger().error("[LAUNCHER] Couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
                 throw new RuntimeException(e);

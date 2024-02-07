@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.backend.framework.MinecraftVersion;
 import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
 import com.zyneonstudios.application.backend.instance.VanillaInstance;
@@ -15,7 +14,7 @@ import com.zyneonstudios.application.backend.launcher.FabricLauncher;
 import com.zyneonstudios.application.backend.launcher.ForgeLauncher;
 import com.zyneonstudios.application.backend.launcher.VanillaLauncher;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
-import com.zyneonstudios.application.frontend.settings.MemoryWindow;
+import com.zyneonstudios.application.backend.utils.frame.MemoryFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
@@ -675,7 +674,7 @@ public class Connector {
     }
 
     private void openMemorySettings(String instance) {
-        new MemoryWindow(Application.config, "Configure memory (" + instance + ")", instance);
+        new MemoryFrame(Application.config, "Configure memory (" + instance + ")", instance);
     }
 
     public enum InstanceAction {
