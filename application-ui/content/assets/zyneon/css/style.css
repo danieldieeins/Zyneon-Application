@@ -305,7 +305,13 @@ body {
     color: var(--color);
 }
 
-#global-button,#profile-button,#about-button,#actions-title,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#instance-button {
+h3 a:hover {
+    color: var(--color);
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+#global-button,#profile-button,#actions-title,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#instance-button {
     display: none;
 }
 
@@ -556,7 +562,7 @@ body {
 
 .content #general #appearance h3 a.button#appearance-theme-light {
     position: absolute;
-    right: 8.47rem;
+    right: 7.96rem;
     top: 0.5rem;
     margin-right: -0.25rem;
     border-radius: 0.5rem 0 0 0.5rem;
@@ -565,7 +571,7 @@ body {
 
 .content #general #appearance h3 a.button#appearance-theme-dark {
     position: absolute;
-    right: 5.46rem;
+    right: 4.96rem;
     top: 0.5rem;
     margin-right: -0.25rem;
     border-radius: 0;
@@ -574,7 +580,7 @@ body {
 
 .content #general #appearance h3 a.button#appearance-theme-zyneon {
     position: absolute;
-    right: 1rem;
+    right: 0.5rem;
     top: 0.5rem;
     border-radius: 0 0.5rem 0.5rem 0 ;
     box-shadow: none;
@@ -582,7 +588,7 @@ body {
 
 .content #general #appearance h3 a.button#appearance-language-english {
     position: absolute;
-    right: 1rem;
+    right: 0.5rem;
     top: 0.5rem;
 }
 
