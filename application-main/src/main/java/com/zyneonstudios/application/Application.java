@@ -52,7 +52,7 @@ public class Application {
         config.checkEntry("settings.language","auto");
         config.checkEntry("settings.memory.default", 1024);
         config.checkEntry("settings.logger.debug", false);
-        config.checkEntry("settings.appearance.theme","zyneon");
+        config.checkEntry("settings.appearance.theme","dark");
 
         theme = config.getString("settings.appearance.theme");
         memory = config.getInteger("settings.memory.default");
@@ -80,7 +80,7 @@ public class Application {
             Main.getLogger().log("[APP] Setting up frame and webview...");
             checkURL();
             Main.getLogger().log("[APP] Styling webview frame...");
-            frame.setTitlebar("Zyneon Application", Color.decode("#050113"), Color.white);
+            frame.setTitlebar("Zyneon Application", Color.black, Color.white);
             frame.setVisible(true);
             frame.addWindowListener(new WindowAdapter() {
                 @Override
@@ -198,15 +198,15 @@ public class Application {
     }
 
     public static String getNewsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "start.html?theme=" + theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "start.html";
     }
 
     public static String getInstancesURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html?theme=" + theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html";
     }
 
     public static String getSettingsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html?theme=" + theme;
+        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html";
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
