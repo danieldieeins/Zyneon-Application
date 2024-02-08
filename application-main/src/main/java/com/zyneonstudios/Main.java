@@ -6,6 +6,7 @@ import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 import live.nerotv.shademebaby.utils.StringUtil;
+
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -24,8 +25,8 @@ public class Main {
     public static String os;
 
     public static void main(String[] args) {
-        version = "2024.2-beta.8";
-        String name = "Charium";
+        version = "2024.2-beta.9";
+        String name = "Argrium³";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new Logger("ZYNEON");

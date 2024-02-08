@@ -10,12 +10,18 @@ import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
 import com.zyneonstudios.application.backend.instance.VanillaInstance;
+import com.zyneonstudios.application.backend.integrations.Integrator;
+import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthModpacks;
+import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthMods;
+import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthResourcepacks;
+import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthShaders;
 import com.zyneonstudios.application.backend.launcher.FabricLauncher;
 import com.zyneonstudios.application.backend.launcher.ForgeLauncher;
 import com.zyneonstudios.application.backend.launcher.VanillaLauncher;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import com.zyneonstudios.application.backend.utils.frame.MemoryFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
+import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
 import live.nerotv.shademebaby.utils.StringUtil;
@@ -192,10 +198,31 @@ public class Connector {
                 FileUtil.deleteFolder(instance);
                 resolveRequest("button.refresh.instances");
             }
+        } else if (request.contains("sync.search.")) {
+            request = request.replace("sync.search.","");
+            String[] request_ = request.split("\\.", 4);
+            String source = request_[0];
+            String type = request_[1];
+            String version = request_[2].replace("%",".");
+            String query = request_[3];
+            if(source.equalsIgnoreCase("modrinth")) {
+                if(type.equalsIgnoreCase("forge")||type.equalsIgnoreCase("fabric")) {
+                    Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, 0, 100));
+                } else if(type.equalsIgnoreCase("shaders")) {
+                    Integrator.modrinthToConnector(ModrinthShaders.search(query,version,0,100));
+                } else if(type.equalsIgnoreCase("resourcepacks")) {
+                    Integrator.modrinthToConnector(ModrinthResourcepacks.search(query,version,0,100));
+                } else if(type.equalsIgnoreCase("modpacks")) {
+                    Integrator.modrinthToConnector(ModrinthModpacks.search(query,version,0,100));
+                }
+            }
         } else if (request.contains("sync.select.minecraft.")) {
             String id = request.replace("sync.select.minecraft.", "");
             for (String version : MinecraftVersion.supportedVersions) {
                 frame.executeJavaScript("addToSelect('" + id + "','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+            }
+            if(request.contains("search-version")) {
+                frame.executeJavaScript("syncSearch();");
             }
         } else if (request.contains("button.creator.update.")) {
             String[] creator = request.replace("button.creator.update.", "").split("\\.", 7);
