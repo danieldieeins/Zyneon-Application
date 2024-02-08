@@ -15,11 +15,12 @@ import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthModpa
 import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthMods;
 import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthResourcepacks;
 import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthShaders;
+import com.zyneonstudios.application.backend.integrations.zyneon.ZyneonModpacks;
 import com.zyneonstudios.application.backend.launcher.FabricLauncher;
 import com.zyneonstudios.application.backend.launcher.ForgeLauncher;
 import com.zyneonstudios.application.backend.launcher.VanillaLauncher;
-import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import com.zyneonstudios.application.backend.utils.frame.MemoryFrame;
+import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
@@ -40,6 +41,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
 
 public class Connector {
 
@@ -206,15 +208,23 @@ public class Connector {
             String version = request_[2].replace("%",".");
             String query = request_[3];
             if(source.equalsIgnoreCase("modrinth")) {
-                if(type.equalsIgnoreCase("forge")||type.equalsIgnoreCase("fabric")) {
-                    Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, 0, 100));
-                } else if(type.equalsIgnoreCase("shaders")) {
-                    Integrator.modrinthToConnector(ModrinthShaders.search(query,version,0,100));
-                } else if(type.equalsIgnoreCase("resourcepacks")) {
-                    Integrator.modrinthToConnector(ModrinthResourcepacks.search(query,version,0,100));
-                } else if(type.equalsIgnoreCase("modpacks")) {
-                    Integrator.modrinthToConnector(ModrinthModpacks.search(query,version,0,100));
-                }
+                CompletableFuture.runAsync(() -> {
+                    if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
+                        Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, 0, 100));
+                    } else if (type.equalsIgnoreCase("shaders")) {
+                        Integrator.modrinthToConnector(ModrinthShaders.search(query, version, 0, 100));
+                    } else if (type.equalsIgnoreCase("resourcepacks")) {
+                        Integrator.modrinthToConnector(ModrinthResourcepacks.search(query, version, 0, 100));
+                    } else if (type.equalsIgnoreCase("modpacks")) {
+                        Integrator.modrinthToConnector(ModrinthModpacks.search(query, version, 0, 100));
+                    }
+                });
+            } else if(source.equalsIgnoreCase("zyneon")) {
+                CompletableFuture.runAsync(() -> {
+                    if (type.equalsIgnoreCase("modpacks")) {
+                        Integrator.zyneonToConnector(ZyneonModpacks.search(query, version));
+                    }
+                });
             }
         } else if (request.contains("sync.select.minecraft.")) {
             String id = request.replace("sync.select.minecraft.", "");
@@ -505,7 +515,8 @@ public class Connector {
             File instance = new File(Application.getInstancePath() + "instances/" + id + "/");
             Main.getLogger().debug("[CONNECTOR] Created instance path: " + instance.mkdirs());
             FileUtil.downloadFile(url, URLDecoder.decode(instance.getAbsolutePath() + "/zyneonInstance.json", StandardCharsets.UTF_8));
-            resolveRequest("button.refresh.instances");
+            Application.loadInstances();
+            frame.getBrowser().loadURL(Application.getInstancesURL()+"?tab="+id);
         } else if (request.contains("button.resourcepacks.")) {
             resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
         } else if (request.contains("button.shaders.")) {

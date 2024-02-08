@@ -3,6 +3,9 @@ package com.zyneonstudios.application.backend.integrations;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.application.Application;
+import com.zyneonstudios.application.backend.instance.InstanceConfig;
+
+import java.util.ArrayList;
 
 public class Integrator {
 
@@ -20,8 +23,19 @@ public class Integrator {
         }
     }
 
-    public static void zyneonToConnector() {
-
+    public static void zyneonToConnector(ArrayList<InstanceConfig> results) {
+        if(results!=null) {
+            if(!results.isEmpty()) {
+                for (InstanceConfig instance : results) {
+                    String id = instance.getString("modpack.id");
+                    String icon = "https://danieldieeins.github.io/Zyneon-Application/content/assets/zyneon/images/instances/" + id + ".png";
+                    if (instance.getString("modpack.icon") != null) {
+                        icon = instance.getString("modpack.icon");
+                    }
+                    addItemCard(icon, instance.getString("modpack.name"), instance.getString("modpack.author"), instance.getString("modpack.description"), id, id);
+                }
+            }
+        }
     }
 
     public static void addItemCard(String png, String title, String author, String description, String id, String slug) {

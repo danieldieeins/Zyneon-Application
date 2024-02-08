@@ -26,10 +26,18 @@
                     </a>
                 </li>
                 <li id="instance-button">
-                    <a onclick="link('resources.html');">
+                    <a>
                         <div class="menu-item" id="selected">
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <span class="menu-item">Instances</span>
+                        </div>
+                    </a>
+                </li>
+                <li id="resource-button">
+                    <a onclick="link('resources.html');">
+                        <div class="menu-item">
+                            <i class='bx bxs-store-alt'></i>
+                            <span class="menu-item">Resources</span>
                         </div>
                     </a>
                 </li>
@@ -201,31 +209,17 @@
             </div>
             <div id="instance-adder">
                 <div class="card">
-                    <h1>Select an official instance</h1>
+                    <h1>Download instances</h1>
                 </div>
                 <div id="zyneonplus-instance" class="card">
-                    <h2 class="background-top">Zyneon+</h2>
-                    <h3 class="background-bottom">Play Minecraft in an optimized way with more FPS, shaders, simple online play and more!</h3>
-                    <h3>
-                        <label for="zyneonplus-version"></label>
-                        <select id="zyneonplus-version">
-                            <option value="dynamic">Latest (recommended)</option>
-                            <option value="vr">Latest VR (dynamic)</option>
-                            <option value="1.20">1.20.4 (static)</option>
-                            <option value="1.19">1.19.4 (static)</option>
-                            <option value="1.18">1.18.2 (static)</option>
-                            <option value="1.17">1.17.1 (static)</option>
-                            <option value="1.16">1.16.5 (static)</option>
-                            <option value="1.12" disabled>1.12.2 (static)</option>
-                            <option value="1.8" disabled>1.8.9 (static)</option>
-                        </select>
-                        <a id="install-zyneonplus" class="button" onclick="installZyneonPlus();">Install</a>
-                    </h3>
+                    <h2 class="background-top">Install an official instance</h2>
+                    <h3 class="background-bottom">You can install our official modpacks from the resources!</h3>
+                    <h3><a class="button" onclick="link('resources.html?s=zyneon&t=modpacks');">Show official packs</a></h3>
                 </div>
                 <div id="projectz-instance" class="card">
-                    <h2 class="background-top">Project'Z Beta</h2>
-                    <h3 class="background-bottom">Try Zyneon's newest modpack!</h3>
-                    <h3><a class="button" onclick="callJavaMethod('button.install.official/projectz');">Install</a></h3>
+                    <h2 class="background-top">Or install a modrinth pack</h2>
+                    <h3 class="background-bottom">You can select a modpack from the resources!</h3>
+                    <h3><a class="button" onclick="link('resources.html?s=modrinth&t=modpacks');">Show modrinth packs</a></h3>
                 </div><br>
                 <div class="card">
                     <h1>Create your own instance</h1>
@@ -258,19 +252,6 @@
                         </div>
                         <h3><input type="submit" id="create" value="Create instance" onclick="validateInstanceCreator();"></h3>
                     </form>
-                </div><br>
-                <div class="card">
-                    <h1>Import an instance</h1>
-                </div>
-                <div id="get-by-id" class="card">
-                    <h2 class="background-top">Get an instance by id</h2>
-                    <h3 class="background-bottom">If you know an instance id, you can try to install the instance here!</h3>
-                    <h3>
-                        <label>
-                            <input type="text" id="id">
-                        </label>
-                        <a class="button" onclick="installInstanceID();">Install</a>
-                    </h3>
                 </div>
             </div>
         </div>

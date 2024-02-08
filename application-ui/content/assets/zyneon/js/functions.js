@@ -62,9 +62,10 @@ function logout() {
 }
 
 function checkForWeb() {
-    app = false;
+    app = true;
     document.getElementById("profile_").style.display = "inherit";
     document.getElementById("instance-button").style.display = "inherit";
+    document.getElementById("resource-button").style.display = "inherit";
     document.getElementById("download-button").style.display = "none";
 }
 
