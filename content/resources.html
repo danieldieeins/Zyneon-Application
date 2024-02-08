@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <title>News ▪ Zyneon Application</title>
+        <link rel="stylesheet" href="assets/zyneon/css/style.css">
+        <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
+        <script src="assets/zyneon/js/functions.js"></script>
+        <script>syncTheme();</script>
+    </head>
+    <body>
+        <div class="content-rows" id="top">
+            <div class="menu" id="main">
+                <div class="menu-title">
+                    <img src="assets/zyneon/images/logo.png" alt="Zyneon Studios logo">
+                    <p>Zyneon<br>Application</p>
+                </div>
+                <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
+                <ul>
+                    <li>
+                        <a onclick="link('start.html');">
+                            <div class="menu-item">
+                                <i class="bx bxs-home"></i>
+                                <span class="menu-item">News & updates</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li id="instance-button">
+                        <a onclick="link('instances.html');">
+                            <div class="menu-item" id="selected">
+                                <i class='bx bxs-objects-horizontal-left'></i>
+                                <span class="menu-item">Instances</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="link('settings.html');">
+                            <div class="menu-item">
+                                <i class="bx bxs-cog"></i>
+                                <span class="menu-item">Settings</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li id="download-button">
+                        <a href="https://github.com/danieldieeins/Zyneon-Application/releases/latest" target="_blank">
+                            <div class="menu-item">
+                                <i class='bx bxs-download'></i>
+                                <span class="menu-item">Download application</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="profile" id="profile_" onclick="toggleMenu();">
+                    <i class='bx bx-loader' id="loading"></i>
+                    <img class="profile-picture" id="profile-picture" src="assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
+                    <p class="username" id="username">connecting...</p>
+                    <a onclick="link('settings.html?tab=profile');" id="loginlogout"><p>loading...</p></a>
+                </div>
+            </div>
+            <div class="menu" id="submenu">
+                <ul>
+                    <li class="subtitle">
+                        <span class="bold">Source</span>
+                    </li>
+                    <li>
+                        <a onclick="search_source = 'modrinth'; update();">
+                            <div class="menu-item" id="modrinth">
+                                <i class='bx bx-code-curly'></i>
+                                <span class="menu-item">Modrinth</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="search_source = 'zyneon'; update();">
+                            <div class="menu-item" id="zyneon">
+                                <i class='bx bx-home-heart' ></i>
+                                <span class="menu-item">Zyneon</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="subtitle">
+                        <span class="bold">Type</span>
+                    </li>
+                    <li id="fabric-button">
+                        <a onclick="search_type = 'fabric'; update();">
+                            <div class="menu-item" id="fabric">
+                                <i class='bx bx-code-alt' ></i>
+                                <span class="menu-item">Fabric Mods</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li id="forge-button">
+                        <a onclick="search_type = 'forge'; update();">
+                            <div class="menu-item" id="forge">
+                                <i class='bx bx-code-block' ></i>
+                                <span class="menu-item">Forge Mods</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="search_type = 'shaders'; update();">
+                            <div class="menu-item" id="shaders">
+                                <i class='bx bxs-leaf' ></i>
+                                <span class="menu-item">Shaders</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="search_type = 'resourcepacks'; update();">
+                            <div class="menu-item" id="resourcepacks">
+                                <i class='bx bx-brush' ></i>
+                                <span class="menu-item">Resource packs</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="search_type = 'modpacks'; update();">
+                            <div class="menu-item" id="modpacks">
+                                <i class='bx bx-box' ></i>
+                                <span class="menu-item">Modpacks</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="subtitle" id="version-title">
+                        <span class="bold">Version</span>
+                    </li>
+                    <li id="version-select">
+                        <label>
+                            <select id="search-version"></select>
+                        </label>
+                        <script>addVersionsToMinecraftSelect("search-version");</script>
+                    </li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="card" id="searchbar">
+                    <div class="flex">
+                        <label><input placeholder=" goggles" type="text" id="search-query"></label>
+                        <h1><a onclick="update()" class="button" id="search">Search</a></h1>
+                    </div>
+                </div>
+                <div class="card" id="template">
+                    <div class="flex background-top-bottom">
+                        <img id="png" alt="" src="assets/zyneon/images/instances/default.png">
+                        <div class="details">
+                            <div class="flex" id="title">
+                                <h1 id="name">ITEM</h1>
+                                <h2 id="author">by AUTHOR</h2>
+                            </div>
+                            <h3 id="description">DESCRIPTION</h3>
+                        </div>
+                    </div>
+                    <h3 class="bottom"><a id="install" class="button">INSTALL</a> or <a id="show" class="button">SHOW ON MODRINTH</a></h3>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="assets/zyneon/js/search.js"></script>
+    <script>syncApplication();</script>
+</html>

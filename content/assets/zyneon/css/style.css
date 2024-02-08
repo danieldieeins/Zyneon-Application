@@ -1067,6 +1067,15 @@ p#instance-path-string:hover {
     background: var(--background3);
 }
 
+.content .card .background-top-bottom {
+    border-radius:0.5rem;
+    background: var(--background3);
+}
+
+#template {
+    display: none;
+}
+
 .content .card#news-card {
     display: none;
 }
@@ -1197,4 +1206,72 @@ p#instance-path-string:hover {
     font-size: 1.05rem;
     padding: 2rem;
     color: var(--color-dim);
+}
+
+.flex {
+    position: relative;
+    display: flex;
+}
+
+select#search-version {
+    position: relative;
+    margin: 0 0 0 1.3rem;
+    width: 14rem;
+}
+
+input#search-query {
+    position: relative;
+    width: fit-content;
+    background: var(--background4);
+    color: var(--color);
+    border: none;
+    font-size: 2rem;
+    margin: 1rem 0 1rem 1rem;
+    border-radius: 0.5rem;
+}
+
+a.button#search {
+    font-size: 1.5rem;
+    margin-left: 0;
+}
+
+.content .card .flex {
+    overflow: hidden;
+    position: relative;
+    max-height: 10rem;
+}
+
+.content .card .flex img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.content .card .flex .details .flex#title {
+    position: relative;
+    padding-bottom: 0;
+}
+
+.content .card .flex .details .flex#title h1 {
+    position: relative;
+    padding-right: 0.5rem;
+    padding-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.content .card .flex .details .flex#title h2 {
+    font-size: 2rem;
+    font-weight: 1;
+    color: var(--color-dim);
+    padding-left: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.content .card .flex .details h3 {
+    margin-top: -1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
