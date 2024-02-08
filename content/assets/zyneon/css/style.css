@@ -311,7 +311,7 @@ h3 a:hover {
     transition: 0.25s;
 }
 
-#global-button,#profile-button,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#instance-button {
+#global-button,#profile-button,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#resource-button,#instance-button {
     display: none;
 }
 

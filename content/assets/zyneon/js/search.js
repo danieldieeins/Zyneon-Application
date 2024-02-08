@@ -71,15 +71,25 @@ function addItem(png,name,author,description,id,slug) {
     item.querySelector("#author").innerText = "by "+author;
     item.querySelector("#description").innerText = description;
     item.querySelector("#install").onclick = function () {
-        if(search_instance !== null) {
-            if(search_instance !== undefined) {
-                if(search_instance !== "") {
-                    callJavaMethod("button.install."+search_instance+"."+search_source+"."+search_type+"."+id);
+        if(search_type!=="modpacks") {
+            if (search_instance !== null) {
+                if (search_instance !== undefined) {
+                    if (search_instance !== "") {
+                        callJavaMethod("button.install." + search_instance + "." + search_source + "." + search_type + "." + id);
+                    }
                 }
+            }
+        } else {
+            if(search_source==="zyneon") {
+                callJavaMethod("button.install."+id);
             }
         }
     };
-    item.querySelector("#show").onclick = function () {
-        openInBrowser("https://modrinth.com/mod/"+slug);
-    };
+    if(search_source==="zyneon") {
+        item.querySelector("#show").style.display = "none";
+    } else {
+        item.querySelector("#show").onclick = function () {
+            openInBrowser("https://modrinth.com/mod/"+slug);
+        };
+    }
 }

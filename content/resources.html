@@ -27,9 +27,17 @@
                     </li>
                     <li id="instance-button">
                         <a onclick="link('instances.html');">
-                            <div class="menu-item" id="selected">
+                            <div class="menu-item">
                                 <i class='bx bxs-objects-horizontal-left'></i>
                                 <span class="menu-item">Instances</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li id="resource-button">
+                        <a>
+                            <div class="menu-item" id="selected">
+                                <i class='bx bxs-store-alt'></i>
+                                <span class="menu-item">Resources</span>
                             </div>
                         </a>
                     </li>
@@ -126,7 +134,9 @@
                     </li>
                     <li id="version-select">
                         <label>
-                            <select id="search-version"></select>
+                            <select id="search-version">
+                                <option value="all">All versions</option>
+                            </select>
                         </label>
                         <script>addVersionsToMinecraftSelect("search-version");</script>
                     </li>
@@ -150,7 +160,7 @@
                             <h3 id="description">DESCRIPTION</h3>
                         </div>
                     </div>
-                    <h3 class="bottom"><a id="install" class="button">INSTALL</a> or <a id="show" class="button">SHOW ON MODRINTH</a></h3>
+                    <h3 class="bottom"><a id="install" class="button">INSTALL</a>    <a id="show" class="button">SHOW ON MODRINTH</a></h3>
                 </div>
             </div>
         </div>
