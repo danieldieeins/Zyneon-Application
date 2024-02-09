@@ -6,11 +6,9 @@ public class AuthResolver {
 
     public AuthResolver() {}
 
-    public void preAuth() {
-
-    }
+    public void preAuth() {}
 
     public void postAuth() {
-        Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
+        Application.getFrame().getBrowser().reload();
     }
 }

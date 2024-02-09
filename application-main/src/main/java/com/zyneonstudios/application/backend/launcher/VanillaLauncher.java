@@ -75,7 +75,7 @@ public class VanillaLauncher {
                 });
             } catch (Exception e) {
                 frame.executeJavaScript("launchDefault();");
-                if(!Application.login()) {
+                if(!Application.auth.isLoggedIn()) {
                     frame.getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
                 }
                 Main.getLogger().error("[LAUNCHER] Couldn't start Minecraft Vanilla " + version + " in " + instancePath + " with " + ram + "M RAM");

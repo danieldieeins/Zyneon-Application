@@ -19,7 +19,7 @@ public class Integrator {
             String item_title = item.get("title").getAsString();
             String item_description = item.get("description").getAsString();
             String item_png = item.get("icon_url").getAsString();
-            addItemCard(item_png,item_title,item_author,item_description,item_id,item_slug);
+            addItemCard(item_png,item_title,item_author,item_description,item_id,item_slug,"modrinth");
         }
     }
 
@@ -32,14 +32,14 @@ public class Integrator {
                     if (instance.getString("modpack.icon") != null) {
                         icon = instance.getString("modpack.icon");
                     }
-                    addItemCard(icon, instance.getString("modpack.name"), instance.getString("modpack.author"), instance.getString("modpack.description"), id, id);
+                    addItemCard(icon, instance.getString("modpack.name"), instance.getString("modpack.author"), instance.getString("modpack.description"), id, id, "zyneon");
                 }
             }
         }
     }
 
-    public static void addItemCard(String png, String title, String author, String description, String id, String slug) {
-        String command = "addItem('"+png.replace("'","")+"','"+title.replace("'","")+"','"+author.replace("'","")+"','"+description.replace("'","")+"','"+id.replace("'","")+"','"+slug.replace("'","")+"');";
+    public static void addItemCard(String png, String title, String author, String description, String id, String slug, String source) {
+        String command = "addItem('"+png.replace("'","")+"','"+title.replace("'","")+"','"+author.replace("'","")+"','"+description.replace("'","")+"','"+id.replace("'","")+"','"+slug.replace("'","")+"','"+source+"');";
         Application.getFrame().executeJavaScript(command);
     }
 }
