@@ -11,10 +11,7 @@ import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
 import com.zyneonstudios.application.backend.instance.VanillaInstance;
 import com.zyneonstudios.application.backend.integrations.Integrator;
-import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthModpacks;
-import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthMods;
-import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthResourcepacks;
-import com.zyneonstudios.application.backend.integrations.modrinth.ModrinthShaders;
+import com.zyneonstudios.application.backend.integrations.modrinth.*;
 import com.zyneonstudios.application.backend.integrations.zyneon.ZyneonModpacks;
 import com.zyneonstudios.application.backend.launcher.FabricLauncher;
 import com.zyneonstudios.application.backend.launcher.ForgeLauncher;
@@ -24,6 +21,7 @@ import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.file.OnlineConfig;
 import live.nerotv.shademebaby.utils.FileUtil;
 import live.nerotv.shademebaby.utils.StringUtil;
 
@@ -208,17 +206,15 @@ public class Connector {
             String version = request_[2].replace("%",".");
             String query = request_[3];
             if(source.equalsIgnoreCase("modrinth")) {
-                CompletableFuture.runAsync(() -> {
-                    if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
-                        Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, 0, 100));
-                    } else if (type.equalsIgnoreCase("shaders")) {
-                        Integrator.modrinthToConnector(ModrinthShaders.search(query, version, 0, 100));
-                    } else if (type.equalsIgnoreCase("resourcepacks")) {
-                        Integrator.modrinthToConnector(ModrinthResourcepacks.search(query, version, 0, 100));
-                    } else if (type.equalsIgnoreCase("modpacks")) {
-                        Integrator.modrinthToConnector(ModrinthModpacks.search(query, version, 0, 100));
-                    }
-                });
+                if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
+                    Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, 0, 20));
+                } else if (type.equalsIgnoreCase("shaders")) {
+                    Integrator.modrinthToConnector(ModrinthShaders.search(query, version, 0, 20));
+                } else if (type.equalsIgnoreCase("resourcepacks")) {
+                    Integrator.modrinthToConnector(ModrinthResourcepacks.search(query, version, 0, 20));
+                } else if (type.equalsIgnoreCase("modpacks")) {
+                    Integrator.modrinthToConnector(ModrinthModpacks.search(query, version, 0, 20));
+                }
             } else if(source.equalsIgnoreCase("zyneon")) {
                 CompletableFuture.runAsync(() -> {
                     if (type.equalsIgnoreCase("modpacks")) {
@@ -280,7 +276,7 @@ public class Connector {
                 instance.set("modpack.instance", "instances/" + id + "/");
             }
             Application.loadInstances();
-            frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
+            frame.getBrowser().loadURL(Application.getInstancesURL());
         } else if (request.contains("button.creator.create.")) {
             String[] creator = request.replace("button.creator.create.", "").split("\\.", 5);
             String name = creator[0];
@@ -317,8 +313,10 @@ public class Connector {
                 }
                 instance.set("modpack.instance", "instances/" + id + "/");
             }
-            resolveRequest("button.refresh.instances");
+            Application.loadInstances();
+            frame.getBrowser().loadURL(Application.getInstancesURL());
         } else if (request.contains("button.start.")) {
+            frame.executeJavaScript("launchUpdate();");
             Main.getLogger().debug("[CONNECTOR] Trying to start instance " + request.replace("button.start.", ""));
             resolveInstanceRequest(InstanceAction.RUN, request.replace("button.start.", ""));
         } else if (request.contains("button.starttab.")) {
@@ -543,12 +541,16 @@ public class Connector {
                     }
                 });
             }
+        } else if (request.startsWith("modrinth.")) {
+            request = request.replace("modrinth.","");
+            resolveModrinthRequest(request);
         } else if (request.contains("button.account")) {
             if (Application.auth.isLoggedIn()) {
                 resolveRequest("button.logout");
                 return;
             }
-            SwingUtilities.invokeLater(() -> Application.auth.login());
+            frame.getBrowser().loadURL(StringUtil.getURLFromFile(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/sub/login.html"));
+            Application.auth.login();
         } else if (request.contains("button.logout")) {
             if (Application.auth.isLoggedIn()) {
                 Config saver = new Config(Application.auth.getSaveFile());
@@ -559,6 +561,56 @@ public class Connector {
             }
         } else {
             Main.getLogger().error("[CONNECTOR] REQUEST NOT RESOLVED: " + request);
+        }
+    }
+
+    public void resolveModrinthRequest(String request) {
+        if(request.startsWith("install.modpack.")) {
+            Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/sub/installing.html"));
+            String[] modpack = request.replace("install.modpack.", "").split("\\.", 2);
+            String mID = modpack[0];
+            String vID = modpack[1];
+            try {
+                JsonElement e = new OnlineConfig("https://api.modrinth.com/v2/project/"+mID+"/version?game_versions=['"+vID+"']").getJson().getAsJsonArray().get(0);
+                String v = e.getAsJsonObject().get("version_number").getAsString();
+                String v_ = e.getAsJsonObject().get("id").getAsString();
+                ZModrinthIntegration integration = new ZModrinthIntegration(Main.getLogger(), mID, v_);
+                integration.install(v);
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Couldn't install modrinth modpack "+mID+" v"+vID+": "+e.getMessage());
+            }
+        } else if(request.startsWith("install.fabric.")||request.startsWith("install.forge.")) {
+            String modloader = "";
+            if(request.startsWith("install.forge")) {
+                modloader = "forge";
+            } else if(request.startsWith("install.fabric")) {
+                modloader = "fabric";
+            }
+            request = request.replace("install.fabric.","").replace("install.forge.","");
+            String[] request_ = request.split("\\.", 3);
+            String slug = request_[0];
+            String id = request_[1];
+            String version = request_[2];
+            String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=['"+version+"']&loaders=['"+modloader+"']";
+            System.out.println(url);
+        } else if(request.startsWith("install.shaders.")) {
+            request = request.replace("install.shaders.","");
+            String[] request_ = request.split("\\.", 3);
+            String slug = request_[0];
+            String id = request_[1];
+            String version = request_[2];
+            String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=['"+version+"']";
+            System.out.println(url);
+        } else if(request.startsWith("install.resourcepacks.")) {
+            request = request.replace("install.resourcepacks.","");
+            String[] request_ = request.split("\\.", 3);
+            String slug = request_[0];
+            String id = request_[1];
+            String version = request_[2];
+            String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=['"+version+"']";
+            System.out.println(url);
+        } else {
+            resolveRequest("not-resolved");
         }
     }
 

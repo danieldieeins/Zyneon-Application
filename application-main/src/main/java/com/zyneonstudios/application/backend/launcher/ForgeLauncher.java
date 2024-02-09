@@ -2,9 +2,9 @@ package com.zyneonstudios.application.backend.launcher;
 
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.installer.ForgeInstaller;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
+import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.LogFrame;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
@@ -31,18 +31,15 @@ public class ForgeLauncher {
             ram = Application.config.getInteger("settings.memory."+ramID);
         }
         if(!new File(instance.getPath()+"/pack.zip").exists()) {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
         if(!instance.checkVersion()) {
-            frame.getBrowser().executeJavaScript("javascript:OpenModal('installing')","https://a.nerotv.live/zyneon/application/html/account.html",5);
             instance.update();
         }
         launch(instance.getMinecraftVersion(), instance.getForgeVersion(), instance.getForgeType(), ram, Path.of(instance.getPath()));
     }
 
     public void launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath) {
-        frame.getBrowser().executeJavaScript("javascript:OpenModal('starting')","https://a.nerotv.live/zyneon/application/html/account.html",5);
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
             if(type.equals(MinecraftVersion.Type.LEGACY)) {
@@ -80,17 +77,24 @@ public class ForgeLauncher {
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
             try {
                 Process game = framework.launch(minecraftVersion, forgeVersion, forge);
+                frame.executeJavaScript("launchStarted();");
                 LogFrame log = new LogFrame(game.getInputStream(),"Minecraft "+minecraftVersion+" (with "+forgeType.toString().toLowerCase()+"Forge "+forgeVersion+")");
                 Application.getFrame().setState(JFrame.ICONIFIED);
                 game.onExit().thenRun(()->{
                     Application.getFrame().setState(JFrame.NORMAL);
                     log.onStop();
+                    frame.executeJavaScript("launchDefault();");
                 });
             } catch (Exception e) {
+                frame.executeJavaScript("launchDefault();");
+                if(!Application.login()) {
+                    frame.getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
+                }
                 Main.getLogger().error("[LAUNCHER] Couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
                 throw new RuntimeException(e);
             }
         } else {
+            frame.executeJavaScript("launchDefault();");
             Main.getLogger().error("[LAUNCHER] Couldn't start Forge "+forgeVersion+" ("+forgeType+") for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM");
         }
     }

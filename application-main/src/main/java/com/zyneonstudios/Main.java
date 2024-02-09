@@ -1,9 +1,9 @@
 package com.zyneonstudios;
 
 import com.zyneonstudios.application.Application;
+import com.zyneonstudios.application.backend.utils.ZLogger;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonSplash;
 import live.nerotv.shademebaby.ShadeMeBaby;
-import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 import live.nerotv.shademebaby.utils.StringUtil;
 
@@ -20,16 +20,16 @@ public class Main {
 
     private static String applicationPath;
     public static ZyneonSplash splash;
-    private static Logger logger;
+    private static ZLogger logger;
     public static String version;
     public static String os;
 
     public static void main(String[] args) {
-        version = "2024.2-beta.9";
+        version = "2024.2-preRelease.1";
         String name = "Argrium³";
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        logger = new Logger("ZYNEON");
+        logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
         logger.log("[MAIN] Updated user interface: "+update());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
@@ -49,7 +49,7 @@ public class Main {
         application.start();
     }
 
-    public static Logger getLogger() {
+    public static ZLogger getLogger() {
         return logger;
     }
 

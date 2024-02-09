@@ -1,5 +1,7 @@
 package com.zyneonstudios.application.backend.utils.backend;
 
+import fr.flowarg.flowupdater.versions.ForgeVersionType;
+
 import java.util.ArrayList;
 
 public class MinecraftVersion {
@@ -114,6 +116,15 @@ public class MinecraftVersion {
             return Type.LEGACY;
         } else {
             return Type.NEW;
+        }
+    }
+
+    public static ForgeVersionType getForgeType(String minecraftVersion) {
+        int i = Integer.parseInt(minecraftVersion.split("\\.")[1]);
+        if(i<12) {
+            return ForgeVersionType.OLD;
+        } else {
+            return ForgeVersionType.NEW;
         }
     }
 

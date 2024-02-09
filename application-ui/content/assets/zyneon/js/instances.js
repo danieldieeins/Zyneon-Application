@@ -77,12 +77,14 @@ function syncInstance(id) {
 
     if(id.includes("official/")) {
         document.getElementById("open-instance").style.display = "none";
+        document.getElementById("content").style.display = "none";
         document.getElementById("open-mods").style.display = "none";
         document.getElementById("local-settings").style.display = "none";
         document.getElementById("local-appearance").style.display = "none";
         document.getElementById("check").style.display = "inherit";
     } else {
         document.getElementById("check").style.display = "none";
+        document.getElementById("content").style.display = "inline";
         document.getElementById("open-instance").style.display = "inherit";
         document.getElementById("open-mods").style.display = "inherit";
         document.getElementById("local-settings").style.display = "inherit";
@@ -138,6 +140,7 @@ function syncBackground(png) {
 }
 
 function syncDock(id,version,minecraft,modloader,mlversion) {
+    launchDefault();
     document.getElementById("version").innerText = version;
     document.getElementById("minecraft").innerText = minecraft;
     document.getElementById("modloader").innerText = modloader;
@@ -145,6 +148,18 @@ function syncDock(id,version,minecraft,modloader,mlversion) {
     document.getElementById("launch").onclick = function () {
         callJavaMethod("button.start."+id);
     };
+}
+
+function launchUpdate() {
+    document.getElementById("launch").innerHTML = "<i class='bx bx-loader-alt bx-spin bx-rotate-90' ></i> UPDATING";
+}
+
+function launchStarted() {
+    document.getElementById("launch").innerHTML = "<i class='bx bx-check'></i> STARTED";
+}
+
+function launchDefault() {
+    document.getElementById("launch").innerHTML = "<i class='bx bxs-rocket'></i> LAUNCH";
 }
 
 function syncSettings(id,ram,name,version,description,minecraft,modloader,mlversion,icon,logo,background) {
@@ -157,6 +172,15 @@ function syncSettings(id,ram,name,version,description,minecraft,modloader,mlvers
     document.getElementById("memory-int").innerText = ram;
     document.getElementById("memory-int").style.display = "inline";
     document.getElementById("settings-save").onclick = function () { updateInstance(id); };
+    document.getElementById("content").onclick = function () {
+        if(modloader==="Fabric") {
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge&i="+id);
+        } else if(modloader==="Forge") {
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=fabric&i="+id);
+        } else {
+            showSettings();
+        }
+    };
     document.getElementById("configure-icon").onclick = function () { callJavaMethod("button.change.icon."+id); };
     document.getElementById("configure-logo").onclick = function () { callJavaMethod("button.change.logo."+id); };
     document.getElementById("configure-background").onclick = function () { callJavaMethod("button.change.background."+id); };
