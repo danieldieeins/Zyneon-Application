@@ -414,7 +414,7 @@ public class Connector {
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                         instance.set("modpack.icon", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
-                        frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
+                        frame.getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + id);
                     } catch (Exception e) {
                         Main.getLogger().error("[CONNECTOR] An error occurred (Icon-chooser): " + e.getMessage());
                         throw new RuntimeException(e);
@@ -453,7 +453,7 @@ public class Connector {
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                         instance.set("modpack.logo", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
-                        frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
+                        frame.getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + id);
                     } catch (Exception e) {
                         Main.getLogger().error("[CONNECTOR] An error occurred (Logo-chooser): " + e.getMessage());
                         throw new RuntimeException(e);
@@ -492,7 +492,7 @@ public class Connector {
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                         instance.set("modpack.background", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
-                        frame.getBrowser().loadURL(Application.getInstancesURL() + "&tab=" + id);
+                        frame.getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + id);
                     } catch (Exception e) {
                         Main.getLogger().error("[CONNECTOR] An error occurred (Background-chooser): " + e.getMessage());
                         throw new RuntimeException(e);
@@ -537,7 +537,7 @@ public class Connector {
                         }
                         Application.instancePath = instancesPath;
                         Application.loadInstances();
-                        frame.getBrowser().loadURL(Application.getSettingsURL() + "&tab=global");
+                        frame.getBrowser().loadURL(Application.getSettingsURL() + "?tab=global");
                     }
                 });
             }
@@ -557,7 +557,7 @@ public class Connector {
                 saver.delete("opapi.ms");
                 Main.getLogger().debug("[CONNECTOR] Deleted login: " + Application.auth.getSaveFile().delete());
                 Application.login();
-                frame.getBrowser().loadURL(Application.getSettingsURL()+"&tab=profile");
+                frame.getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
             }
         } else {
             Main.getLogger().error("[CONNECTOR] REQUEST NOT RESOLVED: " + request);
@@ -571,7 +571,7 @@ public class Connector {
             String mID = modpack[0];
             String vID = modpack[1];
             try {
-                JsonElement e = new OnlineConfig("https://api.modrinth.com/v2/project/"+mID+"/version?game_versions=['"+vID+"']").getJson().getAsJsonArray().get(0);
+                JsonElement e = new OnlineConfig("https://api.modrinth.com/v2/project/"+mID+"/version?game_versions=[%22"+vID+"%22]").getJson().getAsJsonArray().get(0);
                 String v = e.getAsJsonObject().get("version_number").getAsString();
                 String v_ = e.getAsJsonObject().get("id").getAsString();
                 ZModrinthIntegration integration = new ZModrinthIntegration(Main.getLogger(), mID, v_);
@@ -591,24 +591,57 @@ public class Connector {
             String slug = request_[0];
             String id = request_[1];
             String version = request_[2];
-            String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=['"+version+"']&loaders=['"+modloader+"']";
-            System.out.println(url);
+            Main.getLogger().debug("[CONNECTOR] Installing modrinth mod "+slug+"...");
+            try {
+                String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=[%22"+version+"%22]&loaders=[%22"+modloader+"%22]";
+                JsonObject json = new OnlineConfig(url).getJson().getAsJsonArray().get(0).getAsJsonObject();
+                version = json.get("version_number").getAsString();
+                String download = json.get("files").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
+                String fileName = "mods/"+slug+"-"+version+".jar";
+                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
+                Main.getLogger().debug("[CONNECTOR] Successfully installed modrinth mod "+slug+"!");
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Failed to install modrinth mod "+slug+": "+e.getMessage());
+            }
         } else if(request.startsWith("install.shaders.")) {
             request = request.replace("install.shaders.","");
             String[] request_ = request.split("\\.", 3);
             String slug = request_[0];
             String id = request_[1];
             String version = request_[2];
-            String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=['"+version+"']";
-            System.out.println(url);
+            Main.getLogger().debug("[CONNECTOR] Installing modrinth shader pack "+slug+"...");
+            try {
+                String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=[%22"+version+"%22]";
+                JsonObject json = new OnlineConfig(url).getJson().getAsJsonArray().get(0).getAsJsonObject();
+                version = json.get("version_number").getAsString();
+                String download = json.get("files").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
+                String fileName = "shaderpacks/"+slug+"-"+version+".zip";
+                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
+                Main.getLogger().debug("[CONNECTOR] Successfully installed modrinth shader pack "+slug+"!");
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Failed to install modrinth shader pack "+slug+": "+e.getMessage());
+            }
         } else if(request.startsWith("install.resourcepacks.")) {
             request = request.replace("install.resourcepacks.","");
             String[] request_ = request.split("\\.", 3);
             String slug = request_[0];
             String id = request_[1];
             String version = request_[2];
-            String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=['"+version+"']";
-            System.out.println(url);
+            Main.getLogger().debug("[CONNECTOR] Installing modrinth resource pack "+slug+"...");
+            try {
+                String url = "https://api.modrinth.com/v2/project/"+slug+"/version?game_versions=[%22"+version+"%22]";
+                JsonObject json = new OnlineConfig(url).getJson().getAsJsonArray().get(0).getAsJsonObject();
+                version = json.get("version_number").getAsString();
+                String download = json.get("files").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
+                String fileName = "resourcepacks/"+slug+"-"+version+".zip";
+                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
+                Main.getLogger().debug("[CONNECTOR] Successfully installed modrinth resource pack "+slug+"!");
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Failed to install modrinth resource pack "+slug+": "+e.getMessage());
+            }
         } else {
             resolveRequest("not-resolved");
         }

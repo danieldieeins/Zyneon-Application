@@ -11,6 +11,6 @@ public class AuthResolver {
     }
 
     public void postAuth() {
-        Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"&tab=profile");
+        Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
     }
 }

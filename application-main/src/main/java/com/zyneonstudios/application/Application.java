@@ -221,7 +221,7 @@ public class Application {
         if(instancePath==null) {
             config.checkEntry("settings.path.instances","default");
             if(config.getString("settings.path.instances").equals("default")) {
-                Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"&tab=select");
+                Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"?tab=select");
                 throw new RuntimeException("No instance path");
             } else {
                 try {
