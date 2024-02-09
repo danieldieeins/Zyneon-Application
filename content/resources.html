@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li id="resource-button">
-                        <a>
+                        <a onclick="link('resources.html');">
                             <div class="menu-item" id="selected">
                                 <i class='bx bxs-store-alt'></i>
                                 <span class="menu-item">Resources</span>
@@ -67,8 +67,24 @@
             </div>
             <div class="menu" id="submenu">
                 <ul>
+                    <li id="back-to-instance">
+                        <a onclick="backToInstance();">
+                            <div class="menu-item">
+                                <i class='bx bx-arrow-back'></i>
+                                <span class="menu-item">Return to instance</span>
+                            </div>
+                        </a>
+                    </li>
                     <li class="subtitle">
                         <span class="bold">Source</span>
+                    </li>
+                    <li id="zyneon-button">
+                        <a onclick="search_source = 'zyneon'; update();">
+                            <div class="menu-item" id="zyneon">
+                                <i class='bx bx-home-heart' ></i>
+                                <span class="menu-item">Zyneon</span>
+                            </div>
+                        </a>
                     </li>
                     <li>
                         <a onclick="search_source = 'modrinth'; update();">
@@ -78,16 +94,16 @@
                             </div>
                         </a>
                     </li>
-                    <li>
-                        <a onclick="search_source = 'zyneon'; update();">
-                            <div class="menu-item" id="zyneon">
-                                <i class='bx bx-home-heart' ></i>
-                                <span class="menu-item">Zyneon</span>
-                            </div>
-                        </a>
-                    </li>
                     <li class="subtitle">
                         <span class="bold">Type</span>
+                    </li>
+                    <li id="modpack-button">
+                        <a onclick="search_type = 'modpacks'; update();">
+                            <div class="menu-item" id="modpacks">
+                                <i class='bx bx-box' ></i>
+                                <span class="menu-item">Modpacks/Instances</span>
+                            </div>
+                        </a>
                     </li>
                     <li id="fabric-button">
                         <a onclick="search_type = 'fabric'; update();">
@@ -105,7 +121,7 @@
                             </div>
                         </a>
                     </li>
-                    <li>
+                    <li id="shader-button">
                         <a onclick="search_type = 'shaders'; update();">
                             <div class="menu-item" id="shaders">
                                 <i class='bx bxs-leaf' ></i>
@@ -113,19 +129,11 @@
                             </div>
                         </a>
                     </li>
-                    <li>
+                    <li id="resourcepack-button">
                         <a onclick="search_type = 'resourcepacks'; update();">
                             <div class="menu-item" id="resourcepacks">
                                 <i class='bx bx-brush' ></i>
                                 <span class="menu-item">Resource packs</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a onclick="search_type = 'modpacks'; update();">
-                            <div class="menu-item" id="modpacks">
-                                <i class='bx bx-box' ></i>
-                                <span class="menu-item">Modpacks</span>
                             </div>
                         </a>
                     </li>

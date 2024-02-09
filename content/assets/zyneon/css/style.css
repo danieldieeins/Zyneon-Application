@@ -305,13 +305,24 @@ body {
     color: var(--color);
 }
 
+.center {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    height: calc(100% - 1.5rem);
+    width: calc(100% - 1.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 h3 a:hover {
     color: var(--color);
     cursor: pointer;
     transition: 0.25s;
 }
 
-#global-button,#profile-button,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#resource-button,#instance-button {
+#global-button,#back-to-instance,#profile-button,#fabric-button,#shader-button,#forge-button,#resourcepack-button,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#resource-button,#instance-button {
     display: none;
 }
 

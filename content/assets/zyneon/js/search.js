@@ -1,11 +1,15 @@
-let search_source = "modrinth";
-let search_type = "fabric"
-let search_version = "1.20.4";
+let search_source = "zyneon";
+let search_type = "modpacks"
+let search_version = "";
 let search_query = "";
 let search_instance = "";
 let search_disable = "";
 
 document.getElementById("search-version").onchange = versionChange;
+
+function backToInstance() {
+    link("instances.html?tab="+search_instance)
+}
 
 function syncSearch() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -30,7 +34,18 @@ function syncSearch() {
         document.getElementById("search-query").value = search_query;
     }
     if(urlParams.get("i")!=null) {
-        search_instance = urlParams.get("i");
+        if(urlParams.get("i")!=="") {
+            search_instance = urlParams.get("i");
+            document.getElementById("back-to-instance").style.display = "inherit";
+            document.getElementById("fabric-button").style.display = "inherit";
+            document.getElementById("modpack-button").style.display = "none";
+            document.getElementById("zyneon-button").style.display = "none";
+            document.getElementById("version-title").style.display = "none";
+            document.getElementById("forge-button").style.display = "inherit";
+            document.getElementById("shader-button").style.display = "inherit";
+            document.getElementById("resourcepack-button").style.display = "inherit";
+            document.getElementById("version-select").style.display = "none";
+        }
     }
     if(urlParams.get("d")!=null) {
         search_disable = urlParams.get("d");
@@ -75,13 +90,17 @@ function addItem(png,name,author,description,id,slug) {
             if (search_instance !== null) {
                 if (search_instance !== undefined) {
                     if (search_instance !== "") {
-                        callJavaMethod("button.install." + search_instance + "." + search_source + "." + search_type + "." + id);
+                        if(search_source === "modrinth") {
+                            callJavaMethod("modrinth.install." + search_type + "." + slug+"."+search_instance+"."+search_version);
+                        }
                     }
                 }
             }
         } else {
             if(search_source==="zyneon") {
                 callJavaMethod("button.install."+id);
+            } else if(search_source==="modrinth") {
+                callJavaMethod("modrinth.install.modpack."+id+"."+search_version);
             }
         }
     };
