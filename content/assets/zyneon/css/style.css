@@ -1286,3 +1286,8 @@ a.button#search {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.button#load {
+    display: none   ;
+    justify-content: center;
+}

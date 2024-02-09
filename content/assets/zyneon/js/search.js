@@ -4,6 +4,7 @@ let search_version = "";
 let search_query = "";
 let search_instance = "";
 let search_disable = "";
+let i = 0;
 
 document.getElementById("search-version").onchange = versionChange;
 
@@ -55,7 +56,10 @@ function syncSearch() {
     }
     document.getElementById(search_source).classList.add("active");
     document.getElementById(search_type).classList.add("active");
-    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query);
+    if(search_source==="modrinth") {
+        document.getElementById("load").style.display = "flex";
+    }
+    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+".0");
 }
 
 function update(query) {
@@ -72,43 +76,50 @@ function versionChange() {
     update();
 }
 
-function addItem(png,name,author,description,id,slug) {
-    const base = document.getElementById("template");
-    const item = base.cloneNode(true);
-    item.id = slug;
-    base.parentNode.insertBefore(item, base);
-    if (png !== undefined) {
-        if (png !== "") {
-            item.querySelector("#png").src = png;
+function addItem(png,name,author,description,id,slug,source) {
+    if(source===search_source) {
+        const base = document.getElementById("template");
+        const item = base.cloneNode(true);
+        item.id = slug;
+        base.parentNode.insertBefore(item, base);
+        if (png !== undefined) {
+            if (png !== "") {
+                item.querySelector("#png").src = png;
+            }
         }
-    }
-    item.querySelector("#name").innerText = name;
-    item.querySelector("#author").innerText = "by "+author;
-    item.querySelector("#description").innerText = description;
-    item.querySelector("#install").onclick = function () {
-        if(search_type!=="modpacks") {
-            if (search_instance !== null) {
-                if (search_instance !== undefined) {
-                    if (search_instance !== "") {
-                        if(search_source === "modrinth") {
-                            callJavaMethod("modrinth.install." + search_type + "." + slug+"."+search_instance+"."+search_version);
+        item.querySelector("#name").innerText = name;
+        item.querySelector("#author").innerText = "by "+author;
+        item.querySelector("#description").innerText = description;
+        item.querySelector("#install").onclick = function () {
+            if(search_type!=="modpacks") {
+                if (search_instance !== null) {
+                    if (search_instance !== undefined) {
+                        if (search_instance !== "") {
+                            if(search_source === "modrinth") {
+                                callJavaMethod("modrinth.install." + search_type + "." + slug+"."+search_instance+"."+search_version);
+                            }
                         }
                     }
                 }
+            } else {
+                if(search_source==="zyneon") {
+                    callJavaMethod("button.install."+id);
+                } else if(search_source==="modrinth") {
+                    callJavaMethod("modrinth.install.modpack."+id+"."+search_version);
+                }
             }
-        } else {
-            if(search_source==="zyneon") {
-                callJavaMethod("button.install."+id);
-            } else if(search_source==="modrinth") {
-                callJavaMethod("modrinth.install.modpack."+id+"."+search_version);
-            }
-        }
-    };
-    if(search_source==="zyneon") {
-        item.querySelector("#show").style.display = "none";
-    } else {
-        item.querySelector("#show").onclick = function () {
-            openInBrowser("https://modrinth.com/mod/"+slug);
         };
+        if(search_source==="zyneon") {
+            item.querySelector("#show").style.display = "none";
+        } else {
+            item.querySelector("#show").onclick = function () {
+                openInBrowser("https://modrinth.com/mod/"+slug);
+            };
+        }
     }
+}
+
+function loadMore() {
+    i = i + 1;
+    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+"."+i);
 }
