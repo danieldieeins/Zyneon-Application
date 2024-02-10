@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
+import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
 import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
 import com.zyneonstudios.application.backend.instance.VanillaInstance;
@@ -62,12 +63,13 @@ public class Connector {
             case "global" ->
                     frame.executeJavaScript("syncGlobal('" + Application.config.getString("settings.memory.default").replace(".0", "") + " MB','" + Application.getInstancePath() + "')");
             case "profile" -> {
-                if (Application.auth.isLoggedIn()) {
-                    frame.executeJavaScript("syncProfile('" + Application.auth.getAuthInfos().getUsername() + "','" + StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()) + "');");
-                } else {
-                    frame.executeJavaScript("syncLogin();");
-                    frame.executeJavaScript("logout();");
+                if(Application.auth!=null) {
+                    if (Application.auth.isLoggedIn()) {
+                        frame.executeJavaScript("syncProfile('" + Application.auth.getAuthInfos().getUsername() + "','" + StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()) + "');");
+                        return;
+                    }
                 }
+                frame.executeJavaScript("logout();");
             }
             case "version" -> frame.executeJavaScript("syncApp('" + Application.version + "');");
         }
@@ -553,18 +555,28 @@ public class Connector {
             request = request.replace("modrinth.","");
             resolveModrinthRequest(request);
         } else if (request.contains("button.account")) {
-            if (Application.auth.isLoggedIn()) {
-                resolveRequest("button.logout");
-                return;
+            if(Application.auth!=null) {
+                if (Application.auth.isLoggedIn()) {
+                    resolveRequest("button.logout");
+                    return;
+                }
             }
-            Application.auth.login();
+            frame.executeJavaScript("message(\"<i class='bx bx-loader-alt bx-spin bx-rotate-90'></i> Logging in...\");");
+            CompletableFuture.runAsync(()-> {
+                Application.auth = new MicrosoftAuth();
+                Application.auth.login();
+            });
         } else if (request.contains("button.logout")) {
-            if (Application.auth.isLoggedIn()) {
-                Config saver = new Config(Application.auth.getSaveFile());
-                saver.delete("opapi.ms");
-                Main.getLogger().debug("[CONNECTOR] Deleted login: " + Application.auth.getSaveFile().delete());
-                Application.login();
+            if(Application.auth!=null) {
+                if (Application.auth.isLoggedIn()) {
+                    Config saver = new Config(Application.auth.getSaveFile());
+                    saver.delete("opapi.ms");
+                    Main.getLogger().debug("[CONNECTOR] Deleted login: " + Application.auth.getSaveFile().delete());
+                    Application.auth = null;
+                }
             }
+            frame.executeJavaScript("logout();");
+            frame.executeJavaScript("syncProfileSettings();");
         } else {
             Main.getLogger().error("[CONNECTOR] REQUEST NOT RESOLVED: " + request);
         }
@@ -706,8 +718,14 @@ public class Connector {
     }
 
     public void runInstance(String instanceString) {
-        if (!Application.auth.isLoggedIn()) {
-            syncSettings("profile");
+        if(Application.auth!=null) {
+            if (!Application.auth.isLoggedIn()) {
+                frame.getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
+                return;
+            }
+        } else {
+            frame.getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
+            return;
         }
         if (instanceString.startsWith("official/")) {
             Config instanceJson;

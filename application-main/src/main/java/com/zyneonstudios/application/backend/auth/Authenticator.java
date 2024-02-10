@@ -9,6 +9,7 @@ import live.nerotv.zyneon.auth.ZyneonAuth;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 public class Authenticator {
 
@@ -89,7 +90,7 @@ public class Authenticator {
         } catch (Exception e) {
             isLoggedIn = false;
         }
-        resolver.postAuth();
+        CompletableFuture.runAsync(()-> resolver.postAuth(authInfos.getUsername()));
         return isLoggedIn;
     }
 
@@ -103,7 +104,7 @@ public class Authenticator {
         } catch (Exception e) {
             isLoggedIn = false;
         }
-        resolver.postAuth();
+        CompletableFuture.runAsync(()-> resolver.postAuth(authInfos.getUsername()));
         return isLoggedIn;
     }
 

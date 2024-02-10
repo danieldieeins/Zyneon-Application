@@ -67,7 +67,7 @@ public class Application {
     public void start() {
         init();
         try {
-            login();
+            CompletableFuture.runAsync(Application::login);
             Main.getLogger().log("[APP] Syncing available Minecraft versions...");
             MinecraftVersion.syncVersions();
             try {
@@ -175,18 +175,16 @@ public class Application {
     }
 
     public static void login() {
-        CompletableFuture.runAsync(()->{
-            try {
-                if (auth != null) {
-                    auth.destroy();
-                    auth = null;
-                    System.gc();
-                }
-                auth = new MicrosoftAuth();
-            } catch (Exception e) {
-                Main.getLogger().error("[APP] Couldn't login: "+e.getMessage());
+        try {
+            if (auth != null) {
+                auth.destroy();
+                auth = null;
+                System.gc();
             }
-        });
+            auth = new MicrosoftAuth();
+        } catch (Exception e) {
+            Main.getLogger().error("[APP] Couldn't login: " + e.getMessage());
+        }
     }
 
     public static String getStartURL() {

@@ -8,7 +8,9 @@ public class AuthResolver {
 
     public void preAuth() {}
 
-    public void postAuth() {
-        Application.getFrame().getBrowser().reload();
+    public void postAuth(String username) {
+        Application.getFrame().executeJavaScript("login('"+username+"');");
+        Application.getFrame().executeJavaScript("unmessage();");
+        Application.getFrame().executeJavaScript("syncProfileSettings();");
     }
 }
