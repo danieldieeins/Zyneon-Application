@@ -326,6 +326,13 @@ h3 a:hover {
     display: none;
 }
 
+a.button#console {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10000;
+}
+
 #overlay {
     position: absolute;
     color: white;

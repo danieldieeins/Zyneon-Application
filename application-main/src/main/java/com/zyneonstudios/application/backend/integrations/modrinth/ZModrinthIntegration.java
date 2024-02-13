@@ -78,6 +78,7 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                 List<Mod> packBuiltIns = pack.getBuiltInMods();
                 logger.log("[MODRINTH] (INTEGRATION) Starting download of "+packFiles.size()+" files...");
                 downloadFiles(packFiles);
+                logger.debug(" ");
                 logger.log("[MODRINTH] (INTEGRATION) Verifying "+packBuiltIns.size()+" built in files...");
                 logger.log("[MODRINTH] (INTEGRATION) Building zyneonInstance file from modrinth data...");
                 Config instance = new Config(pathString+"zyneonInstance.json");
@@ -86,7 +87,7 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                 instance.set("modpack.version",packVersion);
                 logger.log("[MODRINTH] (INTEGRATION) Gathering modloader and Minecraft infos...");
                 Config modrinth = new Config(new File(pathString+"modrinth.index.json"));
-                String modloader = "Vanilla;";
+                String modloader = "Vanilla";
                 String mlversion = "No mods";
                 String minecraft = modrinth.getString("dependencies.minecraft");
                 if(modrinth.getString("dependencies.forge")!=null) {

@@ -56,7 +56,7 @@ function syncSearch() {
     }
     document.getElementById(search_source).classList.add("active");
     document.getElementById(search_type).classList.add("active");
-    if(search_source==="modrinth") {
+    if(search_source==="modrinth"||search_source==="curseforge") {
         document.getElementById("load").style.display = "flex";
     }
     callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+".0");
@@ -80,7 +80,11 @@ function addItem(png,name,author,description,id,slug,source) {
     if(source===search_source) {
         const base = document.getElementById("template");
         const item = base.cloneNode(true);
-        item.id = slug;
+        if(source==="curseforge") {
+            item.id = id;
+        } else {
+            item.id = slug;
+        }
         base.parentNode.insertBefore(item, base);
         if (png !== undefined) {
             if (png !== "") {
@@ -97,6 +101,8 @@ function addItem(png,name,author,description,id,slug,source) {
                         if (search_instance !== "") {
                             if(search_source === "modrinth") {
                                 callJavaMethod("modrinth.install." + search_type + "." + slug+"."+search_instance+"."+search_version);
+                            } else if(search_source === "curseforge") {
+                                callJavaMethod("curseforge.install." + search_type + "." + id+"."+search_instance+"."+search_version);
                             }
                         }
                     }
@@ -106,17 +112,43 @@ function addItem(png,name,author,description,id,slug,source) {
                     callJavaMethod("button.install."+id);
                 } else if(search_source==="modrinth") {
                     callJavaMethod("modrinth.install.modpack."+id+"."+search_version);
+                } else if(search_source==="curseforge") {
+                    callJavaMethod("curseforge.install.modpack."+id+"."+search_version);
                 }
             }
         };
         if(search_source==="zyneon") {
             item.querySelector("#show").style.display = "none";
+        } else if(search_source==="curseforge") {
+            item.querySelector("#show").innerText = "SHOW ON CURSEFORGE"
+            item.querySelector("#show").onclick = function () {
+                if(search_type) {
+                    let s = "";
+                    if(search_type==="modpacks") {
+                        s = "modpacks";
+                    } else if(search_type==="fabric"||search_type==="forge") {
+                        s = "mc-mods";
+                    } else if(search_type==="shaders") {
+                        s = "shaders";
+                    } else if(search_type==="resourcepacks") {
+                        s = "texture-packs";
+                    }
+                    openInBrowser("https://www.curseforge.com/minecraft/"+s+"/"+slug);
+                }
+            };
         } else {
+            item.querySelector("#show").innerText = "SHOW ON MODRINTH"
             item.querySelector("#show").onclick = function () {
                 openInBrowser("https://modrinth.com/mod/"+slug);
             };
         }
     }
+}
+
+function setButton(id,con) {
+    const item = document.getElementById(id);
+    const button = item.querySelector("#install");
+    button.innerHTML = con;
 }
 
 function loadMore() {

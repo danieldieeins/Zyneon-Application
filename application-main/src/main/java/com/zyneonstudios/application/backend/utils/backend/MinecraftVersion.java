@@ -114,8 +114,18 @@ public class MinecraftVersion {
         int i = Integer.parseInt(version.split("\\.")[1]);
         if(i<18) {
             return Type.LEGACY;
-        } else {
+        } else if(i>17) {
             return Type.NEW;
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean isMinecraftVersion(String version) {
+        try {
+            return getType(version) != null;
+        } catch (Exception e) {
+            return false;
         }
     }
 

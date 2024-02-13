@@ -12,6 +12,7 @@ import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
 import com.zyneonstudios.application.backend.instance.VanillaInstance;
 import com.zyneonstudios.application.backend.integrations.Integrator;
+import com.zyneonstudios.application.backend.integrations.curseforge.*;
 import com.zyneonstudios.application.backend.integrations.modrinth.*;
 import com.zyneonstudios.application.backend.integrations.zyneon.ZyneonModpacks;
 import com.zyneonstudios.application.backend.launcher.FabricLauncher;
@@ -225,6 +226,18 @@ public class Connector {
                 } else if (type.equalsIgnoreCase("modpacks")) {
                     Integrator.modrinthToConnector(ModrinthModpacks.search(query, version, b, 20));
                 }
+
+            } else if(source.equalsIgnoreCase("curseforge")) {
+                if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
+                    Integrator.curseForgeToConnector(CurseForgeMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20));
+                } else if (type.equalsIgnoreCase("shaders")) {
+                    Integrator.curseForgeToConnector(CurseForgeShaders.search(query, version, b, 20));
+                } else if (type.equalsIgnoreCase("resourcepacks")) {
+                    Integrator.curseForgeToConnector(CurseForgeResourcepacks.search(query, version, b, 20));
+                } else if (type.equalsIgnoreCase("modpacks")) {
+                    Integrator.curseForgeToConnector(CurseForgeModpacks.search(query, version, b, 20));
+                }
+
             } else if(source.equalsIgnoreCase("zyneon")) {
                 CompletableFuture.runAsync(() -> {
                     if (type.equalsIgnoreCase("modpacks")) {
@@ -551,6 +564,9 @@ public class Connector {
                     }
                 });
             }
+        } else if (request.startsWith("curseforge.")) {
+            request = request.replace("curseforge.","");
+            resolveCurseForgeRequest(request);
         } else if (request.startsWith("modrinth.")) {
             request = request.replace("modrinth.","");
             resolveModrinthRequest(request);
@@ -582,7 +598,121 @@ public class Connector {
         }
     }
 
-    public void resolveModrinthRequest(String request) {
+    private void resolveCurseForgeRequest(String request) {
+        if(request.startsWith("install.modpack.")) {
+            Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/sub/installing.html"));
+            String[] modpack = request.replace("install.modpack.", "").split("\\.", 2);
+            int mID = Integer.parseInt(modpack[0]);
+            String vID = modpack[1];
+            try {
+                int ver;
+                if(vID.equalsIgnoreCase("all")) {
+                    JsonArray array = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/" + mID + "/files"), JsonObject.class).get("data").getAsJsonArray();
+                    ver = Integer.parseInt(array.get(0).getAsJsonObject().get("id").getAsString());
+                } else {
+                    ver = Integer.parseInt(ZCurseForgeIntegration.getVersionId(mID,vID));
+                }
+                ZCurseForgeIntegration integration = new ZCurseForgeIntegration(Main.getLogger(), mID, ver);
+                integration.install(ver);
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Couldn't install CurseForge modpack "+mID+" v"+vID+": "+e.getMessage());
+            }
+        } else if(request.startsWith("install.fabric.")||request.startsWith("install.forge.")) {
+            String modloader = "";
+            if(request.startsWith("install.forge")) {
+                modloader = "forge";
+            } else if(request.startsWith("install.fabric")) {
+                modloader = "fabric";
+            }
+            request = request.replace("install.fabric.","").replace("install.forge.","");
+            String[] request_ = request.split("\\.", 3);
+            String slug = request_[0];
+            String id = request_[1];
+            String version = request_[2];
+            Main.getLogger().debug("[CONNECTOR] Installing CurseForge mod "+slug+"...");
+            try {
+                JsonObject root;
+                if(version.equalsIgnoreCase("all")) {
+                    Gson gson = new Gson();
+                    JsonArray array = gson.fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files?modLoaderType="+modloader),JsonObject.class).get("data").getAsJsonArray();
+                    String vID = array.get(0).getAsJsonObject().get("id").getAsString();
+                    root = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files/"+vID),JsonObject.class);
+                } else {
+                    root = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files/"+ZCurseForgeIntegration.getVersionId(Integer.parseInt(slug),version,NoFramework.ModLoader.valueOf(modloader.toUpperCase()))),JsonObject.class);
+                }
+                root = root.get("data").getAsJsonObject();
+                String download = root.get("downloadUrl").getAsString();
+                String fileName = "mods/"+root.get("fileName").getAsString();
+                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
+                Main.getLogger().debug("[CONNECTOR] Successfully installed CurseForge mod "+slug+"!");
+                frame.executeJavaScript("setButton('"+slug+"','INSTALLED');");
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Failed to install CurseForge mod "+slug+": "+e.getMessage());
+                frame.executeJavaScript("setButton('"+slug+"','FAILED');");
+            }
+        } else if(request.startsWith("install.shaders.")) {
+            request = request.replace("install.shaders.","");
+            String[] request_ = request.split("\\.", 3);
+            String slug = request_[0];
+            String id = request_[1];
+            String version = request_[2];
+            Main.getLogger().debug("[CONNECTOR] Installing CurseForge shader pack "+slug+"...");
+            try {
+                JsonObject root;
+                if(version.equalsIgnoreCase("all")) {
+                    Gson gson = new Gson();
+                    JsonArray array = gson.fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files"),JsonObject.class).get("data").getAsJsonArray();
+                    String vID = array.get(0).getAsJsonObject().get("id").getAsString();
+                    root = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files/"+vID),JsonObject.class);
+                } else {
+                    root = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files/"+ZCurseForgeIntegration.getVersionId(Integer.parseInt(slug),version)),JsonObject.class);
+                }
+                root = root.get("data").getAsJsonObject();
+                String download = root.get("downloadUrl").getAsString();
+                String fileName = "shaderpacks/"+root.get("fileName").getAsString();
+                Main.getLogger().debug("[CONNECTOR] Created shaderpacks folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
+                Main.getLogger().debug("[CONNECTOR] Successfully installed CurseForge shader pack "+slug+"!");
+                frame.executeJavaScript("setButton('"+slug+"','INSTALLED');");
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Failed to install CurseForge shader pack "+slug+": "+e.getMessage());
+                frame.executeJavaScript("setButton('"+slug+"','FAILED');");
+            }
+        } else if(request.startsWith("install.resourcepacks.")) {
+            request = request.replace("install.resourcepacks.","");
+            String[] request_ = request.split("\\.", 3);
+            String slug = request_[0];
+            String id = request_[1];
+            String version = request_[2];
+            Main.getLogger().debug("[CONNECTOR] Installing CurseForge resource pack "+slug+"...");
+            try {
+                JsonObject root;
+                if(version.equalsIgnoreCase("all")) {
+                    Gson gson = new Gson();
+                    JsonArray array = gson.fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files"),JsonObject.class).get("data").getAsJsonArray();
+                    String vID = array.get(0).getAsJsonObject().get("id").getAsString();
+                    root = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files/"+vID),JsonObject.class);
+                } else {
+                    root = new Gson().fromJson(ZCurseForgeIntegration.makeRequest("https://api.curseforge.com/v1/mods/"+slug+"/files/"+ZCurseForgeIntegration.getVersionId(Integer.parseInt(slug),version)),JsonObject.class);
+                }
+                root = root.get("data").getAsJsonObject();
+                String download = root.get("downloadUrl").getAsString();
+                String fileName = "resourcepacks/"+root.get("fileName").getAsString();
+                Main.getLogger().debug("[CONNECTOR] Created resourcepacks folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
+                Main.getLogger().debug("[CONNECTOR] Successfully installed CurseForge resource pack "+slug+"!");
+                frame.executeJavaScript("setButton('"+slug+"','INSTALLED');");
+            } catch (Exception e) {
+                Main.getLogger().error("[CONNECTOR] Failed to install CurseForge resource pack "+slug+": "+e.getMessage());
+                frame.executeJavaScript("setButton('"+slug+"','FAILED');");
+            }
+        } else {
+            resolveRequest("not-resolved");
+        }
+    }
+
+    private void resolveModrinthRequest(String request) {
         if(request.startsWith("install.modpack.")) {
             Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Main.getDirectoryPath()+"libs/zyneon/"+Main.version+"/sub/installing.html"));
             String[] modpack = request.replace("install.modpack.", "").split("\\.", 2);
@@ -626,11 +756,13 @@ public class Connector {
                 version = json.get("version_number").getAsString();
                 String download = json.get("files").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
                 String fileName = "mods/"+slug+"-"+version+".jar";
-                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                Main.getLogger().debug("[CONNECTOR] Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
                 FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
                 Main.getLogger().debug("[CONNECTOR] Successfully installed modrinth mod "+slug+"!");
+                frame.executeJavaScript("setButton('"+slug+"','INSTALLED');");
             } catch (Exception e) {
                 Main.getLogger().error("[CONNECTOR] Failed to install modrinth mod "+slug+": "+e.getMessage());
+                frame.executeJavaScript("setButton('"+slug+"','FAILED');");
             }
         } else if(request.startsWith("install.shaders.")) {
             request = request.replace("install.shaders.","");
@@ -650,11 +782,13 @@ public class Connector {
                 version = json.get("version_number").getAsString();
                 String download = json.get("files").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
                 String fileName = "shaderpacks/"+slug+"-"+version+".zip";
-                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                Main.getLogger().debug("[CONNECTOR] Created shaderpacks folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
                 FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
                 Main.getLogger().debug("[CONNECTOR] Successfully installed modrinth shader pack "+slug+"!");
+                frame.executeJavaScript("setButton('"+slug+"','INSTALLED');");
             } catch (Exception e) {
                 Main.getLogger().error("[CONNECTOR] Failed to install modrinth shader pack "+slug+": "+e.getMessage());
+                frame.executeJavaScript("setButton('"+slug+"','FAILED');");
             }
         } else if(request.startsWith("install.resourcepacks.")) {
             request = request.replace("install.resourcepacks.","");
@@ -674,11 +808,13 @@ public class Connector {
                 version = json.get("version_number").getAsString();
                 String download = json.get("files").getAsJsonArray().get(0).getAsJsonObject().get("url").getAsString();
                 String fileName = "resourcepacks/"+slug+"-"+version+".zip";
-                Main.getLogger().debug("Created mods folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
+                Main.getLogger().debug("[CONNECTOR] Created resourcepacks folder: "+new File(Application.getInstancePath() + "instances/" + id + "/" + fileName).getParentFile().mkdirs());
                 FileUtil.downloadFile(download,Application.getInstancePath()+"instances/"+id+"/"+fileName);
                 Main.getLogger().debug("[CONNECTOR] Successfully installed modrinth resource pack "+slug+"!");
+                frame.executeJavaScript("setButton('"+slug+"','INSTALLED');");
             } catch (Exception e) {
                 Main.getLogger().error("[CONNECTOR] Failed to install modrinth resource pack "+slug+": "+e.getMessage());
+                frame.executeJavaScript("setButton('"+slug+"','FAILED');");
             }
         } else {
             resolveRequest("not-resolved");

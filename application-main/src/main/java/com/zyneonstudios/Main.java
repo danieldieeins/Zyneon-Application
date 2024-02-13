@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) {
         version = "2024.2-preRelease.2";
-        String name = "Argrium³";
+        String name = "Finalium";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
