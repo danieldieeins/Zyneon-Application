@@ -87,6 +87,14 @@
                         </a>
                     </li>
                     <li>
+                        <a onclick="search_source = 'curseforge'; update();">
+                            <div class="menu-item" id="curseforge">
+                                <i class='bx bxs-flame'></i>
+                                <span class="menu-item">CurseForge</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
                         <a onclick="search_source = 'modrinth'; update();">
                             <div class="menu-item" id="modrinth">
                                 <i class='bx bx-code-curly'></i>
@@ -168,7 +176,7 @@
                             <h3 id="description">DESCRIPTION</h3>
                         </div>
                     </div>
-                    <h3 class="bottom"><a id="install" class="button">INSTALL</a>    <a id="show" class="button">SHOW ON MODRINTH</a></h3>
+                    <h3 class="bottom"><a id="install" class="button">INSTALL</a>    <a id="show" class="button">SHOW</a></h3>
                 </div>
                 <a id="load" class="button" onclick="loadMore();">Load more</a>
             </div>
