@@ -119,13 +119,20 @@ function syncGeneral(start) {
     }
 }
 
-function syncGlobal(memory,instance_path) {
+function syncGlobal(memory,instance_path,log) {
     instance.style.display = "none";
     global.style.display = "inherit";
     const memory_int = document.getElementById("memory-int");
     const instance_path_string = document.getElementById("instance-path-string");
     memory_int.innerText = memory;
     instance_path_string.innerText = instance_path;
+    if(log==="true") {
+        document.getElementById("disable-log").classList.remove("active");
+        document.getElementById("enable-log").classList.add("active");
+    } else {
+        document.getElementById("disable-log").classList.add("active");
+        document.getElementById("enable-log").classList.remove("active");
+    }
 }
 
 function syncProfile(name,uuid) {

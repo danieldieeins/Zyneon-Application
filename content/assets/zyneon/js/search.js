@@ -59,7 +59,7 @@ function syncSearch() {
     if(search_source==="modrinth"||search_source==="curseforge") {
         document.getElementById("load").style.display = "flex";
     }
-    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+".0");
+    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+".0."+search_instance);
 }
 
 function update(query) {
