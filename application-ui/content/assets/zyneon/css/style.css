@@ -670,6 +670,32 @@ a.button#console {
     top: 9.05rem;
 }
 
+.content #global .log-buttons {
+    position: absolute;
+    right: 2.2rem;
+    top: 12.1rem;
+}
+
+.content #global .log-buttons a {
+    position: relative;
+    display: inline;
+    margin: -0.125rem;
+    border-radius: 0;
+}
+
+.content #global .log-buttons a#enable-log {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.content #global .log-buttons a#disable-log {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.content #global .log-buttons a.active {
+    background: var(--color);
+    color: var(--inverted);
+}
+
 .content #global .memory p {
     padding-right: 1rem;
     color: var(--color-dim);

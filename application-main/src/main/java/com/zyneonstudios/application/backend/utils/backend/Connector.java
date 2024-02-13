@@ -10,6 +10,7 @@ import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
 import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
+import com.zyneonstudios.application.backend.instance.Instance;
 import com.zyneonstudios.application.backend.instance.VanillaInstance;
 import com.zyneonstudios.application.backend.integrations.Integrator;
 import com.zyneonstudios.application.backend.integrations.curseforge.*;
@@ -62,7 +63,7 @@ public class Connector {
                 frame.executeJavaScript("syncGeneral('" + tab + "');");
             }
             case "global" ->
-                    frame.executeJavaScript("syncGlobal('" + Application.config.getString("settings.memory.default").replace(".0", "") + " MB','" + Application.getInstancePath() + "')");
+                    frame.executeJavaScript("syncGlobal('" + Application.config.getString("settings.memory.default").replace(".0", "") + " MB','" + Application.getInstancePath() + "','"+Application.logOutput+"')");
             case "profile" -> {
                 if(Application.auth!=null) {
                     if (Application.auth.isLoggedIn()) {
@@ -81,6 +82,18 @@ public class Connector {
             StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid, uuid);
+        } else if (request.startsWith("button.configure.")) {
+            request = request.replace("button.configure.","");
+            if(request.startsWith("log.")) {
+                request = request.replace("log.","");
+                if(request.equals("enable")) {
+                    Application.config.set("settings.logOutput",true);
+                } else {
+                    Application.config.set("settings.logOutput",false);
+                }
+                Application.logOutput = Application.config.getBool("settings.logOutput");
+                syncSettings("global");
+            }
         } else if (request.contains("sync.instances.list")) {
             Application.getInstancePath();
             String filePath = Main.getDirectoryPath() + "libs/zyneon/instances.json";
@@ -156,13 +169,19 @@ public class Connector {
                 String minecraft = instance.getString("modpack.minecraft");
                 String modloader = "Vanilla";
                 String mlversion = "No mods";
+                Instance instance_;
                 if (instance.getString("modpack.forge.version") != null) {
                     modloader = "Forge";
                     mlversion = instance.getString("modpack.forge.version");
+                    instance_ = new ForgeInstance(instance);
                 } else if (instance.getString("modpack.fabric") != null) {
                     modloader = "Fabric";
                     mlversion = instance.getString("modpack.fabric");
+                    instance_ = new FabricInstance(instance);
+                } else {
+                    instance_ = new VanillaInstance(instance);
                 }
+                instance_.sync();
                 File icon = new File(Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/assets/zyneon/images/instances/" + id + ".png");
                 File logo = new File(Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/assets/zyneon/images/instances/" + id + "-logo.png");
                 File background = new File(Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/assets/zyneon/images/instances/" + id + ".webp");
@@ -207,7 +226,7 @@ public class Connector {
             }
         } else if (request.contains("sync.search.")) {
             request = request.replace("sync.search.","");
-            String[] request_ = request.split("\\.", 5);
+            String[] request_ = request.split("\\.", 6);
             String source = request_[0];
             String type = request_[1];
             String version = request_[2].replace("%",".");
@@ -216,32 +235,33 @@ public class Connector {
             int i = Integer.parseInt(request_[4]);
             i=i*20;
             b=b+i;
+            String instanceID = request_[5];
             if(source.equalsIgnoreCase("modrinth")) {
                 if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
-                    Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20));
+                    Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("shaders")) {
-                    Integrator.modrinthToConnector(ModrinthShaders.search(query, version, b, 20));
+                    Integrator.modrinthToConnector(ModrinthShaders.search(query, version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("resourcepacks")) {
-                    Integrator.modrinthToConnector(ModrinthResourcepacks.search(query, version, b, 20));
+                    Integrator.modrinthToConnector(ModrinthResourcepacks.search(query, version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("modpacks")) {
-                    Integrator.modrinthToConnector(ModrinthModpacks.search(query, version, b, 20));
+                    Integrator.modrinthToConnector(ModrinthModpacks.search(query, version, b, 20),instanceID);
                 }
 
             } else if(source.equalsIgnoreCase("curseforge")) {
                 if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
-                    Integrator.curseForgeToConnector(CurseForgeMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20));
+                    Integrator.curseForgeToConnector(CurseForgeMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("shaders")) {
-                    Integrator.curseForgeToConnector(CurseForgeShaders.search(query, version, b, 20));
+                    Integrator.curseForgeToConnector(CurseForgeShaders.search(query, version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("resourcepacks")) {
-                    Integrator.curseForgeToConnector(CurseForgeResourcepacks.search(query, version, b, 20));
+                    Integrator.curseForgeToConnector(CurseForgeResourcepacks.search(query, version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("modpacks")) {
-                    Integrator.curseForgeToConnector(CurseForgeModpacks.search(query, version, b, 20));
+                    Integrator.curseForgeToConnector(CurseForgeModpacks.search(query, version, b, 20),instanceID);
                 }
 
             } else if(source.equalsIgnoreCase("zyneon")) {
                 CompletableFuture.runAsync(() -> {
                     if (type.equalsIgnoreCase("modpacks")) {
-                        Integrator.zyneonToConnector(ZyneonModpacks.search(query, version));
+                        Integrator.zyneonToConnector(ZyneonModpacks.search(query, version),instanceID);
                     }
                 });
             }
@@ -885,11 +905,11 @@ public class Connector {
 
     private void launch(Config instanceJson) {
         if (instanceJson.getString("modpack.fabric") != null) {
-            new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Application.config.getInteger("settings.memory.default"));
+            new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Application.config.getInteger("settings.memory.default"),Application.logOutput);
         } else if (instanceJson.getString("modpack.forge.version") != null && instanceJson.getString("modpack.forge.type") != null) {
-            new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Application.config.getInteger("settings.memory.default"));
+            new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Application.config.getInteger("settings.memory.default"),Application.logOutput);
         } else {
-            new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Application.config.getInteger("settings.memory.default"));
+            new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Application.config.getInteger("settings.memory.default"),Application.logOutput);
         }
     }
 

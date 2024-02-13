@@ -13,6 +13,8 @@ public interface Instance {
         return true;
     }
 
+    default void sync() {}
+
     default Config getJSON() {
         return null;
     }

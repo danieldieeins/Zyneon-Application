@@ -23,7 +23,7 @@ public class VanillaLauncher {
         this.frame = frame;
     }
 
-    public void launch(Instance instance, int ram) {
+    public void launch(Instance instance, int ram, boolean log) {
         String id = instance.getID();
         String ramID = id.replace(".","").replace("/","");
         if(Application.config.get("settings.memory."+ramID)!=null) {
@@ -35,10 +35,10 @@ public class VanillaLauncher {
         if(!instance.checkVersion()) {
             instance.update();
         }
-        launch(instance.getMinecraftVersion(), ram, Path.of(instance.getPath()));
+        launch(instance.getMinecraftVersion(), ram, Path.of(instance.getPath()),log);
     }
 
-    public void launch(String version, int ram, Path instancePath) {
+    public void launch(String version, int ram, Path instancePath, boolean enableLogOutput) {
         MinecraftVersion.Type type = MinecraftVersion.getType(version);
         if(type!=null) {
             if(type.equals(MinecraftVersion.Type.LEGACY)) {
@@ -66,11 +66,18 @@ public class VanillaLauncher {
             try {
                 Process game = framework.launch(version, "", NoFramework.ModLoader.VANILLA);
                 frame.executeJavaScript("launchStarted();");
-                LogFrame log = new LogFrame(game.getInputStream(),"Minecraft "+version);
                 Application.getFrame().setState(JFrame.ICONIFIED);
+                LogFrame log;
+                if(enableLogOutput) {
+                    log = new LogFrame(game.getInputStream(),"Minecraft "+version);
+                } else {
+                    log = null;
+                }
                 game.onExit().thenRun(()->{
+                    if(log!=null) {
+                        log.onStop();
+                    }
                     Application.getFrame().setState(JFrame.NORMAL);
-                    log.onStop();
                     frame.executeJavaScript("launchDefault();");
                 });
             } catch (Exception e) {

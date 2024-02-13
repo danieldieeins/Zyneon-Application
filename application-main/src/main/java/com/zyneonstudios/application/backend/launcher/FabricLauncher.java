@@ -23,7 +23,7 @@ public class FabricLauncher {
         this.frame = frame;
     }
 
-    public void launch(FabricInstance instance, int ram) {
+    public void launch(FabricInstance instance, int ram, boolean log) {
         String id = instance.getID();
         String ramID = id.replace(".","").replace("/","");
         if(Application.config.get("settings.memory."+ramID)!=null) {
@@ -35,10 +35,10 @@ public class FabricLauncher {
         if(!instance.checkVersion()) {
             instance.update();
         }
-        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), ram, Path.of(instance.getPath()));
+        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), ram, Path.of(instance.getPath()),log);
     }
 
-    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {
+    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath, boolean enableLogOutput) {
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
             if(type.equals(MinecraftVersion.Type.LEGACY)) {
@@ -66,11 +66,18 @@ public class FabricLauncher {
             try {
                 Process game = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
                 frame.executeJavaScript("launchStarted();");
-                LogFrame log = new LogFrame(game.getInputStream(),"Minecraft "+minecraftVersion+" (with Fabric "+fabricVersion+")");
                 Application.getFrame().setState(JFrame.ICONIFIED);
-                game.onExit().thenRun(()->{
+                LogFrame log;
+                if (enableLogOutput) {
+                    log = new LogFrame(game.getInputStream(), "Minecraft " + minecraftVersion + " (with Fabric " + fabricVersion + ")");
+                } else {
+                    log = null;
+                }
+                game.onExit().thenRun(() -> {
+                    if (log != null) {
+                        log.onStop();
+                    }
                     Application.getFrame().setState(JFrame.NORMAL);
-                    log.onStop();
                     frame.executeJavaScript("launchDefault();");
                 });
             } catch (Exception e) {

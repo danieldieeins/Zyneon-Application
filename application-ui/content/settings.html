@@ -160,10 +160,15 @@
                         <p id="instance-path-string" onclick="callJavaMethod('button.folder.instances');">loading...</p>
                         <a class="button" id="button-instance-path" onclick="callJavaMethod('button.path.instances');">Configure</a>
                     </div>
-                    <h3 class="bottom">Global memory</h3>
+                    <h3>Global memory</h3>
                     <div class="memory">
                         <p id="memory-int">loading...</p>
                         <a class="button" id="button-memory" onclick="callJavaMethod('button.settings.default');">Configure</a>
+                    </div>
+                    <h3 class="background-bottom">Show log output on game start</h3>
+                    <div class="log-buttons">
+                        <a class="button" id="enable-log" onclick="callJavaMethod('button.configure.log.enable');">On</a>
+                        <a class="button" id="disable-log" onclick="callJavaMethod('button.configure.log.disable');">Off</a>
                     </div>
                 </div>
             </div>

@@ -25,8 +25,8 @@ public class Main {
     public static String os;
 
     public static void main(String[] args) {
-        version = "2024.2-preRelease.2";
-        String name = "Finalium";
+        version = "2024.2-preRelease.3";
+        String name = "Fantastium";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Integrator {
 
-    public static void curseForgeToConnector(JsonObject search) {
+    public static void curseForgeToConnector(JsonObject search, String instanceID) {
         JsonArray results = search.getAsJsonArray("data");
         for (int i = 0; i < results.size(); i++) {
             JsonObject item = results.get(i).getAsJsonObject();
@@ -45,7 +45,7 @@ public class Integrator {
         }
     }
 
-    public static void modrinthToConnector(JsonObject search) {
+    public static void modrinthToConnector(JsonObject search, String instanceID) {
         JsonArray results = search.getAsJsonArray("hits");
         for (int i = 0; i < results.size(); i++) {
             JsonObject item = results.get(i).getAsJsonObject();
@@ -59,7 +59,7 @@ public class Integrator {
         }
     }
 
-    public static void zyneonToConnector(ArrayList<InstanceConfig> results) {
+    public static void zyneonToConnector(ArrayList<InstanceConfig> results, String instanceID) {
         if(results!=null) {
             if(!results.isEmpty()) {
                 for (InstanceConfig instance : results) {

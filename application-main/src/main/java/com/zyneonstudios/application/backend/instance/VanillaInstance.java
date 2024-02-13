@@ -104,6 +104,23 @@ public class VanillaInstance implements Instance {
     }
 
     @Override
+    public void sync() {
+        File modsFolder = new File(path+"mods/");
+        if(modsFolder.exists()) {
+            try {
+                File[] mods = modsFolder.listFiles();
+                for(File mod:mods) {
+                    if(mod.getName().endsWith(".jar")) {
+                        System.out.println("MOD GEFUNDEN: "+mod.getAbsolutePath());
+                    }
+                }
+            } catch (Exception e) {
+                Main.getLogger().error("Couldn't sync mod files: "+e.getMessage());
+            }
+        }
+    }
+
+    @Override
     public Config getJSON() {
         return json;
     }

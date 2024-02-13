@@ -34,6 +34,7 @@ public class Application {
     public static Config instances;
     public static String version;
     public static String theme;
+    public static boolean logOutput;
 
     public Application(String ver) {
         version = ver;
@@ -51,10 +52,12 @@ public class Application {
         config = new Config(new File(Main.getDirectoryPath() + "config.json"));
         config.checkEntry("settings.starttab","start");
         config.checkEntry("settings.language","auto");
+        config.checkEntry("settings.logOutput",false);
         config.checkEntry("settings.memory.default", 1024);
         config.checkEntry("settings.logger.debug", false);
         config.checkEntry("settings.appearance.theme","dark");
 
+        logOutput = config.getBool("settings.logOutput");
         theme = config.getString("settings.appearance.theme");
         memory = config.getInteger("settings.memory.default");
         startTab = config.getString("settings.starttab");
