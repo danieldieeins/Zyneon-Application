@@ -1,12 +1,24 @@
 package com.zyneonstudios.application.backend.instance;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.moandjiezana.toml.Toml;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class VanillaInstance implements Instance {
 
@@ -105,19 +117,110 @@ public class VanillaInstance implements Instance {
 
     @Override
     public void sync() {
-        File modsFolder = new File(path+"mods/");
-        if(modsFolder.exists()) {
-            try {
-                File[] mods = modsFolder.listFiles();
-                for(File mod:mods) {
-                    if(mod.getName().endsWith(".jar")) {
-                        System.out.println("MOD GEFUNDEN: "+mod.getAbsolutePath());
+        CompletableFuture.runAsync(()->{
+            File modsFolder = new File(path+"mods/");
+            if(modsFolder.exists()) {
+                try {
+                    File[] mods = modsFolder.listFiles();
+                    File listFile = new File(path+"cache/zyneon.modlist.json");
+                    if(listFile.exists()) {
+                        Main.getLogger().debug("Delete previous sync: "+listFile.delete());
                     }
+                    Config modList = new Config(listFile.getAbsolutePath());
+                    for(File mod:mods) {
+                        if(mod.getName().endsWith(".jar")) {
+                            JarFile modJar = new JarFile(mod.getAbsolutePath());
+                            Enumeration<JarEntry> entries = modJar.entries();
+                            boolean saved = false;
+                            while (entries.hasMoreElements()) {
+                                JarEntry entry = entries.nextElement();
+                                if (entry.getName().equals("fabric.mod.json")) {
+                                    try {
+                                        InputStream inputStream = modJar.getInputStream(entry);
+                                        JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream));
+                                        Gson gson = new Gson();
+                                        JsonObject json = gson.fromJson(jsonReader, JsonObject.class);
+                                        String id = json.get("id").getAsString();
+                                        modList.set("mods." + id + ".id", id);
+                                        modList.set("mods." + id + ".loader", "fabric/json");
+                                        modList.set("mods." + id + ".version", json.get("version").getAsString());
+                                        modList.set("mods." + id + ".file", mod.getName());
+                                        if (json.get("name") != null) {
+                                            modList.set("mods." + id + ".name", json.get("name").getAsString());
+                                        } else {
+                                            modList.set("mods." + id + ".name", id);
+                                        }
+                                        modList.set("files." + mod.getName().replace(".","::"), id);
+                                    } catch (Exception e) {
+                                        Main.getLogger().error("Couldn't read fabric json file (" + mod.getName() + "): " + e.getMessage());
+                                    }
+                                    saved = true;
+                                    break;
+                                } else if (entry.getName().equals("META-INF/mods.toml")) {
+                                    try {
+                                        Toml toml = new Toml().read(new String(modJar.getInputStream(entry).readAllBytes()));
+                                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                                        String jsonString = gson.toJson(toml.toMap());
+                                        JsonObject json = gson.fromJson(jsonString, JsonObject.class).get("mods").getAsJsonArray().get(0).getAsJsonObject();
+                                        String id = json.get("modId").getAsString();
+                                        modList.set("mods." + id + ".id", id);
+                                        modList.set("mods." + id + ".loader", "forge/toml");
+                                        if (json.get("version") != null) {
+                                            modList.set("mods." + id + ".version", json.get("version").getAsString());
+                                        } else {
+                                            modList.set("mods." + id + ".version", "null");
+                                        }
+                                        modList.set("mods." + id + ".file", mod.getName());
+                                        if (json.get("displayName") != null) {
+                                            modList.set("mods." + id + ".name", json.get("displayName").getAsString());
+                                        } else {
+                                            modList.set("mods." + id + ".name", id);
+                                        }
+                                        modList.set("files." + mod.getName().replace(".","::"), id);
+                                    } catch (Exception e) {
+                                        Main.getLogger().error("Couldn't read forge toml file (" + mod.getName() + "): " + e.getMessage());
+                                    }
+                                    saved = true;
+                                    break;
+                                } else if (entry.getName().equals("mcmod.info")) {
+                                    try {
+                                        InputStream inputStream = modJar.getInputStream(entry);
+                                        JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream));
+                                        Gson gson = new Gson();
+                                        JsonArray array = gson.fromJson(jsonReader, JsonArray.class);
+                                        JsonObject json = array.get(0).getAsJsonObject();
+                                        String id = json.get("modid").getAsString();
+                                        modList.set("mods." + id + ".id", id);
+                                        modList.set("mods." + id + ".loader", "forge/json");
+                                        if (json.get("version") != null) {
+                                            modList.set("mods." + id + ".version", json.get("version").getAsString());
+                                        } else {
+                                            modList.set("mods." + id + ".version", "null");
+                                        }
+                                        modList.set("mods." + id + ".file", mod.getName());
+                                        if (json.get("name") != null) {
+                                            modList.set("mods." + id + ".name", json.get("name").getAsString());
+                                        } else {
+                                            modList.set("mods." + id + ".name", id);
+                                        }
+                                        modList.set("files." + mod.getName().replace(".","::"), id);
+                                    } catch (Exception e) {
+                                        Main.getLogger().error("Couldn't read forge json file (" + mod.getName() + "): " + e.getMessage());
+                                    }
+                                    saved = true;
+                                    break;
+                                }
+                            }
+                            if(!saved) {
+                                modList.set("files." + mod.getName().replace(".","::"), "zyneon:unknown-mod");
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    Main.getLogger().error("Couldn't sync mod files: "+e.getMessage());
                 }
-            } catch (Exception e) {
-                Main.getLogger().error("Couldn't sync mod files: "+e.getMessage());
             }
-        }
+        });
     }
 
     @Override
