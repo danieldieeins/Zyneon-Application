@@ -49,8 +49,8 @@ public class MemoryFrame extends JFrame {
             initialValue = saveFile.getInteger("settings.memory.default");
         }
         if(instance!=null) {
-            if(saveFile.get("settings.memory."+instance)!=null) {
-                initialValue = saveFile.getInteger("settings.memory."+instance);
+            if(saveFile.get("configuration.ram")!=null) {
+                initialValue = saveFile.getInteger("configuration.ram");
             }
         }
         JSlider slider = new JSlider(minValue, (int)maxValue, initialValue);
@@ -73,9 +73,10 @@ public class MemoryFrame extends JFrame {
                     saveFile.set("settings.memory.default", slider.getValue());
                 } else {
                     if(instance.equalsIgnoreCase("")) {
-                        instance = "default";
+                        saveFile.set("settings.memory.default", slider.getValue());
+                    } else {
+                        saveFile.set("configuration.ram", slider.getValue());
                     }
-                    saveFile.set("settings.memory."+instance, slider.getValue());
                 }
             }
         });
@@ -97,9 +98,10 @@ public class MemoryFrame extends JFrame {
                     saveFile.set("settings.memory.default", slider.getValue());
                 } else {
                     if(instance.equalsIgnoreCase("")) {
-                        instance = "default";
+                        saveFile.set("settings.memory.default", slider.getValue());
+                    } else {
+                        saveFile.set("configuration.ram", slider.getValue());
                     }
-                    saveFile.set("settings.memory."+instance, slider.getValue());
                 }
             }
         });

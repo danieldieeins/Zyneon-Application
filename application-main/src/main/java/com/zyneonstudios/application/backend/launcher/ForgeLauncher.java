@@ -25,10 +25,8 @@ public class ForgeLauncher {
     }
 
     public void launch(ForgeInstance instance, int ram, boolean log) {
-        String id = instance.getID();
-        String ramID = id.replace(".","").replace("/","");
-        if(Application.config.get("settings.memory."+ramID)!=null) {
-            ram = Application.config.getInteger("settings.memory."+ramID);
+        if(instance.getSettings().get("configuration.ram")!=null) {
+            ram = instance.getSettings().getInteger("configuration.ram");
         }
         if(!new File(instance.getPath()+"/pack.zip").exists()) {
             instance.update();

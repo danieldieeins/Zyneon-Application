@@ -23,6 +23,7 @@ import java.util.jar.JarFile;
 public class VanillaInstance implements Instance {
 
     private Config json;
+    private Config settings;
     private String path;
     private String id;
     private String name;
@@ -36,6 +37,7 @@ public class VanillaInstance implements Instance {
         version = json.getString("modpack.version");
         minecraftVersion = json.getString("modpack.minecraft");
         path = Application.getInstancePath() + json.getString("modpack.instance");
+        settings = new Config(path+"zyneonSettings.json");
     }
 
     @Override @SuppressWarnings("all")
@@ -229,6 +231,11 @@ public class VanillaInstance implements Instance {
     }
 
     @Override
+    public Config getSettings() {
+        return settings;
+    }
+
+    @Override
     public String getPath() {
         return path;
     }
@@ -258,6 +265,7 @@ public class VanillaInstance implements Instance {
         path = null;
         name = null;
         json = null;
+        settings = null;
         version = null;
         minecraftVersion = null;
         System.gc();

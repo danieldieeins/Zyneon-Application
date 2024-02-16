@@ -19,6 +19,10 @@ public interface Instance {
         return null;
     }
 
+    default Config getSettings() {
+        return null;
+    }
+
     default String getPath() {
         return null;
     }

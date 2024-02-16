@@ -111,13 +111,17 @@ public class MinecraftVersion {
     }
 
     public static Type getType(String version) {
-        int i = Integer.parseInt(version.split("\\.")[1]);
-        if(i<18) {
-            return Type.LEGACY;
-        } else if(i>17) {
-            return Type.NEW;
+        if(version.contains("\\.")) {
+            int i = Integer.parseInt(version.split("\\.")[1]);
+            if (i < 18) {
+                return Type.LEGACY;
+            } else if (i > 17) {
+                return Type.NEW;
+            } else {
+                return null;
+            }
         } else {
-            return null;
+            return Type.NEW;
         }
     }
 

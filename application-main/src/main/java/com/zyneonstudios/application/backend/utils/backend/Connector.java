@@ -210,9 +210,8 @@ public class Connector {
                 frame.executeJavaScript("syncDock('" + id + "','" + version + "','" + minecraft + "','" + modloader + "','" + mlversion + "');");
 
                 int ram = Application.memory;
-                String ramID = id.replace(".", "").replace("/", "");
-                if (Application.config.get("settings.memory." + ramID) != null) {
-                    ram = Application.config.getInteger("settings.memory." + ramID);
+                if (instance_.getSettings().get("configuration.ram") != null) {
+                    ram = instance_.getSettings().getInteger("configuration.ram");
                 }
 
                 frame.executeJavaScript("syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");");
@@ -997,7 +996,12 @@ public class Connector {
     }
 
     private void openMemorySettings(String instance) {
-        new MemoryFrame(Application.config, "Configure memory (" + instance + ")", instance);
+        String title = "Configure memory (" + instance + ")";
+        if(instance.equalsIgnoreCase("default")) {
+            new MemoryFrame(Application.config, title, "default");
+        } else {
+            new MemoryFrame(new VanillaInstance(new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json")).getSettings(), title, instance);
+        }
     }
 
     public enum InstanceAction {
