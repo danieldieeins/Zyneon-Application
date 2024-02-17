@@ -107,21 +107,28 @@
                     </div>
                     <div class="buttons">
                         <div class="folder-dropdown">
-                            <a class="button">Folder</a>
+                            <h3><i class='bx bx-dots-horizontal-rounded'></i></h3>
+                            <br><br>
                             <div class="card">
-                                <h3 id="open-resourcepacks">Open resource packs</h3>
-                                <h3 id="open-screenshots">Open screenshots</h3>
-                                <h3 id="open-shaderpacks">Open shader packs</h3>
-                                <h3 id="open-worlds">Open worlds</h3>
-                                <h3 id="open-instance">Open instance folder</h3>
-                                <h3 id="open-mods">Open mods folder</h3>
+                                <div class="settings-dropdown">
+                                    <h3 id="management" onclick="showSettings();">Management...</h3>
+                                    <div class="card">
+                                        <h3 id="configure-instance" onclick="toggleSettings();">Settings</h3>
+                                        <h3 id="content">Add Content</h3>
+                                    </div>
+                                </div>
+                                <div class="settings-dropdown">
+                                    <h3 id="folder">Open folder...</h3>
+                                    <div class="card">
+                                        <h3 id="open-instance">Open instance folder</h3>
+                                        <h3 id="open-mods">Open mods folder</h3>
+                                        <h3 id="open-resourcepacks">Open resource packs</h3>
+                                        <h3 id="open-screenshots">Open screenshots</h3>
+                                        <h3 id="open-shaderpacks">Open shader packs</h3>
+                                        <h3 id="open-worlds">Open worlds</h3>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="settings-dropdown">
-                            <a class="button" id="content">Add Content</a>
-                        </div>
-                        <div class="settings-dropdown">
-                            <a class="button" id="configure-instance" onclick="toggleSettings();">Settings</a>
                         </div>
                     </div>
                 </div>

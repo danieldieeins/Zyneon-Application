@@ -82,13 +82,15 @@ function syncInstance(id) {
         document.getElementById("local-settings").style.display = "none";
         document.getElementById("local-appearance").style.display = "none";
         document.getElementById("check").style.display = "inherit";
+        document.getElementById("folder").onclick = function () {};
     } else {
         document.getElementById("check").style.display = "none";
-        document.getElementById("content").style.display = "inline";
+        document.getElementById("content").style.display = "inherit";
         document.getElementById("open-instance").style.display = "inherit";
         document.getElementById("open-mods").style.display = "inherit";
         document.getElementById("local-settings").style.display = "inherit";
         document.getElementById("local-appearance").style.display = "inherit";
+        document.getElementById("folder").onclick = function () { callJavaMethod("button.folder."+id); };
     }
 
     document.getElementById("configure-memory").onclick = function () { callJavaMethod("button.settings."+id); };
@@ -208,12 +210,18 @@ function showSettings() {
     document.getElementById("sidebyside").style.display = "none";
     document.getElementById("instance-settings").style.display = "inherit";
     document.getElementById("configure-instance").innerText = "Close settings";
+    document.getElementById("management").onclick = function () {
+        closeSettings();
+    };
 }
 
 function closeSettings() {
     document.getElementById("instance-settings").style.display = "none";
     document.getElementById("sidebyside").style.display = "inherit";
     document.getElementById("configure-instance").innerText = "Settings";
+    document.getElementById("management").onclick = function () {
+        showSettings();
+    };
 }
 
 function toggleSettings() {
