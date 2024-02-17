@@ -6,7 +6,7 @@
 
     <groupId>com.zyneonstudios</groupId>
     <artifactId>application-parent</artifactId>
-    <version>2024.2.1</version>
+    <version>2024.2</version>
     <packaging>pom</packaging>
 
     <modules>
