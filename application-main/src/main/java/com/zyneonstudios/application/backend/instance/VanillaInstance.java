@@ -37,7 +37,7 @@ public class VanillaInstance implements Instance {
         version = json.getString("modpack.version");
         minecraftVersion = json.getString("modpack.minecraft");
         path = Application.getInstancePath() + json.getString("modpack.instance");
-        settings = new Config(path+"zyneonSettings.json");
+        settings = new Config(path+"/zyneonSettings.json");
     }
 
     @Override @SuppressWarnings("all")

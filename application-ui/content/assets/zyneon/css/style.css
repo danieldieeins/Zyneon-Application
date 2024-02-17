@@ -855,31 +855,37 @@ p#instance-path-string:hover {
 
 .content #instance-view .card#title-card .buttons {
     position: absolute;
-    right: 0.5rem;
-    top: 1.3rem;
-    display: flex;
+    top: -0.455rem;
+    right: 0.55rem;
 }
 
-.content #instance-view .card#title-card .buttons a.button {
-    position: relative;
-    cursor: inherit;
-    background: none;
-    color: var(--color-dim-less);
-    font-size: 1.5rem;
-    padding: 0.9rem 0.9rem 0.7rem 0.9rem;
-    box-shadow: none;
+.content #instance-view .card#title-card .buttons i {
+    position: absolute;
+    right: 0;
+    padding: 0.5rem;
+    font-size: 2rem;
+    border-radius: 0.5rem;
+}
+
+.content #instance-view .card#title-card .buttons i:hover {
+    z-index: 2000;
+    box-shadow: 0 0 0.8rem var(--color);
+    color: var(--background-accent);
+    background: var(--color);
+}
+
+.content #instance-view .card#title-card .buttons .folder-dropdown {
+    position: absolute;
+    z-index: 1000;
+    right: 0;
+}
+
+.content #instance-view {
+    overflow: hidden;
 }
 
 .content #instance-view .card#title-card .buttons .folder-dropdown .card {
-    position: absolute;
-    left: 0;
-    display: none;
-    z-index: 1000;
-}
-
-.content #instance-view .card#title-card .buttons .settings-dropdown .card {
-    position: absolute;
-    right: 0;
+    text-align: center;
     display: none;
     z-index: 1000;
 }
@@ -888,17 +894,26 @@ p#instance-path-string:hover {
     display: inherit;
 }
 
-.content #instance-view .card#title-card .buttons .settings-dropdown:hover .card {
-    display: inherit;
+.content #instance-view .card#title-card .buttons .folder-dropdown .settings-dropdown .card {
+    position: absolute;
+    text-align: left;
+    top: 4.25rem;
+    right: 9rem;
+    width: 12.5rem;
+    display: none;
 }
 
-.content #instance-view .card#title-card .buttons .card h3:hover {
-    border-radius: inherit;
-    color: var(--inverted);
+.content #instance-view .card#title-card .buttons .folder-dropdown .settings-dropdown:hover .card {
+    display: inherit;
+    text-align: center;
+}
+
+.content #instance-view .card#title-card .buttons .folder-dropdown .card h3:hover {
+    color: var(--background-accent);
+    box-shadow: 0 0 0.8rem var(--color);
     background: var(--color);
-    box-shadow: 0 0 0.8rem #fff;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: 0.25s;
 }
 
 .content #instance-view #instance-settings {
@@ -1002,14 +1017,6 @@ p#instance-path-string:hover {
     background: red;
     box-shadow: 0 0 0.8rem red;
     animation: wiggle 0.1s linear infinite;
-}
-
-
-.content #instance-view .card#title-card .buttons a.button:hover {
-    background: var(--color);
-    color: var(--inverted);
-    box-shadow: 0 0 0.4rem #fff;
-    transition: 0.25s;
 }
 
 .content .card h2 {
@@ -1169,10 +1176,6 @@ p#instance-path-string:hover {
 
 .content #instance-view i {
     color: var(--color-dim);
-}
-
-.content #instance-view .card#title-card a.button#configure-instance {
-    cursor: pointer;
 }
 
 .content .card .title {
