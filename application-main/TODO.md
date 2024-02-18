@@ -3,9 +3,7 @@ Just a list of all things I need to do.
 
 Features `QoL`
 ---
-- Create application .EXE and Windows installer
-- Java Runtime Environment path selector
-  - And download function if not installed.
+- Create application Windows installer
 - Instance "Installed mods" List
   - With "Add content"-search implementation.
 - Starting search when pressing enter (resource search)
