@@ -320,7 +320,7 @@ public class Connector {
                 instance.set("modpack.instance", "instances/" + id + "/");
             }
             Application.loadInstances();
-            frame.getBrowser().loadURL(Application.getInstancesURL());
+            frame.getBrowser().loadURL(Application.getInstancesURL()+"?tab="+id);
         } else if (request.contains("button.creator.create.")) {
             String[] creator = request.replace("button.creator.create.", "").split("\\.", 5);
             String name = creator[0];
