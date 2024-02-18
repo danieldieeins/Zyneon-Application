@@ -1,6 +1,7 @@
 package com.zyneonstudios.application.backend.utils.frame;
 
 import com.sun.management.OperatingSystemMXBean;
+import com.zyneonstudios.application.Application;
 import live.nerotv.shademebaby.file.Config;
 
 import javax.swing.*;
@@ -44,13 +45,12 @@ public class MemoryFrame extends JFrame {
         long maxValue = os.getTotalMemorySize() /c;
 
         int minValue = 0;
-        int initialValue = 0;
-        if(saveFile.get("settings.memory.default")!=null) {
-            initialValue = saveFile.getInteger("settings.memory.default");
-        }
+        int initialValue = Application.memory;
         if(instance!=null) {
-            if(saveFile.get("configuration.ram")!=null) {
-                initialValue = saveFile.getInteger("configuration.ram");
+            if(!instance.equalsIgnoreCase("default")) {
+                if (saveFile.get("configuration.ram") != null) {
+                    initialValue = saveFile.getInteger("configuration.ram");
+                }
             }
         }
         JSlider slider = new JSlider(minValue, (int)maxValue, initialValue);
@@ -69,15 +69,18 @@ public class MemoryFrame extends JFrame {
             @Override
             public void stateChanged(ChangeEvent e) {
                 textField.setText(String.valueOf(slider.getValue()));
-                if(instance==null) {
-                    saveFile.set("settings.memory.default", slider.getValue());
-                } else {
-                    if(instance.equalsIgnoreCase("")) {
-                        saveFile.set("settings.memory.default", slider.getValue());
-                    } else {
-                        saveFile.set("configuration.ram", slider.getValue());
+                String path = "settings.memory.default";
+                if(instance!=null) {
+                    if(!instance.equalsIgnoreCase("default")) {
+                        if(!instance.equalsIgnoreCase("")) {
+                            path = "configuration.ram";
+                        }
                     }
                 }
+                if(path.equalsIgnoreCase("settings.memory.default")) {
+                    Application.memory = slider.getValue();
+                }
+                saveFile.set(path,slider.getValue());
             }
         });
 
@@ -94,15 +97,18 @@ public class MemoryFrame extends JFrame {
                 } catch (NumberFormatException ex) {
                     textField.setText(String.valueOf(slider.getValue()));
                 }
-                if(instance==null) {
-                    saveFile.set("settings.memory.default", slider.getValue());
-                } else {
-                    if(instance.equalsIgnoreCase("")) {
-                        saveFile.set("settings.memory.default", slider.getValue());
-                    } else {
-                        saveFile.set("configuration.ram", slider.getValue());
+                String path = "settings.memory.default";
+                if(instance!=null) {
+                    if(!instance.equalsIgnoreCase("default")) {
+                        if(!instance.equalsIgnoreCase("")) {
+                            path = "configuration.ram";
+                        }
                     }
                 }
+                if(path.equalsIgnoreCase("settings.memory.default")) {
+                    Application.memory = slider.getValue();
+                }
+                saveFile.set(path,slider.getValue());
             }
         });
         Dimension d = new Dimension(380,92);

@@ -8,7 +8,6 @@ import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.LogFrame;
 import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
 import fr.flowarg.openlauncherlib.NoFramework;
-import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 
 import javax.swing.*;
@@ -39,16 +38,7 @@ public class FabricLauncher {
     public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath, boolean enableLogOutput) {
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
-            if(type.equals(MinecraftVersion.Type.LEGACY)) {
-                JavaUtil.setJavaCommand(null);
-                System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre-8");
-            } else if(type.equals(MinecraftVersion.Type.SEMI_NEW)) {
-                JavaUtil.setJavaCommand(null);
-                System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre-11");
-            } else if(type.equals(MinecraftVersion.Type.NEW)) {
-                JavaUtil.setJavaCommand(null);
-                System.setProperty("java.home", Main.getDirectoryPath()+"libs/jre");
-            }
+            Launcher.setJava(type);
         }
         if(ram<512) {
             ram = 512;

@@ -1,6 +1,8 @@
 package com.zyneonstudios;
 
 import com.zyneonstudios.application.Application;
+import com.zyneonstudios.application.backend.installer.java.Architecture;
+import com.zyneonstudios.application.backend.installer.java.OperatingSystem;
 import com.zyneonstudios.application.backend.utils.ZLogger;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonSplash;
 import live.nerotv.shademebaby.ShadeMeBaby;
@@ -14,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Main {
@@ -22,11 +25,13 @@ public class Main {
     public static ZyneonSplash splash;
     private static ZLogger logger;
     public static String version;
-    public static String os;
+    public static OperatingSystem operatingSystem;
+    public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.2.2";
-        String name = "Symmenium";
+        version = "2024.2.3";
+        architecture = getArchitecture();
+        String name = "Symmenia";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
@@ -81,13 +86,13 @@ public class Main {
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
-                Main.os = "Windows";
+                operatingSystem = OperatingSystem.Windows;
                 appData = System.getenv("LOCALAPPDATA");
             } else if (os.contains("mac")) {
-                Main.os = "macOS";
+                operatingSystem = OperatingSystem.macOS;
                 appData = System.getProperty("user.home") + "/Library/Application Support";
             } else {
-                Main.os = "Unix";
+                operatingSystem = OperatingSystem.Linux;
                 appData = System.getProperty("user.home") + "/.local/share";
             }
             Path folderPath = Paths.get(appData, folderName);
@@ -99,5 +104,21 @@ public class Main {
             applicationPath = folderPath + "/";
         }
         return URLDecoder.decode(applicationPath, StandardCharsets.UTF_8);
+    }
+
+    private static Architecture getArchitecture() {
+        String os = System.getProperty("os.arch");
+        ArrayList<String> aarch = new ArrayList<>();
+        aarch.add("ARM");
+        aarch.add("ARM64");
+        aarch.add("aarch64");
+        aarch.add("armv6l");
+        aarch.add("armv7l");
+        for(String arch_os:aarch) {
+            if(arch_os.equalsIgnoreCase(os)) {
+                return Architecture.aarch64;
+            }
+        }
+        return Architecture.x64;
     }
 }

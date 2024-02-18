@@ -211,7 +211,7 @@ public class Application {
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
-        if(Main.os.equalsIgnoreCase("windows")) {
+        if(Main.operatingSystem.toString().equalsIgnoreCase("windows")) {
             frame = new ZyneonWebFrame(getStartURL());
             frame.pack();
         } else {
