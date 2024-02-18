@@ -20,7 +20,7 @@ import com.zyneonstudios.application.backend.launcher.FabricLauncher;
 import com.zyneonstudios.application.backend.launcher.ForgeLauncher;
 import com.zyneonstudios.application.backend.launcher.VanillaLauncher;
 import com.zyneonstudios.application.backend.utils.frame.MemoryFrame;
-import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
+import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;

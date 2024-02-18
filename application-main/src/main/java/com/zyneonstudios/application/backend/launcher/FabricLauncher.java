@@ -6,7 +6,7 @@ import com.zyneonstudios.application.backend.installer.FabricInstaller;
 import com.zyneonstudios.application.backend.instance.FabricInstance;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.LogFrame;
-import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
+import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.JavaUtil;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;

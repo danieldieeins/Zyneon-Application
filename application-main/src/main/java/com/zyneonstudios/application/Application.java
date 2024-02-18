@@ -4,7 +4,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
-import com.zyneonstudios.application.backend.utils.frame.ZyneonWebFrame;
+import com.zyneonstudios.application.backend.utils.frame.web.UnixWebFrame;
+import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -210,7 +211,16 @@ public class Application {
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
-        frame = new ZyneonWebFrame(getStartURL());
+        if(Main.os.equalsIgnoreCase("windows")) {
+            frame = new ZyneonWebFrame(getStartURL());
+            frame.pack();
+        } else {
+            frame = new UnixWebFrame(getStartURL());
+        }
+        frame.setMinimumSize(new Dimension(960,500));
+        frame.setSize(new Dimension(1200,720));
+        frame.setResizable(true);
+        frame.setLocationRelativeTo(null);
     }
 
     public static ZyneonWebFrame getFrame() {
