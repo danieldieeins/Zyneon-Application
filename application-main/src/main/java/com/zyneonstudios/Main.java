@@ -25,8 +25,8 @@ public class Main {
     public static String os;
 
     public static void main(String[] args) {
-        version = "2024.2.1";
-        String name = "Sonium";
+        version = "2024.2.2";
+        String name = "Symmenium";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
