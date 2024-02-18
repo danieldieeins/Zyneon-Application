@@ -28,11 +28,11 @@ public class ZModrinthIntegration extends ModrinthIntegration {
     private Path modsPath;
 
     public ZModrinthIntegration(ZLogger logger, String id, String v) throws Exception {
-        super(logger, Path.of(Application.getInstancePath()+"instances/modrinth-"+id+"-"+v+"/cache/"));
+        super(logger, Path.of(Application.getInstancePath()+"instances/modrinth-"+id.toLowerCase()+"-"+v.toLowerCase()+"/cache/"));
         this.logger = logger;
         this.id = id;
         this.v = v;
-        pathString = Application.getInstancePath()+"instances/modrinth-"+id+"-"+v+"/";
+        pathString = Application.getInstancePath()+"instances/modrinth-"+id.toLowerCase()+"-"+v.toLowerCase()+"/";
 
         instancePath = Path.of(pathString);
         cachePath = Path.of(pathString+"cache/");
@@ -82,7 +82,7 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                 logger.log("[MODRINTH] (INTEGRATION) Verifying "+packBuiltIns.size()+" built in files...");
                 logger.log("[MODRINTH] (INTEGRATION) Building zyneonInstance file from modrinth data...");
                 Config instance = new Config(pathString+"zyneonInstance.json");
-                instance.set("modpack.id","modrinth-"+id+"-"+v);
+                instance.set("modpack.id","modrinth-"+id.toLowerCase()+"-"+v.toLowerCase());
                 instance.set("modpack.name",packName);
                 instance.set("modpack.version",packVersion);
                 logger.log("[MODRINTH] (INTEGRATION) Gathering modloader and Minecraft infos...");
@@ -102,7 +102,7 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                 }
                 logger.log("[MODRINTH] (INTEGRATION) Found "+modloader+" ("+mlversion+") for Minecraft "+minecraft+"!");
                 instance.set("modpack.minecraft",minecraft);
-                instance.set("modpack.instance","instances/modrinth-"+id+"-"+v);
+                instance.set("modpack.instance","instances/modrinth-"+id.toLowerCase()+"-"+v.toLowerCase());
                 String description = "This is a modpack instance downloaded from modrinth!";
                 if(modrinth.getString("summary")!=null) {
                     description = modrinth.getString("summary");
@@ -121,7 +121,7 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                 logger.log("[MODRINTH] (INTEGRATION) Successfully built zyneonInstance file!");
                 logger.log("[MODRINTH] (INTEGRATION) Installed modrinth modpack "+packName+" v"+packVersion+"!");
                 Application.loadInstances();
-                Application.getFrame().getBrowser().loadURL(Application.getInstancesURL()+"?tab=modrinth-"+id+"-"+v);
+                Application.getFrame().getBrowser().loadURL(Application.getInstancesURL()+"?tab=modrinth-"+id.toLowerCase()+"-"+v.toLowerCase());
             } catch (Exception e) {
                 logger.error("[MODRINTH] (INTEGRATION) Couldn't initialise modrinth modpack: "+e.getMessage());
                 Application.getFrame().getBrowser().loadURL(Application.getInstancesURL());

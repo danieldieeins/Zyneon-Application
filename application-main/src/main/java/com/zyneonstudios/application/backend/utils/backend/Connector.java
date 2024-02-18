@@ -214,7 +214,9 @@ public class Connector {
                     ram = instance_.getSettings().getInteger("configuration.ram");
                 }
 
-                frame.executeJavaScript("syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");");
+                String command = "syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");";
+                Main.getLogger().debug("[CONNECTOR] Sending command: "+command);
+                frame.executeJavaScript(command);
             }
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.", "");
