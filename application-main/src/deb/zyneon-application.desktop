@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Zyneon Application
+Exec=java -jar /usr/bin/zyneon/application/updater.jar
+Icon=/usr/bin/zyneon/application/icon.png
+Type=Application
+Categories=Game;
