@@ -29,9 +29,9 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.2.4";
+        version = "2024.2.5";
         architecture = getArchitecture();
-        String name = "Symmenia";
+        String name = "Unknown";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
