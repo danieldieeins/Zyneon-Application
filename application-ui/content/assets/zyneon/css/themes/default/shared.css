@@ -330,7 +330,7 @@ body {
 }
 
 .menu#submenu ul li a .menu-item.active i {
-    color: #fff;
+    color: white;
 }
 
 .menu#submenu ul li a .menu-item:hover i {
@@ -339,7 +339,7 @@ body {
 }
 
 .menu#submenu ul li a .menu-item.active:hover i {
-    color: var(--inverted);
+    color: white;
     transition: none;
 }
 
