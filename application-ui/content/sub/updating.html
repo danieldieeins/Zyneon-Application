@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>News ▪ Zyneon Application</title>
-        <link rel="stylesheet" href="../assets/zyneon/css/style.css">
+        <link rel="stylesheet" href="../assets/zyneon/css/themes/default/shared.css">
         <link rel='stylesheet' href='../assets/boxicons/css/boxicons.min.css'>
         <script src="../assets/zyneon/js/functions.js"></script>
         <script>syncTheme();</script>
@@ -16,54 +16,6 @@
                     <p>Zyneon<br>Application</p>
                 </div>
                 <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
-                <ul>
-                    <li>
-                        <a>
-                            <div class="menu-item" id="selected">
-                                <i class="bx bxs-home"></i>
-                                <span class="menu-item">News & updates</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li id="instance-button">
-                        <a onclick="link('instances.html');">
-                            <div class="menu-item">
-                                <i class='bx bxs-objects-horizontal-left'></i>
-                                <span class="menu-item">Instances</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li id="resource-button">
-                        <a onclick="link('resources.html');">
-                            <div class="menu-item">
-                                <i class='bx bxs-store-alt'></i>
-                                <span class="menu-item">Resources</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a onclick="link('settings.html');">
-                            <div class="menu-item">
-                                <i class="bx bxs-cog"></i>
-                                <span class="menu-item">Settings</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li id="download-button">
-                        <a href="https://github.com/danieldieeins/Zyneon-Application/releases/latest" target="_blank">
-                            <div class="menu-item">
-                                <i class='bx bxs-download'></i>
-                                <span class="menu-item">Download application</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <div class="profile" id="profile_" onclick="toggleMenu();">
-                    <i class='bx bx-loader' id="loading"></i>
-                    <img class="profile-picture" id="profile-picture" src="../assets/zyneon/images/steve.png" alt="User profile picture (minecraft head)">
-                    <p class="username" id="username">connecting...</p>
-                    <a onclick="link('settings.html?tab=profile');" id="loginlogout"><p>loading...</p></a>
-                </div>
             </div>
             <div class="content">
                 <div class="center">
@@ -74,5 +26,4 @@
             </div>
         </div>
     </body>
-<script>syncApplication();</script>
 </html>
