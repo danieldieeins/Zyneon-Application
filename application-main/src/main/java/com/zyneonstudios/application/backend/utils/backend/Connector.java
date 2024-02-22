@@ -127,18 +127,20 @@ public class Connector {
             } catch (Exception e) {
                 frame.executeJavaScript("logout();");
             }
+        } else if (request.startsWith("sync.theme.")) {
+            syncTheme(request.replace("sync.theme.",""));
         } else if (request.contains("sync.settings.")) {
             syncSettings(request.replace("sync.settings.", ""));
-        } else if (request.contains("button.theme.light")) {
-            Application.theme = "light";
+        } else if (request.contains("button.theme.default.light")) {
+            Application.theme = "default.light";
             Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.white, Color.black);
-        } else if (request.contains("button.theme.zyneon")) {
-            Application.theme = "zyneon";
+        } else if (request.contains("button.theme.default.zyneon")) {
+            Application.theme = "default.zyneon";
             Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.decode("#050113"), Color.white);
-        } else if (request.contains("button.theme.dark")) {
-            Application.theme = "dark";
+        } else if (request.contains("button.theme.default.dark")) {
+            Application.theme = "default.dark";
             Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.black, Color.white);
         } else if (request.contains("button.refresh")) {
@@ -856,6 +858,15 @@ public class Connector {
         FileNameExtensionFilter standardFilter = new FileNameExtensionFilter("Folders only", "*.*");
         chooser.addChoosableFileFilter(standardFilter);
         return chooser;
+    }
+
+    public void syncTheme(String theme) {
+        if(theme.equalsIgnoreCase("dark")||theme.equalsIgnoreCase("light")||theme.equalsIgnoreCase("zyneon")||theme.equalsIgnoreCase("default")) {
+            frame.executeJavaScript("setTheme('default."+theme.toLowerCase().replace("default","dark")+"');");
+        } else {
+            File themes = new File(Main.getDirectoryPath()+"themes/");
+            Main.getLogger().debug("[CONNECTOR] Created themes folder: "+themes.mkdirs());
+        }
     }
 
     public void resolveInstanceRequest(InstanceAction action, String instance) {

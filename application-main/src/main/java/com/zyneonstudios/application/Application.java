@@ -56,7 +56,7 @@ public class Application {
         config.checkEntry("settings.logOutput",false);
         config.checkEntry("settings.memory.default", 1024);
         config.checkEntry("settings.logger.debug", false);
-        config.checkEntry("settings.appearance.theme","dark");
+        config.checkEntry("settings.appearance.theme","default.dark");
 
         logOutput = config.getBool("settings.logOutput");
         theme = config.getString("settings.appearance.theme");
@@ -192,10 +192,13 @@ public class Application {
     }
 
     public static String getStartURL() {
+        String url = "";
         if (startTab.equalsIgnoreCase("instances")) {
-            return getInstancesURL();
+            url = getInstancesURL();
+        } else {
+            url = getNewsURL();
         }
-        return getNewsURL();
+        return url+"?theme="+theme;
     }
 
     public static String getNewsURL() {
