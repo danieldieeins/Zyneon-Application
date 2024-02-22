@@ -1,4 +1,4 @@
-let theme = "dark";
+let theme = "default.dark";
 let app = false;
 
 document.addEventListener('contextmenu',function(e){
@@ -73,10 +73,6 @@ function syncTheme() {
     if(localStorage.getItem("theme")!==null) {
         theme = localStorage.getItem("theme");
     }
-    setTheme(theme);
-}
-
-function syncTheme_old() {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("theme")!=null) {
         theme = urlParams.get('theme');
@@ -86,8 +82,8 @@ function syncTheme_old() {
 
 function setTheme(newTheme) {
     let root = document.documentElement;
-    if (newTheme === "light") {
-        theme = "light";
+    if (newTheme === "default.light") {
+        theme = "default.light";
         root.style.setProperty("--background", '#c7c7c7');
         root.style.setProperty('--background2', '#e0e0e0');
         root.style.setProperty('--background3', '#d3d3d3');
@@ -98,16 +94,16 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim", "#00000085");
         root.style.setProperty("--color-dim-less", "#00000099");
         root.style.setProperty("--inverted", "#fff");
-    } else if (newTheme === "zyneon") {
-        setTheme("dark");
-        theme = "zyneon";
+    } else if (newTheme === "default.zyneon") {
+        setTheme("default.dark");
+        theme = "default.zyneon";
         root.style.setProperty('--background', '#140c28');
         root.style.setProperty('--background2', '#0d061c');
         root.style.setProperty('--background3', '#120925');
         root.style.setProperty('--background4', '#060112');
         root.style.setProperty('--background-accent', '#050113');
-    } else {
-        theme = "dark";
+    } else if (newTheme === "default.dark") {
+        theme = "default.dark";
         root.style.setProperty('--background', '#181818');
         root.style.setProperty('--background2', '#101010');
         root.style.setProperty('--background3', '#1a1a1a');
@@ -118,6 +114,8 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim", "#ffffff60");
         root.style.setProperty("--color-dim-less", "#ffffff90");
         root.style.setProperty("--inverted", "#000");
+    } else {
+        callJavaMethod("sync.theme."+theme)
     }
     localStorage.setItem('theme', theme);
     callJavaMethod('button.theme.' + theme);

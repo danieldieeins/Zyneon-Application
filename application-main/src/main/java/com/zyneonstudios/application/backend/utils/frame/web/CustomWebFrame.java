@@ -7,14 +7,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class UnixWebFrame extends ZyneonWebFrame {
+public class CustomWebFrame extends ZyneonWebFrame {
 
     private static Point mouseDownCompCoords;
     private String title;
     private JPanel titleBar;
     private boolean border;
 
-    public UnixWebFrame(String url) {
+    public CustomWebFrame(String url) {
         super(url);
         title = "  Zyneon Application";
         setUndecorated(true);

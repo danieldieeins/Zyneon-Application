@@ -4,7 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
-import com.zyneonstudios.application.backend.utils.frame.web.UnixWebFrame;
+import com.zyneonstudios.application.backend.utils.frame.web.CustomWebFrame;
 import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
@@ -215,7 +215,7 @@ public class Application {
             frame = new ZyneonWebFrame(getStartURL());
             frame.pack();
         } else {
-            frame = new UnixWebFrame(getStartURL());
+            frame = new CustomWebFrame(getStartURL());
         }
         frame.setMinimumSize(new Dimension(960,500));
         frame.setSize(new Dimension(1200,720));

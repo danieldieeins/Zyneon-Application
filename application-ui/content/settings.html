@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>News ▪ Zyneon Application</title>
-    <link rel="stylesheet" href="assets/zyneon/css/themes/default/shared.css">
-    <link rel="stylesheet" href="assets/zyneon/css/themes/default/settings.css">
-    <link rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
+    <link id="shared-css" rel="stylesheet" href="assets/zyneon/css/themes/default/shared.css">
+    <link id="icons-css" rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
+    <link id="page-css" rel="stylesheet" href="assets/zyneon/css/themes/default/settings.css">
     <script src="assets/zyneon/js/functions.js"></script>
     <script>syncTheme();</script>
 </head>
@@ -22,7 +22,7 @@
                     <a onclick="link('start.html');">
                         <div class="menu-item">
                             <i class="bx bxs-home"></i>
-                            <span class="menu-item">News & updates</span>
+                            <span class="menu-item">Home & news</span>
                         </div>
                     </a>
                 </li>
@@ -137,16 +137,16 @@
                     <h2>General settings</h2>
                     <h3 id="startTitle" class="background-bottom">Start tab:</h3>
                     <div id="startTab" class="start-tab">
-                        <a class="button" id="general-tab-start" onclick="callJavaMethod('button.starttab.start');">News</a>
+                        <a class="button" id="general-tab-start" onclick="callJavaMethod('button.starttab.start');">Start</a>
                         <a class="button" id="general-tab-instances" onclick="callJavaMethod('button.starttab.instances');">Instances</a>
                     </div>
                 </div>
                 <div class="card" id="appearance">
                     <h2>Appearance</h2>
                     <h3 class="background">Theme:
-                        <a class="button" id="appearance-theme-light" onclick="setTheme('light'); link('settings.html');">Light</a>
-                        <a class="button" id="appearance-theme-dark" onclick="setTheme('dark'); link('settings.html');">Dark</a>
-                        <a class="button" id="appearance-theme-zyneon" onclick="setTheme('zyneon'); link('settings.html');">Zyneon</a>
+                        <a class="button" id="appearance-theme-light" onclick="setTheme('default.light'); link('settings.html');">Light</a>
+                        <a class="button" id="appearance-theme-dark" onclick="setTheme('default.dark'); link('settings.html');">Dark</a>
+                        <a class="button" id="appearance-theme-zyneon" onclick="setTheme('default.zyneon'); link('settings.html');">Zyneon</a>
                     </h3>
                     <h3 class="bottom">Language:
                         <a class="button" id="appearance-language-english"><i class='bx bxs-lock-alt'></i> English</a>
