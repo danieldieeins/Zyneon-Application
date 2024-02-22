@@ -40,11 +40,11 @@ function syncGeneralSettings() {
     const dark = document.getElementById("appearance-theme-dark");
     const light = document.getElementById("appearance-theme-light");
     const zyneon = document.getElementById("appearance-theme-zyneon");
-    if(theme==="zyneon") {
+    if(theme==="default.zyneon") {
         dark.classList.remove("active");
         light.classList.remove("active");
         zyneon.classList.add("active");
-    } else if(theme==="light") {
+    } else if(theme==="default.light") {
         dark.classList.remove("active");
         zyneon.classList.remove("active");
         light.classList.add("active");
