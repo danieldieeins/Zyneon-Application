@@ -94,6 +94,8 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim", "#00000085");
         root.style.setProperty("--color-dim-less", "#00000099");
         root.style.setProperty("--inverted", "#fff");
+        localStorage.setItem('theme', theme);
+        callJavaMethod('button.theme.' + theme);
     } else if (newTheme === "default.zyneon") {
         setTheme("default.dark");
         theme = "default.zyneon";
@@ -102,6 +104,8 @@ function setTheme(newTheme) {
         root.style.setProperty('--background3', '#120925');
         root.style.setProperty('--background4', '#060112');
         root.style.setProperty('--background-accent', '#050113');
+        localStorage.setItem('theme', theme);
+        callJavaMethod('button.theme.' + theme);
     } else if (newTheme === "default.dark") {
         theme = "default.dark";
         root.style.setProperty('--background', '#181818');
@@ -114,11 +118,19 @@ function setTheme(newTheme) {
         root.style.setProperty("--color-dim", "#ffffff60");
         root.style.setProperty("--color-dim-less", "#ffffff90");
         root.style.setProperty("--inverted", "#000");
+        localStorage.setItem('theme', theme);
+        callJavaMethod('button.theme.' + theme);
+    } else if (newTheme === "custom") {
+        document.getElementById("shared-css").href = "assets/zyneon/css/themes/custom/shared.css";
+        document.getElementById("sub-css").href = "../assets/zyneon/css/themes/custom/shared.css";
+        let page = document.getElementById("page-css").href;
+        page = page.replace("default","custom");
+        document.getElementById("page-css").href = page;
+        localStorage.setItem('theme', newTheme);
+        callJavaMethod("button.theme.custom");
     } else {
-        callJavaMethod("sync.theme."+theme)
+        callJavaMethod("sync.theme."+newTheme);
     }
-    localStorage.setItem('theme', theme);
-    callJavaMethod('button.theme.' + theme);
 }
 
 function callJavaMethod(message) {
