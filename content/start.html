@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>News ▪ Zyneon Application</title>
+    <title>Start ▪ Zyneon Application</title>
     <link id="shared-css" rel="stylesheet" href="assets/zyneon/css/themes/default/shared.css">
     <link id="icons-css" rel='stylesheet' href='assets/boxicons/css/boxicons.min.css'>
     <link id="page-css" rel="stylesheet" href="assets/zyneon/css/themes/default/start.css">
@@ -68,62 +68,33 @@
         </div>
         <div class="menu" id="submenu">
             <ul>
-                <li class="subtitle">
-                    <span class="bold">Home, news & updates</span>
-                </li>
-                <li>
-                    <a onclick="syncNews();">
-                        <div class="menu-item" id="news-button">
-                            <i class='bx bxs-news' ></i>
-                            <span class="menu-item">Home & news</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onclick="syncUpdates();">
-                        <div class="menu-item" id="updates-button">
-                            <i class='bx bxs-archive-in' ></i>
-                            <span class="menu-item">Application updates</span>
-                        </div>
-                    </a>
+                <li id="back-to-instance">
                 </li>
             </ul>
         </div>
         <div class="content">
             <div id="news">
-                <div class="card">
-                    <div class="flex">
-                        <img alt="Zyneon Logo" src="assets/zyneon/images/abstract.png">
-                        <div>
-                            <h2>Zyneon Application</h2>
-                            <h3>Manage, create and share beloved Minecraft instances, mod packs, resource pack and much more!</h3>
+                <div class="flex">
+                    <div>
+                        <h1>Zyneon Application</h1>
+                        <h3>2024.2.5 - Name</h3>
+                    </div>
+                    <div>
+                        <div class="card">
+                            <h2><a class="button"><i class='bx bx-globe' ></i> Website</a>ㅤ<a class="button"><i class='bx bxl-discord-alt' ></i> Discord</a>ㅤ<a class="button" id="app-button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/releases/latest');"><i class='bx bx-download ' ></i> Download app</a></h2>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <h1>News</h1>
-                </div>
-                <div class="card">
-                    <h2>Loading</h2>
-                    <h3>Trying to sync news <i class='bx bx-loader-alt bx-spin bx-rotate-90' ></i></h3>
-                </div>
-                <div class="card" id="news-card">
-                    <h2>Title</h2>
-                    <h3>content</h3>
-                </div>
-            </div>
-            <div id="updates">
-                <div class="card">
-                    <h1>Updates</h1>
-                </div>
-                <div class="card" id="changelog-card">
-                    <h2>Status</h2>
-                    <h3>No connection to the changelog server.</h3>
+                <div class="news">
+                    <div class="banner">
+                        <h1>Test</h1>
+                    </div>
+                    <iframe src="https://a.nerotv.live"></iframe>
                 </div>
             </div>
         </div>
     </div>
 </body>
 <script src="assets/zyneon/js/start.js"></script>
-<script>syncApplication(); syncNews();</script>
+<script>syncApplication("start"); syncStart();</script>
 </html>

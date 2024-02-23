@@ -25,21 +25,33 @@ function toggleMenu() {
 }
 
 function activateMenu() {
-    let menu = document.querySelector(".menu");
-    menu.classList.add('active');
-    let submenu = document.querySelector("#submenu");
-    submenu.classList.remove('active');
+    if(document.querySelector(".menu")!==null) {
+        let menu = document.querySelector(".menu");
+        menu.classList.add('active');
+    }
+    if(document.querySelector("#submenu")!==null) {
+        let submenu = document.querySelector("#submenu");
+        submenu.classList.remove('active');
+    }
 }
 
 function deactivateMenu() {
-    let menu = document.querySelector(".menu");
-    menu.classList.remove('active');
-    let submenu = document.querySelector("#submenu");
-    submenu.classList.add('active');
+    if(document.querySelector(".menu")!==null) {
+        let menu = document.querySelector(".menu");
+        menu.classList.remove('active');
+    }
+    if(document.querySelector("#submenu")!==null) {
+        let submenu = document.querySelector("#submenu");
+        submenu.classList.add('active');
+    }
 }
 
-function syncApplication() {
-    deactivateMenu();
+function syncApplication(tab) {
+    if(tab==="start") {
+        activateMenu();
+    } else {
+        deactivateMenu();
+    }
     callJavaMethod("sync.login");
 }
 
@@ -72,6 +84,13 @@ function checkForWeb() {
 function syncTheme() {
     if(localStorage.getItem("theme")!==null) {
         theme = localStorage.getItem("theme");
+        if(theme.toLowerCase()==="dark") {
+            theme="default.dark";
+        } else if(theme.toLowerCase()==="light") {
+            theme="default.light";
+        } else if(theme.toLowerCase()==="zyneon") {
+            theme="default.zyneon";
+        }
     }
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("theme")!=null) {

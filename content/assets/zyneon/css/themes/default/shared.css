@@ -484,6 +484,16 @@ body {
     display: none;
 }
 
+.center-top {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    height: calc(100% - 1.5rem);
+    width: calc(100% - 1.5rem);
+    display: flex;
+    justify-content: center;
+}
+
 .center {
     padding: 0;
     margin: 0;
