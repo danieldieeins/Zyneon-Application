@@ -4,7 +4,6 @@
 }
 
 .content #news {
-    overflow: hidden;
     background: url("../../../images/zyneon-bg.png") no-repeat center;
     background-size:cover;
     position: absolute;
@@ -58,7 +57,6 @@
     position: absolute;
     left: 2rem; top: 6.5rem;
     right: 2.5rem; bottom: 0;
-    background: red;
 }
 
 .content #news .news .banner {
@@ -72,9 +70,10 @@
 }
 
 .content #news .news iframe {
-    position: relative;
+    position: absolute;
+    top: 14rem;
     width: 100%;
-    height: calc(100% - 12.5rem);
+    height: calc(100% - 3rem);
     background: none;
     border: none;
     border-top-left-radius: 1rem;
