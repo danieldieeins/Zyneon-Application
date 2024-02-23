@@ -26,10 +26,22 @@ function syncInstanceList() {
     callJavaMethod("sync.instances.list");
 }
 
-function loadTab() {
+function loadTab(tab) {
     const urlParams = new URLSearchParams(window.location.search);
+    let tab_ = "zyneon::overview";
     if(urlParams.get("tab")!=null) {
-        syncInstance(urlParams.get("tab"));
+        tab_ = urlParams.get("tab");
+    } else {
+        if(tab!==null) {
+            if(tab!==undefined) {
+                if(tab!=="null") {
+                    tab_ = tab;
+                }
+            }
+        }
+    }
+    if(document.getElementById(tab)!==null) {
+        syncInstance(tab_);
     }
 }
 
