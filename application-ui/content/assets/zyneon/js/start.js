@@ -31,4 +31,13 @@ function syncStart(response) {
     } else {
         callJavaMethod("sync.start");
     }
+    loadNews();
+}
+
+let sync = true;
+function loadNews() {
+    if(sync) {
+        document.getElementById("iframe").src = document.getElementById("iframe").src+"?theme="+theme;
+        sync=false;
+    }
 }
