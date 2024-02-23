@@ -7,6 +7,7 @@ body {
     margin: 0;
     overflow: hidden;
     background: none;
+    width: calc(100% - 3rem);
 }
 
 .content .flex .card {
