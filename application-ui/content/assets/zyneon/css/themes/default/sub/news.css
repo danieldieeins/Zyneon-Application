@@ -1,0 +1,57 @@
+body {
+    background: none;
+}
+
+.content {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background: none;
+}
+
+.content .flex .card {
+    position: relative;
+    width: 50%;
+    border-radius: 1rem;
+    box-shadow: none;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--background4);
+}
+
+.content .flex .card:hover {
+    cursor: pointer;
+    background: var(--highlight);
+}
+
+.content .flex .card:hover h1 {
+    color: var(--inverted)
+}
+
+.content .flex .card.active {
+    cursor: initial;
+    background: var(--accent);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.content .flex .card.active h1 {
+    position: absolute;
+    left: 15%; right: 15%;
+    margin: 0.4rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    color: var(--accent);
+    background: var(--background-accent);
+}
+
+.content .flex .card#news {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.content .flex .card#changelogs {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

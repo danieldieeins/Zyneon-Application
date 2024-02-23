@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>News ▪ Zyneon Application</title>
+        <script src="../content/assets/zyneon/js/functions.js"></script>
+        <link id="shared-css" rel="stylesheet" href="../content/assets/zyneon/css/themes/default/shared.css">
+        <link id="page-css" rel="stylesheet" href="../content/assets/zyneon/css/themes/default/sub/news.css">
+        <link id="icons-css" rel='stylesheet' href='../content/assets/boxicons/css/boxicons.min.css'>
+        <script>syncTheme();</script>
+        <script>
+
+        </script>
+    </head>
+    <body>
+        <div class="content">
+            <div class="flex">
+                <div class="card" id="news" onclick="syncNews();">
+                    <h1>News</h1>
+                </div>
+                <div class="card" id="changelogs" onclick="syncUpdates();">
+                    <h1>Application updates</h1>
+                </div>
+            </div>
+            <div class="field" id="news-content">
+                <div class="card">
+                    <h1>New: Update 2024.2.6:</h1>
+                    <h3 class="background-bottom">23.02.2024 @Zyneon: A fresh new landing page!</h3>
+                </div>
+            </div>
+            <div class="field" id="changelog-content">
+                <div class="card">
+                    <h1>No connection...</h1>
+                    <h3 class="background-bottom">The changelog server  is offline</h3>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="../content/assets/zyneon/js/start.js"></script>
+    <script>syncApplication();</script>
+    <script>syncNews();</script>
+</html>

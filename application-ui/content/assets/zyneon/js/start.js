@@ -1,14 +1,13 @@
-const news = document.getElementById("news");
-const newsbutton = document.getElementById("news-button");
-const updates = document.getElementById("updates");
-const updatesbutton = document.getElementById("updates-button");
+const news = document.getElementById("news-content");
+const newsbutton = document.getElementById("news");
+const updates = document.getElementById("changelog-content");
+const updatesbutton = document.getElementById("changelogs");
 
 function syncNews() {
     updates.style.display = "none";
     updatesbutton.classList.remove("active");
     news.style.display = "inherit";
     newsbutton.classList.add("active");
-    callJavaMethod("sync.start.news");
 }
 
 function syncUpdates() {
@@ -16,5 +15,20 @@ function syncUpdates() {
     newsbutton.classList.remove("active");
     updates.style.display = "inherit";
     updatesbutton.classList.add("active");
-    callJavaMethod("sync.start.updates");
+}
+
+function syncStart(response) {
+    if(response!==undefined) {
+        if(response==="app") {
+            if(document.getElementById("app-button")!==null) {
+                const button = document.getElementById("app-button");
+                button.innerHTML = "<i class='bx bx-laptop ' ></i> Web version";
+                button.onclick = function () {
+                    openInBrowser("https://danieldieeins.github.io/Zyneon-Application/");
+                }
+            }
+        }
+    } else {
+        callJavaMethod("sync.start");
+    }
 }
