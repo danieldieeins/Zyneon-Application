@@ -116,7 +116,7 @@ public class Connector {
             } catch (IOException e) {
                 Main.getLogger().error(e.getMessage());
             }
-            frame.executeJavaScript("loadTab();");
+            frame.executeJavaScript("loadTab('"+Application.lastInstance+"');");
         } else if (request.contains("sync.login")) {
             try {
                 if (Application.auth.isLoggedIn()) {
@@ -219,6 +219,9 @@ public class Connector {
                 String command = "syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");";
                 Main.getLogger().debug("[CONNECTOR] Sending command: "+command);
                 frame.executeJavaScript(command);
+
+                Application.lastInstance = id;
+                Application.config.set("settings.lastInstance",Application.lastInstance);
             }
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.", "");

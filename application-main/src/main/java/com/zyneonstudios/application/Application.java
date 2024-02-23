@@ -36,6 +36,7 @@ public class Application {
     public static String version;
     public static String theme;
     public static boolean logOutput;
+    public static String lastInstance;
 
     public Application(String ver) {
         version = ver;
@@ -57,11 +58,17 @@ public class Application {
         config.checkEntry("settings.memory.default", 1024);
         config.checkEntry("settings.logger.debug", false);
         config.checkEntry("settings.appearance.theme","default.dark");
+        config.checkEntry("settings.lastInstance","zyneon::overview");
 
         logOutput = config.getBool("settings.logOutput");
         theme = config.getString("settings.appearance.theme");
         memory = config.getInteger("settings.memory.default");
         startTab = config.getString("settings.starttab");
+        if(config.getString("settings.lastInstance").equalsIgnoreCase("zyneon::overview")) {
+            lastInstance = null;
+        } else {
+            lastInstance = config.getString("settings.lastInstance");
+        }
         if(!Main.getLogger().isDebugEnabled()) {
             Main.getLogger().setDebugEnabled(config.getBool("settings.logger.debug"));
             ShadeMeBaby.getLogger().setDebugEnabled(Main.getLogger().isDebugEnabled());
@@ -198,7 +205,12 @@ public class Application {
         } else {
             url = getNewsURL();
         }
-        return url+"?theme="+theme;
+        if(url.contains("?")) {
+            url=url+"&theme="+theme;
+        } else {
+            url=url+"?theme="+theme;
+        }
+        return url;
     }
 
     public static String getNewsURL() {
@@ -206,7 +218,7 @@ public class Application {
     }
 
     public static String getInstancesURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html";
+        return  "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html";
     }
 
     public static String getSettingsURL() {
