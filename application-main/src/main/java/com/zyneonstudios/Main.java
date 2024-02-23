@@ -30,8 +30,8 @@ public class Main {
 
     public static void main(String[] args) {
         version = "2024.2.5";
+        String name = "Domania";
         architecture = getArchitecture();
-        String name = "Unknown";
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
