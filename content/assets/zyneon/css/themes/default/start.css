@@ -3,6 +3,10 @@
     display: none;
 }
 
+.content {
+    background: #191919;
+}
+
 .content #news {
     background: url("../../../images/zyneon-bg.png") no-repeat center;
     background-size:cover;
@@ -60,13 +64,19 @@
 }
 
 .content #news .news .banner {
+    display: none;
+    opacity: 60%;
     border-radius: 1rem;
     padding: 1.25rem;
     position: relative;
-    width: calc(100% - 2.5rem);
+    width: 50rem;
     height: 10rem;
     color: var(--color);
     background: linear-gradient(var(--background3),var(--background4));
+}
+
+.content #news .news .banner .flex img {
+    height: 7.75rem;
 }
 
 .content #news .news iframe {

@@ -32,13 +32,11 @@ body {
 .content .flex .card.active {
     cursor: initial;
     background: var(--accent);
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .content .flex .card.active h1 {
     position: absolute;
-    left: 15%; right: 15%;
+    left: 5%; right: 5%;
     margin: 0.4rem;
     padding: 0.5rem;
     border-radius: 1rem;
