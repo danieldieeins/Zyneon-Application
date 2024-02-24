@@ -250,7 +250,7 @@ public class Application {
         } else {
             frame = new CustomWebFrame(getStartURL());
         }
-        frame.setMinimumSize(new Dimension(1100,500));
+        frame.setMinimumSize(new Dimension(1200,500));
         frame.setSize(new Dimension(1200,720));
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);

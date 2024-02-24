@@ -29,7 +29,7 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.2.6";
+        version = "2024.2.7";
         String name = "Sunrise";
         architecture = getArchitecture();
         splash = new ZyneonSplash();

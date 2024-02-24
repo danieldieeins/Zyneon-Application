@@ -14,10 +14,10 @@ body {
     position: relative;
     width: 50%;
     border-radius: 1rem;
-    box-shadow: none;
     text-align: center;
     white-space: nowrap;
     background: var(--background4);
+    box-shadow: 0 0 0.8rem #000;
 }
 
 .content .flex .card:hover {
@@ -31,6 +31,7 @@ body {
 
 .content .flex .card.active {
     cursor: initial;
+    z-index: 1;
     background: var(--accent);
 }
 
@@ -53,4 +54,8 @@ body {
 .content .flex .card#changelogs {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+.content .card {
+    border-radius: 1rem;
 }
