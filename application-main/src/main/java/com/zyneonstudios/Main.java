@@ -30,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) {
         version = "2024.2.7";
-        String name = "Sunrise";
+        String name = "Sunset";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);
@@ -39,19 +39,24 @@ public class Main {
         logger.log("[MAIN] Updated user interface: "+update());
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         Application application = new Application(fullVersion);
-        if(args.length!=0) {
-            if(args[0].startsWith("--test")) {
-                String random = StringUtil.generateAlphanumericString(2)+"-"+StringUtil.generateAlphanumericString(3)+"-"+StringUtil.generateAlphanumericString(1);
+        boolean online = false;
+        for(String arg:args) {
+            arg = arg.toLowerCase();
+            if(arg.equals("--test")) {
+                String random = StringUtil.generateAlphanumericString(2) + "-" + StringUtil.generateAlphanumericString(3) + "-" + StringUtil.generateAlphanumericString(1);
                 String date = new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
-                fullVersion = date+" ▪ "+random;
+                fullVersion = date + " ▪ " + random;
                 application = new Application(fullVersion);
+            } else if(arg.equals("--debug")) {
                 logger.setDebugEnabled(true);
                 ShadeMeBaby.getLogger().setDebugEnabled(true);
+            } else if(arg.equals("--online")) {
+                online = true;
             }
         }
         System.gc();
         logger.log("[MAIN] Launching Zyneon Application version "+fullVersion+"...");
-        application.start();
+        application.start(online);
     }
 
     public static ZLogger getLogger() {

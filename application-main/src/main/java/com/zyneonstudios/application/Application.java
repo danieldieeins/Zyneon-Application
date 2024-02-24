@@ -75,7 +75,8 @@ public class Application {
         }
     }
 
-    public void start() {
+    public void start(boolean online) {
+        Application.online = online;
         init();
         try {
             CompletableFuture.runAsync(Application::login);
