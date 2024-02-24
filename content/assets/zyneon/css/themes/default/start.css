@@ -4,17 +4,38 @@
 }
 
 .content {
-    background: #191919;
+    background: var(--background);
 }
 
 .content #news {
-    background: url("../../../images/zyneon-bg.png") no-repeat center;
+    background: url("../../../images/instances/official/projectz.webp") no-repeat center;
     background-size:cover;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+}
+
+.content #news .background {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    z-index: 0;
+}
+
+.content #news .background .top {
+    height: 60%;
+    width: 100%;
+    background: linear-gradient(#00000000,var(--background));
+}
+
+.content #news .background .bottom {
+    background: #14ff00;
+    top: 60%;
+    height: 40%;
+    width: 100%;
+    background: var(--background);
 }
 
 .content #news .flex {
