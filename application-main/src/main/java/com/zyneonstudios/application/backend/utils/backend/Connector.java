@@ -117,6 +117,8 @@ public class Connector {
                 Main.getLogger().error(e.getMessage());
             }
             frame.executeJavaScript("loadTab('"+Application.lastInstance+"');");
+        } else if (request.contains("sync.web")) {
+            frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if (request.contains("sync.start")) {
             frame.executeJavaScript("syncStart('app');");
         } else if (request.contains("sync.login")) {

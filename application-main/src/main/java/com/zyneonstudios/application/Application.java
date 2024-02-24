@@ -213,16 +213,34 @@ public class Application {
         return url;
     }
 
+    private static boolean online = false;
+    public static String getOnlineStartURL() {
+        online = !online;
+        return getStartURL();
+    }
+
     public static String getNewsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "start.html";
+        if(online) {
+            return "https://danieldieeins.github.io/Zyneon-Application/content/start.html";
+        } else {
+            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "start.html";
+        }
     }
 
     public static String getInstancesURL() {
-        return  "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html";
+        if(online) {
+            return "https://danieldieeins.github.io/Zyneon-Application/content/instances.html";
+        } else {
+            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html";
+        }
     }
 
     public static String getSettingsURL() {
-        return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html";
+        if(online) {
+            return "https://danieldieeins.github.io/Zyneon-Application/content/settings.html";
+        } else {
+            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html";
+        }
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
