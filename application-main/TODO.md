@@ -3,7 +3,6 @@ Just a list of all things I need to do.
 
 Features `QoL`
 ---
-- Create application Windows installer
 - Instance "Installed mods" List
   - With "Add content"-search implementation.
 - Starting search when pressing enter (resource search)
@@ -26,8 +25,6 @@ Features `Base`
   - Saving created and changes skins locally
   - Option to save skins online (connected with UUID) 
 - In-app skin changer
-- News synchronisation (without desktop app)
-- Changelog synchronisation (without desktop app)
 - Allow more than one account
 - Search for updates (in-app)
 
