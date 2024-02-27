@@ -3,6 +3,7 @@ package com.zyneonstudios.application;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
+import com.zyneonstudios.application.backend.installer.java.OperatingSystem;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.web.CustomWebFrame;
 import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
@@ -245,11 +246,11 @@ public class Application {
     }
 
     private void checkURL() throws IOException, UnsupportedPlatformException, CefInitializationException, InterruptedException {
-        if(Main.operatingSystem.toString().equalsIgnoreCase("windows")) {
+        if(Main.operatingSystem==OperatingSystem.Linux) {
+            frame = new CustomWebFrame(getStartURL());
+        } else {
             frame = new ZyneonWebFrame(getStartURL());
             frame.pack();
-        } else {
-            frame = new CustomWebFrame(getStartURL());
         }
         frame.setMinimumSize(new Dimension(1200,500));
         frame.setSize(new Dimension(1200,720));
