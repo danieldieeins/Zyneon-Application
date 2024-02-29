@@ -26,7 +26,6 @@ import java.io.IOException;
 
 public class WebFrame extends JFrame {
 
-    private CefApp app;
     private CefClient client;
     private CefBrowser browser;
     private boolean browserFocus;
@@ -37,10 +36,6 @@ public class WebFrame extends JFrame {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public CefApp getApp() {
-        return app;
     }
 
     public WebFrame getInstance() {
@@ -72,7 +67,7 @@ public class WebFrame extends JFrame {
         builder.setInstallDir(installDir);
         builder.install();
         builder.getCefSettings().windowless_rendering_enabled = false;
-        app = builder.build();
+        CefApp app = builder.build();
         client = app.createClient();
         CefMessageRouter messageRouter = CefMessageRouter.create();
         client.addMessageRouter(messageRouter);

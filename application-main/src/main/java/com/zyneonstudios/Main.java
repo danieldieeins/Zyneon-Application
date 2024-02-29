@@ -29,8 +29,8 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.3";
-        String name = "?";
+        version = "2024.2.8";
+        String name = "Ploccium";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);
@@ -42,16 +42,18 @@ public class Main {
         boolean online = false;
         for(String arg:args) {
             arg = arg.toLowerCase();
-            if(arg.equals("--test")) {
-                String random = StringUtil.generateAlphanumericString(2) + "-" + StringUtil.generateAlphanumericString(3) + "-" + StringUtil.generateAlphanumericString(1);
-                String date = new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
-                fullVersion = date + " ▪ " + random;
-                application = new Application(fullVersion);
-            } else if(arg.equals("--debug")) {
-                logger.setDebugEnabled(true);
-                ShadeMeBaby.getLogger().setDebugEnabled(true);
-            } else if(arg.equals("--online")) {
-                online = true;
+            switch (arg) {
+                case "--test" -> {
+                    String random = StringUtil.generateAlphanumericString(2) + "-" + StringUtil.generateAlphanumericString(3) + "-" + StringUtil.generateAlphanumericString(1);
+                    String date = new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
+                    fullVersion = date + " ▪ " + random;
+                    application = new Application(fullVersion);
+                }
+                case "--debug" -> {
+                    logger.setDebugEnabled(true);
+                    ShadeMeBaby.getLogger().setDebugEnabled(true);
+                }
+                case "--online" -> online = true;
             }
         }
         System.gc();

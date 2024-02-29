@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.zyneonstudios</groupId>
         <artifactId>application-parent</artifactId>
-        <version>2024.3</version>
+        <version>2024.2</version>
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.3</version>
+    <version>2024.2.8</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>Zyneon-Auth</artifactId>
-            <version>b8028c7</version>
+            <version>0a5aa5f</version>
             <scope>compile</scope>
         </dependency>
 
@@ -59,6 +59,11 @@
             <groupId>com.moandjiezana.toml</groupId>
             <artifactId>toml4j</artifactId>
             <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.26.0</version>
         </dependency>
     </dependencies>
 

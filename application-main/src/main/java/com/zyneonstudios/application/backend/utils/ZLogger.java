@@ -60,6 +60,7 @@ public class ZLogger extends Logger implements ILogger {
         return prefix;
     }
 
+    @SuppressWarnings("unused")
     public void setPrefix(String p) {
         prefix = p;
     }
