@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.zyneonstudios</groupId>
         <artifactId>application-parent</artifactId>
-        <version>2024.2</version>
+        <version>2024.3</version>
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.2.8</version>
+    <version>2024.3</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.github.danieldieeins</groupId>
             <artifactId>Zyneon-Auth</artifactId>
-            <version>2024.2</version>
+            <version>b8028c7</version>
             <scope>compile</scope>
         </dependency>
 
