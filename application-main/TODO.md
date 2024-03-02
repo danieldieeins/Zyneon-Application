@@ -39,12 +39,12 @@ Features `Instances`
 ---
 - Instance overview
 - Instance publisher
-- Get instance by (zip) URL
+- Get instance by (zip or json) URL
 
 Bugfixes `front-end`
 ---
 - Prevent line-breaks in search results
-- Add Zyneon+ 1.12.2 and Zyneon+ 1.8.9 designs
+- Add Zyneon+ Legacy 1.12.2 and Zyneon+ Legacy 1.8.9
 - Re-add spacing under instances list
 
 Bugfixes `back-end`
