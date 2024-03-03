@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,49 +20,97 @@ public class Updater {
 
     private static ZyneonSplash splash;
 
-    public static void main(String[] args) {
+    public static void main(String[] a) {
         splash = new ZyneonSplash();
         splash.setVisible(true);
-        new Updater();
+
+        new Updater(initArgs(a));
     }
 
-    public Updater() {
+    private static boolean initArgs(String[] args) {
+        for(String a:args) {
+            if(a.equals("--experimental")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Updater(boolean experimental) {
         System.out.println("Started updater...");
         try {
-            System.out.println("Getting latest version...");
-            InputStream inputStream = new BufferedInputStream(new URL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/l/application.json").openStream());
-            FileOutputStream outputStream = new FileOutputStream(getDirectoryPath() + "updater.json");
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-            inputStream.close();
-            outputStream.close();
-
-            System.out.println("Checking installed version...");
-            File currentFile = new File(getDirectoryPath() + "updater.json");
-            File installedFile = new File(getDirectoryPath() + "config.json");
-
-            Config current = new Config(currentFile);
-            Config installed = new Config(installedFile);
-
+            File config = new File(getDirectoryPath() + "config.json");
             String newest = "0";
-            if (current.get("updater.version") != null) {
-                newest = (String) current.get("updater.version");
-            }
             String installedVersion = "-1";
-            if (installed.get("updater.version") != null) {
-                installedVersion = (String) installed.get("updater.version");
-            }
+            System.out.println("Getting latest version...");
+            if(experimental) {
+                try {
 
 
-            if (!installedVersion.equals(newest)) {
-                System.out.println("Updating...");
-                downloadApp(current);
-                installed.set("updater.version", newest);
+
+
+
+
+
+
+
+
+
+
+                    throw new Exception("wip");
+
+                    /*TODO*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+                } catch (Exception e) {
+                    System.err.println("An error occurred: "+e);
+                    System.out.println(" ");
+                    System.out.println("Try again or start without the --experimental flag.");
+                    System.exit(-1);
+                    throw new RuntimeException(e);
+                }
             } else {
-                System.out.println("Application is up to date!");
+                InputStream inputStream = new BufferedInputStream(new URL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/l/application.json").openStream());
+                FileOutputStream outputStream = new FileOutputStream(getDirectoryPath() + "updater.json");
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                inputStream.close();
+                outputStream.close();
+                System.out.println("Checking installed version...");
+                File currentFile = new File(getDirectoryPath() + "updater.json");
+
+                Config current = new Config(currentFile);
+                Config installed = new Config(config);
+
+
+                if (current.get("updater.version") != null) {
+                    newest = (String) current.get("updater.version");
+                }
+                if (installed.get("updater.version") != null) {
+                    installedVersion = (String) installed.get("updater.version");
+                }
+
+                if (!installedVersion.equals(newest)) {
+                    System.out.println("Updating...");
+                    downloadApp(current);
+                    installed.set("updater.version", newest);
+                } else {
+                    System.out.println("Application is up to date!");
+                }
             }
             System.out.println("Launching...");
             splash.setVisible(false);
@@ -137,11 +186,7 @@ public class Updater {
             }
             path = folderPath + "/";
         }
-        try {
-            return URLDecoder.decode(path, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return URLDecoder.decode(path, StandardCharsets.UTF_8);
     }
 
     private class Config {
@@ -157,11 +202,7 @@ public class Updater {
             if (!jsonFile.exists()) {
                 createEmptyJsonFile();
             }
-            try {
-                this.path = URLDecoder.decode(file.getAbsolutePath(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+            this.path = URLDecoder.decode(file.getAbsolutePath(), StandardCharsets.UTF_8);
         }
 
         private void createEmptyJsonFile() {

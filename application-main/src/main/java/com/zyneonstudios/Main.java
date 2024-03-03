@@ -30,15 +30,16 @@ public class Main {
 
     public static void main(String[] args) {
         version = "2024.3.1";
+        String ui = "2024.3";
         String name = "Matter";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
-        logger.log("[MAIN] Updated user interface: "+update());
+        logger.log("[MAIN] Updated user interface: "+update(ui));
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        Application application = new Application(fullVersion);
+        Application application = new Application(fullVersion,ui);
         boolean online = false;
         for(String arg:args) {
             arg = arg.toLowerCase();
@@ -47,7 +48,7 @@ public class Main {
                     String random = StringUtil.generateAlphanumericString(2) + "-" + StringUtil.generateAlphanumericString(3) + "-" + StringUtil.generateAlphanumericString(1);
                     String date = new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
                     fullVersion = date + " ▪ " + random;
-                    application = new Application(fullVersion);
+                    application = new Application(fullVersion,ui);
                 }
                 case "--debug" -> {
                     logger.setDebugEnabled(true);
@@ -65,15 +66,15 @@ public class Main {
         return logger;
     }
 
-    private static boolean update() {
+    private static boolean update(String ui) {
         boolean updated;
         try {
-            if (!new File(getDirectoryPath() + "libs/zyneon/" + version + "/start.html").exists()) {
+            if (!new File(getDirectoryPath() + "libs/zyneon/" + ui + "/start.html").exists()) {
                 FileUtil.deleteFolder(new File(getDirectoryPath() + "libs/zyneon/"));
                 logger.log("[MAIN] Deleted old user interface files: " + new File(getDirectoryPath() + "libs/zyneon/").mkdirs());
-                FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + version + "/content.zip", getDirectoryPath() + "libs/zyneon/" + version + ".zip");
-                FileUtil.unzipFile(getDirectoryPath() + "libs/zyneon/" + version + ".zip", getDirectoryPath() + "libs/zyneon/" + version);
-                logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath() + "libs/zyneon/" + version + ".zip").delete());
+                FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + ui + "/content.zip", getDirectoryPath() + "libs/zyneon/" + ui + ".zip");
+                FileUtil.unzipFile(getDirectoryPath() + "libs/zyneon/" + ui + ".zip", getDirectoryPath() + "libs/zyneon/" + ui);
+                logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath() + "libs/zyneon/" + ui + ".zip").delete());
                 updated = true;
             } else {
                 updated = false;

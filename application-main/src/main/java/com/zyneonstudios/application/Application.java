@@ -39,7 +39,10 @@ public class Application {
     public static boolean logOutput;
     public static String lastInstance;
 
-    public Application(String ver) {
+    public static String ui;
+
+    public Application(String ver, String ui) {
+        Application.ui = ui;
         version = ver;
     }
 
@@ -225,7 +228,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/start.html";
         } else {
-            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "start.html";
+            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + "start.html";
         }
     }
 
@@ -233,7 +236,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/instances.html";
         } else {
-            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "instances.html";
+            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + "instances.html";
         }
     }
 
@@ -241,7 +244,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/settings.html";
         } else {
-            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Main.version + "/" + "settings.html";
+            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + "settings.html";
         }
     }
 
