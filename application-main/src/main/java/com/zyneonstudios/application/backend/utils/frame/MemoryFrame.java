@@ -19,8 +19,10 @@ public class MemoryFrame extends JFrame {
     private final Config saveFile;
     private final String title;
     private String instance;
+    private final String id;
 
     public MemoryFrame(Config saveFile, String title, String instance) {
+        id = instance;
         this.saveFile = saveFile;
         this.title = title;
         this.instance = instance;
@@ -32,6 +34,12 @@ public class MemoryFrame extends JFrame {
             instance = instance.replace("/","").replace(".","");
         }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                onClose(e);
+            }
+        });
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -122,5 +130,13 @@ public class MemoryFrame extends JFrame {
         pack();
         setTitle(title);
         setVisible(true);
+    }
+
+    private void onClose(WindowEvent e) {
+        if(instance.isEmpty()||instance.equals("default")) {
+            Application.getFrame().getConnector().resolveRequest("sync.settings.global");
+            return;
+        }
+        Application.getFrame().getConnector().resolveRequest("button.instance."+id);
     }
 }

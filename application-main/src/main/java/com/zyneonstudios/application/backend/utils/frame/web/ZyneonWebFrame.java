@@ -10,9 +10,11 @@ import java.awt.*;
 
 public class ZyneonWebFrame extends WebFrame {
 
+    private Connector connector;
+
     public ZyneonWebFrame(String url) {
         super(url, Main.getDirectoryPath()+"libs/jcef");
-        Connector connector = new Connector(this);
+        connector = new Connector(this);
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
@@ -24,6 +26,10 @@ public class ZyneonWebFrame extends WebFrame {
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
+    }
+
+    public Connector getConnector() {
+        return connector;
     }
 
     public void setTitlebar(String title, Color background, Color foreground) {
