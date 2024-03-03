@@ -5,11 +5,7 @@ import com.zyneonstudios.application.Application;
 import live.nerotv.shademebaby.file.Config;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.management.ManagementFactory;
@@ -34,12 +30,6 @@ public class MemoryFrame extends JFrame {
             instance = instance.replace("/","").replace(".","");
         }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                onClose(e);
-            }
-        });
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -73,50 +63,26 @@ public class MemoryFrame extends JFrame {
         JTextField textField = new JTextField(10);
         textField.setText(initialValue+"");
         JLabel label = new JLabel("MB");
-        slider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                textField.setText(String.valueOf(slider.getValue()));
-                String path = "settings.memory.default";
-                if(instance!=null) {
-                    if(!instance.equalsIgnoreCase("default")) {
-                        if(!instance.equalsIgnoreCase("")) {
-                            path = "configuration.ram";
-                        }
-                    }
-                }
-                if(path.equalsIgnoreCase("settings.memory.default")) {
-                    Application.memory = slider.getValue();
-                }
-                saveFile.set(path,slider.getValue());
-            }
+        slider.addChangeListener(e -> {
+            textField.setText(String.valueOf(slider.getValue()));
         });
 
-        textField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int value = Integer.parseInt(textField.getText());
-                    if (value >= minValue && value <= maxValue) {
-                        slider.setValue(value);
-                    } else {
-                        textField.setText(String.valueOf(slider.getValue()));
-                    }
-                } catch (NumberFormatException ex) {
+        textField.addActionListener(e -> {
+            try {
+                int value = Integer.parseInt(textField.getText());
+                if (value >= minValue && value <= maxValue) {
+                    slider.setValue(value);
+                } else {
                     textField.setText(String.valueOf(slider.getValue()));
                 }
-                String path = "settings.memory.default";
-                if(instance!=null) {
-                    if(!instance.equalsIgnoreCase("default")) {
-                        if(!instance.equalsIgnoreCase("")) {
-                            path = "configuration.ram";
-                        }
-                    }
-                }
-                if(path.equalsIgnoreCase("settings.memory.default")) {
-                    Application.memory = slider.getValue();
-                }
-                saveFile.set(path,slider.getValue());
+            } catch (NumberFormatException ex) {
+                textField.setText(String.valueOf(slider.getValue()));
+            }
+        });
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                save(slider);
             }
         });
         Dimension d = new Dimension(380,92);
@@ -132,7 +98,19 @@ public class MemoryFrame extends JFrame {
         setVisible(true);
     }
 
-    private void onClose(WindowEvent e) {
+    private void save(JSlider slider) {
+        String path = "settings.memory.default";
+        if(instance!=null) {
+            if(!instance.equalsIgnoreCase("default")) {
+                if(!instance.equalsIgnoreCase("")) {
+                    path = "configuration.ram";
+                }
+            }
+        }
+        if(path.equalsIgnoreCase("settings.memory.default")) {
+            Application.memory = slider.getValue();
+        }
+        saveFile.set(path,slider.getValue());
         if(instance.isEmpty()||instance.equals("default")) {
             Application.getFrame().getConnector().resolveRequest("sync.settings.global");
             return;

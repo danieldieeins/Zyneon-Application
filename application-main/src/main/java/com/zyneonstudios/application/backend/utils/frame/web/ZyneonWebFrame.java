@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class ZyneonWebFrame extends WebFrame {
 
-    private Connector connector;
+    private final Connector connector;
 
     public ZyneonWebFrame(String url) {
         super(url, Main.getDirectoryPath()+"libs/jcef");

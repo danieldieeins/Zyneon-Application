@@ -1,7 +1,5 @@
 package com.zyneonstudios.application.backend.utils.frame.web;
 
-import com.zyneonstudios.application.backend.utils.frame.ComponentResizer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -22,8 +20,6 @@ public class CustomWebFrame extends ZyneonWebFrame {
         getContentPane().add(customTitleBar, BorderLayout.NORTH);
         addDragAndDropFunctionality();
         setBorder(true);
-        ComponentResizer cr = new ComponentResizer();
-        cr.registerComponent(this);
         pack();
     }
 
