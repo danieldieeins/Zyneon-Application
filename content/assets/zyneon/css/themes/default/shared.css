@@ -400,7 +400,7 @@ body {
 }
 
 /*Stuff*/
-#global-button,#back-to-instance,#profile-button,#fabric-button,#shader-button,#forge-button,#resourcepack-button,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#resource-button,#instance-button {
+#global-button,#back-to-instance,#drive,#profile-button,#fabric-button,#shader-button,#forge-button,#resourcepack-button,#refresh-button,#exit-button,#startTab,#startTitle,#profile_,#resource-button,#instance-button {
     display: none;
 }
 
