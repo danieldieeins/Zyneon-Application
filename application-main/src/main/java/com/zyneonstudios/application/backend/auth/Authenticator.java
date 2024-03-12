@@ -91,7 +91,7 @@ public class Authenticator {
         } catch (Exception e) {
             isLoggedIn = false;
         }
-        CompletableFuture.runAsync(() -> resolver.postAuth(authInfos.getUsername()));
+        CompletableFuture.runAsync(() -> resolver.postAuth(authInfos.getUsername(),authInfos.getUuid()));
         return isLoggedIn;
     }
 
@@ -105,7 +105,7 @@ public class Authenticator {
         } catch (Exception e) {
             isLoggedIn = false;
         }
-        CompletableFuture.runAsync(() -> resolver.postAuth(authInfos.getUsername()));
+        CompletableFuture.runAsync(() -> resolver.postAuth(authInfos.getUsername(),authInfos.getUuid()));
         return isLoggedIn;
     }
 

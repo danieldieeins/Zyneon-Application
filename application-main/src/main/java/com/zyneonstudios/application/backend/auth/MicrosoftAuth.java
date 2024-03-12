@@ -1,17 +1,31 @@
 package com.zyneonstudios.application.backend.auth;
 
 import com.zyneonstudios.Main;
+import com.zyneonstudios.application.Application;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.file.OnlineConfig;
 
 import javax.crypto.KeyGenerator;
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class MicrosoftAuth {
+
+    public static void syncTeam(String uuid) {
+        uuid = uuid.replace("-","");
+        try {
+            OnlineConfig cfg = new OnlineConfig("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/i/team.json");
+            String[] teamUUIDs = cfg.getString("team").replace("[","").replace("]","").split(", ");
+            if(Arrays.stream(teamUUIDs).toList().contains(uuid)) {
+                Application.getFrame().executeJavaScript("document.getElementById('drive').style.display = 'inherit'");
+            }
+        } catch (Exception ignore) {}
+    }
 
     private Authenticator authenticator;
 

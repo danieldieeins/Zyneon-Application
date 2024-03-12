@@ -30,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) {
         version = "2024.3.1";
-        String ui = "2024.3";
+        String ui = "2024.3.1";
         String name = "Matter";
         architecture = getArchitecture();
         splash = new ZyneonSplash();

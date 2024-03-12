@@ -120,11 +120,20 @@ public class Connector {
         } else if (request.contains("sync.web")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if (request.contains("sync.start")) {
+            Gson gson = new Gson();
+            JsonArray array = gson.fromJson(new OnlineConfig("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/i/updates.json").getString("updates"), JsonArray.class);
+            for(JsonElement o:array) {
+                JsonObject json = o.getAsJsonObject();
+                String version = json.get("version").getAsString();
+                String title = json.get("title").getAsString();
+                String changelog = json.get("changelog").getAsString();
+            }
             frame.executeJavaScript("syncStart('app');");
         } else if (request.contains("sync.login")) {
             try {
                 if (Application.auth.isLoggedIn()) {
                     frame.executeJavaScript("login('" + Application.auth.getAuthInfos().getUsername() + "');");
+                    MicrosoftAuth.syncTeam(Application.auth.getAuthInfos().getUuid());
                 } else {
                     frame.executeJavaScript("logout();");
                 }
