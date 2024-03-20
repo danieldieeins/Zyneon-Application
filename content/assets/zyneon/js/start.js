@@ -24,7 +24,7 @@ function syncStart(response) {
                 const button = document.getElementById("app-button");
                 button.innerHTML = "<i class='bx bx-laptop ' ></i> Web version";
                 button.onclick = function () {
-                    openInBrowser("https://danieldieeins.github.io/Zyneon-Application/");
+                    openInBrowser("https://www.zyneonstudios.com/nexus/app");
                 }
             }
         }
