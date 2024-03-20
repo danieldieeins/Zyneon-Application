@@ -16,7 +16,7 @@ The Zyneon Application allows you to create, launch, manage, download and share 
 # Web version (alpha)
 The application also has a version that can be easily accessed from an Internet browser. This is currently still in a very early alpha phase and is missing a lot of features.
 
-[Click here to open web version](https://danieldieeins.github.io/Zyneon-Application/)
+[Click here to open web version](https://www.zyneonstudios.com/nexus/app)
 
 ---
 [<img src="https://i.ibb.co/nBLzRMT/download.png">](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
