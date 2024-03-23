@@ -79,12 +79,6 @@ function checkForWeb() {
     document.getElementById("instance-button").style.display = "inherit";
     document.getElementById("resource-button").style.display = "inherit";
     document.getElementById("download-button").style.display = "none";
-    const iframe = document.getElementById("iframe");
-    if(iframe) {
-        if(iframe.href === "https://danieldieeins.github.io/Zyneon-Application/news/news.html") {
-            iframe.href = "https://danieldieeins.github.io/Zyneon-Application/news/news.html?in_app=1"
-        }
-    }
 }
 
 function syncTheme() {

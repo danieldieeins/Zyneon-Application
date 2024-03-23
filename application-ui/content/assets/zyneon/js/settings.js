@@ -4,10 +4,12 @@ const profile = document.getElementById("profile");
 const fallback = document.getElementById("fallback");
 const instance = document.getElementById("path-select");
 const about = document.getElementById("about-app");
+const index = document.getElementById("index");
 const generalbutton = document.getElementById("general-settings");
 const globalbutton = document.getElementById("global-settings");
 const profilebutton = document.getElementById("profile-settings");
 const aboutbutton = document.getElementById("about");
+const indexbutton = document.getElementById("zyndex-button");
 
 function syncSettings() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,6 +17,8 @@ function syncSettings() {
         const tab = urlParams.get("tab");
         if(tab==="global") {
             syncGlobalSettings();
+        } else if(tab==="index") {
+            syncIndex();
         } else if(tab==="select") {
             openGlobalSettings();
         } else if(tab==="profile") {
@@ -31,6 +35,8 @@ function syncGeneralSettings() {
     instance.style.display = "none";
     fallback.style.display = "none";
     about.style.display = "none";
+    index.style.display = "none";
+    indexbutton.classList.remove("active");
     aboutbutton.classList.remove("active");
     global.style.display = "none";
     globalbutton.classList.remove("active");
@@ -59,6 +65,22 @@ function syncGeneralSettings() {
     callJavaMethod("sync.settings.general");
 }
 
+function syncIndex() {
+    fallback.style.display = "none";
+    about.style.display = "none";
+    aboutbutton.classList.remove("active");
+    general.style.display = "none";
+    generalbutton.classList.remove("active");
+    profile.style.display = "none";
+    profilebutton.classList.remove("active");
+    global.style.display = "none";
+    globalbutton.classList.remove("active");
+    instance.style.display = "none";
+
+    index.style.display = "inherit";
+    indexbutton.classList.add("active");
+}
+
 function openGlobalSettings() {
     fallback.style.display = "none";
     about.style.display = "none";
@@ -67,6 +89,8 @@ function openGlobalSettings() {
     generalbutton.classList.remove("active");
     profile.style.display = "none";
     profilebutton.classList.remove("active");
+    index.style.display = "none";
+    indexbutton.classList.remove("active");
 
     global.style.display = "none";
     instance.style.display = "inherit";
@@ -86,6 +110,8 @@ function syncProfileSettings() {
     generalbutton.classList.remove("active");
     global.style.display = "none";
     globalbutton.classList.remove("active");
+    index.style.display = "none";
+    indexbutton.classList.remove("active");
 
     fallback.style.display = "inherit";
     profile.style.display = "none";
@@ -104,7 +130,6 @@ function syncApp(ver) {
     document.getElementById("refresh-button").style.display = "inherit";
     document.getElementById("exit-button").style.display = "inherit";
     document.getElementById("startTitle").style.display = "inherit";
-    document.getElementById("startTab").style.display = "inherit";
 }
 
 function syncGeneral(start) {
@@ -117,6 +142,8 @@ function syncGeneral(start) {
         news.classList.remove("active");
         instances.classList.add("active");
     }
+    document.getElementById("settings_general").style.display = "inherit";
+    document.getElementById("title_general").innerText = "Settings > General";
 }
 
 function syncGlobal(memory,instance_path,log) {
@@ -137,7 +164,7 @@ function syncGlobal(memory,instance_path,log) {
 
 function syncProfile(name,uuid) {
     document.getElementById("user-name").innerText = name;
-    document.getElementById("uuid").innerText = uuid;
+    document.getElementById("user_id").innerText = uuid;
     document.getElementById("user-image").src = "https://cravatar.eu/helmhead/"+name+"/512";
     fallback.style.display = "none";
     profile.style.display = "inherit";
@@ -152,6 +179,8 @@ function syncAbout() {
     profilebutton.classList.remove("active");
     global.style.display = "none";
     globalbutton.classList.remove("active");
+    index.style.display = "none";
+    indexbutton.classList.remove("active");
 
     about.style.display = "inherit";
     aboutbutton.classList.add("active");

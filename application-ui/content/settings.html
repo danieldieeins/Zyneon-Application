@@ -103,6 +103,14 @@
                         </div>
                     </a>
                 </li>
+                <li id="zyndex-button">
+                    <a onclick="syncIndex();">
+                        <div class="menu-item" id="zyndex">
+                            <i class='bx bxs-extension'></i>
+                            <span class="menu-item">Index settings</span>
+                        </div>
+                    </a>
+                </li>
                 <li id="about-button">
                     <a onclick="syncAbout();">
                         <div class="menu-item" id="about">
@@ -141,54 +149,51 @@
                 <div class="center"><h1 id="message"></h1></div>
             </div>
             <div id="general">
-                <div class="card">
-                    <h2>General settings</h2>
-                    <h3 id="startTitle" class="background-bottom">Start tab:</h3>
-                    <div id="startTab" class="start-tab">
+                <div class="card" id="appearance">
+                    <h3 id="title_general">General settings</h3>
+                    <h3 id="settings_general" class="background"><span class="highlight">Settings</span></h3>
+                    <h3 id="startTitle">
+                        Start tab:
                         <a class="button" id="general-tab-start" onclick="callJavaMethod('button.starttab.start');">Start</a>
                         <a class="button" id="general-tab-instances" onclick="callJavaMethod('button.starttab.instances');">Instances</a>
-                    </div>
-                </div>
-                <div class="card" id="appearance">
-                    <h2>Appearance</h2>
-                    <h3 class="background">Theme:
+                    </h3>
+                    <h3 class="background"><span class="highlight">Appearance</span></h3>
+                    <h3>Theme:
                         <a class="button" id="appearance-theme-light" onclick="setTheme('default.light'); link('settings.html');">Light</a>
                         <a class="button" id="appearance-theme-dark" onclick="setTheme('default.dark'); link('settings.html');">Dark</a>
                         <a class="button" id="appearance-theme-zyneon" onclick="setTheme('default.zyneon'); link('settings.html');">Zyneon</a>
                     </h3>
-                    <h3 class="bottom">Language:
+                    <h3>Language:
                         <a class="button" id="appearance-language-english"><i class='bx bxs-lock-alt'></i> English</a>
                     </h3>
                 </div>
             </div>
             <div id="global">
                 <div class="card">
-                    <h2>Global settings</h2>
-                    <h3 class="background">Instance path</h3>
-                    <div class="instance-path">
-                        <p id="instance-path-string" onclick="callJavaMethod('button.folder.instances');">loading...</p>
+                    <h3>Settings > Global</h3>
+                    <h3 class="background"><span class="highlight">Settings</span></h3>
+                    <h3>Instance path:
+                        <a class="text-link" id="instance-path-string" onclick="callJavaMethod('button.folder.instances');">loading...</a>
                         <a class="button" id="button-instance-path" onclick="callJavaMethod('button.path.instances');">Configure</a>
-                    </div>
-                    <h3>Global memory</h3>
-                    <div class="memory">
-                        <p id="memory-int">loading...</p>
+                    </h3>
+                    <h3>Global memory:
+                        <a class="text" id="memory-int">loading...</a>
                         <a class="button" id="button-memory" onclick="callJavaMethod('button.settings.default');">Configure</a>
-                    </div>
-                    <h3 class="background-bottom">Show log output on game start</h3>
-                    <div class="log-buttons">
+                    </h3>
+                    <h3>Show log output on game start
                         <a class="button" id="enable-log" onclick="callJavaMethod('button.configure.log.enable');">On</a>
                         <a class="button" id="disable-log" onclick="callJavaMethod('button.configure.log.disable');">Off</a>
-                    </div>
+                    </h3>
                 </div>
             </div>
             <div id="profile">
                 <div class="card">
-                    <h2>Profile settings</h2>
-                    <h3 class="background-bottom" id="user-name">loading...</h3>
-                    <div class="account">
-                        <p id="uuid" onclick="callJavaMethod('button.copy.uuid');">loading...</p>
+                    <h3>Settings > Profile</h3>
+                    <h3 class="background"><span class="highlight">Profile settings</span></h3>
+                    <h3><span id="user-name">loading...</span>
+                        <a class="text-link" id="user_id" onclick="callJavaMethod('button.copy.uuid');">loading...</a>
                         <a class="button" onclick="callJavaMethod('button.account');">Logout</a>
-                    </div>
+                    </h3>
                 </div>
                 <div class="actions">
                     <img alt="User image" id="user-image" src="assets/zyneon/images/steve.png">
@@ -202,20 +207,39 @@
             </div>
             <div id="fallback">
                 <div class="card">
-                    <h2>Profile settings</h2>
-                    <h3 class="background-bottom">Please log in to continue.</h3>
-                    <div class="login">
+                    <h3>Settings > Profile</h3>
+                    <h3 class="background"><span class="highlight">Hey, Your action is required!</span></h3>
+                    <h3>Please log in to continue:
                         <a class="button" onclick="callJavaMethod('button.account');">Login</a>
-                    </div>
+                    </h3>
                 </div>
             </div>
             <div id="path-select">
                 <div class="card">
-                    <h2>Hey, your action is required!</h2>
-                    <h3 class="background-bottom">Please select an instance installation path to continue.</h3>
-                    <div class="login">
+                    <h3>Settings > Global</h3>
+                    <h3 class="background"><span class="highlight">Hey, Your action is required!</span></h3>
+                    <h3>Please select an instance installation path to continue:
                         <a class="button" onclick="callJavaMethod('button.path.instances');">Select path</a>
-                    </div>
+                    </h3>
+                </div>
+            </div>
+            <div id="index">
+                <div class="card">
+                    <h1>Index settings</h1>
+                </div>
+                <div class="card">
+                    <h3>Information</h3>
+                    <h3 class="background highlight">What are indexes?</h3>
+                    <h3>Indexes are places from where the application can obtain instances and resources (mods, resource packs, etc...).<br>
+                        The "Zyndex" system is our own index layout, you can also add custom Zyndexes and even host one yourself.</h3>
+                </div>
+                <div class="card">
+                    <h3>List</h3>
+                    <h3 class="background highlight">Official first party indexes</h3>
+                    <h3>• NEX: <span class="snippet"><a onclick="openInBrowser('https://www.zyneonstudios.com/nexus')">Official Zyneon Nexus Zyndex</a></span></h3>
+                    <h3 class="background highlight">Official third party indexes</h3>
+                    <h3>• Modrinth: <span class="snippet"><a onclick="openInBrowser('https://modrinth.com')">https://modrinth.com Modrinth index</a></span></h3>
+                    <h3>• CurseForge: <span class="snippet"><a onclick="openInBrowser('https://www.curseforge.com')">https://www.curseforge.com CurseForge index</a></span></h3>
                 </div>
             </div>
             <div id="about-app">
@@ -223,19 +247,21 @@
                     <h1>About Zyneon App</h1>
                 </div>
                 <div class="card">
-                    <h2>Zyneon Application</h2>
-                    <h3 class="background">Developers: nerotvlive</h3>
-                    <h3>This is an open source project by Zyneon Studios. (GPL-3.0 license)<br><br><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application');" target="_blank" class="button">View Code on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/ZyneonApplicationContent');" target="_blank" class="button">View Content on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/blob/master/LICENSE.md');" target="_blank" class="button">View license</a><br></h3>
+                    <h3>Information</h3>
+                    <h3 class="background"><span class="highlight">Zyneon Application</span></h3>
+                    <h3><span class="highlight">Developers:</span> nerotvlive<br>
+                        This is an open source project by <a onclick="openInBrowser('https://www.zyneonstudios.com/nexus')">Zyneon Nexus</a>. (GPL-3.0 license)<br><br><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application');" target="_blank" class="button">View Code on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/ZyneonApplicationContent');" target="_blank" class="button">View Content on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/blob/master/LICENSE.md');" target="_blank" class="button">View license</a><br></h3>
                 </div>
                 <div class="card">
-                    <h2>Dependencies</h2>
-                    <h3 class="background">Boxicons v2.1.4 by Atisa (MIT license)<br><br><a class="button" onclick="openInBrowser('https://boxicons.com/');" target="_blank">View website</a> or <a class="button" onclick="openInBrowser('https://github.com/atisawd/boxicons');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/atisawd/boxicons/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
-                    <h3>FlowUpdater v1.8.3 by FlowArg (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
-                    <h3 class="background">LT Hoop font family by LyonsType (OFL license)<br><br><a class="button" onclick="openInBrowser('https://lyonstype4.wixsite.com/lyonstype-beta/fonts');" target="_blank">View website</a> or <a class="button" onclick="openInBrowser('https://openfontlicense.org/');" target="_blank">View license</a><br></h3>
-                    <h3>OpenLauncherLib v3.2.9 by FlowArg (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
-                    <h3 class="background">ShadeMeBaby v2024.2.6 by nerotvlive (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/danieldieeins/ShadeMeBaby');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/ShadeMeBaby/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
-                    <h3>toml4j v0.7.2 by Moandji Ezana (MIT License)<br><br><a class="button" onclick="openInBrowser('https://github.com/mwanji/toml4j');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/mwanji/toml4j/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
-                    <h3 class="background-bottom">ZyneonAuth v2024.2 by officialPlocki (GPL-3.0 license)<br><br><a class="button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Auth');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Auth/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                    <h3>List</h3>
+                    <h3 class="background"><span class="highlight">Dependencies</span></h3>
+                    <h3>Boxicons v2.1.4 by Atisa (MIT license)<br><br>→ <a class="button" onclick="openInBrowser('https://boxicons.com/');" target="_blank">View website</a> or <a class="button" onclick="openInBrowser('https://github.com/atisawd/boxicons');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/atisawd/boxicons/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3>FlowUpdater v1.8.3 by FlowArg (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3>LT Hoop font family by LyonsType (OFL license)<br><br>→ <a class="button" onclick="openInBrowser('https://lyonstype4.wixsite.com/lyonstype-beta/fonts');" target="_blank">View website</a> or <a class="button" onclick="openInBrowser('https://openfontlicense.org/');" target="_blank">View license</a><br></h3>
+                    <h3>OpenLauncherLib v3.2.9 by FlowArg (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3>ShadeMeBaby v2024.2.6 by nerotvlive (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/ShadeMeBaby');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/ShadeMeBaby/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                    <h3>toml4j v0.7.2 by Moandji Ezana (MIT License)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/mwanji/toml4j');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/mwanji/toml4j/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3>ZyneonAuth v2024.2 by officialPlocki (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Auth');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Auth/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
                 </div>
             </div>
         </div>

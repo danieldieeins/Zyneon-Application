@@ -152,69 +152,71 @@
                 </div>
                 <div id="instance-settings">
                     <div class="card">
-                        <h2>JVM settings</h2>
-                        <h3 class="background-bottom">Memory (RAM):
+                        <h3>Instance > Settings</h3>
+                        <h3 class="background"><span class="highlight">JVM arguments</span></h3>
+                        <h3>Memory (RAM):
                             <a id="memory-int">0 MB</a>
                             <a class="button" id="configure-memory">Configure</a>
                         </h3>
-                    </div>
-                    <div class="card" id="local-settings">
-                        <h2>Instance settings</h2>
-                        <form id="settings">
-                            <h3 class="background">Instance name:
-                                <label>
-                                    <input type="text" id="settings-name" maxlength="32" required>
-                                </label>
-                            </h3>
-                            <h3>Instance version:
-                                <label>
-                                    <input type="text" id="settings-version" maxlength="32" required>
-                                </label>
-                            </h3>
-                            <h3 class="background">Instance description:
-                                <label>
-                                    <input type="text" id="settings-description" maxlength="256" required>
-                                </label>
-                            </h3>
-                            <h3>Minecraft version:
-                                <label>
-                                    <select id="settings-minecraft" required>
+                        <div id="local-settings">
+                            <br>
+                            <h3 class="background"><span class="highlight">Instance settings</span></h3>
+                            <form id="settings">
+                                <h3>Instance name:
+                                    <label>
+                                        <input type="text" id="settings-name" maxlength="32" required>
+                                    </label>
+                                </h3>
+                                <h3>Instance version:
+                                    <label>
+                                        <input type="text" id="settings-version" maxlength="32" required>
+                                    </label>
+                                </h3>
+                                <h3>Instance description:
+                                    <label>
+                                        <input type="text" id="settings-description" maxlength="256" required>
+                                    </label>
+                                </h3>
+                                <h3>Minecraft version:
+                                    <label>
+                                        <select id="settings-minecraft" required>
 
-                                    </select>
-                                    <script>addVersionsToMinecraftSelect("settings-minecraft");</script>
-                                </label>
+                                        </select>
+                                        <script>addVersionsToMinecraftSelect("settings-minecraft");</script>
+                                    </label>
+                                </h3>
+                                <h3>Modloader:
+                                    <label>
+                                        <select id="settings-modloader" required>
+                                            <option value="Vanilla">None (vanilla)</option>
+                                            <option value="Fabric">Fabric</option>
+                                            <option value="Forge">Forge</option>
+                                        </select>
+                                    </label>
+                                </h3>
+                                <h3>Modloader version: <label><input type="text" id="settings-mlversion"></label></h3>
+                                <h3><label><input type="submit" id="settings-save" value="Save changes"></label>-</h3>
+                            </form>
+                        </div>
+                        <div id="local-appearance">
+                            <br>
+                            <h3 class="background"><span class="highlight">Instance appearance</span></h3>
+                            <h3>Instance icon:
+                                <a id="show-icon">Show icon image</a>
+                                <a class="button" id="configure-icon">Configure</a>
                             </h3>
-                            <h3 class="background">Modloader:
-                                <label>
-                                    <select id="settings-modloader" required>
-                                        <option value="Vanilla">None (vanilla)</option>
-                                        <option value="Fabric">Fabric</option>
-                                        <option value="Forge">Forge</option>
-                                    </select>
-                                </label>
+                            <h3>Instance logo:
+                                <a id="show-logo">Show logo image</a>
+                                <a class="button" id="configure-logo">Configure</a>
                             </h3>
-                            <h3>Modloader version: <label><input type="text" id="settings-mlversion"></label></h3>
-                            <h3 class="background-bottom"><label><input type="submit" id="settings-save" value="Save changes"></label>-</h3>
-                        </form>
-                    </div>
-                    <div class="card" id="local-appearance">
-                        <h2>Instance appearance</h2>
-                        <h3 class="background">Instance icon:
-                            <a id="show-icon">Show icon image</a>
-                            <a class="button" id="configure-icon">Configure</a>
-                        </h3>
-                        <h3>Instance logo:
-                            <a id="show-logo">Show logo image</a>
-                            <a class="button" id="configure-logo">Configure</a>
-                        </h3>
-                        <h3 class="background-bottom">Instance background:
-                            <a id="show-background">Show background image</a>
-                            <a class="button" id="configure-background">Configure</a>
-                        </h3>
-                    </div>
-                    <div class="card">
-                        <h2>Danger zone</h2>
-                        <h3 class="background-bottom">Delete instance (this can't be undone): <a class="button" id="delete-instance">Delete instance</a></h3>
+                            <h3>Instance background:
+                                <a id="show-background">Show background image</a>
+                                <a class="button" id="configure-background">Configure</a>
+                            </h3>
+                        </div>
+                        <br>
+                        <h3 class="background"><span class="highlight">Danger zone</span></h3>
+                        <h3>Delete instance (this can't be undone): <a class="button" id="delete-instance">Delete instance</a></h3>
                     </div>
                 </div>
                 <div class="dock">
