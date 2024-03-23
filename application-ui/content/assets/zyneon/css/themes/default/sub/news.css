@@ -18,7 +18,7 @@ body {
     text-align: center;
     white-space: nowrap;
     background: var(--background4);
-    box-shadow: 0 0 0.8rem #000;
+    box-shadow: 0 0.2rem 0.4rem #000;
 }
 
 .content .flex .card:hover {
@@ -57,6 +57,12 @@ body {
     border-bottom-left-radius: 0;
 }
 
+.content .flex {
+    position: fixed;
+    top: 0;
+    width: calc(100% - 3rem);
+}
+
 .content .card {
     border-radius: 1rem;
 }
@@ -83,4 +89,8 @@ body {
 *.background-bottom {
     border-bottom-right-radius: 1rem !important;
     border-bottom-left-radius: 1rem !important;
+}
+
+.cnt {
+    padding: 5rem 1rem 1rem 1rem;
 }
