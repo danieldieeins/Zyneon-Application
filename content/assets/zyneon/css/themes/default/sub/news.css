@@ -1,5 +1,6 @@
 body {
     background: none;
+    overflow-y: scroll !important;
 }
 
 .content {
@@ -58,4 +59,28 @@ body {
 
 .content .card {
     border-radius: 1rem;
+}
+
+*.top {
+    border-top-right-radius: 1rem !important;
+    border-top-left-radius: 1rem !important;
+}
+
+*.background-top {
+    border-top-right-radius: 1rem !important;
+    border-top-left-radius: 1rem !important;
+}
+
+*.bottom {
+    border-bottom-right-radius: 1rem !important;
+    border-bottom-left-radius: 1rem !important;
+}
+
+*.background-top-bottom {
+    border-radius: 1rem !important;
+}
+
+*.background-bottom {
+    border-bottom-right-radius: 1rem !important;
+    border-bottom-left-radius: 1rem !important;
 }
