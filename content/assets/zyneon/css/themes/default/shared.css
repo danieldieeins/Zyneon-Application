@@ -522,3 +522,17 @@ h3 a:hover {
     height: 10rem;
     border-radius: 0.5rem 0 0 0.5rem;
 }
+
+*.highlight {
+    color: var(--highlight) !important;
+}
+
+*.snippet {
+    position: relative;
+    background: var(--background-accent);
+    color: var(--color-dim-less);
+    padding: 0.25rem 0.25rem 0.125rem 0.25rem;
+    margin-left: 0.25rem;
+    border-radius: 0.25rem;
+    border: solid var(--background3) 1px;
+}

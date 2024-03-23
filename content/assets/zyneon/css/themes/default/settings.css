@@ -42,6 +42,10 @@
     color: white;
 }
 
+#global a {
+
+}
+
 /*Stuff*/
 a.button#console {
     position: absolute;
@@ -54,61 +58,88 @@ a.button#console {
     display: inherit;
 }
 
+h3 {
+    position: relative;
+}
+
+a.button {
+    margin-right: -0.25rem;
+    border-radius: 0.5rem;
+    box-shadow: none;
+}
+
+h3 a.button {
+    position: absolute;
+    right: 0.79rem;
+    top: 0.5rem;
+}
+
+#about-app a.button {
+    position: initial;
+    margin-right: 0.1rem;
+    margin-left: 0.075rem;
+}
+
+#global h3 a.button#enable-log {
+    right: 3.2rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+h3 a.text,h3 a.text-link {
+    position: absolute !important;
+    left: 17rem !important;
+}
+
+h3 a.text-link:hover {
+    font-size: inherit !important;
+    color: white !important;
+}
+
+h3 a.text:hover {
+    font-size: inherit !important;
+    color: inherit !important;
+    cursor: inherit !important;
+}
+
+#global h3 a.button#disable-log {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
 .content #general .start-tab {
     position: absolute;
     right: 2rem;
     top: 5.965rem;
 }
 
-.content #general .start-tab a.button:hover {
+.content #general .start-tab a.button:hover, .content #general #appearance a.button:hover {
     font-size: 1.05rem;
 }
 
-.content #general .start-tab a.button#general-tab-start {
-    position: relative;
-    margin-right: -0.25rem;
-    border-radius: 0.5rem 0 0 0.5rem;
-    box-shadow: none;
-}
-
-.content #general .start-tab a.button#general-tab-instances {
-    position: relative;
-    border-radius: 0 0.5rem 0.5rem 0 ;
-    box-shadow: none;
-}
-
-.content #general #appearance a.button:hover {
-    font-size: 1.05rem;
+a.active:hover {
+    box-shadow: none !important;
 }
 
 .content #general #appearance h3 {
     position: relative;
 }
 
-.content #general #appearance h3 a.button#appearance-theme-light {
-    position: absolute;
-    right: 7.96rem;
-    top: 0.5rem;
-    margin-right: -0.25rem;
-    border-radius: 0.5rem 0 0 0.5rem;
-    box-shadow: none;
-}
-
 .content #general #appearance h3 a.button#appearance-theme-dark {
-    position: absolute;
-    right: 4.96rem;
-    top: 0.5rem;
-    margin-right: -0.25rem;
+    right: 5rem;
     border-radius: 0;
-    box-shadow: none;
 }
 
-.content #general #appearance h3 a.button#appearance-theme-zyneon {
-    position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
-    border-radius: 0 0.5rem 0.5rem 0 ;
-    box-shadow: none;
+.content #general #appearance h3 a.button#appearance-theme-light, a.button#general-tab-start {
+    right: 8rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+a.button#general-tab-start {
+    right: 5.8rem !important;
+    border-radius: 0.5rem 0 0 0.5rem !important;
+}
+
+.content #general #appearance h3 a.button#appearance-theme-zyneon, a.button#general-tab-instances {
+    border-radius: 0 0.5rem 0.5rem 0 !important;
 }
 
 .content #general #appearance h3 a.button#appearance-language-english {
@@ -130,11 +161,6 @@ a.button#console {
 
 .content #global {
     display: none;
-}
-
-.content #global a.button {
-    display: none;
-    box-shadow: none;
 }
 
 .content #global .instance-path {
@@ -337,4 +363,8 @@ p#instance-path-string:hover {
     cursor: pointer;
     background: var(--accent);
     color: #fff;
+}
+
+#settings_general {
+    display: none;
 }

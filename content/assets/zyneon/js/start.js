@@ -34,6 +34,12 @@ function syncStart(response) {
     }
 }
 
-function loadNews() {
-    document.getElementById("iframe").src = document.getElementById("iframe").src+"?theme="+theme;
+function loadNews(bool) {
+    if(bool!=null) {
+        if(bool.toString().toLowerCase()==="true") {
+            document.getElementById("iframe").src = "https://danieldieeins.github.io/Zyneon-Application/news/news.html?theme="+theme+"&in_app=1";
+            return;
+        }
+    }
+    document.getElementById("iframe").src = "https://danieldieeins.github.io/Zyneon-Application/news/news.html?theme="+theme;
 }

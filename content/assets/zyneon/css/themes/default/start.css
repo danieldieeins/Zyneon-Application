@@ -141,9 +141,9 @@
 
 .content #news .news iframe {
     position: absolute;
-    top: 14rem;
+    top: 7.5rem;
     width: 100%;
-    height: calc(100% - 3rem);
+    height: calc(100% - 7.5rem);
     background: none;
     border: none;
     border-top-left-radius: 1rem;
