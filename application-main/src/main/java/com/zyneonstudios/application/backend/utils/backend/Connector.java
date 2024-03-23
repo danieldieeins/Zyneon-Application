@@ -197,27 +197,52 @@ public class Connector {
                     instance_ = new VanillaInstance(instance);
                 }
                 instance_.sync();
-                File icon = new File(Main.getDirectoryPath() + Application.ui + Main.version + "/assets/zyneon/images/instances/" + id + ".png");
-                File logo = new File(Main.getDirectoryPath() + Application.ui + Main.version + "/assets/zyneon/images/instances/" + id + "-logo.png");
-                File background = new File(Main.getDirectoryPath() + Application.ui + Main.version + "/assets/zyneon/images/instances/" + id + ".webp");
+                File icon = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".png");
+                File logo = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + "-logo.png");
+                File background = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".webp");
                 String icon_ = "";
                 String logo_ = "";
                 String background_ = "";
+                Main.getLogger().debug(" ");
+                Main.getLogger().debug("[CONNECTOR] Searching for icon of: "+id+"...");
                 if (icon.exists()) {
+                    Main.getLogger().debug("[CONNECTOR] Found asset icon for "+id+"!");
                     icon_ = "assets/zyneon/images/instances/" + id + ".png";
+                    Main.getLogger().debug("[CONNECTOR] Applied asset icon \""+"assets/zyneon/images/instances/" + id + ".png"+"\" to "+id);
                 } else if (instance.getString("modpack.icon") != null) {
+                    Main.getLogger().debug("[CONNECTOR] Found custom icon for "+id+"!");
                     icon_ = StringUtil.getURLFromFile(instance.getString("modpack.icon"));
+                    Main.getLogger().debug("[CONNECTOR] Applied custom icon \""+StringUtil.getURLFromFile(instance.getString("modpack.icon"))+"\" to "+id);
+                } else {
+                    Main.getLogger().debug("[CONNECTOR] Couldn't find icon file for "+id);
                 }
+                Main.getLogger().debug(" ");
+                Main.getLogger().debug("[CONNECTOR] Searching for logo of: "+id+"...");
                 if (logo.exists()) {
+                    Main.getLogger().debug("[CONNECTOR] Found asset logo for "+id+"!");
                     logo_ = "assets/zyneon/images/instances/" + id + "-logo.png";
+                    Main.getLogger().debug("[CONNECTOR] Applied asset logo \""+"assets/zyneon/images/instances/" + id + "-logo.png"+"\" to "+id);
                 } else if (instance.getString("modpack.logo") != null) {
+                    Main.getLogger().debug("[CONNECTOR] Found custom logo for "+id+"!");
                     logo_ = StringUtil.getURLFromFile(instance.getString("modpack.logo"));
+                    Main.getLogger().debug("[CONNECTOR] Applied custom logo \""+StringUtil.getURLFromFile(instance.getString("modpack.logo"))+"\" to "+id);
+                } else {
+                    Main.getLogger().debug("[CONNECTOR] Couldn't find logo file for "+id);
                 }
+                Main.getLogger().debug(" ");
+                Main.getLogger().debug("[CONNECTOR] Searching for background of: "+id+"...");
                 if (background.exists()) {
+                    Main.getLogger().debug("[CONNECTOR] Found asset background for "+id+"!");
                     background_ = "assets/zyneon/images/instances/" + id + ".webp";
+                    Main.getLogger().debug("[CONNECTOR] Applied asset background \""+"assets/zyneon/images/instances/" + id + ".webp"+"\" to "+id);
                 } else if (instance.getString("modpack.background") != null) {
+                    Main.getLogger().debug("[CONNECTOR] Found custom background for "+id+"!");
                     background_ = StringUtil.getURLFromFile(instance.getString("modpack.background"));
+                    Main.getLogger().debug("[CONNECTOR] Applied custom background \""+StringUtil.getURLFromFile(instance.getString("modpack.background"))+"\" to "+id);
+                } else {
+                    Main.getLogger().debug("[CONNECTOR] Couldn't find background file for "+id);
                 }
+                Main.getLogger().debug(" ");
                 frame.executeJavaScript("syncDescription(\"" + description + "\");");
                 frame.executeJavaScript("syncTitle('" + name + "','" + icon_ + "');");
                 frame.executeJavaScript("syncLogo('" + logo_ + "');");

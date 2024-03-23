@@ -7,7 +7,6 @@ import com.zyneonstudios.application.backend.utils.ZLogger;
 import com.zyneonstudios.application.backend.utils.frame.ZyneonSplash;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.utils.FileUtil;
-import live.nerotv.shademebaby.utils.StringUtil;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -29,7 +28,7 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.3.1";
+        version = "2024.3.1.1";
         String ui = "2024.3.1";
         String name = "Matter";
         architecture = getArchitecture();
@@ -45,9 +44,7 @@ public class Main {
             arg = arg.toLowerCase();
             switch (arg) {
                 case "--test" -> {
-                    String random = StringUtil.generateAlphanumericString(2) + "-" + StringUtil.generateAlphanumericString(3) + "-" + StringUtil.generateAlphanumericString(1);
-                    String date = new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
-                    fullVersion = date + " ▪ " + random;
+                    fullVersion = version + " ▪ " + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
                     application = new Application(fullVersion,ui);
                 }
                 case "--debug" -> {

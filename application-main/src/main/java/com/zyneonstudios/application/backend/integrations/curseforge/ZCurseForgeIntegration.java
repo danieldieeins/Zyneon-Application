@@ -3,6 +3,7 @@ package com.zyneonstudios.application.backend.integrations.curseforge;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.backend.utils.ZLogger;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
@@ -14,11 +15,14 @@ import fr.flowarg.flowupdater.utils.IOUtils;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
+import live.nerotv.shademebaby.utils.StringUtil;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -113,6 +117,31 @@ public class ZCurseForgeIntegration extends CurseForgeIntegration {
                 List<CurseModPack.CurseModPackMod> packFiles = pack.getMods();
                 logger.log("[CURSEFORGE] (INTEGRATION) Starting download of "+packFiles.size()+" files...");
                 downloadFiles(packFiles);
+                File cache = new File(cachePath.toUri());
+                if(cache.exists()) {
+                    if(cache.isDirectory()) {
+                        File[] elements = cache.listFiles();
+                        assert elements != null;
+                        for(File element:elements) {
+                            if(element.getName().toLowerCase().endsWith(".zip")) {
+                                File temp = new File(Main.getDirectoryPath()+"temp/");
+                                temp.mkdirs();
+                                String tempID = StringUtil.generateAlphanumericString(16);
+                                Main.getLogger().debug(element.getName()+" to "+Main.getDirectoryPath()+"temp/"+tempID+"/");
+                                new File(Main.getDirectoryPath()+"temp/"+tempID+"/").mkdirs();
+                                if(FileUtil.unzipFile(element.getAbsolutePath(),Main.getDirectoryPath()+"temp/"+tempID+"/")) {
+                                    if(new File(Main.getDirectoryPath()+"temp/"+tempID+"/overrides/").exists()) {
+                                        if(new File(Main.getDirectoryPath()+"temp/"+tempID+"/overrides/").isDirectory()) {
+                                            File zip = new File(Main.getDirectoryPath()+"temp/"+tempID+"/overrides/");
+                                            FileUtils.copyDirectory(zip,new File(pathString));
+                                        }
+                                    }
+                                }
+                            }
+                            System.gc();
+                        }
+                    }
+                }
                 logger.debug(" ");
                 logger.log("[CURSEFORGE] (INTEGRATION) Building zyneonInstance file from CurseForge data...");
                 Config instance = new Config(pathString+"zyneonInstance.json");
@@ -154,6 +183,8 @@ public class ZCurseForgeIntegration extends CurseForgeIntegration {
                 Application.loadInstances();
                 Application.getFrame().getBrowser().loadURL(Application.getInstancesURL()+"?tab=curseforge-"+id+"-"+v);
             } catch (Exception e) {
+                e.printStackTrace();
+                logger.debug(Arrays.stream(e.getStackTrace()).toList().getFirst().toString());
                 logger.error("[CURSEFORGE] (INTEGRATION) Couldn't initialise CurseForge modpack: "+e.getMessage());
                 Application.getFrame().getBrowser().loadURL(Application.getInstancesURL());
             }

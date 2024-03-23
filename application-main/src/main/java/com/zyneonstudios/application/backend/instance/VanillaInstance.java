@@ -126,7 +126,7 @@ public class VanillaInstance implements Instance {
                     File[] mods = modsFolder.listFiles();
                     File listFile = new File(path+"cache/zyneon.modlist.json");
                     if(listFile.exists()) {
-                        Main.getLogger().debug("Delete previous sync: "+listFile.delete());
+                        Main.getLogger().debug("[INSTANCE] Delete previous sync: "+listFile.delete());
                     }
                     Config modList = new Config(listFile.getAbsolutePath());
                     for(File mod:mods) {
