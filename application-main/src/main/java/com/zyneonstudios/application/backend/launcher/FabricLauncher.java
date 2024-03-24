@@ -51,6 +51,7 @@ public class FabricLauncher {
             );
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
+            framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
             try {
                 Process game = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
                 frame.executeJavaScript("launchStarted();");

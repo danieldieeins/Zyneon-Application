@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.3.2</version>
+    <version>2024.3.2.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -28,9 +28,9 @@
     <dependencies>
         <!--GitHub repositories from me-->
         <dependency>
-            <groupId>com.github.danieldieeins</groupId>
-            <artifactId>ShadeMeBaby</artifactId>
-            <version>2024.2.6</version>
+            <groupId>com.github.zyneonstudios</groupId>
+            <artifactId>nexus-zyndex</artifactId>
+            <version>2024.3-beta.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -145,7 +145,7 @@
                                     <src>src/deb/icon.png</src>
                                     <type>file</type>
                                     <mapper>
-                                        <type>perm</type>
+                            g            <type>perm</type>
                                         <prefix>/usr/bin/zyneon/application/</prefix>
                                     </mapper>
                                 </data>

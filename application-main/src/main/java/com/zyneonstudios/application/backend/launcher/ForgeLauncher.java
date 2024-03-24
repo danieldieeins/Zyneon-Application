@@ -63,6 +63,7 @@ public class ForgeLauncher {
             }
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
+            framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
             try {
                 Process game = framework.launch(minecraftVersion, forgeVersion, forge);
                 frame.executeJavaScript("launchStarted();");

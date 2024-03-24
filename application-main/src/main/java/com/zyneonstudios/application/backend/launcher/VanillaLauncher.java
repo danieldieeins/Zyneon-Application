@@ -51,6 +51,7 @@ public class VanillaLauncher {
             );
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx4096M");
+            framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
             try {
                 Process game = framework.launch(version, "", NoFramework.ModLoader.VANILLA);
                 frame.executeJavaScript("launchStarted();");
