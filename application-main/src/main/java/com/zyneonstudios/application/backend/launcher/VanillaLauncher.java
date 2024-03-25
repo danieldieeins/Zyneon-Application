@@ -3,6 +3,7 @@ package com.zyneonstudios.application.backend.launcher;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.backend.installer.VanillaInstaller;
+import com.zyneonstudios.application.backend.installer.java.OperatingSystem;
 import com.zyneonstudios.application.backend.instance.Instance;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.LogFrame;
@@ -51,7 +52,9 @@ public class VanillaLauncher {
             );
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx4096M");
-            framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
+            if(Main.operatingSystem== OperatingSystem.macOS) {
+                framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
+            }
             try {
                 Process game = framework.launch(version, "", NoFramework.ModLoader.VANILLA);
                 frame.executeJavaScript("launchStarted();");

@@ -3,6 +3,7 @@ package com.zyneonstudios.application.backend.launcher;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.backend.installer.ForgeInstaller;
+import com.zyneonstudios.application.backend.installer.java.OperatingSystem;
 import com.zyneonstudios.application.backend.instance.ForgeInstance;
 import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.backend.utils.frame.LogFrame;
@@ -63,7 +64,9 @@ public class ForgeLauncher {
             }
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
-            framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
+            if(Main.operatingSystem== OperatingSystem.macOS) {
+                framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
+            }
             try {
                 Process game = framework.launch(minecraftVersion, forgeVersion, forge);
                 frame.executeJavaScript("launchStarted();");
