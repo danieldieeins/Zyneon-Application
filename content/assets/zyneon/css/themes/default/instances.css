@@ -408,7 +408,7 @@
     box-shadow: none;
 }
 
-.content #instance-adder .card h3 select#creator-minecraft,select#creator-modloader {
+select#creator-minecraft,select#creator-modloader,select#creator-type {
     width: 17rem;
 }
 
