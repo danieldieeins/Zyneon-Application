@@ -5,11 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class InstanceConfig extends OnlineConfig implements Comparable<InstanceConfig>{
 
+    @Deprecated
     public InstanceConfig(String url) {
         super(url);
     }
 
-    @Override
+    @Override @Deprecated
     public int compareTo(@NotNull InstanceConfig o) {
         return getString("modpack.name").compareTo(o.getString("modpack.name"));
     }

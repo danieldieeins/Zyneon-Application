@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+@Deprecated
 public class ZyneonModpacks {
 
+    @Deprecated
     public static ArrayList<InstanceConfig> search(String query, String version) {
         if(version.equalsIgnoreCase("all")) {
             return search(query);
@@ -48,6 +50,7 @@ public class ZyneonModpacks {
         }
     }
 
+    @Deprecated
     public static ArrayList<InstanceConfig> search(String query) {
         HashMap<String, ArrayList<String>> search = ZyneonIntegration.getFromServer("instances");
         ArrayList<InstanceConfig> instances = new ArrayList<>();

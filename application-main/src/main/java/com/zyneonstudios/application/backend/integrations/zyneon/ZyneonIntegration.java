@@ -15,8 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@Deprecated
 public class ZyneonIntegration {
 
+    @Deprecated
     public static HashMap<String, ArrayList<String>> getFromServer(String type) {
         String jsonUrl = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/index.json";
         try {
@@ -42,7 +44,7 @@ public class ZyneonIntegration {
         }
     }
 
-    @SuppressWarnings("all")
+    @Deprecated
     private static String getFromURL(String urlString) throws Exception {
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -58,6 +60,7 @@ public class ZyneonIntegration {
         return response.toString();
     }
 
+    @Deprecated
     public static String format(String in) {
         in = in
                 .replace(".","%")

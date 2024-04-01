@@ -168,6 +168,10 @@ function addVersionsToMinecraftSelect(id) {
     callJavaMethod("sync.select.minecraft."+id);
 }
 
+function addGameTypesToSelect(id) {
+    callJavaMethod("sync.select.gametypes."+id);
+}
+
 function addToSelect(selectID,value,name) {
     const select = document.getElementById(selectID);
     const option = document.createElement("option");

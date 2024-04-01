@@ -6,7 +6,6 @@ import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.AESUtil;
 import live.nerotv.zyneon.auth.ZyneonAuth;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;

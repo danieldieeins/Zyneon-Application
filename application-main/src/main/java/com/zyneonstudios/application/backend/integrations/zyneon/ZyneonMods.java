@@ -6,6 +6,7 @@ import fr.flowarg.openlauncherlib.NoFramework;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated
 public class ZyneonMods {
 
     @Deprecated

@@ -245,23 +245,33 @@
 
                     <form id="values">
                         <div id="form" class="background-bottom">
-                            <h3>Instance name: <label><input type="text" id="creator-name" maxlength="32" required></label></h3>
-                            <h3>Instance version: <label><input type="text" id="creator-version" required></label></h3>
+                            <h3>Instance name*: <label><input type="text" id="creator-name" maxlength="32" required></label></h3>
+                            <h3>Instance version*: <label><input type="text" id="creator-version" required></label></h3>
                             <h3>
-                                Minecraft version:
+                                Game type*:
                                 <label>
-                                    <select id="creator-minecraft" required></select>
-                                    <script>addVersionsToMinecraftSelect("creator-minecraft");</script>
+                                    <select id="creator-modloader" required>
+                                        <option disabled>Minecraft: Java Edition</option>
+                                        <option value="Vanilla">Java: Vanilla</option>
+                                        <!--<option value="Snapshots" disabled>Java: Snapshots</option>-->
+                                        <option value="Fabric">Java: Fabric</option>
+                                        <option value="Forge">Java: Forge</option>
+                                        <!--<option value="NeoForge" disabled>Java: NeoForge</option>
+                                        <option value="Quilt" disabled>Java: Quilt</option>
+                                        <option disabled> </option>
+                                        <option disabled>Minecraft: Bedrock Edition</option>
+                                        <option value="Google" disabled>Bedrock: Preview (Google Play)</option>
+                                        <option value="Microsoft" disabled>Bedrock: Default (Microsoft Store)</option>
+                                        <option value="Google" disabled>Bedrock: Preview (Google Play)</option>
+                                        <option value="Microsoft" disabled>Bedrock: Preview (Microsoft Store)</option>-->
+                                    </select>
                                 </label>
                             </h3>
                             <h3>
-                                Modloader:
+                                Minecraft version*:
                                 <label>
-                                    <select id="creator-modloader" required>
-                                        <option value="Vanilla">None (vanilla)</option>
-                                        <option value="Fabric">Fabric</option>
-                                        <option value="Forge">Forge</option>
-                                    </select>
+                                    <select id="creator-minecraft" required></select>
+                                    <script>addVersionsToMinecraftSelect("creator-minecraft");</script>
                                 </label>
                             </h3>
                             <h3 id="bottom2">Modloader version: <label><input type="text" id="creator-mlversion"></label><br><br></h3>

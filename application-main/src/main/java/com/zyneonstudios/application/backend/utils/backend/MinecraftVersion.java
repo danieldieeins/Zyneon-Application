@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.backend.utils.backend;
 
+import com.zyneonstudios.nexus.Main;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 
 import java.util.ArrayList;
@@ -112,17 +113,20 @@ public class MinecraftVersion {
 
     public static Type getType(String version) {
         if(version.contains(".")) {
-            int i = Integer.parseInt(version.split("\\.")[1]);
-            if (i < 18) {
-                return Type.LEGACY;
-            } else if (i > 17) {
-                return Type.NEW;
-            } else {
-                return null;
+            try {
+                int i = Integer.parseInt(version.split("\\.")[1]);
+                if (i < 13) {
+                    return Type.LEGACY;
+                } else if (i < 18) {
+                    return Type.SEMI_NEW;
+                } else {
+                    return Type.NEW;
+                }
+            } catch (Exception e) {
+                Main.logger.error("[SYSTEM] Couldn't resolve Minecraft version "+version+": "+e.getMessage());
             }
-        } else {
-            return Type.NEW;
         }
+        return null;
     }
 
     public static boolean isMinecraftVersion(String version) {

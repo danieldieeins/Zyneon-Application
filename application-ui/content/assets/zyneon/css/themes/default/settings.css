@@ -239,17 +239,17 @@ a.button#general-tab-start {
     display: none;
 }
 
-.content #profile .account a.button {
+a.button#logout {
     font-size: 1.05rem;
-    color: white;
-    background: #ff2e2e;
+    color: white !important;
+    background: #ff2e2e !important;
     box-shadow: none;
 }
 
-.content #profile .account a.button:hover {
+a.button#logout:hover {
     font-size: 1.05rem;
-    color: white;
-    background: red;
+    color: white !important;
+    background: red !important;
     box-shadow: none;
     animation: wiggle 0.1s linear infinite;
 }
@@ -275,17 +275,17 @@ a.button#general-tab-start {
     display: inline;
 }
 
-.content #fallback .login a.button {
+a.button#login {
     font-size: 1.05rem;
-    color: #000000;
-    background: #69c53d;
+    color: #000000 !important;
+    background: #9aff71 !important;
     box-shadow: none;
 }
 
-.content #fallback .login a.button:hover {
+a.button#login:hover {
     font-size: 1.05rem;
-    color: black;
-    background: #14ff00;
+    color: black !important;
+    background: #14ff00 !important;
     box-shadow: none;
 }
 

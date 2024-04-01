@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+@Deprecated
 public class VanillaInstance implements Instance {
 
     private Config json;
@@ -30,6 +31,7 @@ public class VanillaInstance implements Instance {
     private String version;
     private String minecraftVersion;
 
+    @Deprecated
     public VanillaInstance(Config json) {
         this.json = json;
         id = json.getString("modpack.id");
@@ -40,7 +42,7 @@ public class VanillaInstance implements Instance {
         settings = new Config(path+"/zyneonSettings.json");
     }
 
-    @Override @SuppressWarnings("all")
+    @Override @Deprecated
     public boolean checkVersion() {
         try {
             String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
@@ -56,7 +58,7 @@ public class VanillaInstance implements Instance {
         return true;
     }
 
-    @Override
+    @Override @Deprecated
     public boolean update() {
         if(json.getString("modpack.download")!=null) {
             Main.getLogger().log("[INSTANCE] Trying to update" + name + " (" + id + ")...");
@@ -117,7 +119,7 @@ public class VanillaInstance implements Instance {
         return true;
     }
 
-    @Override
+    @Override @Deprecated
     public void sync() {
         CompletableFuture.runAsync(()->{
             File modsFolder = new File(path+"mods/");
@@ -225,41 +227,42 @@ public class VanillaInstance implements Instance {
         });
     }
 
-    @Override
+    @Override @Deprecated
     public Config getJSON() {
         return json;
     }
 
-    @Override
+    @Override @Deprecated
     public Config getSettings() {
         return settings;
     }
 
-    @Override
+    @Override @Deprecated
     public String getPath() {
         return path;
     }
 
-    @Override
+    @Override @Deprecated
     public String getID() {
         return id;
     }
 
-    @Override
+    @Override @Deprecated
     public String getName() {
         return name;
     }
 
-    @Override
+    @Override @Deprecated
     public String getVersion() {
         return version;
     }
 
-    @Override
+    @Override @Deprecated
     public String getMinecraftVersion() {
         return minecraftVersion;
     }
 
+    @Deprecated
     public void unload() {
         id = null;
         path = null;
