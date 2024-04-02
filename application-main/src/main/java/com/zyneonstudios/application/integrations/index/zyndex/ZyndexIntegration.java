@@ -32,8 +32,24 @@ public class ZyndexIntegration {
 
     public static boolean update(ReadableInstance localInstance) {
         try {
-            ReadableZynstance onlineInstance = new ReadableZynstance(localInstance.getLocation());
-            if (!localInstance.getVersion().equals(onlineInstance.getVersion()) || !new File(localInstance.getPath() + "meta/pack.zip").exists()) {
+            ReadableZynstance onlineInstance;
+            try {
+                onlineInstance = new ReadableZynstance(localInstance.getLocation());
+            } catch (Exception e) {
+                onlineInstance = null;
+            }
+            Config instanceConfig = new Config(localInstance.getFile());
+            boolean fixConverted = false;
+            if(instanceConfig.get("converted")!=null) {
+                if(instanceConfig.getBool("converted")) {
+                    ReadableZyndex nex = new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json");
+                    if(nex.getZynstances().containsKey(localInstance.getId())) {
+                        onlineInstance = nex.getZynstances().get(localInstance.getId());
+                        fixConverted = true;
+                    }
+                }
+            }
+            if (fixConverted || !localInstance.getVersion().equals(onlineInstance.getVersion()) || !new File(localInstance.getPath() + "meta/pack.zip").exists()) {
                 if (onlineInstance.getDownloadUrl() != null) {
                     Main.getLogger().log("[ZYNDEX] Trying to update" + onlineInstance.getName() + " (" + onlineInstance.getId() + ")...");
                     try {
@@ -105,7 +121,6 @@ public class ZyndexIntegration {
                         }
                     } else {
                         String id = format(instance.getId());
-                        System.out.println(id+" : "+query);
                         if(query.equals(id)) {
                             results.add(instance);
                         }
