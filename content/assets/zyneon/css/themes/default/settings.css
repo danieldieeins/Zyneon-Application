@@ -365,6 +365,6 @@ p#instance-path-string:hover {
     color: #fff;
 }
 
-#settings_general {
+#settings_general,#zyndex-button {
     display: none;
 }

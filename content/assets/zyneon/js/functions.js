@@ -79,6 +79,10 @@ function checkForWeb() {
     document.getElementById("instance-button").style.display = "inherit";
     document.getElementById("resource-button").style.display = "inherit";
     document.getElementById("download-button").style.display = "none";
+    const zyndex = document.getElementById("zyndex-button");
+    if(zyndex) {
+        zyndex.style.display = "inherit";
+    }
 }
 
 function syncTheme() {

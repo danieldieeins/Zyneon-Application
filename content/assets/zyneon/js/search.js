@@ -59,7 +59,7 @@ function syncSearch() {
     if(search_source==="modrinth"||search_source==="curseforge") {
         document.getElementById("load").style.display = "flex";
     }
-    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+".0."+search_instance);
+    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query.replaceAll(".","")+".0."+search_instance);
 }
 
 function update(query) {
@@ -155,3 +155,9 @@ function loadMore() {
     i = i + 1;
     callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+"."+i+"."+search_instance);
 }
+
+document.getElementById("search-query").addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        update();
+    }
+});
