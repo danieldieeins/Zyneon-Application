@@ -28,7 +28,7 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.4.2";
+        version = "2024.4.3";
         String ui = "2024.4.2";
         String name = "NEXUS";
         architecture = getArchitecture();
