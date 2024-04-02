@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.zyneonstudios</groupId>
         <artifactId>application-parent</artifactId>
-        <version>2024.3</version>
+        <version>2024.4</version>
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.4</version>
+    <version>2024.4.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -145,7 +145,7 @@
                                     <src>src/deb/icon.png</src>
                                     <type>file</type>
                                     <mapper>
-                            g            <type>perm</type>
+                                        <type>perm</type>
                                         <prefix>/usr/bin/zyneon/application/</prefix>
                                     </mapper>
                                 </data>

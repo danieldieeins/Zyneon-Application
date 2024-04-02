@@ -28,8 +28,8 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.4";
-        String ui = "2024.4";
+        version = "2024.4.1";
+        String ui = "2024.4.1";
         String name = "Savanna";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
