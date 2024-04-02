@@ -103,6 +103,12 @@ public class ZyndexIntegration {
                         if (minecraftVersion.equalsIgnoreCase(instance.getMinecraftVersion().replace(".", "-")) || minecraftVersion.equalsIgnoreCase("all")) {
                             results.add(instance);
                         }
+                    } else {
+                        String id = format(instance.getId());
+                        System.out.println(id+" : "+query);
+                        if(query.equals(id)) {
+                            results.add(instance);
+                        }
                     }
                 }
             }
@@ -112,7 +118,7 @@ public class ZyndexIntegration {
 
     private static String format(String in) {
         in = in
-                .replace(".", "%")
+                .replace(".", "")
                 .replace("_", "%")
                 .replace("/", "%")
                 .replace(" ", "%")
