@@ -1,10 +1,10 @@
 package com.zyneonstudios;
 
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.backend.installer.java.Architecture;
-import com.zyneonstudios.application.backend.installer.java.OperatingSystem;
-import com.zyneonstudios.application.backend.utils.ZLogger;
-import com.zyneonstudios.application.backend.utils.frame.ZyneonSplash;
+import com.zyneonstudios.application.installer.java.Architecture;
+import com.zyneonstudios.application.installer.java.OperatingSystem;
+import com.zyneonstudios.application.utils.ZLogger;
+import com.zyneonstudios.application.utils.frame.ZyneonSplash;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.utils.FileUtil;
 

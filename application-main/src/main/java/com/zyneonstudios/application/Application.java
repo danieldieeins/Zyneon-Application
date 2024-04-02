@@ -2,11 +2,11 @@ package com.zyneonstudios.application;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
-import com.zyneonstudios.application.backend.auth.MicrosoftAuth;
-import com.zyneonstudios.application.backend.installer.java.OperatingSystem;
-import com.zyneonstudios.application.backend.utils.backend.MinecraftVersion;
-import com.zyneonstudios.application.backend.utils.frame.web.CustomWebFrame;
-import com.zyneonstudios.application.backend.utils.frame.web.ZyneonWebFrame;
+import com.zyneonstudios.application.auth.MicrosoftAuth;
+import com.zyneonstudios.application.installer.java.OperatingSystem;
+import com.zyneonstudios.application.utils.backend.MinecraftVersion;
+import com.zyneonstudios.application.utils.frame.web.CustomWebFrame;
+import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
 import me.friwi.jcefmaven.CefInitializationException;
