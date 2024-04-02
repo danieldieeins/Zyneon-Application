@@ -46,8 +46,8 @@ public class MemoryFrame extends JFrame {
         int initialValue = Application.memory;
         if(instance!=null) {
             if(!instance.equalsIgnoreCase("default")) {
-                if (saveFile.get("configuration.ram") != null) {
-                    initialValue = saveFile.getInteger("configuration.ram");
+                if (saveFile.get("settings.memory") != null) {
+                    initialValue = saveFile.getInteger("settings.memory");
                 }
             }
         }
@@ -103,7 +103,7 @@ public class MemoryFrame extends JFrame {
         if(instance!=null) {
             if(!instance.equalsIgnoreCase("default")) {
                 if(!instance.equalsIgnoreCase("")) {
-                    path = "configuration.ram";
+                    path = "settings.memory";
                 }
             }
         }

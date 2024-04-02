@@ -1,9 +1,10 @@
-package com.zyneonstudios.application.integrations;
+package com.zyneonstudios.application.integrations.index;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.instance.InstanceConfig;
+import com.zyneonstudios.nexus.instance.ReadableZynstance;
 
 import java.util.ArrayList;
 
@@ -59,16 +60,18 @@ public class Integrator {
         }
     }
 
-    public static void zyneonToConnector(ArrayList<InstanceConfig> results, String instanceID) {
+    public static void zyndexToConnector(ArrayList<ReadableZynstance> results, String instanceID) {
         if(results!=null) {
             if(!results.isEmpty()) {
-                for (InstanceConfig instance : results) {
-                    String id = instance.getString("modpack.id");
-                    String icon = "https://danieldieeins.github.io/Zyneon-Application/content/assets/zyneon/images/instances/" + id + ".png";
-                    if (instance.getString("modpack.thumbnail") != null) {
-                        icon = instance.getString("modpack.thumbnail");
+                for (ReadableZynstance instance : results) {
+                    String id = instance.getId();
+                    String icon;
+                    if (instance.getThumbnailIconUrl() != null) {
+                        icon = instance.getThumbnailIconUrl();
+                    } else {
+                        icon = Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/assets/zyneon/images/instances/default.png";
                     }
-                    addItemCard(icon, instance.getString("modpack.name"), instance.getString("modpack.author"), instance.getString("modpack.description"), id, id, "zyneon");
+                    addItemCard(icon, instance.getName(), instance.getAuthor(), instance.getDescription(), id, id, "zyneon");
                 }
             }
         }

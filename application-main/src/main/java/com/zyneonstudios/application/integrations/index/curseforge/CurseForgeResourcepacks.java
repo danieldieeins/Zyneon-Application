@@ -1,10 +1,10 @@
-package com.zyneonstudios.application.integrations.curseforge;
+package com.zyneonstudios.application.integrations.index.curseforge;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
 
-public class CurseForgeModpacks {
+public class CurseForgeResourcepacks {
 
     public static JsonObject search(String query, String version, int offset, int limit) {
         query=query.replace(" ","%20");
@@ -12,11 +12,11 @@ public class CurseForgeModpacks {
             return search(query,offset,limit);
         }
         try {
-            String search = "https://api.curseforge.com/v1/mods/search?gameId=432&classId=4471&gameVersion="+version+"&searchFilter="+query+"&pageSize="+limit+"&index="+offset;
+            String search = "https://api.curseforge.com/v1/mods/search?gameId=432&classId=12&gameVersion="+version+"&searchFilter="+query+"&pageSize="+limit+"&index="+offset;
             Gson gson = new Gson();
             return gson.fromJson(ZCurseForgeIntegration.makeRequest(search), JsonObject.class);
         } catch (Exception e) {
-            Main.getLogger().error("[CURSEFORGE] (MODPACKS) Couldn't complete search: "+e.getMessage());
+            Main.getLogger().error("[CURSEFORGE] (RESOURCE PACKS) Couldn't complete search: "+e.getMessage());
             return null;
         }
     }
@@ -24,11 +24,11 @@ public class CurseForgeModpacks {
     public static JsonObject search(String query, int offset, int limit) {
         query=query.replace(" ","%20");
         try {
-            String search = "https://api.curseforge.com/v1/mods/search?gameId=432&classId=4471&searchFilter="+query+"&pageSize="+limit+"&index="+offset;
+            String search = "https://api.curseforge.com/v1/mods/search?gameId=432&classId=12&searchFilter="+query+"&pageSize="+limit+"&index="+offset;
             Gson gson = new Gson();
             return gson.fromJson(ZCurseForgeIntegration.makeRequest(search), JsonObject.class);
         } catch (Exception e) {
-            Main.getLogger().error("[CURSEFORGE] (MODPACKS) Couldn't complete search: "+e.getMessage());
+            Main.getLogger().error("[CURSEFORGE] (RESOURCE PACKS) Couldn't complete search: "+e.getMessage());
             return null;
         }
     }

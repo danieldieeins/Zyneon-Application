@@ -1,4 +1,4 @@
-package com.zyneonstudios.application.integrations.modrinth;
+package com.zyneonstudios.application.integrations.index.modrinth;
 
 import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;

@@ -1,9 +1,10 @@
-package com.zyneonstudios.application.integrations.modrinth;
+package com.zyneonstudios.application.integrations.index.modrinth;
 
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.integrations.modrinth.flowarg.ModrinthIntegration;
-import com.zyneonstudios.application.integrations.modrinth.flowarg.ModrinthModPack;
-import com.zyneonstudios.application.integrations.modrinth.flowarg.ModrinthModPackInfo;
+import com.zyneonstudios.application.integrations.index.modrinth.flowarg.ModrinthIntegration;
+import com.zyneonstudios.application.integrations.index.modrinth.flowarg.ModrinthModPack;
+import com.zyneonstudios.application.integrations.index.modrinth.flowarg.ModrinthModPackInfo;
+import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
 import com.zyneonstudios.application.utils.ZLogger;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import fr.flowarg.flowupdater.download.json.Mod;
@@ -19,13 +20,13 @@ import java.util.concurrent.CompletableFuture;
 
 public class ZModrinthIntegration extends ModrinthIntegration {
 
-    private ZLogger logger;
-    private String pathString;
-    private String id;
-    private String v;
-    private Path instancePath;
-    private Path cachePath;
-    private Path modsPath;
+    private final ZLogger logger;
+    private final String pathString;
+    private final String id;
+    private final String v;
+    private final Path instancePath;
+    private final Path cachePath;
+    private final Path modsPath;
 
     public ZModrinthIntegration(ZLogger logger, String id, String v) throws Exception {
         super(logger, Path.of(Application.getInstancePath()+"instances/modrinth-"+id.toLowerCase()+"-"+v.toLowerCase()+"/cache/"));
@@ -118,6 +119,7 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                         instance.set("modpack.logo", URLDecoder.decode(logo.getAbsolutePath(), StandardCharsets.UTF_8).replace("\\","/"));
                     }
                 } catch (Exception ignore) {}
+                ZyndexIntegration.convert(instance.getJsonFile());
                 logger.log("[MODRINTH] (INTEGRATION) Successfully built zyneonInstance file!");
                 logger.log("[MODRINTH] (INTEGRATION) Installed modrinth modpack "+packName+" v"+packVersion+"!");
                 Application.loadInstances();

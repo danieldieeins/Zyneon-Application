@@ -1,4 +1,4 @@
-package com.zyneonstudios.application.integrations.curseforge;
+package com.zyneonstudios.application.integrations.index.curseforge;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

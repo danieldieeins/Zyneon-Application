@@ -1,10 +1,11 @@
-package com.zyneonstudios.application.integrations.curseforge;
+package com.zyneonstudios.application.integrations.index.curseforge;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
+import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
 import com.zyneonstudios.application.utils.ZLogger;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import fr.flowarg.flowupdater.download.json.CurseModPackInfo;
@@ -178,6 +179,7 @@ public class ZCurseForgeIntegration extends CurseForgeIntegration {
                     description = curseforge.getString("description");
                 }
                 instance.set("modpack.description",description);
+                ZyndexIntegration.convert(instance.getJsonFile());
                 logger.log("[CURSEFORGE] (INTEGRATION) Successfully built zyneonInstance file!");
                 logger.log("[CURSEFORGE] (INTEGRATION) Installed CurseForge modpack "+packName+" v"+packVersion+"!");
                 Application.loadInstances();

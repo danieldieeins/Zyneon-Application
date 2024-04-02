@@ -1,4 +1,4 @@
-package com.zyneonstudios.application.integrations.modrinth.flowarg;
+package com.zyneonstudios.application.integrations.index.modrinth.flowarg;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

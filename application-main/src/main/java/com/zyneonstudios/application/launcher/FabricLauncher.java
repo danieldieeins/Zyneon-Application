@@ -4,39 +4,24 @@ import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.installer.FabricInstaller;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
-import com.zyneonstudios.application.instance.FabricInstance;
+import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
+import com.zyneonstudios.application.integrations.index.zyndex.instance.ReadableInstance;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.utils.frame.LogFrame;
-import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
 import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 
 import javax.swing.*;
-import java.io.File;
 import java.nio.file.Path;
 
 public class FabricLauncher {
 
-    private final ZyneonWebFrame frame;
-
-    public FabricLauncher(ZyneonWebFrame frame) {
-        this.frame = frame;
+    public void launch(ReadableInstance instance) {
+        ZyndexIntegration.update(instance);
+        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()));
     }
 
-    public void launch(FabricInstance instance, int ram, boolean log) {
-        if(instance.getSettings().get("configuration.ram")!=null) {
-            ram = instance.getSettings().getInteger("configuration.ram");
-        }
-        if(!new File(instance.getPath()+"/pack.zip").exists()) {
-            instance.update();
-        }
-        if(!instance.checkVersion()) {
-            instance.update();
-        }
-        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), ram, Path.of(instance.getPath()),log);
-    }
-
-    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath, boolean enableLogOutput) {
+    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
             Launcher.setJava(type);
@@ -57,10 +42,10 @@ public class FabricLauncher {
             }
             try {
                 Process game = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
-                frame.executeJavaScript("launchStarted();");
+                Application.getFrame().executeJavaScript("launchStarted();");
                 Application.getFrame().setState(JFrame.ICONIFIED);
                 LogFrame log;
-                if (enableLogOutput) {
+                if (Application.logOutput) {
                     log = new LogFrame(game.getInputStream(), "Minecraft " + minecraftVersion + " (with Fabric " + fabricVersion + ")");
                 } else {
                     log = null;
@@ -70,18 +55,18 @@ public class FabricLauncher {
                         log.onStop();
                     }
                     Application.getFrame().setState(JFrame.NORMAL);
-                    frame.executeJavaScript("launchDefault();");
+                    Application.getFrame().executeJavaScript("launchDefault();");
                 });
             } catch (Exception e) {
-                frame.executeJavaScript("launchDefault();");
+                Application.getFrame().executeJavaScript("launchDefault();");
                 if(!Application.auth.isLoggedIn()) {
-                    frame.getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
+                    Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
                 }
                 Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
                 throw new RuntimeException(e);
             }
         } else {
-            frame.executeJavaScript("launchDefault();");
+            Application.getFrame().executeJavaScript("launchDefault();");
             Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
         }
     }

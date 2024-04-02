@@ -8,20 +8,18 @@ import com.google.gson.stream.JsonReader;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.auth.MicrosoftAuth;
-import com.zyneonstudios.application.instance.FabricInstance;
-import com.zyneonstudios.application.instance.ForgeInstance;
-import com.zyneonstudios.application.instance.Instance;
-import com.zyneonstudios.application.instance.VanillaInstance;
-import com.zyneonstudios.application.integrations.Integrator;
-import com.zyneonstudios.application.integrations.curseforge.*;
-import com.zyneonstudios.application.integrations.modrinth.*;
-import com.zyneonstudios.application.integrations.zyneon.ZyneonModpacks;
+import com.zyneonstudios.application.integrations.index.Integrator;
+import com.zyneonstudios.application.integrations.index.curseforge.*;
+import com.zyneonstudios.application.integrations.index.modrinth.*;
+import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
+import com.zyneonstudios.application.integrations.index.zyndex.instance.ReadableInstance;
+import com.zyneonstudios.application.integrations.index.zyndex.instance.WritableInstance;
 import com.zyneonstudios.application.launcher.FabricLauncher;
 import com.zyneonstudios.application.launcher.ForgeLauncher;
 import com.zyneonstudios.application.launcher.VanillaLauncher;
 import com.zyneonstudios.application.utils.frame.MemoryFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
-import fr.flowarg.flowupdater.versions.ForgeVersionType;
+import com.zyneonstudios.nexus.index.ReadableZyndex;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.OnlineConfig;
@@ -162,34 +160,31 @@ public class Connector {
             String id = request.replace("button.instance.", "").toLowerCase();
             File file = new File(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
             if (file.exists()) {
-                Config instance = new Config(file);
-                String name = instance.getString("modpack.name");
-                String version = instance.getString("modpack.version");
+                ReadableInstance instance = new ReadableInstance(file);
+                if(instance.getSchemeVersion()==null) {
+                    instance = new ReadableInstance(ZyndexIntegration.convert(file));
+                } else if(instance.getSchemeVersion().contains("2024.2")) {
+                    instance = new ReadableInstance(ZyndexIntegration.convert(file));
+                }
+                String name = instance.getName();
+                String version = instance.getVersion();
                 String description;
                 if (id.contains("official/")) {
                     description = "This instance is outdated. Try to update.";
                 } else {
                     description = "This is an instance created by YOU!";
                 }
-                if (instance.getString("modpack.description") != null) {
-                    description = instance.getString("modpack.description").replace("\"", "''");
+                if (instance.getDescription() != null) {
+                    description = instance.getDescription().replace("\"", "''");
                 }
-                String minecraft = instance.getString("modpack.minecraft");
-                String modloader = "Vanilla";
+                String minecraft = instance.getMinecraftVersion();
+                String modloader = instance.getModloader();
                 String mlversion = "No mods";
-                Instance instance_;
-                if (instance.getString("modpack.forge.version") != null) {
-                    modloader = "Forge";
-                    mlversion = instance.getString("modpack.forge.version");
-                    instance_ = new ForgeInstance(instance);
-                } else if (instance.getString("modpack.fabric") != null) {
-                    modloader = "Fabric";
-                    mlversion = instance.getString("modpack.fabric");
-                    instance_ = new FabricInstance(instance);
-                } else {
-                    instance_ = new VanillaInstance(instance);
+                if (modloader.equalsIgnoreCase("forge")) {
+                    mlversion = instance.getForgeVersion();
+                } else if (modloader.equalsIgnoreCase("fabric")) {
+                    mlversion = instance.getFabricVersion();
                 }
-                instance_.sync();
                 File icon = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".png");
                 File logo = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + "-logo.png");
                 File background = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".webp");
@@ -202,10 +197,10 @@ public class Connector {
                     Main.getLogger().debug("[CONNECTOR] Found asset icon for "+id+"!");
                     icon_ = "assets/zyneon/images/instances/" + id + ".png";
                     Main.getLogger().debug("[CONNECTOR] Applied asset icon \""+"assets/zyneon/images/instances/" + id + ".png"+"\" to "+id);
-                } else if (instance.getString("modpack.icon") != null) {
+                } else if (instance.getIconUrl() != null) {
                     Main.getLogger().debug("[CONNECTOR] Found custom icon for "+id+"!");
-                    icon_ = StringUtil.getURLFromFile(instance.getString("modpack.icon"));
-                    Main.getLogger().debug("[CONNECTOR] Applied custom icon \""+StringUtil.getURLFromFile(instance.getString("modpack.icon"))+"\" to "+id);
+                    icon_ = instance.getIconUrl();
+                    Main.getLogger().debug("[CONNECTOR] Applied custom icon \""+instance.getIconUrl()+"\" to "+id);
                 } else {
                     Main.getLogger().debug("[CONNECTOR] Couldn't find icon file for "+id);
                 }
@@ -215,10 +210,10 @@ public class Connector {
                     Main.getLogger().debug("[CONNECTOR] Found asset logo for "+id+"!");
                     logo_ = "assets/zyneon/images/instances/" + id + "-logo.png";
                     Main.getLogger().debug("[CONNECTOR] Applied asset logo \""+"assets/zyneon/images/instances/" + id + "-logo.png"+"\" to "+id);
-                } else if (instance.getString("modpack.logo") != null) {
+                } else if (instance.getLogoUrl() != null) {
                     Main.getLogger().debug("[CONNECTOR] Found custom logo for "+id+"!");
-                    logo_ = StringUtil.getURLFromFile(instance.getString("modpack.logo"));
-                    Main.getLogger().debug("[CONNECTOR] Applied custom logo \""+StringUtil.getURLFromFile(instance.getString("modpack.logo"))+"\" to "+id);
+                    logo_ = instance.getLogoUrl();
+                    Main.getLogger().debug("[CONNECTOR] Applied custom logo \""+instance.getLogoUrl()+"\" to "+id);
                 } else {
                     Main.getLogger().debug("[CONNECTOR] Couldn't find logo file for "+id);
                 }
@@ -228,10 +223,10 @@ public class Connector {
                     Main.getLogger().debug("[CONNECTOR] Found asset background for "+id+"!");
                     background_ = "assets/zyneon/images/instances/" + id + ".webp";
                     Main.getLogger().debug("[CONNECTOR] Applied asset background \""+"assets/zyneon/images/instances/" + id + ".webp"+"\" to "+id);
-                } else if (instance.getString("modpack.background") != null) {
+                } else if (instance.getBackgroundUrl() != null) {
                     Main.getLogger().debug("[CONNECTOR] Found custom background for "+id+"!");
-                    background_ = StringUtil.getURLFromFile(instance.getString("modpack.background"));
-                    Main.getLogger().debug("[CONNECTOR] Applied custom background \""+StringUtil.getURLFromFile(instance.getString("modpack.background"))+"\" to "+id);
+                    background_ = instance.getBackgroundUrl();
+                    Main.getLogger().debug("[CONNECTOR] Applied custom background \""+instance.getBackgroundUrl()+"\" to "+id);
                 } else {
                     Main.getLogger().debug("[CONNECTOR] Couldn't find background file for "+id);
                 }
@@ -242,10 +237,7 @@ public class Connector {
                 frame.executeJavaScript("syncBackground('" + background_ + "');");
                 frame.executeJavaScript("syncDock('" + id + "','" + version + "','" + minecraft + "','" + modloader + "','" + mlversion + "');");
 
-                int ram = Application.memory;
-                if (instance_.getSettings().get("configuration.ram") != null) {
-                    ram = instance_.getSettings().getInteger("configuration.ram");
-                }
+                int ram = instance.getSettings().getMemory();
 
                 String command = "syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");";
                 Main.getLogger().debug("[CONNECTOR] Sending command: "+command);
@@ -298,7 +290,7 @@ public class Connector {
             } else if(source.equalsIgnoreCase("zyneon")) {
                 CompletableFuture.runAsync(() -> {
                     if (type.equalsIgnoreCase("modpacks")) {
-                        Integrator.zyneonToConnector(ZyneonModpacks.search(query, version),instanceID);
+                        Integrator.zyndexToConnector(ZyndexIntegration.search(new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json"), query, version),instanceID);
                     }
                 });
             }
@@ -327,33 +319,34 @@ public class Connector {
             File instancePath = new File(Application.getInstancePath() + "instances/" + id + "/");
             if (instancePath.exists()) {
                 Main.getLogger().debug("[CONNECTOR] Created instance path: " + instancePath.mkdirs());
-                Config instance = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
-                instance.set("modpack.name", name);
-                instance.set("modpack.version", version);
-                instance.set("modpack.description", description);
-                instance.set("modpack.minecraft", minecraft);
+                Config instanceConfig = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
+                WritableInstance instance = new WritableInstance(instanceConfig.getJsonFile());
+                instance.setName(name);
+                instance.setVersion(version);
+                instance.setDescription(description);
+                instance.setMinecraftVersion(minecraft);
                 if (modloader.equalsIgnoreCase("forge")) {
                     if (mlversion.toLowerCase().startsWith("old")) {
-                        instance.delete("modpack.fabric");
-                        instance.set("modpack.forge.type", ForgeVersionType.OLD.toString());
-                        instance.set("modpack.forge.version", mlversion.replace("old", ""));
+                        instanceConfig.delete("instance.versions.fabric");
+                        instance.setForgeType("OLD");
+                        instance.setForgeVersion(mlversion.replace("old", ""));
                     } else if (mlversion.toLowerCase().startsWith("neo")) {
-                        instance.delete("modpack.fabric");
-                        instance.set("modpack.forge.type", ForgeVersionType.NEO_FORGE.toString());
-                        instance.set("modpack.forge.version", mlversion.replace("neo", ""));
+                        instanceConfig.delete("instance.versions.fabric");
+                        instance.setForgeType("NEO_FORGE");
+                        instance.setForgeVersion(mlversion.replace("neo", ""));
                     } else {
-                        instance.delete("modpack.fabric");
-                        instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
-                        instance.set("modpack.forge.version", mlversion.replace("new", ""));
+                        instanceConfig.delete("instance.versions.fabric");
+                        instance.setForgeType("NEW");
+                        instance.setForgeVersion(mlversion.replace("new", ""));
                     }
                 } else if (modloader.equalsIgnoreCase("fabric")) {
-                    instance.delete("modpack.forge");
-                    instance.set("modpack.fabric", mlversion.replace("old", "").replace("neo", ""));
+                    instanceConfig.delete("instance.versions.forge");
+                    instance.setFabricVersion(mlversion.replace("old", "").replace("neo", "").replace("new",""));
                 } else {
-                    instance.delete("modpack.fabric");
-                    instance.delete("modpack.forge");
+                    instanceConfig.delete("instance.versions.fabric");
+                    instanceConfig.delete("instance.versions.forge");
+                    instanceConfig.delete("instance.meta.forgeType");
                 }
-                instance.set("modpack.instance", "instances/" + id + "/");
             }
             Application.loadInstances();
             frame.getBrowser().loadURL(Application.getInstancesURL()+"?tab="+id);
@@ -372,26 +365,26 @@ public class Connector {
             File instancePath = new File(Application.getInstancePath() + "instances/" + id + "/");
             if (!instancePath.exists()) {
                 Main.getLogger().debug("[CONNECTOR] Created instance path: " + instancePath.mkdirs());
-                Config instance = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
-                instance.set("modpack.id", id);
-                instance.set("modpack.name", name);
-                instance.set("modpack.version", version);
-                instance.set("modpack.minecraft", minecraft);
+                Config instanceConfig = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
+                WritableInstance instance = new WritableInstance(instanceConfig.getJsonFile());
+                instance.setId(id);
+                instance.setName(name);
+                instance.setVersion(version);
+                instance.setMinecraftVersion(minecraft);
                 if (modloader.equalsIgnoreCase("forge")) {
                     if (mlversion.toLowerCase().startsWith("old")) {
-                        instance.set("modpack.forge.type", ForgeVersionType.OLD.toString());
-                        instance.set("modpack.forge.version", mlversion.replace("old", ""));
+                        instance.setForgeType("OLD");
+                        instance.setForgeVersion(mlversion.replace("old", ""));
                     } else if (mlversion.toLowerCase().startsWith("neo")) {
-                        instance.set("modpack.forge.type", ForgeVersionType.NEO_FORGE.toString());
-                        instance.set("modpack.forge.version", mlversion.replace("neo", ""));
+                        instance.setForgeType("NEO_FORGE");
+                        instance.setForgeVersion(mlversion.replace("neo", ""));
                     } else {
-                        instance.set("modpack.forge.type", ForgeVersionType.NEW.toString());
-                        instance.set("modpack.forge.version", mlversion.replace("new", ""));
+                        instance.setForgeType("NEW");
+                        instance.setForgeVersion(mlversion.replace("new", ""));
                     }
                 } else if (modloader.equalsIgnoreCase("fabric")) {
-                    instance.set("modpack.fabric", mlversion.replace("old", "").replace("neo", ""));
+                    instance.setFabricVersion(mlversion.replace("old", "").replace("neo", "").replace("new", ""));
                 }
-                instance.set("modpack.instance", "instances/" + id + "/");
             }
             Application.loadInstances();
             frame.getBrowser().loadURL(Application.getInstancesURL()+"?tab="+id);
@@ -492,7 +485,7 @@ public class Connector {
                         }
                         Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonIcon" + extension, StandardCharsets.UTF_8)));
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
-                        instance.set("modpack.icon", file.getAbsolutePath().replace("\\", "/"));
+                        instance.set("instance.resources.icon", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + id);
                     } catch (Exception e) {
@@ -531,7 +524,7 @@ public class Connector {
                         }
                         Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonLogo" + extension, StandardCharsets.UTF_8)));
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
-                        instance.set("modpack.logo", file.getAbsolutePath().replace("\\", "/"));
+                        instance.set("instance.resources.logo", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + id);
                     } catch (Exception e) {
@@ -570,7 +563,7 @@ public class Connector {
                         }
                         Files.copy(Paths.get(path), Paths.get(URLDecoder.decode(Application.getInstancePath() + "instances/" + id + "/zyneonBackground" + extension, StandardCharsets.UTF_8)));
                         Config instance = new Config(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
-                        instance.set("modpack.background", file.getAbsolutePath().replace("\\", "/"));
+                        instance.set("instance.resources.background", file.getAbsolutePath().replace("\\", "/"));
                         Application.loadInstances();
                         frame.getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + id);
                     } catch (Exception e) {
@@ -589,12 +582,10 @@ public class Connector {
             }
         } else if (request.contains("button.install.")) {
             String id = request.replace("button.install.", "");
-            String url = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + id + ".json";
-            File instance = new File(Application.getInstancePath() + "instances/" + id + "/");
-            Main.getLogger().debug("[CONNECTOR] Created instance path: " + instance.mkdirs());
-            FileUtil.downloadFile(url, URLDecoder.decode(instance.getAbsolutePath() + "/zyneonInstance.json", StandardCharsets.UTF_8));
-            Application.loadInstances();
-            frame.getBrowser().loadURL(Application.getInstancesURL()+"?tab="+id);
+            ReadableZyndex nex = new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json");
+            if(nex.getZynstances().containsKey(id)) {
+                Main.getLogger().debug("[CONNECTOR] Installed NEX instance "+id+": "+ZyndexIntegration.install(nex.getZynstances().get(id)));
+            }
         } else if (request.contains("button.resourcepacks.")) {
             resolveInstanceRequest(InstanceAction.SHOW_RESOURCEPACKS, request.replace("button.resourcepacks.", ""));
         } else if (request.contains("button.shaders.")) {
@@ -930,32 +921,31 @@ public class Connector {
             return;
         }
         if (instanceString.startsWith("official/")) {
-            Config instanceJson;
+            File instanceJson;
             if (new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json").exists()) {
-                instanceJson = new Config(new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json"));
+                instanceJson = new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
             } else {
                 Main.getLogger().debug("[CONNECTOR] Created instance path: " + new File(Application.getInstancePath() + "instances/" + instanceString + "/").mkdirs());
                 String s = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json";
-                File file = FileUtil.downloadFile(s, Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
-                instanceJson = new Config(file);
+                instanceJson = FileUtil.downloadFile(s, Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
             }
-            launch(instanceJson);
+            launch(new ReadableInstance(instanceJson));
         } else {
             File file = new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
             if (file.exists()) {
-                Config instanceJson = new Config(file);
-                launch(instanceJson);
+                launch(new ReadableInstance(file));
             }
         }
+        System.gc();
     }
 
-    private void launch(Config instanceJson) {
-        if (instanceJson.getString("modpack.fabric") != null) {
-            new FabricLauncher(frame).launch(new FabricInstance(instanceJson), Application.config.getInteger("settings.memory.default"),Application.logOutput);
-        } else if (instanceJson.getString("modpack.forge.version") != null && instanceJson.getString("modpack.forge.type") != null) {
-            new ForgeLauncher(frame).launch(new ForgeInstance(instanceJson), Application.config.getInteger("settings.memory.default"),Application.logOutput);
+    private void launch(ReadableInstance instance) {
+        if(instance.getModloader().equalsIgnoreCase("fabric")) {
+            new FabricLauncher().launch(instance);
+        } else if(instance.getModloader().equalsIgnoreCase("forge")) {
+            new ForgeLauncher().launch(instance);
         } else {
-            new VanillaLauncher(frame).launch(new VanillaInstance(instanceJson), Application.config.getInteger("settings.memory.default"),Application.logOutput);
+            new VanillaLauncher().launch(instance);
         }
     }
 
@@ -977,30 +967,30 @@ public class Connector {
         createIfNotExist(folder);
     }
 
-    private void openIcon(String instance) {
-        Config instance_ = new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
-        if (instance_.getString("modpack.icon") != null) {
-            File png = new File(URLDecoder.decode(instance_.getString("modpack.icon"), StandardCharsets.UTF_8));
+    private void openIcon(String id) {
+        ReadableInstance instance = new ReadableInstance(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+        if (instance.getIconUrl() != null) {
+            File png = new File(URLDecoder.decode(instance.getIconUrl(), StandardCharsets.UTF_8));
             if (png.exists()) {
                 createIfNotExist(png);
             }
         }
     }
 
-    private void openLogo(String instance) {
-        Config instance_ = new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
-        if (instance_.getString("modpack.logo") != null) {
-            File png = new File(URLDecoder.decode(instance_.getString("modpack.logo"), StandardCharsets.UTF_8));
+    private void openLogo(String id) {
+        ReadableInstance instance = new ReadableInstance(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+        if (instance.getLogoUrl() != null) {
+            File png = new File(URLDecoder.decode(instance.getLogoUrl(), StandardCharsets.UTF_8));
             if (png.exists()) {
                 createIfNotExist(png);
             }
         }
     }
 
-    private void openBackground(String instance) {
-        Config instance_ = new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json");
-        if (instance_.getString("modpack.background") != null) {
-            File png = new File(URLDecoder.decode(instance_.getString("modpack.background"), StandardCharsets.UTF_8));
+    private void openBackground(String id) {
+        ReadableInstance instance = new ReadableInstance(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+        if (instance.getBackgroundUrl() != null) {
+            File png = new File(URLDecoder.decode(instance.getBackgroundUrl(), StandardCharsets.UTF_8));
             if (png.exists()) {
                 createIfNotExist(png);
             }
@@ -1047,7 +1037,7 @@ public class Connector {
         if(instance.equalsIgnoreCase("default")) {
             new MemoryFrame(Application.config, title, "default");
         } else {
-            new MemoryFrame(new VanillaInstance(new Config(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json")).getSettings(), title, instance);
+            new MemoryFrame(new ReadableInstance(Application.getInstancePath() + "instances/" + instance + "/zyneonInstance.json").getSettings(), title, instance);
         }
     }
 

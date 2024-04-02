@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.auth.MicrosoftAuth;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
+import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
+import com.zyneonstudios.application.integrations.index.zyndex.instance.ReadableInstance;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.utils.frame.web.CustomWebFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
@@ -163,28 +165,29 @@ public class Application {
         instances.set("instances", instanceList);
     }
 
-    private static void saveInstance(List<Map<String, Object>> instanceList, File instance) {
-        File instanceFile = new File(instance + "/zyneonInstance.json");
+    private static void saveInstance(List<Map<String, Object>> instanceList, File local) {
+        File instanceFile = new File(local + "/zyneonInstance.json");
         if (instanceFile.exists()) {
             Map<String, Object> instance_ = new HashMap<>();
-            Config instanceJson = new Config(instanceFile);
-            String id = instanceJson.getString("modpack.id");
-            String name = instanceJson.getString("modpack.name");
-            String version = instanceJson.getString("modpack.version");
-            String minecraft = instanceJson.getString("modpack.minecraft");
-            if (instanceJson.getString("modpack.icon") != null) {
-                instance_.put("icon", instanceJson.getString("modpack.icon"));
+            ReadableInstance instance = new ReadableInstance(instanceFile);
+            if(instance.getSchemeVersion()==null) {
+                instance = new ReadableInstance(ZyndexIntegration.convert(instanceFile));
+            } else if(instance.getSchemeVersion().contains("2024.2")) {
+                instance = new ReadableInstance(ZyndexIntegration.convert(instanceFile));
             }
-            String modloader = "Vanilla";
-            if (instanceJson.getString("modpack.forge.version") != null) {
-                modloader = "Forge " + instanceJson.getString("modpack.forge.version");
-            } else if (instanceJson.getString("modpack.fabric") != null) {
-                modloader = "Fabric " + instanceJson.getString("modpack.fabric");
+            if (instance.getIconUrl() != null) {
+                instance_.put("icon", instance.getIconUrl());
             }
-            instance_.put("id", id);
-            instance_.put("name", name);
-            instance_.put("version", version);
-            instance_.put("minecraft", minecraft);
+            String modloader = instance.getModloader();
+            if (modloader.equalsIgnoreCase("forge")) {
+                modloader = "Forge " + instance.getForgeVersion();
+            } else if(modloader.equalsIgnoreCase("fabric")) {
+                modloader = "Fabric " + instance.getFabricVersion();
+            }
+            instance_.put("id", instance.getId());
+            instance_.put("name", instance.getName());
+            instance_.put("version", instance.getVersion());
+            instance_.put("minecraft", instance.getMinecraftVersion());
             instance_.put("modloader", modloader);
             instanceList.add(instance_);
         }
