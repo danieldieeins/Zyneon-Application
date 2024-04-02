@@ -626,10 +626,10 @@ public class Connector {
                 }
             }
             frame.executeJavaScript("message(\"<i class='bx bx-loader-alt bx-spin bx-rotate-90'></i> Logging in...\");");
-            CompletableFuture.runAsync(()-> {
+
                 Application.auth = new MicrosoftAuth();
                 Application.auth.login();
-            });
+
         } else if (request.contains("button.logout")) {
             if(Application.auth!=null) {
                 if (Application.auth.isLoggedIn()) {

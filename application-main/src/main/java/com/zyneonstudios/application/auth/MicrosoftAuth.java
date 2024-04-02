@@ -8,6 +8,8 @@ import live.nerotv.shademebaby.file.OnlineConfig;
 
 import javax.crypto.KeyGenerator;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
@@ -45,11 +47,21 @@ public class MicrosoftAuth {
         byte[] key = keyGenerator.generateKey().getEncoded();
         String key_ = new String(Base64.getEncoder().encode(key));
         Config saver = new Config(authenticator.getSaveFile());
-        if (saver.get("op.k") == null) {
-            saver.set("op.k", key_);
-        } else {
-            key_ = (String) saver.get("op.k");
-            key = Base64.getDecoder().decode(key_);
+        try {
+            if (saver.get("op.k") == null) {
+                saver.set("op.k", key_);
+            } else {
+                key_ = (String) saver.get("op.k");
+                key = Base64.getDecoder().decode(key_);
+            }
+        } catch (Exception e) {
+            try {
+                FileWriter writer = new FileWriter(saver.getJsonFile());
+                writer.write("{}");
+                writer.close();
+            } catch (IOException ex) {
+                Application.getFrame().executeJavaScript("unmessage();");
+            }
         }
         authenticator.setKey(key);
         authenticator.isLoggedIn();
