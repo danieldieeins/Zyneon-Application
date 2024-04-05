@@ -474,7 +474,7 @@ body {
 }
 
 #overlay {
-    position: absolute;
+    position: fixed;
     color: white;
     top: 0; right: 0;
     height: 100vh;
@@ -482,6 +482,7 @@ body {
     background: #00000080;
     z-index: 200;
     display: none;
+    text-align: center;
 }
 
 .center-top {

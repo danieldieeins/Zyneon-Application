@@ -19,6 +19,16 @@ select {
     box-shadow: none;
 }
 
+input#zyndex-url {
+    border: none;
+    font-size: 1.25rem;
+    margin-left: 0.5rem;
+    width: 11.5rem;
+    border-radius: 0.5rem;
+    color: var(--color);
+    background: var(--background4);
+}
+
 input#search-query {
     position: relative;
     width: fit-content;

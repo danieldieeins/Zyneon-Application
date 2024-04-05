@@ -4,6 +4,7 @@ let search_version = "";
 let search_query = "";
 let search_instance = "";
 let search_disable = "";
+let zyndex_url = "";
 let i = 0;
 
 document.getElementById("search-version").onchange = versionChange;
@@ -48,6 +49,10 @@ function syncSearch() {
             document.getElementById("version-select").style.display = "none";
         }
     }
+    if(urlParams.get("u")!=null) {
+        zyndex_url = urlParams.get("u");
+        document.getElementById("zyndex-url").value = zyndex_url.replaceAll("%DOT%",".");
+    }
     if(urlParams.get("d")!=null) {
         search_disable = urlParams.get("d");
         if(document.getElementById(search_disable)) {
@@ -59,7 +64,7 @@ function syncSearch() {
     if(search_source==="modrinth"||search_source==="curseforge") {
         document.getElementById("load").style.display = "flex";
     }
-    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query.replaceAll(".","")+".0."+search_instance);
+    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query.replaceAll(".","")+".0."+search_instance+"."+zyndex_url);
 }
 
 function update(query) {
@@ -68,7 +73,7 @@ function update(query) {
     } else {
         search_query = document.getElementById("search-query").value;
     }
-    link("resources.html?s="+search_source+"&t="+search_type+"&v="+search_version+"&q="+search_query+"&i="+search_instance+"&d="+search_disable);
+    link("resources.html?s="+search_source+"&t="+search_type+"&v="+search_version+"&q="+search_query+"&i="+search_instance+"&d="+search_disable+"&u="+zyndex_url);
 }
 
 function versionChange() {
@@ -100,9 +105,11 @@ function addItem(png,name,author,description,id,slug,source) {
                     if (search_instance !== undefined) {
                         if (search_instance !== "") {
                             if(search_source === "modrinth") {
-                                callJavaMethod("modrinth.install." + search_type + "." + slug+"."+search_instance+"."+search_version);
+                                const request = "modrinth.install." + search_type + "." + slug+"."+search_instance+"."+search_version;
+                                callJavaMethod("button.confirm..."+"callJavaMethod('"+request+"')");
                             } else if(search_source === "curseforge") {
-                                callJavaMethod("curseforge.install." + search_type + "." + id+"."+search_instance+"."+search_version);
+                                const request = "curseforge.install." + search_type + "." + id+"."+search_instance+"."+search_version;
+                                callJavaMethod("button.confirm..."+"callJavaMethod('"+request+"')");
                             }
                         }
                     }
@@ -110,14 +117,19 @@ function addItem(png,name,author,description,id,slug,source) {
             } else {
                 if(search_source==="zyneon") {
                     callJavaMethod("button.install."+id);
+                } else if(search_source==="zyndex") {
+                    const request = "zyndex.install.modpack."+zyndex_url+"."+id;
+                    callJavaMethod("button.confirm..."+"callJavaMethod('"+request+"')");
                 } else if(search_source==="modrinth") {
-                    callJavaMethod("modrinth.install.modpack."+id+"."+search_version);
+                    const request = "modrinth.install.modpack."+id+"."+search_version;
+                    callJavaMethod("button.confirm..."+"callJavaMethod('"+request+"')");
                 } else if(search_source==="curseforge") {
-                    callJavaMethod("curseforge.install.modpack."+id+"."+search_version);
+                    const request= "curseforge.install.modpack."+id+"."+search_version;
+                    callJavaMethod("button.confirm..."+"callJavaMethod('"+request+"')");
                 }
             }
         };
-        if(search_source==="zyneon") {
+        if(search_source==="zyneon"||search_source==="zyndex") {
             item.querySelector("#show").style.display = "none";
         } else if(search_source==="curseforge") {
             item.querySelector("#show").innerText = "SHOW ON CURSEFORGE"
@@ -158,6 +170,14 @@ function loadMore() {
 
 document.getElementById("search-query").addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {
+        update();
+    }
+});
+
+document.getElementById("zyndex-url").addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        search_source = "zyndex";
+        zyndex_url = document.getElementById("zyndex-url").value.replaceAll(".","%DOT%");
         update();
     }
 });

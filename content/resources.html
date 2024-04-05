@@ -111,6 +111,16 @@
                             </div>
                         </a>
                     </li>
+                    <li id="zyndex-button">
+                        <a onclick="search_source = 'zyndex';">
+                            <div class="menu-item" id="zyndex">
+                                <i class='bx bx-download'></i>
+                                <label>
+                                    <input id="zyndex-url" placeholder=" custom zyndex url" name="zyndex-url" type="text">
+                                </label>
+                            </div>
+                        </a>
+                    </li>
                     <li class="subtitle">
                         <span class="bold">Type</span>
                     </li>
@@ -168,6 +178,9 @@
                 </ul>
             </div>
             <div class="content">
+                <div id="overlay">
+                    <div class="center"><h1 id="message"></h1></div>
+                </div>
                 <div class="card" id="searchbar">
                     <div class="flex">
                         <label><input placeholder=" goggles" type="text" id="search-query"></label>
