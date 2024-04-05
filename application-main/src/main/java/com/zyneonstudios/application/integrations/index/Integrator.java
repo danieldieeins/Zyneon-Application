@@ -66,8 +66,8 @@ public class Integrator {
                 for (ReadableZynstance instance : results) {
                     String id = instance.getId();
                     String icon;
-                    if (instance.getThumbnailIconUrl() != null) {
-                        icon = instance.getThumbnailIconUrl();
+                    if (instance.getThumbnailUrl() != null) {
+                        icon = instance.getThumbnailUrl();
                     } else {
                         icon = Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/assets/zyneon/images/instances/default.png";
                     }

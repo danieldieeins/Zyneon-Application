@@ -20,6 +20,7 @@ import com.zyneonstudios.application.launcher.VanillaLauncher;
 import com.zyneonstudios.application.utils.frame.MemoryFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
+import com.zyneonstudios.nexus.instance.ZynstanceBuilder;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.OnlineConfig;
@@ -366,7 +367,7 @@ public class Connector {
             if (!instancePath.exists()) {
                 Main.getLogger().debug("[CONNECTOR] Created instance path: " + instancePath.mkdirs());
                 Config instanceConfig = new Config(instancePath.getAbsolutePath() + "/zyneonInstance.json");
-                WritableInstance instance = new WritableInstance(instanceConfig.getJsonFile());
+                ZynstanceBuilder instance = new ZynstanceBuilder(instanceConfig);
                 instance.setId(id);
                 instance.setName(name);
                 instance.setVersion(version);
@@ -385,6 +386,7 @@ public class Connector {
                 } else if (modloader.equalsIgnoreCase("fabric")) {
                     instance.setFabricVersion(mlversion.replace("old", "").replace("neo", "").replace("new", ""));
                 }
+                instance.createFile();
             }
             Application.loadInstances();
             frame.getBrowser().loadURL(Application.getInstancesURL()+"?tab="+id);
