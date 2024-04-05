@@ -1,14 +1,14 @@
 :root {
-    --background: #00000000;
-    --background2: #00000000;
-    --background3: #00000000;
-    --background4: #00000000;
-    --background-accent: #00000000;
-    --highlight: #00000000;
-    --color: #00000000;
-    --color-dim: #00000000;
-    --color-dim-less: #00000000;
-    --inverted: #00000000;
+    --background: #181818;
+    --background2: #101010;
+    --background3: #1a1a1a;
+    --background4: #080808;
+    --background-accent: #000;
+    --highlight: #fff;
+    --color: #fff;
+    --color-dim: #ffffff60;
+    --color-dim-less: #ffffff90;
+    --inverted: #000;
     --accent: #7f34f8;
 }
 

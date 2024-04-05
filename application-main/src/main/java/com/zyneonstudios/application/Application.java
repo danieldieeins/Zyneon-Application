@@ -165,31 +165,37 @@ public class Application {
         instances.set("instances", instanceList);
     }
 
-    private static void saveInstance(List<Map<String, Object>> instanceList, File local) {
-        File instanceFile = new File(local + "/zyneonInstance.json");
-        if (instanceFile.exists()) {
-            Map<String, Object> instance_ = new HashMap<>();
-            ReadableInstance instance = new ReadableInstance(instanceFile);
-            if(instance.getSchemeVersion()==null) {
-                instance = new ReadableInstance(ZyndexIntegration.convert(instanceFile));
-            } else if(instance.getSchemeVersion().contains("2024.2")) {
-                instance = new ReadableInstance(ZyndexIntegration.convert(instanceFile));
+    private static boolean saveInstance(List<Map<String, Object>> instanceList, File local) {
+        try {
+            File instanceFile = new File(local + "/zyneonInstance.json");
+            if (instanceFile.exists()) {
+                Map<String, Object> instance_ = new HashMap<>();
+                ReadableInstance instance = new ReadableInstance(instanceFile);
+                if (instance.getSchemeVersion() == null) {
+                    instance = new ReadableInstance(ZyndexIntegration.convert(instanceFile));
+                } else if (instance.getSchemeVersion().contains("2024.2")) {
+                    instance = new ReadableInstance(ZyndexIntegration.convert(instanceFile));
+                }
+                if (instance.getIconUrl() != null) {
+                    instance_.put("icon", instance.getIconUrl());
+                }
+                String modloader = instance.getModloader();
+                if (modloader.equalsIgnoreCase("forge")) {
+                    modloader = "Forge " + instance.getForgeVersion();
+                } else if (modloader.equalsIgnoreCase("fabric")) {
+                    modloader = "Fabric " + instance.getFabricVersion();
+                }
+                instance_.put("id", instance.getId());
+                instance_.put("name", instance.getName());
+                instance_.put("version", instance.getVersion());
+                instance_.put("minecraft", instance.getMinecraftVersion());
+                instance_.put("modloader", modloader);
+                instanceList.add(instance_);
             }
-            if (instance.getIconUrl() != null) {
-                instance_.put("icon", instance.getIconUrl());
-            }
-            String modloader = instance.getModloader();
-            if (modloader.equalsIgnoreCase("forge")) {
-                modloader = "Forge " + instance.getForgeVersion();
-            } else if(modloader.equalsIgnoreCase("fabric")) {
-                modloader = "Fabric " + instance.getFabricVersion();
-            }
-            instance_.put("id", instance.getId());
-            instance_.put("name", instance.getName());
-            instance_.put("version", instance.getVersion());
-            instance_.put("minecraft", instance.getMinecraftVersion());
-            instance_.put("modloader", modloader);
-            instanceList.add(instance_);
+            return true;
+        } catch (Exception e) {
+            Main.getLogger().err("[APPLICATION] Couldn't load instance: "+e.getMessage());
+            return false;
         }
     }
 

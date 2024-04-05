@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.4.3.1</version>
+    <version>2024.4.4</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -29,8 +29,8 @@
         <!--GitHub repositories from me-->
         <dependency>
             <groupId>com.github.zyneonstudios</groupId>
-            <artifactId>nexus-zyndex</artifactId>
-            <version>2024.3-beta.1</version>
+            <artifactId>nexus-zyndex-java</artifactId>
+            <version>2024.4-beta.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
