@@ -493,6 +493,13 @@ public class Connector {
             } else {
                 resolveInstanceRequest(InstanceAction.OPEN_FOLDER, request.replace("button.folder.", ""));
             }
+        } else if (request.startsWith("button.disable.warn.")) {
+            request = request.replace("button.disable.warn.", "");
+            if(request.equalsIgnoreCase("thridparty")) {
+                Application.config.set("settings.warnings.thirdParty",false);
+                Application.thridPartyWarn = false;
+                frame.executeJavaScript("unmessage();");
+            }
         } else if (request.contains("button.screenshots.")) {
             resolveInstanceRequest(InstanceAction.SHOW_SCREENSHOTS, request.replace("button.screenshots.", ""));
         } else if (request.contains("button.change.icon.")) {
@@ -801,26 +808,20 @@ public class Connector {
     }
 
     private void thridPartyConfirm(String text, String button, String continueRequest) {
-        System.out.println("1");
-        if(text==null) {
-            System.out.println("1-1");
-            text = "<h3>This is a third party resource!</h3><p>Zyneon Studios assumes no liability for any problems or damage caused by third-party resources. We also do not offer help for third-party resources.</p>";
+        if(Application.thridPartyWarn) {
+            if (text == null) {
+                text = "<h3>This is a third party resource!</h3><p>Zyneon Studios assumes no liability for any problems or damage caused by third-party resources. We also do not offer help for third-party resources.</p>";
+            }
+            if (continueRequest == null) {
+                continueRequest = "unmessage();";
+            }
+            if (button == null) {
+                button = "<h1><a onclick=\\\"" + continueRequest + "; unmessage();\\\" class='button'>Continue</a> <a onclick=\\\"link('instances.html');\\\" class='button'>Return</a></h1><a onclick=\\\"callJavaMethod('button.disable.warn.thirdparty');\\\" class='button'>I know the risk and want to continue. Do not show this message again.</a>";
+            }
+            String command = "message(\"<h1>Warning:</h1><br>" + text + "<br>" + button + "\");";
+            System.out.println(command);
+            frame.executeJavaScript(command);
         }
-        System.out.println("2");
-        if(continueRequest==null) {
-            System.out.println("2-2");
-            continueRequest = "unmessage();";
-        }
-        System.out.println("3");
-        if(button==null) {
-            System.out.println("3-3");
-            button = "<h1><a onclick=\\\""+continueRequest+"; unmessage();\\\" class='button'>Continue</a> <a onclick=\\\"link('instances.html');\\\" class='button'>Return</a></h1><a onclick=\\\"callJavaMethod('button.disable.warn.thirdparty');\\\" class='button'>I know the risk and want to continue. Do not show this message again.</a>";
-        }
-        System.out.println("4");
-        String command = "message(\"<h1>Warning:</h1><br>"+text+"<br>"+button+"\");";
-        System.out.println(command);
-        frame.executeJavaScript(command);
-        System.out.println("5");
     }
 
     private void resolveModrinthRequest(String request) {
