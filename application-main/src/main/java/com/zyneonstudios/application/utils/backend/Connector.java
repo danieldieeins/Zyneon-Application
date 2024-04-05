@@ -370,6 +370,11 @@ public class Connector {
                 ZynstanceBuilder instance = new ZynstanceBuilder(instanceConfig);
                 instance.setId(id);
                 instance.setName(name);
+                if(Application.auth!=null) {
+                    if (Application.auth.isLoggedIn()) {
+                        instance.setAuthor(Application.auth.getAuthInfos().getUsername());
+                    }
+                }
                 instance.setVersion(version);
                 instance.setMinecraftVersion(minecraft);
                 if (modloader.equalsIgnoreCase("forge")) {

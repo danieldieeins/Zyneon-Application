@@ -194,7 +194,7 @@ public class Application {
             }
             return true;
         } catch (Exception e) {
-            Main.getLogger().err("[APPLICATION] Couldn't load instance: "+e.getMessage());
+            Main.getLogger().err("[APPLICATION] Couldn't add instance to list: "+e.getMessage());
             return false;
         }
     }
