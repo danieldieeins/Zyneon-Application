@@ -39,7 +39,7 @@ public class Application {
     public static String version;
     public static String theme;
     public static boolean logOutput;
-    public static boolean thridPartyWarn;
+    public static boolean thirdPartyWarn;
     public static String lastInstance;
 
     public static String ui;
@@ -68,7 +68,7 @@ public class Application {
         config.checkEntry("settings.lastInstance","zyneon::overview");
         config.checkEntry("settings.warnings.thirdParty",true);
 
-        thridPartyWarn = config.getBool("settings.warnings.thirdParty");
+        thirdPartyWarn = config.getBool("settings.warnings.thirdParty");
         logOutput = config.getBool("settings.logOutput");
         theme = config.getString("settings.appearance.theme");
         memory = config.getInteger("settings.memory.default");

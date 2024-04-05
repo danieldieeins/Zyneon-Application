@@ -495,9 +495,9 @@ public class Connector {
             }
         } else if (request.startsWith("button.disable.warn.")) {
             request = request.replace("button.disable.warn.", "");
-            if(request.equalsIgnoreCase("thridparty")) {
+            if(request.equalsIgnoreCase("thirdparty")) {
                 Application.config.set("settings.warnings.thirdParty",false);
-                Application.thridPartyWarn = false;
+                Application.thirdPartyWarn = false;
                 frame.executeJavaScript("unmessage();");
             }
         } else if (request.contains("button.screenshots.")) {
@@ -808,7 +808,7 @@ public class Connector {
     }
 
     private void thridPartyConfirm(String text, String button, String continueRequest) {
-        if(Application.thridPartyWarn) {
+        if(Application.thirdPartyWarn) {
             if (text == null) {
                 text = "<h3>This is a third party resource!</h3><p>Zyneon Studios assumes no liability for any problems or damage caused by third-party resources. We also do not offer help for third-party resources.</p>";
             }
@@ -816,11 +816,12 @@ public class Connector {
                 continueRequest = "unmessage();";
             }
             if (button == null) {
-                button = "<h1><a onclick=\\\"" + continueRequest + "; unmessage();\\\" class='button'>Continue</a> <a onclick=\\\"link('instances.html');\\\" class='button'>Return</a></h1><a onclick=\\\"callJavaMethod('button.disable.warn.thirdparty');\\\" class='button'>I know the risk and want to continue. Do not show this message again.</a>";
+                button = "<h1><a onclick=\\\"" + continueRequest + "; unmessage();\\\" class='button'>Continue</a> <a onclick=\\\"link('instances.html');\\\" class='button'>Return</a></h1><a onclick=\\\"callJavaMethod('button.disable.warn.thirdparty'); "+continueRequest+";\\\" class='button'>I know the risk and want to continue. Do not show this message again.</a>";
             }
             String command = "message(\"<h1>Warning:</h1><br>" + text + "<br>" + button + "\");";
-            System.out.println(command);
             frame.executeJavaScript(command);
+        } else {
+            frame.executeJavaScript(continueRequest);
         }
     }
 
