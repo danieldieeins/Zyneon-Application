@@ -148,6 +148,15 @@ public class Connector {
             Application.theme = "default.dark";
             Application.config.set("settings.appearance.theme", Application.theme);
             frame.setTitlebar("Zyneon Application", Color.black, Color.white);
+        } else if (request.startsWith("zyndex.install.modpack.")) {
+            request = request.replace("zyndex.install.modpack.","");
+            String[] request_ = request.split("\\.", 2);
+            String index = request_[0].replace("%DOT%",".");
+            String id = request_[1];
+            ReadableZyndex zyndex = new ReadableZyndex(index);
+            if(zyndex.getZynstances().containsKey(id)) {
+                ZyndexIntegration.install(zyndex.getZynstances().get(id));
+            }
         } else if (request.contains("button.refresh")) {
             if (request.contains(".instances")) {
                 Application.loadInstances();
@@ -256,7 +265,7 @@ public class Connector {
             }
         } else if (request.contains("sync.search.")) {
             request = request.replace("sync.search.","");
-            String[] request_ = request.split("\\.", 6);
+            String[] request_ = request.split("\\.", 7);
             String source = request_[0];
             String type = request_[1];
             String version = request_[2].replace("%",".");
@@ -266,6 +275,7 @@ public class Connector {
             i=i*20;
             b=b+i;
             String instanceID = request_[5];
+            String zyndexUrl = request_[6];
             if(source.equalsIgnoreCase("modrinth")) {
                 if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
                     Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20),instanceID);
@@ -291,7 +301,14 @@ public class Connector {
             } else if(source.equalsIgnoreCase("zyneon")) {
                 CompletableFuture.runAsync(() -> {
                     if (type.equalsIgnoreCase("modpacks")) {
-                        Integrator.zyndexToConnector(ZyndexIntegration.search(new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json"), query, version),instanceID);
+                        Integrator.nexToConnector(ZyndexIntegration.search(new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json"), query, version), instanceID);
+                    }
+                });
+            } else if(source.equalsIgnoreCase("zyndex")) {
+                CompletableFuture.runAsync(() -> {
+                    if (type.equalsIgnoreCase("modpacks")) {
+                        String index = zyndexUrl.replace("%DOT%",".");
+                        Integrator.zyndexToConnector(ZyndexIntegration.search(new ReadableZyndex(index), query, version),instanceID);
                     }
                 });
             }
@@ -446,6 +463,22 @@ public class Connector {
                     }
                 }
             }
+        } else if(request.startsWith("button.confirm.")) {
+                request = request.replace("button.confirm.","");
+                String[] request_ = request.split("\\.", 3);
+                String text = request_[0];
+                String button = request_[1];
+                String continueRequest = request_[2];
+                if(text.isEmpty()) {
+                    text = null;
+                }
+                if(button.isEmpty()) {
+                    button = null;
+                }
+                if(continueRequest.isEmpty()) {
+                    continueRequest = null;
+                }
+                thridPartyConfirm(text,button,continueRequest);
         } else if (request.contains("button.icon.")) {
             resolveInstanceRequest(InstanceAction.SHOW_ICON, request.replace("button.icon.", ""));
         } else if (request.contains("button.logo.")) {
@@ -765,6 +798,29 @@ public class Connector {
         } else {
             resolveRequest("not-resolved");
         }
+    }
+
+    private void thridPartyConfirm(String text, String button, String continueRequest) {
+        System.out.println("1");
+        if(text==null) {
+            System.out.println("1-1");
+            text = "<h3>This is a third party resource!</h3><p>Zyneon Studios assumes no liability for any problems or damage caused by third-party resources. We also do not offer help for third-party resources.</p>";
+        }
+        System.out.println("2");
+        if(continueRequest==null) {
+            System.out.println("2-2");
+            continueRequest = "unmessage();";
+        }
+        System.out.println("3");
+        if(button==null) {
+            System.out.println("3-3");
+            button = "<h1><a onclick=\\\""+continueRequest+"; unmessage();\\\" class='button'>Continue</a> <a onclick=\\\"link('instances.html');\\\" class='button'>Return</a></h1><a onclick=\\\"callJavaMethod('button.disable.warn.thirdparty');\\\" class='button'>I know the risk and want to continue. Do not show this message again.</a>";
+        }
+        System.out.println("4");
+        String command = "message(\"<h1>Warning:</h1><br>"+text+"<br>"+button+"\");";
+        System.out.println(command);
+        frame.executeJavaScript(command);
+        System.out.println("5");
     }
 
     private void resolveModrinthRequest(String request) {

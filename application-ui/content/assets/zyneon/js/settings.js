@@ -185,12 +185,3 @@ function syncAbout() {
     about.style.display = "inherit";
     aboutbutton.classList.add("active");
 }
-
-function message(m) {
-    document.getElementById("overlay").style.display = "inherit";
-    document.getElementById("message").innerHTML = m;
-}
-
-function unmessage() {
-    document.getElementById("overlay").style.display = "none";
-}

@@ -60,7 +60,7 @@ public class Integrator {
         }
     }
 
-    public static void zyndexToConnector(ArrayList<ReadableZynstance> results, String instanceID) {
+    public static void nexToConnector(ArrayList<ReadableZynstance> results, String instanceID) {
         if(results!=null) {
             if(!results.isEmpty()) {
                 for (ReadableZynstance instance : results) {
@@ -72,6 +72,23 @@ public class Integrator {
                         icon = Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/assets/zyneon/images/instances/default.png";
                     }
                     addItemCard(icon, instance.getName(), instance.getAuthor(), instance.getDescription(), id, id, "zyneon");
+                }
+            }
+        }
+    }
+
+    public static void zyndexToConnector(ArrayList<ReadableZynstance> results, String instanceID) {
+        if(results!=null) {
+            if(!results.isEmpty()) {
+                for (ReadableZynstance instance : results) {
+                    String id = instance.getId();
+                    String icon;
+                    if (instance.getThumbnailUrl() != null) {
+                        icon = instance.getThumbnailUrl();
+                    } else {
+                        icon = Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/assets/zyneon/images/instances/default.png";
+                    }
+                    addItemCard(icon, instance.getName(), instance.getAuthor(), instance.getDescription(), id, id, "zyndex");
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.zyneonstudios.application.integrations.index.zyndex;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.integrations.index.zyndex.instance.ReadableInstance;
+import com.zyneonstudios.application.integrations.index.zyndex.instance.WritableInstance;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
 import com.zyneonstudios.nexus.instance.ReadableZynstance;
 import live.nerotv.shademebaby.file.Config;
@@ -23,6 +24,22 @@ public class ZyndexIntegration {
             FileUtil.downloadFile(url, URLDecoder.decode(instance.getAbsolutePath() + "/zyneonInstance.json", StandardCharsets.UTF_8));
             Application.loadInstances();
             Application.getFrame().getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + onlineInstance.getId());
+            return true;
+        } catch (Exception e) {
+            Main.getLogger().err("[ZYNDEX] Couldn't install instance: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean install(ReadableZynstance onlineInstance, String id) {
+        try {
+            String url = onlineInstance.getLocation();
+            File instanceDirectory = new File(Application.getInstancePath() + "instances/" + id + "/");
+            Main.getLogger().debug("[CONNECTOR] Created instance path: " + instanceDirectory.mkdirs());
+            WritableInstance instance = new WritableInstance(FileUtil.downloadFile(url, URLDecoder.decode(instanceDirectory.getAbsolutePath() + "/zyneonInstance.json", StandardCharsets.UTF_8)));
+            instance.setId(id);
+            Application.loadInstances();
+            Application.getFrame().getBrowser().loadURL(Application.getInstancesURL() + "?tab=" + instance.getId());
             return true;
         } catch (Exception e) {
             Main.getLogger().err("[ZYNDEX] Couldn't install instance: " + e.getMessage());

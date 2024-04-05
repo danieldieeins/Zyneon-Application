@@ -183,3 +183,12 @@ function addToSelect(selectID,value,name) {
     option.value = value;
     select.add(option);
 }
+
+function message(m) {
+    document.getElementById("overlay").style.display = "inherit";
+    document.getElementById("message").innerHTML = m;
+}
+
+function unmessage() {
+    document.getElementById("overlay").style.display = "none";
+}
