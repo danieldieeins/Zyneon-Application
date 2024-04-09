@@ -30,13 +30,13 @@
         <dependency>
             <groupId>com.github.zyneonstudios</groupId>
             <artifactId>nexus-zyndex-java</artifactId>
-            <version>2024.4-beta.1</version>
+            <version>2024.4-beta.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.danieldieeins</groupId>
-            <artifactId>Zyneon-Auth</artifactId>
-            <version>0a5aa5f</version>
+            <groupId>com.github.zyneonstudios</groupId>
+            <artifactId>nexus-auth</artifactId>
+            <version>2024.4.1</version>
             <scope>compile</scope>
         </dependency>
 

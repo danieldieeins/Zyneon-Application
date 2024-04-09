@@ -106,7 +106,7 @@ public class Connector {
                     if (new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + png).exists()) {
                         frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
                     } else if (instance.get("icon") != null) {
-                        png = StringUtil.getURLFromFile(instance.get("icon").toString().replace("\"", ""));
+                        png = instance.get("icon").toString().replace("\"", "");
                         frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
                     } else {
                         frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ");");

@@ -71,7 +71,7 @@ function update(query) {
     if(query !== undefined) {
         search_query = query;
     } else {
-        search_query = document.getElementById("search-query").value;
+        search_query = document.getElementById("search-query").value.replaceAll("+","%2b");
     }
     link("resources.html?s="+search_source+"&t="+search_type+"&v="+search_version+"&q="+search_query+"&i="+search_instance+"&d="+search_disable+"&u="+zyndex_url);
 }

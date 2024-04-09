@@ -2,7 +2,7 @@ package com.zyneonstudios.application.integrations.index.zyndex.instance;
 
 import java.io.File;
 
-public interface Instance {
+public interface Instance extends com.zyneonstudios.nexus.instance.Instance {
 
     default File getFile() {
         return null;

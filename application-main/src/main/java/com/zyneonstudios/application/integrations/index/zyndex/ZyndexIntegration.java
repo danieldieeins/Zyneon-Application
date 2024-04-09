@@ -110,6 +110,30 @@ public class ZyndexIntegration {
                             Main.getLogger().error("[ZYNDEX] Failed to unzip pack file!");
                             throw new RuntimeException("Couldn't unzip file...");
                         }
+
+                        if(onlineInstance.getBackgroundUrl()!=null||onlineInstance.getIconUrl()!=null||onlineInstance.getLogoUrl()!=null||onlineInstance.getThumbnailUrl()!=null) {
+                            WritableInstance writableInstance = new WritableInstance(localInstance.getFile());
+                            if(onlineInstance.getBackgroundUrl()!=null) {
+                                Main.getLogger().log("[ZYNDEX] Downloading background...!");
+                                File background = FileUtil.downloadFile(onlineInstance.getBackgroundUrl(), path + "meta/background.png");
+                                writableInstance.setBackground("file://" + background.getAbsolutePath().replace("\\\\","\\").replace("\\","/"));
+                            }
+                            if(onlineInstance.getIconUrl()!=null) {
+                                Main.getLogger().log("[ZYNDEX] Downloading icon...!");
+                                File icon = FileUtil.downloadFile(onlineInstance.getIconUrl(), path + "meta/icon.png");
+                                writableInstance.setIconUrl("file://" + icon.getAbsolutePath().replace("\\\\","\\").replace("\\","/"));
+                            }
+                            if(onlineInstance.getLogoUrl()!=null) {
+                                Main.getLogger().log("[ZYNDEX] Downloading logo...!");
+                                File logo = FileUtil.downloadFile(onlineInstance.getLogoUrl(), path + "meta/logo.png");
+                                writableInstance.setLogoUrl("file://" + logo.getAbsolutePath().replace("\\\\","\\").replace("\\","/"));
+                            }
+                            if(onlineInstance.getThumbnailUrl()!=null) {
+                                Main.getLogger().log("[ZYNDEX] Downloading thumbnail...!");
+                                File thumbnail = FileUtil.downloadFile(onlineInstance.getThumbnailUrl(), path + "meta/thumbnail.png");
+                                writableInstance.setThumbnailUrl("file://" + thumbnail.getAbsolutePath().replace("\\\\","\\").replace("\\","/"));
+                            }
+                        }
                     } catch (Exception e) {
                         Main.getLogger().error("[ZYNDEX] Couldn't update. Trying to cancel start...");
                         throw new RuntimeException(e.getMessage());
