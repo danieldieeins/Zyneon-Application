@@ -176,7 +176,7 @@ public class Connector {
                 } else if(instance.getSchemeVersion().contains("2024.2")) {
                     instance = new ReadableInstance(ZyndexIntegration.convert(file));
                 }
-                String name = instance.getName();
+                String name = instance.getName().replace("'","\\'");
                 String version = instance.getVersion();
                 String description;
                 if (id.contains("official/")) {

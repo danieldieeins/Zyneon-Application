@@ -28,7 +28,7 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.4.4_d";
+        version = "2024.4.4_e";
         String ui = "2024.4.4_d";
         String name = "Hot-Fixus";
         architecture = getArchitecture();
