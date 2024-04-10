@@ -29,7 +29,7 @@ public class Main {
 
     public static void main(String[] args) {
         version = "2024.4.4_e";
-        String ui = "2024.4.4_d";
+        String ui = "2024.4.4_e";
         String name = "Hot-Fixus";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
