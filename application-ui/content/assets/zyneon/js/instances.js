@@ -267,15 +267,17 @@ function validateInstanceCreator() {
         const n = name.value;
         const v = version.value;
         const m = minecraft.value;
-        let l;
+        const l = modloader.value;
         let k;
-        if(mlversion.value!=null) {
-            l = modloader.value;
-            k = mlversion.value;
-        } else {
-            l = "Vanilla";
-            k = "";
-        }
+
+            if(mlversion.value) {
+                callJavaMethod("test");
+                k = mlversion.value;
+                callJavaMethod("test: "+k);
+            } else {
+                k = "";
+            }
+
 
         const fN = n.replace(/\./g, "%DOT%");
         const fV = v.replace(/\./g, "%DOT%");

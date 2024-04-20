@@ -18,11 +18,11 @@ public class ZyneonWebFrame extends WebFrame {
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
-                if(message.contains("[Launcher-Bridge] ")) {
-                    String request = message.replace("[Launcher-Bridge] ","");
-                    Main.getLogger().debug("[CONNECTOR] Received request: \""+request+"\"");
-                    connector.resolveRequest(request);
-                }
+                    if(message.contains("[Launcher-Bridge] ")) {
+                        String request = message.replace("[Launcher-Bridge] ","");
+                        Main.getLogger().debug("[CONNECTOR] Received request: \""+request+"\"");
+                        connector.resolveRequest(request);
+                    }
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });

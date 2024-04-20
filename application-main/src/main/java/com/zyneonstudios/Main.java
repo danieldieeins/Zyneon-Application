@@ -30,7 +30,7 @@ public class Main {
     public static void main(String[] args) {
         version = "2024.4.5";
         ArrayList<String> arguments = new ArrayList<>();
-        arguments.add(version);
+        arguments.add("content");
         String name = "Dream";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
