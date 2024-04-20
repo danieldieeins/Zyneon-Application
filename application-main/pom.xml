@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.4.4_e</version>
+    <version>2024.4.4_f</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -38,6 +38,13 @@
             <artifactId>nexus-auth</artifactId>
             <version>2024.4.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.zyneonstudios</groupId>
+            <artifactId>nexus-verget</artifactId>
+            <version>2024.4-beta.2</version>
+            <scope>system</scope>
+            <systemPath>B:\Workspaces\IntelliJ\nexus-verget\verget-all\target\verget-all-2024.4-beta.2.jar</systemPath>
         </dependency>
 
         <!--Central repositories by FlowArg-->

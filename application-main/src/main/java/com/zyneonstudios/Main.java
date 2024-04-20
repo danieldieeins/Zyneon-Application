@@ -26,11 +26,12 @@ public class Main {
     public static String version;
     public static OperatingSystem operatingSystem;
     public static Architecture architecture;
+    public static boolean test = false;
 
     public static void main(String[] args) {
-        version = "2024.4.4_e";
-        String ui = "2024.4.4_e";
-        String name = "Hot-Fixus";
+        version = "2024.4.4_f";
+        String ui = "2024.4.4_f";
+        String name = "Hotter-Fixus";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);
@@ -44,6 +45,7 @@ public class Main {
             arg = arg.toLowerCase();
             switch (arg) {
                 case "--test" -> {
+                    test = true;
                     fullVersion = version + " ▪ " + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
                     application = new Application(fullVersion,ui);
                 }

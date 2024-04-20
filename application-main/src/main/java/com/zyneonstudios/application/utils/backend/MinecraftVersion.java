@@ -1,6 +1,7 @@
 package com.zyneonstudios.application.utils.backend;
 
 import com.zyneonstudios.nexus.Main;
+import com.zyneonstudios.verget.Verget;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 
 import java.util.ArrayList;
@@ -10,6 +11,10 @@ public class MinecraftVersion {
     public static ArrayList<String> supportedVersions = new ArrayList<>();
 
     public static void syncVersions() {
+        if(com.zyneonstudios.Main.test) {
+            supportedVersions = Verget.getMinecraftVersions(true);
+            return;
+        }
         supportedVersions = new ArrayList<>();
         supportedVersions.add("1.20.4 (Latest)");
         supportedVersions.add("1.20.3");
