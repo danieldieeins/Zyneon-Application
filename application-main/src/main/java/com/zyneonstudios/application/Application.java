@@ -41,12 +41,18 @@ public class Application {
     public static boolean logOutput;
     public static boolean thirdPartyWarn;
     public static String lastInstance;
+    public static ArrayList<String> args;
 
     public static String ui;
 
-    public Application(String ver, String ui) {
-        Application.ui = ui;
-        version = ver;
+    public Application(ArrayList<String> arguments) {
+        args = arguments;
+        if(args.size()>1) {
+            Application.ui = arguments.get(0);
+            version = arguments.get(1);
+        } else {
+            throw new RuntimeException("Missing arguments");
+        }
     }
 
     private void init() {

@@ -26,28 +26,25 @@ public class Main {
     public static String version;
     public static OperatingSystem operatingSystem;
     public static Architecture architecture;
-    public static boolean test = false;
 
     public static void main(String[] args) {
         version = "2024.4.4_f";
-        String ui = "2024.4.4_f";
+        ArrayList<String> arguments = new ArrayList<>();
+        arguments.add("content");
         String name = "Hotter-Fixus";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
-        logger.log("[MAIN] Updated user interface: "+update(ui));
+        logger.log("[MAIN] Updated user interface: "+update(arguments.getFirst()));
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        Application application = new Application(fullVersion,ui);
         boolean online = false;
         for(String arg:args) {
             arg = arg.toLowerCase();
             switch (arg) {
                 case "--test" -> {
-                    test = true;
                     fullVersion = version + " ▪ " + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
-                    application = new Application(fullVersion,ui);
                 }
                 case "--debug" -> {
                     logger.setDebugEnabled(true);
@@ -56,8 +53,10 @@ public class Main {
                 case "--online" -> online = true;
             }
         }
+        arguments.add(fullVersion);
         System.gc();
         logger.log("[MAIN] Launching Zyneon Application version "+fullVersion+"...");
+        Application application = new Application(arguments);
         application.start(online);
     }
 

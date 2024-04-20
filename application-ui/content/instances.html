@@ -177,24 +177,23 @@
                                         <input type="text" id="settings-description" maxlength="256" required>
                                     </label>
                                 </h3>
+                                <h3>Game type:
+                                    <label>
+                                        <select id="settings-modloader" onchange="updateUpdater(false);">
+                                            <option value="nothing">Please select an option</option>
+                                            <option value="Vanilla">Java: Vanilla</option>
+                                            <option value="Snapshots">Java: Experimental</option>
+                                            <option value="Fabric">Java: Fabric (modloader)</option>
+                                            <option value="Forge">Java: Forge (modloader)</option>
+                                        </select>
+                                    </label>
+                                </h3>
                                 <h3>Minecraft version:
                                     <label>
-                                        <select id="settings-minecraft" required>
-
-                                        </select>
-                                        <script>addVersionsToMinecraftSelect("settings-minecraft");</script>
+                                        <select id="settings-minecraft" onchange="updateUpdater(true);"></select>
                                     </label>
                                 </h3>
-                                <h3>Modloader:
-                                    <label>
-                                        <select id="settings-modloader" required>
-                                            <option value="Vanilla">None (vanilla)</option>
-                                            <option value="Fabric">Fabric</option>
-                                            <option value="Forge">Forge</option>
-                                        </select>
-                                    </label>
-                                </h3>
-                                <h3>Modloader version: <label><input type="text" id="settings-mlversion"></label></h3>
+                                <h3>Modloader version: <label><select id="settings-mlversion"></select></label></h3>
                                 <h3><label><input type="submit" id="settings-save" value="Save changes"></label>-</h3>
                             </form>
                         </div>
@@ -250,15 +249,15 @@
                             <h3>
                                 Game type*:
                                 <label>
-                                    <select id="creator-modloader" required>
+                                    <select id="creator-modloader" onchange="updateCreator(false);" required>
                                         <option disabled>Minecraft: Java Edition</option>
                                         <option value="Vanilla">Java: Vanilla</option>
-                                        <!--<option value="Snapshots" disabled>Java: Snapshots</option>-->
-                                        <option value="Fabric">Java: Fabric</option>
-                                        <option value="Forge">Java: Forge</option>
-                                        <!--<option value="NeoForge" disabled>Java: NeoForge</option>
-                                        <option value="Quilt" disabled>Java: Quilt</option>
-                                        <option disabled> </option>
+                                        <option value="Snapshots">Java: Experimental</option>
+                                        <option value="Fabric">Java: Fabric (modloader)</option>
+                                        <option value="Forge">Java: Forge (modloader)</option>
+                                        <option value="NeoForge" disabled>Java: NeoForge (upcoming)</option>
+                                        <option value="Quilt" disabled>Java: Quilt (upcoming)</option>
+                                        <!--<option disabled> </option>
                                         <option disabled>Minecraft: Bedrock Edition</option>
                                         <option value="Google" disabled>Bedrock: Preview (Google Play)</option>
                                         <option value="Microsoft" disabled>Bedrock: Default (Microsoft Store)</option>
@@ -270,11 +269,11 @@
                             <h3>
                                 Minecraft version*:
                                 <label>
-                                    <select id="creator-minecraft" required></select>
-                                    <script>addVersionsToMinecraftSelect("creator-minecraft");</script>
+                                    <select id="creator-minecraft" onchange="updateCreator(true);" required></select>
                                 </label>
                             </h3>
-                            <h3 id="bottom2">Modloader version: <label><input type="text" id="creator-mlversion"></label><br><br></h3>
+                            <div id="creator-modloader-version"><h3 class="bottom2">Modloader version*: <label><select id="creator-mlversion" required></select></label><br><br></h3></div>
+                            <div id="creator-modloader-version2"><h3 class="bottom2">‎</h3></div>
                         </div>
                         <h3><input type="submit" id="create" value="Create instance" onclick="validateInstanceCreator();"></h3>
                     </form>
@@ -284,5 +283,5 @@
     </div>
 </body>
 <script src="assets/zyneon/js/instances.js"></script>
-<script>syncApplication(); syncInstanceList();</script>
+<script>syncApplication(); syncInstanceList(); updateCreator();</script>
 </html>

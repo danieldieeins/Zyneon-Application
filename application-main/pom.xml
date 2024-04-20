@@ -18,46 +18,38 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jitpack</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!--GitHub repositories from me-->
         <dependency>
-            <groupId>com.github.zyneonstudios</groupId>
-            <artifactId>nexus-zyndex-java</artifactId>
-            <version>2024.4-beta.2</version>
+            <groupId>com.zyneonstudios</groupId>
+            <artifactId>nexus-zyndex</artifactId>
+            <version>2024.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.zyneonstudios</groupId>
+            <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-auth</artifactId>
+            <version>2024.4.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zyneonstudios</groupId>
+            <artifactId>verget-all</artifactId>
             <version>2024.4.1</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.zyneonstudios</groupId>
-            <artifactId>nexus-verget</artifactId>
-            <version>2024.4-beta.2</version>
-            <scope>system</scope>
-            <systemPath>B:\Workspaces\IntelliJ\nexus-verget\verget-all\target\verget-all-2024.4-beta.2.jar</systemPath>
         </dependency>
 
         <!--Central repositories by FlowArg-->
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>flowupdater</artifactId>
-            <version>1.8.4</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>openlauncherlib</artifactId>
-            <version>3.2.9</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
 
@@ -65,12 +57,12 @@
         <dependency>
             <groupId>com.moandjiezana.toml</groupId>
             <artifactId>toml4j</artifactId>
-            <version>0.7.2</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.26.0</version>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 

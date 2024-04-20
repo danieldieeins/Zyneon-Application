@@ -21,6 +21,9 @@ import com.zyneonstudios.application.utils.frame.MemoryFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
 import com.zyneonstudios.nexus.instance.ZynstanceBuilder;
+import com.zyneonstudios.verget.Verget;
+import com.zyneonstudios.verget.minecraft.MinecraftVerget;
+import fr.flowarg.flowupdater.versions.ForgeVersionType;
 import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.OnlineConfig;
@@ -41,6 +44,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 public class Connector {
@@ -81,6 +85,112 @@ public class Connector {
             StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid, uuid);
+        } else if(request.startsWith("sync.creator.")) {
+            final String request_ = request.replace("sync.creator.", "");
+            SwingUtilities.invokeLater(() -> {
+                ArrayList<String> versions;
+                switch (request_) {
+                    case "snapshots" -> versions = Verget.getMinecraftVersions(MinecraftVerget.Filter.EXPERIMENTAL);
+                    case "fabric" -> {
+                        versions = Verget.getFabricGameVersions(true);
+                        ArrayList<String> mlversions = Verget.getFabricVersions(true, versions.getFirst());
+                        for (String version : mlversions) {
+                            frame.executeJavaScript("addToSelect('creator-mlversion','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+                        }
+                    }
+                    case "forge" -> {
+                        versions = Verget.getForgeGameVersions();
+                        String ver = versions.getFirst();
+                        String prefix = "";
+                        if (MinecraftVersion.getForgeType(ver) == ForgeVersionType.OLD) {
+                            prefix = "old";
+                        }
+                        ArrayList<String> mlversions = Verget.getForgeVersions(ver);
+                        for (String version : mlversions) {
+                            frame.executeJavaScript("addToSelect('creator-mlversion','" + prefix + version.toLowerCase().replace(" (latest)", "") + "','" + prefix + version + "')");
+                        }
+                    }
+                    default -> versions = Verget.getMinecraftVersions(MinecraftVerget.Filter.RELEASES);
+                }
+                for (String version : versions) {
+                    frame.executeJavaScript("addToSelect('creator-minecraft','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+                }
+            });
+        } else if(request.startsWith("sync.creator-version.")) {
+            final String requestS = request.replace("sync.creator-version.", "");
+            SwingUtilities.invokeLater(() -> {
+                String[] request_ = requestS.split("\\.", 2);
+                String type = request_[0];
+                String version = request_[1];
+                if (type.equalsIgnoreCase("forge")) {
+                    ArrayList<String> mlversions = Verget.getForgeVersions(version);
+                    String prefix = "";
+                    if (MinecraftVersion.getForgeType(version) == ForgeVersionType.OLD) {
+                        prefix = "old";
+                    }
+                    for (String v : mlversions) {
+                        frame.executeJavaScript("addToSelect('creator-mlversion','" + prefix + v.toLowerCase().replace(" (latest)", "") + "','" + prefix + v + "')");
+                    }
+                } else if (type.equalsIgnoreCase("fabric")) {
+                    ArrayList<String> mlversions = Verget.getFabricVersions(true, version);
+                    for (String v : mlversions) {
+                        frame.executeJavaScript("addToSelect('creator-mlversion','" + v.toLowerCase().replace(" (latest)", "") + "','" + v + "')");
+                    }
+                }
+            });
+        } else if(request.startsWith("sync.updater.")) {
+            final String request_ = request.replace("sync.updater.", "");
+            SwingUtilities.invokeLater(() -> {
+                ArrayList<String> versions;
+                switch (request_) {
+                    case "snapshots" -> versions = Verget.getMinecraftVersions(MinecraftVerget.Filter.EXPERIMENTAL);
+                    case "fabric" -> {
+                        versions = Verget.getFabricGameVersions(true);
+                        ArrayList<String> mlversions = Verget.getFabricVersions(true, versions.getFirst());
+                        for (String version : mlversions) {
+                            frame.executeJavaScript("addToSelect('settings-mlversion','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+                        }
+                    }
+                    case "forge" -> {
+                        versions = Verget.getForgeGameVersions();
+                        String ver = versions.getFirst();
+                        String prefix = "";
+                        if (MinecraftVersion.getForgeType(ver) == ForgeVersionType.OLD) {
+                            prefix = "old";
+                        }
+                        ArrayList<String> mlversions = Verget.getForgeVersions(ver);
+                        for (String version : mlversions) {
+                            frame.executeJavaScript("addToSelect('settings-mlversion','" + prefix + version.toLowerCase().replace(" (latest)", "") + "','" + prefix + version + "')");
+                        }
+                    }
+                    default -> versions = Verget.getMinecraftVersions(MinecraftVerget.Filter.RELEASES);
+                }
+                for (String version : versions) {
+                    frame.executeJavaScript("addToSelect('settings-minecraft','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+                }
+            });
+        } else if(request.startsWith("sync.updater-version.")) {
+            final String requestS = request.replace("sync.updater-version.","");
+            SwingUtilities.invokeLater(()->{
+                String[] request_ = requestS.split("\\.", 2);
+                String type = request_[0];
+                String version = request_[1];
+                if(type.equalsIgnoreCase("forge")) {
+                    ArrayList<String> mlversions = Verget.getForgeVersions(version);
+                    String prefix = "";
+                    if(MinecraftVersion.getForgeType(version)==ForgeVersionType.OLD) {
+                        prefix = "old";
+                    }
+                    for (String v : mlversions) {
+                        frame.executeJavaScript("addToSelect('settings-mlversion','" + prefix + v.toLowerCase().replace(" (latest)", "") + "','" + prefix + v + "')");
+                    }
+                } else if(type.equalsIgnoreCase("fabric")) {
+                    ArrayList<String> mlversions = Verget.getFabricVersions(true,version);
+                    for (String v : mlversions) {
+                        frame.executeJavaScript("addToSelect('settings-mlversion','" + v.toLowerCase().replace(" (latest)", "") + "','" + v + "')");
+                    }
+                }
+            });
         } else if (request.startsWith("button.configure.")) {
             request = request.replace("button.configure.","");
             if(request.startsWith("log.")) {
@@ -94,44 +204,48 @@ public class Connector {
                 syncSettings("global");
             }
         } else if (request.contains("sync.instances.list")) {
-            Application.getInstancePath();
-            String filePath = Main.getDirectoryPath() + "libs/zyneon/instances.json";
-            Gson gson = new Gson();
-            try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
-                JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-                JsonArray instances = jsonObject.getAsJsonArray("instances");
-                for (JsonElement element : instances) {
-                    JsonObject instance = element.getAsJsonObject();
-                    String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
-                    if (new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + png).exists()) {
-                        frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
-                    } else if (instance.get("icon") != null) {
-                        png = instance.get("icon").toString().replace("\"", "");
-                        frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
-                    } else {
-                        frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ");");
+            SwingUtilities.invokeLater(() -> {
+                Application.getInstancePath();
+                String filePath = Main.getDirectoryPath() + "libs/zyneon/instances.json";
+                Gson gson = new Gson();
+                try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
+                    JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+                    JsonArray instances = jsonObject.getAsJsonArray("instances");
+                    for (JsonElement element : instances) {
+                        JsonObject instance = element.getAsJsonObject();
+                        String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
+                        if (new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + png).exists()) {
+                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
+                        } else if (instance.get("icon") != null) {
+                            png = instance.get("icon").toString().replace("\"", "");
+                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
+                        } else {
+                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ");");
+                        }
                     }
+                } catch (IOException e) {
+                    Main.getLogger().error(e.getMessage());
                 }
-            } catch (IOException e) {
-                Main.getLogger().error(e.getMessage());
-            }
-            frame.executeJavaScript("loadTab('"+Application.lastInstance+"');");
+                frame.executeJavaScript("loadTab('" + Application.lastInstance + "');");
+            });
         } else if (request.contains("sync.web")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if (request.contains("sync.start")) {
             frame.executeJavaScript("syncStart('app');");
             frame.executeJavaScript("loadNews(true);");
         } else if (request.contains("sync.login")) {
-            try {
-                if (Application.auth.isLoggedIn()) {
-                    frame.executeJavaScript("login('" + Application.auth.getAuthInfos().getUsername() + "');");
-                    MicrosoftAuth.syncTeam(Application.auth.getAuthInfos().getUuid());
-                } else {
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    if (Application.auth.isLoggedIn()) {
+                        frame.executeJavaScript("login('" + Application.auth.getAuthInfos().getUsername() + "');");
+                        MicrosoftAuth.syncTeam(Application.auth.getAuthInfos().getUuid());
+                    } else {
+                        frame.executeJavaScript("logout();");
+                    }
+                } catch (Exception e) {
                     frame.executeJavaScript("logout();");
                 }
-            } catch (Exception e) {
-                frame.executeJavaScript("logout();");
-            }
+            });
         } else if (request.startsWith("sync.theme.")) {
             syncTheme(request.replace("sync.theme.",""));
         } else if (request.contains("sync.settings.")) {
@@ -168,94 +282,98 @@ public class Connector {
             SwingUtilities.invokeLater(() -> frame.getInstance().dispatchEvent(new WindowEvent(frame.getInstance(), WindowEvent.WINDOW_CLOSING)));
         } else if (request.contains("button.instance.")) {
             String id = request.replace("button.instance.", "").toLowerCase();
-            File file = new File(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
-            if (file.exists()) {
-                ReadableInstance instance = new ReadableInstance(file);
-                if(instance.getSchemeVersion()==null) {
-                    instance = new ReadableInstance(ZyndexIntegration.convert(file));
-                } else if(instance.getSchemeVersion().contains("2024.2")) {
-                    instance = new ReadableInstance(ZyndexIntegration.convert(file));
-                }
-                String name = instance.getName().replace("'","\\'");
-                String version = instance.getVersion();
-                String description;
-                if (id.contains("official/")) {
-                    description = "This instance is outdated. Try to update.";
-                } else {
-                    description = "This is an instance created by YOU!";
-                }
-                if (instance.getDescription() != null) {
-                    description = instance.getDescription().replace("\"", "''");
-                }
-                String minecraft = instance.getMinecraftVersion();
-                String modloader = instance.getModloader();
-                String mlversion = "No mods";
-                if (modloader.equalsIgnoreCase("forge")) {
-                    mlversion = instance.getForgeVersion();
-                } else if (modloader.equalsIgnoreCase("fabric")) {
-                    mlversion = instance.getFabricVersion();
-                }
-                File icon = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".png");
-                File logo = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + "-logo.png");
-                File background = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".webp");
-                String icon_ = "";
-                String logo_ = "";
-                String background_ = "";
-                Main.getLogger().debug(" ");
-                Main.getLogger().debug("[CONNECTOR] Searching for icon of: "+id+"...");
-                if (icon.exists()) {
-                    Main.getLogger().debug("[CONNECTOR] Found asset icon for "+id+"!");
-                    icon_ = "assets/zyneon/images/instances/" + id + ".png";
-                    Main.getLogger().debug("[CONNECTOR] Applied asset icon \""+"assets/zyneon/images/instances/" + id + ".png"+"\" to "+id);
-                } else if (instance.getIconUrl() != null) {
-                    Main.getLogger().debug("[CONNECTOR] Found custom icon for "+id+"!");
-                    icon_ = instance.getIconUrl();
-                    Main.getLogger().debug("[CONNECTOR] Applied custom icon \""+instance.getIconUrl()+"\" to "+id);
-                } else {
-                    Main.getLogger().debug("[CONNECTOR] Couldn't find icon file for "+id);
-                }
-                Main.getLogger().debug(" ");
-                Main.getLogger().debug("[CONNECTOR] Searching for logo of: "+id+"...");
-                if (logo.exists()) {
-                    Main.getLogger().debug("[CONNECTOR] Found asset logo for "+id+"!");
-                    logo_ = "assets/zyneon/images/instances/" + id + "-logo.png";
-                    Main.getLogger().debug("[CONNECTOR] Applied asset logo \""+"assets/zyneon/images/instances/" + id + "-logo.png"+"\" to "+id);
-                } else if (instance.getLogoUrl() != null) {
-                    Main.getLogger().debug("[CONNECTOR] Found custom logo for "+id+"!");
-                    logo_ = instance.getLogoUrl();
-                    Main.getLogger().debug("[CONNECTOR] Applied custom logo \""+instance.getLogoUrl()+"\" to "+id);
-                } else {
-                    Main.getLogger().debug("[CONNECTOR] Couldn't find logo file for "+id);
-                }
-                Main.getLogger().debug(" ");
-                Main.getLogger().debug("[CONNECTOR] Searching for background of: "+id+"...");
-                if (background.exists()) {
-                    Main.getLogger().debug("[CONNECTOR] Found asset background for "+id+"!");
-                    background_ = "assets/zyneon/images/instances/" + id + ".webp";
-                    Main.getLogger().debug("[CONNECTOR] Applied asset background \""+"assets/zyneon/images/instances/" + id + ".webp"+"\" to "+id);
-                } else if (instance.getBackgroundUrl() != null) {
-                    Main.getLogger().debug("[CONNECTOR] Found custom background for "+id+"!");
-                    background_ = instance.getBackgroundUrl();
-                    Main.getLogger().debug("[CONNECTOR] Applied custom background \""+instance.getBackgroundUrl()+"\" to "+id);
-                } else {
-                    Main.getLogger().debug("[CONNECTOR] Couldn't find background file for "+id);
-                }
-                Main.getLogger().debug(" ");
-                frame.executeJavaScript("syncDescription(\"" + description + "\");");
-                frame.executeJavaScript("syncTitle('" + name + "','" + icon_ + "');");
-                frame.executeJavaScript("syncLogo('" + logo_ + "');");
-                frame.executeJavaScript("syncBackground('" + background_ + "');");
-                frame.executeJavaScript("syncDock('" + id + "','" + version + "','" + minecraft + "','" + modloader + "','" + mlversion + "');");
+            SwingUtilities.invokeLater(() -> {
+                File file = new File(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
+                if (file.exists()) {
+                    ReadableInstance instance = new ReadableInstance(file);
+                    if (instance.getSchemeVersion() == null) {
+                        instance = new ReadableInstance(ZyndexIntegration.convert(file));
+                    } else if (instance.getSchemeVersion().contains("2024.2")) {
+                        instance = new ReadableInstance(ZyndexIntegration.convert(file));
+                    }
+                    String name = instance.getName().replace("'", "\\'");
+                    String version = instance.getVersion();
+                    String description;
+                    if (id.contains("official/")) {
+                        description = "This instance is outdated. Try to update.";
+                    } else {
+                        description = "This is an instance created by YOU!";
+                    }
+                    if (instance.getDescription() != null) {
+                        description = instance.getDescription().replace("\"", "''");
+                    }
+                    String minecraft = instance.getMinecraftVersion();
+                    String modloader = instance.getModloader();
+                    String mlversion;
+                    if (modloader.equalsIgnoreCase("forge")) {
+                        mlversion = instance.getForgeVersion();
+                    } else if (modloader.equalsIgnoreCase("fabric")) {
+                        mlversion = instance.getFabricVersion();
+                    } else {
+                        mlversion = "No mods";
+                    }
+                    File icon = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".png");
+                    File logo = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + "-logo.png");
+                    File background = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".webp");
+                    String icon_ = "";
+                    String logo_ = "";
+                    String background_ = "";
+                    Main.getLogger().debug(" ");
+                    Main.getLogger().debug("[CONNECTOR] Searching for icon of: " + id + "...");
+                    if (icon.exists()) {
+                        Main.getLogger().debug("[CONNECTOR] Found asset icon for " + id + "!");
+                        icon_ = "assets/zyneon/images/instances/" + id + ".png";
+                        Main.getLogger().debug("[CONNECTOR] Applied asset icon \"" + "assets/zyneon/images/instances/" + id + ".png" + "\" to " + id);
+                    } else if (instance.getIconUrl() != null) {
+                        Main.getLogger().debug("[CONNECTOR] Found custom icon for " + id + "!");
+                        icon_ = instance.getIconUrl();
+                        Main.getLogger().debug("[CONNECTOR] Applied custom icon \"" + instance.getIconUrl() + "\" to " + id);
+                    } else {
+                        Main.getLogger().debug("[CONNECTOR] Couldn't find icon file for " + id);
+                    }
+                    Main.getLogger().debug(" ");
+                    Main.getLogger().debug("[CONNECTOR] Searching for logo of: " + id + "...");
+                    if (logo.exists()) {
+                        Main.getLogger().debug("[CONNECTOR] Found asset logo for " + id + "!");
+                        logo_ = "assets/zyneon/images/instances/" + id + "-logo.png";
+                        Main.getLogger().debug("[CONNECTOR] Applied asset logo \"" + "assets/zyneon/images/instances/" + id + "-logo.png" + "\" to " + id);
+                    } else if (instance.getLogoUrl() != null) {
+                        Main.getLogger().debug("[CONNECTOR] Found custom logo for " + id + "!");
+                        logo_ = instance.getLogoUrl();
+                        Main.getLogger().debug("[CONNECTOR] Applied custom logo \"" + instance.getLogoUrl() + "\" to " + id);
+                    } else {
+                        Main.getLogger().debug("[CONNECTOR] Couldn't find logo file for " + id);
+                    }
+                    Main.getLogger().debug(" ");
+                    Main.getLogger().debug("[CONNECTOR] Searching for background of: " + id + "...");
+                    if (background.exists()) {
+                        Main.getLogger().debug("[CONNECTOR] Found asset background for " + id + "!");
+                        background_ = "assets/zyneon/images/instances/" + id + ".webp";
+                        Main.getLogger().debug("[CONNECTOR] Applied asset background \"" + "assets/zyneon/images/instances/" + id + ".webp" + "\" to " + id);
+                    } else if (instance.getBackgroundUrl() != null) {
+                        Main.getLogger().debug("[CONNECTOR] Found custom background for " + id + "!");
+                        background_ = instance.getBackgroundUrl();
+                        Main.getLogger().debug("[CONNECTOR] Applied custom background \"" + instance.getBackgroundUrl() + "\" to " + id);
+                    } else {
+                        Main.getLogger().debug("[CONNECTOR] Couldn't find background file for " + id);
+                    }
+                    Main.getLogger().debug(" ");
+                    frame.executeJavaScript("syncDescription(\"" + description + "\");");
+                    frame.executeJavaScript("syncTitle('" + name + "','" + icon_ + "');");
+                    frame.executeJavaScript("syncLogo('" + logo_ + "');");
+                    frame.executeJavaScript("syncBackground('" + background_ + "');");
+                    frame.executeJavaScript("syncDock('" + id + "','" + version + "','" + minecraft + "','" + modloader + "','" + mlversion + "');");
 
-                int ram = instance.getSettings().getMemory();
+                    int ram = instance.getSettings().getMemory();
 
-                String command = "syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");";
-                Main.getLogger().debug("[CONNECTOR] Sending command: "+command);
-                frame.executeJavaScript(command);
+                    String command = "syncSettings(\"" + id + "\",\"" + ram + " MB\",\"" + name + "\",\"" + version + "\",\"" + description + "\",\"" + minecraft + "\",\"" + modloader + "\",\"" + mlversion + "\",\"" + icon_ + "\",\"" + logo_ + "\",\"" + background_ + "\");";
+                    Main.getLogger().debug("[CONNECTOR] Sending command: " + command);
+                    frame.executeJavaScript(command);
 
-                Application.lastInstance = id;
-                Application.config.set("settings.lastInstance",Application.lastInstance);
-            }
+                    Application.lastInstance = id;
+                    Application.config.set("settings.lastInstance", Application.lastInstance);
+                }
+            });
         } else if (request.contains("button.delete.")) {
             request = request.replace("button.delete.", "");
             File instance = new File(Application.getInstancePath() + "instances/" + request + "/");

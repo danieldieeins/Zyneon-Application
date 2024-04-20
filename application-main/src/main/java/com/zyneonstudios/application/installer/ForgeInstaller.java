@@ -20,8 +20,9 @@ public class ForgeInstaller {
         UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
                 .build();
 
+        System.out.println(forgeVersion);
         AbstractForgeVersion forge = new ForgeVersionBuilder(type)
-                .withForgeVersion(minecraftVersion+"-"+forgeVersion)
+                .withForgeVersion(forgeVersion)
                 .build();
 
         FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()

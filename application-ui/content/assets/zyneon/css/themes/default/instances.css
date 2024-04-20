@@ -408,7 +408,7 @@
     box-shadow: none;
 }
 
-select#creator-minecraft,select#creator-modloader,select#creator-type {
+select#creator-minecraft,select#creator-modloader,select#creator-type,select#creator-mlversion {
     width: 17rem;
 }
 

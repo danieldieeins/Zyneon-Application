@@ -23,6 +23,9 @@ public class ForgeLauncher {
     }
 
     public void launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath) {
+        if(forgeType.equals(ForgeVersionType.NEO_FORGE)) {
+            return;
+        }
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
             Launcher.setJava(type);
@@ -30,12 +33,17 @@ public class ForgeLauncher {
         if(ram<512) {
             ram = 512;
         }
+        if(forgeType.equals(ForgeVersionType.NEW)) {
+            forgeVersion = forgeVersion.replace(minecraftVersion + "-", "");
+        } else {
+            if(!forgeVersion.startsWith(minecraftVersion)) {
+                forgeVersion = minecraftVersion + "-"+forgeVersion;
+            }
+        }
         if(new ForgeInstaller().download(minecraftVersion,forgeVersion,forgeType,instancePath)) {
             NoFramework.ModLoader forge;
             if(forgeType==ForgeVersionType.OLD) {
                 forge = NoFramework.ModLoader.OLD_FORGE;
-            } else if(forgeType==ForgeVersionType.NEO_FORGE) {
-                forge = NoFramework.ModLoader.NEO_FORGE;
             } else {
                 forge = NoFramework.ModLoader.FORGE;
             }
@@ -45,7 +53,7 @@ public class ForgeLauncher {
                     GameFolder.FLOW_UPDATER
             );
             if(minecraftVersion.equals("1.7.10")) {
-                framework.setCustomModLoaderJsonFileName("1.7.10-Forge"+forgeVersion+".json");
+                framework.setCustomModLoaderJsonFileName("1.7.10-Forge" + forgeVersion + ".json");
             }
             framework.getAdditionalVmArgs().add("-Xms512M");
             framework.getAdditionalVmArgs().add("-Xmx" + ram + "M");
