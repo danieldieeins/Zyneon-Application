@@ -180,9 +180,6 @@ function syncSettings(id,ram,name,version,description,minecraft,modloader,mlvers
     document.getElementById("settings-name").value = name;
     document.getElementById("settings-version").value = version;
     document.getElementById("settings-description").value = description;
-    document.getElementById("settings-minecraft").value = minecraft;
-    document.getElementById("settings-modloader").value = modloader;
-    document.getElementById("settings-mlversion").value = mlversion;
     document.getElementById("memory-int").innerText = ram;
     document.getElementById("memory-int").style.display = "inline";
     document.getElementById("settings-save").onclick = function () { updateInstance(id); };
@@ -303,16 +300,20 @@ function updateInstance(id) {
 
         const n = name.value;
         const v = version.value;
-        const m = minecraft.value;
-        let l;
+        let m = minecraft.value;
+        let l = modloader.value;
         let k;
         const d = description.value;
         if(mlversion.value!=null) {
-            l = modloader.value;
             k = mlversion.value;
         } else {
-            l = "Vanilla";
             k = "";
+        }
+
+        if(l==="nothing") {
+            m = document.getElementById("minecraft").innerText;
+            l = document.getElementById("modloader").innerText;
+            k = document.getElementById("mlversion").innerText;
         }
 
         const fN = n.replace(/\./g, "%DOT%");
@@ -325,4 +326,45 @@ function updateInstance(id) {
         callJavaMethod('button.creator.update.'+id+'.'+fN+'.'+fV+'.'+fM+'.'+fL+'.'+fK+'.'+dS);
     }
     return false;
+}
+
+function updateCreator(version) {
+    const type = document.getElementById("creator-modloader").value.toLowerCase();
+    const versionSelect = document.getElementById("creator-minecraft");
+    const mlversionSelect = document.getElementById("creator-mlversion");
+    if(version) {
+        mlversionSelect.selectedIndex = -1;
+        mlversionSelect.innerHTML = "";
+        callJavaMethod("sync.creator-version."+type+"."+versionSelect.value);
+    } else {
+        versionSelect.selectedIndex = -1;
+        versionSelect.innerHTML = "";
+        mlversionSelect.selectedIndex = -1;
+        mlversionSelect.innerHTML = "";
+        if (type !== "vanilla" && type !== "snapshots") {
+            document.getElementById("creator-modloader-version").style.display = "inherit";
+            document.getElementById("creator-modloader-version2").style.display = "none";
+        } else {
+            document.getElementById("creator-modloader-version").style.display = "none";
+            document.getElementById("creator-modloader-version2").style.display = "inherit";
+        }
+        callJavaMethod("sync.creator." + type);
+    }
+}
+
+function updateUpdater(version) {
+    const type = document.getElementById("settings-modloader").value.toLowerCase();
+    const versionSelect = document.getElementById("settings-minecraft");
+    const mlversionSelect = document.getElementById("settings-mlversion");
+    if(version) {
+        mlversionSelect.selectedIndex = -1;
+        mlversionSelect.innerHTML = "";
+        callJavaMethod("sync.updater-version."+type+"."+versionSelect.value);
+    } else {
+        versionSelect.selectedIndex = -1;
+        versionSelect.innerHTML = "";
+        mlversionSelect.selectedIndex = -1;
+        mlversionSelect.innerHTML = "";
+        callJavaMethod("sync.updater." + type);
+    }
 }
