@@ -165,7 +165,7 @@ function setButton(id,con) {
 
 function loadMore() {
     i = i + 1;
-    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+"."+i+"."+search_instance);
+    callJavaMethod("sync.search."+search_source+"."+search_type+"."+search_version.replaceAll(".","%")+"."+search_query+"."+i+"."+search_instance+".");
 }
 
 document.getElementById("search-query").addEventListener('keydown', function(event) {
