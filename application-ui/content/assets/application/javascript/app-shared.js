@@ -60,3 +60,13 @@ function initMainMenu(active) {
         localStorage.setItem("menu.submenu","active");
     }
 }
+
+function changeThemeColors() {
+    if(colors==="assets/cronos/css/app-colors-dark.css") {
+        setColors("assets/cronos/css/app-colors-light.css");
+    } else if(colors==="assets/cronos/css/app-colors-light.css") {
+        setColors("assets/application/css/app-colors-zyneon.css");
+    } else {
+        setColors("assets/cronos/css/app-colors-dark.css");
+    }
+}

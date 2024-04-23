@@ -22,9 +22,7 @@ function init() {
 }
 
 function connector(request) {
-    if(desktop) {
-        console.log("[CONNECTOR] " + request);
-    }
+    console.log("[CONNECTOR] " + request);
 }
 
 function setColors(newColors) {

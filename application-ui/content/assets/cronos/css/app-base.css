@@ -1,6 +1,6 @@
 body {
     font-family: MPLUS1p, serif;
-    background: var(--background);
+    background: #1e1e1e;
     color: var(--foreground);
     transition: background 0.5s ease;
     scrollbar-width: none;

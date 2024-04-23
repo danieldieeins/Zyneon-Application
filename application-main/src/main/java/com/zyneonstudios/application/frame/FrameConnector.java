@@ -31,9 +31,12 @@ public class FrameConnector {
             if(request_[0].equalsIgnoreCase("assets/cronos/css/app-colors-dark.css")) {
                 background = Color.black;
                 foreground = Color.white;
-            } else {
+            } else if(request_[0].equalsIgnoreCase("assets/cronos/css/app-colors-light.css")) {
                 background = Color.white;
                 foreground = Color.black;
+            } else {
+                background = Color.decode("#0a0310");
+                foreground = Color.white;
             }
             String title = request_[1];
             frame.setTitle(title,background,foreground);

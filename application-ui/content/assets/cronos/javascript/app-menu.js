@@ -52,10 +52,10 @@ function initMenu(menuId) {
         }
     }
     if(active) {
-        activateMenu(menuId,true);
+        activateMenu(menuId,false);
         return true;
     } else {
-        deactivateMenu(menuId,true);
+        deactivateMenu(menuId,false);
     }
     return false;
 }

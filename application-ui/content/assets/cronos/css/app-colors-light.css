@@ -24,3 +24,8 @@
     --highlight: #000000;
     --accent: #8732ec;
 }
+
+body {
+    background: var(--background);
+    transition: background ease 0ms !important;
+}
