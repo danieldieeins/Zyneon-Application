@@ -1,4 +1,4 @@
-Zyneon Application ```2024.4.5``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
+Zyneon Application ```2024.5-alpha.1 [SHERVANN]``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
 
 ---
 ![Zyneon Application logo and text](https://i.ibb.co/tsKhXtB/23.png)
