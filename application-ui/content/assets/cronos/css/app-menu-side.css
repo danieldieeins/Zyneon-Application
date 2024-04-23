@@ -51,7 +51,7 @@
     background: var(--background4);
     overflow-y: auto;
     height: fit-content;
-    max-height: calc(100% - 6rem);
+    max-height: calc(100% - 10.5rem);
     padding: 1rem 0.5rem 0.25rem 0.5rem;
     transition: all 0.25s ease;
     margin-top: 5rem;
@@ -60,7 +60,6 @@
 .side-menu.active ul {
     background: var(--background4);
     height: fit-content;
-    max-height: calc(100% - 12rem);
     overflow-y: auto;
     padding: 1rem 1rem 0.25rem 1rem;
 }
@@ -93,6 +92,7 @@
 }
 
 .side-menu ul li p {
+    font-family: MPLUS1p-Thin, serif;
     font-size: 1.25rem;
     font-weight: 1000;
     position: relative;
@@ -105,26 +105,39 @@
 }
 
 .side-menu ul li.action, .side-submenu ul li.action {
-    background: var(--background6) !important;
-    box-shadow: none !important;
-    color: var(--foreground2) !important;
+    background: var(--background6);
+    box-shadow: none;
+    color: var(--foreground2);
 }
 
 .side-menu ul li.action:hover, .side-submenu ul li.action:hover {
-    color: var(--highlight) !important;
-    background: var(--background) !important;
+    color: var(--highlight);
+    background: var(--background);
 }
 
-.side-menu ul li.title {
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
-    margin: 1rem 0 0 0 !important;
-    border-top: solid 2px var(--foreground2);
+ul li.title {
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+    background: none !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    width: 100% !important;
+    cursor: unset !important;
+    display: none !important;
+}
+
+.side-menu.active ul li.title {
+    display: block;
+}
+
+ul li.title p {
+    text-align: center !important;
+    width: 100% !important;
+    position: absolute !important;
+    font-family: MPLUS1p-Thin, serif;
     color: var(--foreground2) !important;
-    cursor: unset;
-    text-align: center;
-    display: none;
+    font-weight: 600 !important;
 }
 
 .side-menu.active ul li.title {
@@ -133,7 +146,7 @@
 
 .side-menu .menu-panel {
     position: absolute;
-    background: var(--background5);
+    background: none;
     height: 3.7rem;
     left: 0; bottom: 0;
     padding: 1rem;
@@ -185,4 +198,12 @@
     padding: 1rem 2rem 1rem 1rem !important;
     max-height: calc(100% - 1rem) !important;
     background: none !important;
+}
+
+.submenu ul li {
+    box-shadow: none;
+}
+
+.submenu, .side-menu p {
+    font-weight: 600;
 }

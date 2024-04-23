@@ -28,7 +28,7 @@ public class FrameConnector {
             String[] request_ = request.replace("title.","").split("-.-",2);
             Color background;
             Color foreground;
-            if(request_[0].equalsIgnoreCase("assets/css/app-colors-dark.css")) {
+            if(request_[0].equalsIgnoreCase("assets/cronos/css/app-colors-dark.css")) {
                 background = Color.black;
                 foreground = Color.white;
             } else {

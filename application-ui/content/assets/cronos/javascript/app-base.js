@@ -1,5 +1,5 @@
 let desktop = false;
-let colors = "assets/css/app-colors-dark.css";
+let colors = "assets/cronos/css/app-colors-dark.css";
 
 document.addEventListener('contextmenu',function(e){
     e.preventDefault();
@@ -35,10 +35,10 @@ function setColors(newColors) {
 }
 
 function changeTheme() {
-    if(colors==="assets/css/app-colors-dark.css") {
-        setColors("assets/css/app-colors-light.css");
+    if(colors==="assets/cronos/css/app-colors-dark.css") {
+        setColors("assets/cronos/css/app-colors-light.css");
     } else {
-        setColors("assets/css/app-colors-dark.css");
+        setColors("assets/cronos/css/app-colors-dark.css");
     }
 }
 

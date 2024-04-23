@@ -1,0 +1,45 @@
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    80% { transform: rotate(0deg); }
+    85% { transform: rotate(5deg); }
+    95% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+.hover-rotate:hover {
+    animation: rotate 2.5s linear infinite !important;
+}
+
+.rotate {
+    animation: rotate 2.5s linear infinite !important;
+}
+
+.hover-wiggle:hover {
+    animation: wiggle 2.5s infinite !important;
+}
+
+.wiggle {
+    animation: wiggle 1s infinite !important;
+}
+
+.hover-wiggle-extreme:hover {
+    animation: wiggle 0.1s linear infinite !important;
+}
+
+.wiggle-extreme {
+    animation: wiggle 0.1s linear infinite !important;
+}
+
+.danger:hover {
+    background: red !important;
+    box-shadow: 0 0 0.8rem red !important;
+    color: var(--foreground2) !important;
+}
+
+li:hover {
+    animation: wiggle 2.5s infinite;
+}

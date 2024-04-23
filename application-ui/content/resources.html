@@ -9,8 +9,10 @@
         <link rel="stylesheet" id="css-menu" href="assets/cronos/css/app-menu-side.css">
         <link rel="stylesheet" href="assets/cronos/css/app-cards.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" id="css-shared" href="assets/application/css/app-shared.css">
         <script src="assets/cronos/javascript/app-base.js"></script>
         <script src="assets/cronos/javascript/app-menu.js"></script>
+        <script src="assets/application/javascript/app-shared.js"></script>
         <script>
             syncDesktop(); init();
         </script>
@@ -26,7 +28,7 @@
                     </p>
                 </div>
                 <ul>
-                    <li onclick="toggleMenu('menu',true); setMenu('submenu',document.getElementById('menu').classList.contains('active'),true)">
+                    <li onclick="toggleMainMenu();">
                         <i class='bx bx-menu'></i>
                         <p>Toggle Menu</p>
                     </li>
@@ -48,19 +50,19 @@
                     </li>
                 </ul>
                 <div class="menu-panel">
-                    <img alt="Users ingame skin" onclick="activateMenu('menu');" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                    <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="activateMenu('menu');" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
                     <p>
                         <span class="bold">Synchronizing...</span>
                         <br>Unknown user
                     </p>
                 </div>
             </div>
-            <script>initMenu("menu");</script>
             <div class="main">
                 <div class="side-menu submenu" id="submenu">
                     <ul>
                     </ul>
-                </div><script>initMenu("submenu");</script>
+                </div>
+                <script>initMainMenu();</script>
             </div>
         </div>
     </body>
