@@ -1,0 +1,188 @@
+.side-menu.inactive {
+    width: 4rem;
+    display: block;
+}
+
+.side-menu {
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+    height: 100%;
+    background: var(--background5);
+    color: var(--highlight);
+    transition: all 0.25s ease;
+    display: none;
+    box-shadow: 0 0 0.8rem var(--shadow3);
+}
+
+.side-menu.active {
+    width: 18rem;
+    display: block;
+}
+
+.side-menu .menu-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    margin: 0;
+    width: 16rem;
+    max-width: 13rem;
+    display: none;
+}
+
+.side-menu.active .menu-title {
+    display: flex;
+}
+
+.side-menu .menu-title img {
+    height: 2.8rem; width: 2.8rem;
+    padding: 0; margin: 0;
+    border: none;
+}
+
+.side-menu .menu-title p {
+    padding: 0; margin: 0;
+    width: 15.25rem;
+    color: var(--foreground);
+}
+
+.side-menu ul {
+    background: var(--background4);
+    overflow-y: auto;
+    height: fit-content;
+    max-height: calc(100% - 6rem);
+    padding: 1rem 0.5rem 0.25rem 0.5rem;
+    transition: all 0.25s ease;
+    margin-top: 5rem;
+}
+
+.side-menu.active ul {
+    background: var(--background4);
+    height: fit-content;
+    max-height: calc(100% - 12rem);
+    overflow-y: auto;
+    padding: 1rem 1rem 0.25rem 1rem;
+}
+
+.side-menu ul li {
+    height: 3rem;
+    box-shadow: 0 0 0.8rem var(--shadow3);
+    width: 3rem;
+    border-radius: 0.5rem;
+    background: var(--background5);
+    display: flex;
+    margin-bottom: 0.75rem;
+}
+
+.side-menu.active ul li {
+    width: 16rem;
+}
+
+.side-menu ul li:hover {
+    cursor: pointer;
+    background: var(--highlight);
+    box-shadow: 0 0 0.8rem var(--highlight);
+    color: var(--background5);
+    transition: all 0.25s ease;
+}
+
+.side-menu ul li i {
+    padding: 0.5rem;
+    font-size: 2rem;
+}
+
+.side-menu ul li p {
+    font-size: 1.25rem;
+    font-weight: 1000;
+    position: relative;
+    top: -0.8rem;
+    display: none;
+}
+
+.side-menu.active ul li p {
+    display: inherit;
+}
+
+.side-menu ul li.action, .side-submenu ul li.action {
+    background: var(--background6) !important;
+    box-shadow: none !important;
+    color: var(--foreground2) !important;
+}
+
+.side-menu ul li.action:hover, .side-submenu ul li.action:hover {
+    color: var(--highlight) !important;
+    background: var(--background) !important;
+}
+
+.side-menu ul li.title {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin: 1rem 0 0 0 !important;
+    border-top: solid 2px var(--foreground2);
+    color: var(--foreground2) !important;
+    cursor: unset;
+    text-align: center;
+    display: none;
+}
+
+.side-menu.active ul li.title {
+    display: block;
+}
+
+.side-menu .menu-panel {
+    position: absolute;
+    background: var(--background5);
+    height: 3.7rem;
+    left: 0; bottom: 0;
+    padding: 1rem;
+    margin: 0;
+    width: 16rem;
+    max-width: 13rem;
+    display: flex;
+}
+
+.side-menu .menu-panel img {
+    position: absolute;
+    bottom: 0.8rem;
+    left: 0.6rem;
+    height: 2.8rem; width: 2.8rem;
+    padding: 0; margin: 0;
+    border: none;
+}
+
+.side-menu .menu-panel p {
+    position: absolute;
+    left: 4rem;
+    height: fit-content;
+    bottom: 0.8rem;
+    padding: 0; margin: 0;
+    width: 15.25rem;
+    color: var(--foreground);
+    display: none;
+}
+
+.side-menu.active .menu-panel p {
+    display: block;
+}
+
+.submenu {
+    z-index: 99;
+    background: var(--background6);
+}
+
+.submenu.inactive {
+    width: 5rem !important;
+}
+
+.submenu.active {
+    width: 18rem !important;
+}
+
+.submenu ul {
+    margin: 0 0 0 0 !important;
+    padding: 1rem 2rem 1rem 1rem !important;
+    max-height: calc(100% - 1rem) !important;
+    background: none !important;
+}

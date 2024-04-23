@@ -1,0 +1,76 @@
+body {
+    font-family: MPLUS1p, serif;
+    background: var(--background);
+    color: var(--foreground);
+    transition: background 0.5s ease;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+@font-face {
+    font-family: MPLUS1p;
+    src: url("../fonts/MPLUS1p/MPLUS1p-Regular.ttf");
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--highlight);
+}
+
+a.button {
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 1rem;
+    background: var(--highlight);
+    color: var(--background5) !important;
+    transition: all 0.5s ease;
+}
+
+a.button:hover {
+    background: var(--accent) !important;
+    color: var(--shadow4) !important;
+}
+
+.fixed {
+    position: fixed !important;
+}
+
+.flex {
+    display: flex !important;
+}
+
+.full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glass {
+    background: var(--background6) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+span.bold {
+    color: var(--highlight);
+    font-weight: bold;
+}
+
+.highlighted {
+    background: var(--accent) !important;
+    color: white !important;
+    box-shadow: 0 0 0.4rem var(--accent) !important;
+    cursor: unset !important;
+}
+
+.main {
+    position: relative;
+}
