@@ -9,6 +9,22 @@ document.addEventListener('dragstart', function(e){
     e.preventDefault();
 });
 
+function sendNotification(title,text,actions) {
+    const template = document.getElementById("message-template");
+    let card = template.cloneNode(true);
+    let now = new Date();
+    const date = now.getHours().toString().padStart(2, '0')+":"+now.getMinutes().toString().padStart(2, '0')+" - "+now.getFullYear()+"/"+(now.getMonth() + 1).toString().padStart(2, '0')+"/"+now.getDate().toString().padStart(2, '0');
+    card.id = date.toLowerCase().replaceAll(":","").replaceAll(" - ","").replaceAll("/","");
+    card.querySelector("#notification-title").innerText=title;
+    card.querySelector("#notification-text").innerHTML=text;
+    card.querySelector(".button").onclick=function () {
+        document.getElementById(card.id).remove();
+    };
+    card.querySelector("#notification-actions").innerHTML=actions;
+    card.querySelector(".date").innerText=date;
+    template.insertAdjacentElement("afterend",card);
+}
+
 function openInBrowser(url) {
     if(app) {
         callJavaMethod("browser."+url);
