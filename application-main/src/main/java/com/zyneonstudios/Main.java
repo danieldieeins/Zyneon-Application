@@ -28,9 +28,9 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.4.6";
+        version = "2024.4.6a";
         ArrayList<String> arguments = new ArrayList<>();
-        arguments.add(version);
+        arguments.add("content");
         String name = "Dreamfix";
         architecture = getArchitecture();
         splash = new ZyneonSplash();

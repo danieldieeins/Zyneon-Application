@@ -56,6 +56,9 @@ public class Connector {
     }
 
     private void syncSettings(String type) {
+        if(Application.online) {
+            frame.executeJavaScript("document.getElementById('du-button').style.display = 'inherit';");
+        }
         type = type.toLowerCase();
         switch (type) {
             case "general" -> {

@@ -15,7 +15,6 @@ public class Runner {
 
     private final ScheduledExecutorService executor;
     private final String version = Main.version;
-    private String latest = Main.version;
     private boolean started = false;
     public int i = 7;
     private int u = 118;
@@ -46,16 +45,15 @@ public class Runner {
                 Main.getLogger().debug("[RUNNER] Current version: " + version + "...");
                 if (!v.equals(version)) {
                     Main.getLogger().debug("[RUNNER] Saving new information...");
-                    latest = v;
                     Main.getLogger().debug("[RUNNER] Sending notification...");
-                    Application.getFrame().sendNotification("Update available!", "Version " + latest + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
+                    Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
                     Main.getLogger().debug("[RUNNER] The application is not up to date!");
                 }
             }
             if(i>9) {
                 i=0;
                 if(Application.online) {
-                    Application.getFrame().sendNotification("Dynamic Update is activated!", "You are currently using the dynamic update, which means that the user interface<keeps itself up to date<br>but it can also lead to problems if the backend and frontend versions become too different.", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
+                    Application.getFrame().sendNotification("Dynamic Update is activated!", "You are currently using the dynamic update, which means that the user interface keeps itself up to date \n <br> but it can also lead to problems if the backend and frontend versions become too different.", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
                 }
             }
         } catch (Exception ignore) {}
