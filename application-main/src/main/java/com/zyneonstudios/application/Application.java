@@ -103,8 +103,11 @@ public class Application {
         init();
         try {
             CompletableFuture.runAsync(Application::login);
-            Main.getLogger().log("[APP] Syncing available Minecraft versions...");
-            MinecraftVersion.syncVersions();
+            CompletableFuture.runAsync(()->{
+                Main.getLogger().log("[APP] [ASYNC] Syncing available Minecraft versions...");
+                MinecraftVersion.syncVersions();
+                Main.getLogger().log("[APP] [ASYNC] Synced versions!");
+            });
             try {
                 Main.getLogger().log("[APP] Trying to sync installed instances...");
                 loadInstances();

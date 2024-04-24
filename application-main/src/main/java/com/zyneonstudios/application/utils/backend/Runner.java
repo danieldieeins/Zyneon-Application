@@ -19,6 +19,8 @@ public class Runner {
     public int i = 7;
     private int u = 118;
 
+    private String motd_id = "";
+
     public Runner(Application application) {
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(() -> CompletableFuture.runAsync(() -> run(application)), 0, 30, TimeUnit.SECONDS);
@@ -35,10 +37,10 @@ public class Runner {
             return;
         }
         try {
+            JsonObject json = new Gson().fromJson(GsonUtil.getFromURL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/l/application.json"), JsonObject.class);
             if(u>119) {
                 u=0;
                 Main.getLogger().debug("[RUNNER] Checking for Updates...");
-                JsonObject json = new Gson().fromJson(GsonUtil.getFromURL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/l/application.json"), JsonObject.class);
                 Main.getLogger().debug("[RUNNER] Parsed JSON Data...");
                 String v = json.get("updater").getAsJsonObject().get("version").getAsString();
                 Main.getLogger().debug("[RUNNER] Latest version: " + v + "...");
@@ -55,6 +57,11 @@ public class Runner {
                 if(Application.online) {
                     Application.getFrame().sendNotification("Dynamic Update is activated!", "You are currently using the dynamic update, which means that the user interface keeps itself up to date \n <br> but it can also lead to problems if the backend and frontend versions become too different.", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
                 }
+            }
+            if(!json.get("message").getAsJsonObject().get("id").getAsString().equals(motd_id)) {
+                json = json.getAsJsonObject("message");
+                motd_id = json.get("id").getAsString();
+                Application.getFrame().sendNotification(json.get("title").getAsString(),json.get("text").getAsString(),json.get("actions").getAsString(),true);
             }
         } catch (Exception ignore) {}
     }

@@ -1,5 +1,7 @@
 package com.zyneonstudios.application.utils.frame.web;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.utils.backend.Connector;
 import org.cef.CefSettings;
@@ -11,6 +13,7 @@ import java.awt.*;
 public class ZyneonWebFrame extends WebFrame {
 
     private final Connector connector;
+    private JsonArray notifications = new JsonArray();
 
     public ZyneonWebFrame(String url) {
         super(url, Main.getDirectoryPath()+"libs/jcef");
@@ -48,6 +51,12 @@ public class ZyneonWebFrame extends WebFrame {
     }
 
     public void sendNotification(String title,String message, String actions, boolean save) {
+        JsonObject notification = new JsonObject();
+        notification.addProperty("id", title+message+actions);
+        notification.addProperty("title", title);
+        notification.addProperty("message", message);
+        notification.addProperty("actions", actions);
+        notifications.add(notification);
         executeJavaScript("sendNotification(\""+title.replace("\"","\\\"")+"\",\""+message.replace("\"","\\\"")+"\",\""+actions.replace("\"","\\\"")+"\");");
     }
 }
