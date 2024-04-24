@@ -1,6 +1,8 @@
 package com.zyneonstudios.application.utils.backend;
 
 import com.zyneonstudios.nexus.Main;
+import com.zyneonstudios.verget.Verget;
+import com.zyneonstudios.verget.minecraft.MinecraftVerget;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
 
 import java.util.ArrayList;
@@ -10,11 +12,8 @@ public class MinecraftVersion {
     public static ArrayList<String> supportedVersions = new ArrayList<>();
 
     public static void syncVersions() {
-        /*if(com.zyneonstudios.Main.test) {
-            supportedVersions = Verget.getMinecraftVersions(true);
-            return;
-        }*/
-        supportedVersions = new ArrayList<>();
+        supportedVersions = Verget.getMinecraftVersions(MinecraftVerget.Filter.BOTH);
+        /*supportedVersions = new ArrayList<>();
         supportedVersions.add("1.20.4 (Latest)");
         supportedVersions.add("1.20.3");
         supportedVersions.add("1.20.2");
@@ -112,7 +111,7 @@ public class MinecraftVersion {
         supportedVersions.add("1.2.5");
         supportedVersions.add("1.2.4");
         supportedVersions.add("1.2.3");
-        supportedVersions.add("1.2.1");
+        supportedVersions.add("1.2.1");*/
     }
 
     public static Type getType(String version) {

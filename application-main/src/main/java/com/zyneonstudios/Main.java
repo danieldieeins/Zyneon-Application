@@ -28,10 +28,10 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.4.5";
+        version = "2024.4.6";
         ArrayList<String> arguments = new ArrayList<>();
-        arguments.add(version+".0");
-        String name = "Dream";
+        arguments.add(version);
+        String name = "Dreamfix";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);

@@ -46,4 +46,8 @@ public class ZyneonWebFrame extends WebFrame {
     public void setTitleForeground(Color color) {
         getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
     }
+
+    public void sendNotification(String title,String message, String actions, boolean save) {
+        executeJavaScript("sendNotification(\""+title.replace("\"","\\\"")+"\",\""+message.replace("\"","\\\"")+"\",\""+actions.replace("\"","\\\"")+"\");");
+    }
 }

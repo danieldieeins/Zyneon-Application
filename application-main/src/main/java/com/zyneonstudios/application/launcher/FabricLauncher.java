@@ -18,10 +18,10 @@ public class FabricLauncher {
 
     public void launch(ReadableInstance instance) {
         ZyndexIntegration.update(instance);
-        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()));
+        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
     }
 
-    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath) {
+    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath,String id) {
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
             Launcher.setJava(type);
@@ -43,6 +43,9 @@ public class FabricLauncher {
             try {
                 Process game = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
                 Application.getFrame().executeJavaScript("launchStarted();");
+                if(!Application.running.contains(id)) {
+                    Application.running.add(id);
+                }
                 Application.getFrame().setState(JFrame.ICONIFIED);
                 LogFrame log;
                 if (Application.logOutput) {
@@ -56,9 +59,11 @@ public class FabricLauncher {
                     }
                     Application.getFrame().setState(JFrame.NORMAL);
                     Application.getFrame().executeJavaScript("launchDefault();");
+                    Application.running.remove(id);
                 });
             } catch (Exception e) {
                 Application.getFrame().executeJavaScript("launchDefault();");
+                Application.running.remove(id);
                 if(!Application.auth.isLoggedIn()) {
                     Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
                 }
@@ -67,6 +72,7 @@ public class FabricLauncher {
             }
         } else {
             Application.getFrame().executeJavaScript("launchDefault();");
+            Application.running.remove(id);
             Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
         }
     }

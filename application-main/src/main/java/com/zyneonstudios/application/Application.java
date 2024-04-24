@@ -7,6 +7,7 @@ import com.zyneonstudios.application.installer.java.OperatingSystem;
 import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
 import com.zyneonstudios.application.integrations.index.zyndex.instance.ReadableInstance;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
+import com.zyneonstudios.application.utils.backend.Runner;
 import com.zyneonstudios.application.utils.frame.web.CustomWebFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
 import live.nerotv.shademebaby.ShadeMeBaby;
@@ -44,15 +45,22 @@ public class Application {
     public static ArrayList<String> args;
 
     public static String ui;
+    private final Runner runner;
+    public static ArrayList<String> running = new ArrayList<>();
 
     public Application(ArrayList<String> arguments) {
         args = arguments;
+        runner = new Runner(this);
         if(args.size()>1) {
             Application.ui = arguments.get(0);
             version = arguments.get(1);
         } else {
             throw new RuntimeException("Missing arguments");
         }
+    }
+
+    public Runner getRunner() {
+        return runner;
     }
 
     private void init() {
@@ -236,7 +244,7 @@ public class Application {
         return url;
     }
 
-    private static boolean online = false;
+    public static boolean online = false;
     public static String getOnlineStartURL() {
         online = !online;
         return getStartURL();

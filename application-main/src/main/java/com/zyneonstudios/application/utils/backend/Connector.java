@@ -81,10 +81,13 @@ public class Connector {
     }
 
     public void resolveRequest(String request) {
+        //frame.sendNotification("Resolving...","(BackendConnector) resolving "+request+"...","",false);
         if (request.equals("button.copy.uuid")) {
             StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid, uuid);
+        } else if (request.equals("button.online")) {
+            frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if(request.startsWith("sync.creator.")) {
             final String request_ = request.replace("sync.creator.", "");
             SwingUtilities.invokeLater(() -> {
@@ -372,6 +375,11 @@ public class Connector {
 
                     Application.lastInstance = id;
                     Application.config.set("settings.lastInstance", Application.lastInstance);
+                    if(Application.running.contains(id)) {
+                        frame.executeJavaScript("launchStarted();");
+                    } else {
+                        frame.executeJavaScript("launchDefault();");
+                    }
                 }
             });
         } else if (request.contains("button.delete.")) {
