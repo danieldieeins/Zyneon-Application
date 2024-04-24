@@ -47,6 +47,10 @@
     border-radius: 1rem;
 }
 
+#du-button {
+    display: none;
+}
+
 #hublayer .notifications:hover {
     transition: all 0.25s ease;
     background: #00000060;
