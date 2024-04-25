@@ -39,17 +39,19 @@ public class Runner {
         try {
             JsonObject json = new Gson().fromJson(GsonUtil.getFromURL("https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/l/application.json"), JsonObject.class);
             if(u>119) {
-                u=0;
-                Main.getLogger().debug("[RUNNER] Checking for Updates...");
-                Main.getLogger().debug("[RUNNER] Parsed JSON Data...");
-                String v = json.get("updater").getAsJsonObject().get("version").getAsString();
-                Main.getLogger().debug("[RUNNER] Latest version: " + v + "...");
-                Main.getLogger().debug("[RUNNER] Current version: " + version + "...");
-                if (!v.equals(version)) {
-                    Main.getLogger().debug("[RUNNER] Saving new information...");
-                    Main.getLogger().debug("[RUNNER] Sending notification...");
-                    Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", v,true);
-                    Main.getLogger().debug("[RUNNER] The application is not up to date!");
+                u = 0;
+                if(!Main.isTest()) {
+                    Main.getLogger().debug("[RUNNER] Checking for Updates...");
+                    Main.getLogger().debug("[RUNNER] Parsed JSON Data...");
+                    String v = json.get("updater").getAsJsonObject().get("version").getAsString();
+                    Main.getLogger().debug("[RUNNER] Latest version: " + v + "...");
+                    Main.getLogger().debug("[RUNNER] Current version: " + version + "...");
+                    if (!v.equals(version)) {
+                        Main.getLogger().debug("[RUNNER] Saving new information...");
+                        Main.getLogger().debug("[RUNNER] Sending notification...");
+                        Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", v, true);
+                        Main.getLogger().debug("[RUNNER] The application is not up to date!");
+                    }
                 }
             }
             if(i>9) {

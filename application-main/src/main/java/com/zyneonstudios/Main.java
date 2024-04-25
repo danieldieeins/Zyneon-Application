@@ -26,11 +26,12 @@ public class Main {
     public static String version;
     public static OperatingSystem operatingSystem;
     public static Architecture architecture;
+    private static boolean test = false;
 
     public static void main(String[] args) {
         version = "2024.4.6b";
         ArrayList<String> arguments = new ArrayList<>();
-        arguments.add("content");
+        arguments.add(version);
         String name = "Dreamfix";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
@@ -44,6 +45,7 @@ public class Main {
             arg = arg.toLowerCase();
             switch (arg) {
                 case "--test" -> {
+                    test = true;
                     fullVersion = version + " ▪ " + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
                 }
                 case "--debug" -> {
@@ -126,5 +128,9 @@ public class Main {
             }
         }
         return Architecture.x64;
+    }
+
+    public static boolean isTest() {
+        return test;
     }
 }

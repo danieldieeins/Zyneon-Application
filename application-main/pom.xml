@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
+    <version>2024.4.6b</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
