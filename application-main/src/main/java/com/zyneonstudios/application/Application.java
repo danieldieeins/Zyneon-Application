@@ -45,12 +45,11 @@ public class Application {
     public static ArrayList<String> args;
 
     public static String ui;
-    private final Runner runner;
+    public static final Runner runner = new Runner();
     public static ArrayList<String> running = new ArrayList<>();
 
     public Application(ArrayList<String> arguments) {
         args = arguments;
-        runner = new Runner(this);
         if(args.size()>1) {
             Application.ui = arguments.get(0);
             version = arguments.get(1);

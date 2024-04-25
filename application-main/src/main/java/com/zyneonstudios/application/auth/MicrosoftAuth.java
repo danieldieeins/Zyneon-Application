@@ -29,10 +29,10 @@ public class MicrosoftAuth {
         } catch (Exception ignore) {}
     }
 
-    private Authenticator authenticator;
+    private AsyncAuth authenticator;
 
     public MicrosoftAuth() {
-        authenticator = new Authenticator();
+        authenticator = new AsyncAuth();
         try {
             new File(URLDecoder.decode(Main.getDirectoryPath() + "libs/opapi/arun.json", StandardCharsets.UTF_8)).delete();
         } catch (Exception ignore) {}

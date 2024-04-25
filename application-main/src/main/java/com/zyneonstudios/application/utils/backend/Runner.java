@@ -21,16 +21,16 @@ public class Runner {
 
     private String motd_id = "";
 
-    public Runner(Application application) {
+    public Runner() {
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(() -> CompletableFuture.runAsync(() -> run(application)), 0, 30, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(() -> CompletableFuture.runAsync(() -> run()), 0, 30, TimeUnit.SECONDS);
     }
 
     public ScheduledExecutorService getExecutor() {
         return executor;
     }
 
-    private void run(Application application) {
+    public void run() {
         i++; u++;
         if(!started) {
             started = true;
@@ -48,20 +48,20 @@ public class Runner {
                 if (!v.equals(version)) {
                     Main.getLogger().debug("[RUNNER] Saving new information...");
                     Main.getLogger().debug("[RUNNER] Sending notification...");
-                    Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
+                    Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", v,true);
                     Main.getLogger().debug("[RUNNER] The application is not up to date!");
                 }
             }
             if(i>9) {
                 i=0;
                 if(Application.online) {
-                    Application.getFrame().sendNotification("Dynamic Update is activated!", "You are currently using the dynamic update, which means that the user interface keeps itself up to date \n <br> but it can also lead to problems if the backend and frontend versions become too different.", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", false);
+                    Application.getFrame().sendNotification("Dynamic Update is activated!", "You are currently using the dynamic update, which means that the user interface keeps itself up to date \n <br> but it can also lead to problems if the backend and frontend versions become too different.", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>","dynamicUpdate",true);
                 }
             }
             if(!json.get("message").getAsJsonObject().get("id").getAsString().equals(motd_id)) {
                 json = json.getAsJsonObject("message");
                 motd_id = json.get("id").getAsString();
-                Application.getFrame().sendNotification(json.get("title").getAsString(),json.get("text").getAsString(),json.get("actions").getAsString(),true);
+                Application.getFrame().sendNotification(json.get("title").getAsString(),json.get("text").getAsString(),json.get("actions").getAsString(),motd_id,true);
             }
         } catch (Exception ignore) {}
     }

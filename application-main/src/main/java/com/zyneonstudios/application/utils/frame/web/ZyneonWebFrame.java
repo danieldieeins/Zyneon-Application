@@ -1,6 +1,5 @@
 package com.zyneonstudios.application.utils.frame.web;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.utils.backend.Connector;
@@ -9,11 +8,12 @@ import org.cef.browser.CefBrowser;
 import org.cef.handler.CefDisplayHandlerAdapter;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class ZyneonWebFrame extends WebFrame {
 
     private final Connector connector;
-    private JsonArray notifications = new JsonArray();
+    private final HashMap<String,JsonObject> notifications = new HashMap<>();
 
     public ZyneonWebFrame(String url) {
         super(url, Main.getDirectoryPath()+"libs/jcef");
@@ -50,13 +50,31 @@ public class ZyneonWebFrame extends WebFrame {
         getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
     }
 
-    public void sendNotification(String title,String message, String actions, boolean save) {
-        JsonObject notification = new JsonObject();
-        notification.addProperty("id", title+message+actions);
-        notification.addProperty("title", title);
-        notification.addProperty("message", message);
-        notification.addProperty("actions", actions);
-        notifications.add(notification);
-        executeJavaScript("sendNotification(\""+title.replace("\"","\\\"")+"\",\""+message.replace("\"","\\\"")+"\",\""+actions.replace("\"","\\\"")+"\");");
+    public void sendNotification(String title,String message, String actions, String id, boolean save) {
+        if(save) {
+            JsonObject notification = new JsonObject();
+            notification.addProperty("id", id);
+            notification.addProperty("title", title);
+            notification.addProperty("message", message);
+            notification.addProperty("actions", actions);
+            notifications.put(id,notification);
+        }
+        executeJavaScript("sendNotification(\""+title.replace("\"","\\\"")+"\",\""+message.replace("\"","\\\"")+"\",\""+actions.replace("\"","\\\"")+"\",\""+id.replace("\"","\\\"")+"\");");
+    }
+
+    public void removeNotification(String id) {
+        notifications.remove(id);
+    }
+
+    public void syncNotifications() {
+        for(int i = notifications.size() - 1; i >= 0; i--) {
+            JsonObject notification = notifications.values().stream().toList().get(i);
+            String id = notification.get("id").getAsString();
+            String title = notification.get("title").getAsString();
+            String message = notification.get("message").getAsString();
+            String actions = notification.get("actions").getAsString();
+            executeJavaScript("sendNotification(\""+title.replace("\"","\\\"")+"\",\""+message.replace("\"","\\\"")+"\",\""+actions.replace("\"","\\\"")+"\",\""+id.replace("\"","\\\"")+"\");");
+
+        }
     }
 }

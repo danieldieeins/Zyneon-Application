@@ -56,8 +56,9 @@ public class Connector {
     }
 
     private void syncSettings(String type) {
-        if(Application.online) {
-            frame.executeJavaScript("document.getElementById('du-button').style.display = 'inherit';");
+        frame.executeJavaScript("document.getElementById('du-button').style.display = 'inherit';");
+        if(!Application.online) {
+            frame.executeJavaScript("document.getElementById('du').innerHTML = \"<i class='bx bx-play-circle'></i><span class='menu-text'>Start dynamic update</span>\";");
         }
         type = type.toLowerCase();
         switch (type) {
@@ -89,8 +90,15 @@ public class Connector {
             StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(uuid, uuid);
+        } else if (request.startsWith("button.notification.remove.")) {
+            frame.removeNotification(request.replace("button.notification.remove.",""));
         } else if (request.equals("button.online")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
+        } else if(request.equals("sync.notifications")) {
+            CompletableFuture.runAsync(()-> {
+                frame.syncNotifications();
+                Application.runner.run();
+            });
         } else if(request.startsWith("sync.creator.")) {
             final String request_ = request.replace("sync.creator.", "");
             SwingUtilities.invokeLater(() -> {

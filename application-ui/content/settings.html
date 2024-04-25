@@ -136,7 +136,7 @@
                     <a onclick="callJavaMethod('button.online');">
                         <div class="menu-item" id="du">
                             <i class='bx bx-stop-circle'></i>
-                            <span class="menu-text">Stop dynamic Update</span>
+                            <span class="menu-text">Stop dynamic update</span>
                         </div>
                     </a>
                 </li>
@@ -289,5 +289,5 @@
     </div>
 </body>
 <script src="assets/zyneon/js/settings.js"></script>
-<script>syncApplication(); syncVersion(); syncSettings();</script>
+<script>callJavaMethod("sync.notifications"); syncApplication(); syncVersion(); syncSettings();</script>
 </html>

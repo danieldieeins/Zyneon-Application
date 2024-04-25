@@ -28,7 +28,7 @@ public class Main {
     public static Architecture architecture;
 
     public static void main(String[] args) {
-        version = "2024.4.6a";
+        version = "2024.4.6b";
         ArrayList<String> arguments = new ArrayList<>();
         arguments.add("content");
         String name = "Dreamfix";
