@@ -30,6 +30,9 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+    - name: Configure Maven settings
+      run: echo "<settings><servers><server><id>github</id><username>danieldieeins</username><password>${{ secrets.GITHUB_TOKEN }}</password></server></servers></settings>" > ${{ github.workspace }}/settings.xml
+
     - name: Build with Maven
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
