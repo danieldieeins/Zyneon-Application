@@ -43,24 +43,19 @@ jobs:
           mvn clean package --settings ${{ github.workspace }}/settings.xml
           mv /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-${{ steps.extract_version.outputs.version }}.jar /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
         with:
-          tag_name: ${{ steps.extract_version.outputs.version }}
-          release_name: Release ${{ steps.extract_version.outputs.version }}
-          draft: false
-          prerelease: true
+          name: application-experimental
+          path: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
 
-      - name: Upload artifact to release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
-          asset_name: application-main-experimental.jar
-          asset_content_type: application/java-archive
+      - name: Upload artifact to external repository
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git clone https://github.com/danieldieeins/ZyneonApplicationContent.git
+          mv /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar ZyneonApplicationContent/i/application-experimental.jar
+          cd ZyneonApplicationContent
+          git add .
+          git commit -m "Add application-experimental.jar"
+          git push
