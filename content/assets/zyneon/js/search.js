@@ -41,6 +41,7 @@ function syncSearch() {
             document.getElementById("back-to-instance").style.display = "inherit";
             document.getElementById("fabric-button").style.display = "inherit";
             document.getElementById("quilt-button").style.display = "inherit";
+            document.getElementById("neoforge-button").style.display = "inherit";
             document.getElementById("modpack-button").style.display = "none";
             document.getElementById("zyneon-button").style.display = "none";
             document.getElementById("version-title").style.display = "none";
@@ -56,8 +57,18 @@ function syncSearch() {
     }
     if(urlParams.get("d")!=null) {
         search_disable = urlParams.get("d");
-        if(document.getElementById(search_disable)) {
-            document.getElementById(search_disable + "-button").style.display = "none";
+        if(search_disable.includes(",")) {
+            const p = search_disable.split(",");
+            for (let i = 0; i < p.length; i++) {
+                const disable = p[i];
+                if(document.getElementById(disable)) {
+                    document.getElementById(disable + "-button").style.display = "none";
+                }
+            }
+        } else {
+            if(document.getElementById(search_disable)) {
+                document.getElementById(search_disable + "-button").style.display = "none";
+            }
         }
     }
     document.getElementById(search_source).classList.add("active");
@@ -139,7 +150,7 @@ function addItem(png,name,author,description,id,slug,source) {
                     let s = "";
                     if(search_type==="modpacks") {
                         s = "modpacks";
-                    } else if(search_type==="fabric"||search_type==="quilt"||search_type==="forge") {
+                    } else if(search_type==="fabric"||search_type==="quilt"||search_type==="forge"||search_type==="neoforge") {
                         s = "mc-mods";
                     } else if(search_type==="shaders") {
                         s = "shaders";
