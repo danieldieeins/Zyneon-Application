@@ -39,9 +39,10 @@ jobs:
       run: |
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         mvn clean package --settings ${{ github.workspace }}/settings.xml
+        mv /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-${VERSION}.jar /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
         name: application-experimental
-        path: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-${VERSION}.jar
+        path: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
