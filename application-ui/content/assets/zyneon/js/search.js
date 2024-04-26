@@ -40,6 +40,7 @@ function syncSearch() {
             search_instance = urlParams.get("i");
             document.getElementById("back-to-instance").style.display = "inherit";
             document.getElementById("fabric-button").style.display = "inherit";
+            document.getElementById("quilt-button").style.display = "inherit";
             document.getElementById("modpack-button").style.display = "none";
             document.getElementById("zyneon-button").style.display = "none";
             document.getElementById("version-title").style.display = "none";
@@ -138,7 +139,7 @@ function addItem(png,name,author,description,id,slug,source) {
                     let s = "";
                     if(search_type==="modpacks") {
                         s = "modpacks";
-                    } else if(search_type==="fabric"||search_type==="forge") {
+                    } else if(search_type==="fabric"||search_type==="quilt"||search_type==="forge") {
                         s = "mc-mods";
                     } else if(search_type==="shaders") {
                         s = "shaders";

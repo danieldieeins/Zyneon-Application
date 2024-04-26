@@ -29,9 +29,9 @@ public class Main {
     private static boolean test = false;
 
     public static void main(String[] args) {
-        version = "2024.4.6b";
+        version = "2024.4.7";
         ArrayList<String> arguments = new ArrayList<>();
-        arguments.add(version);
+        arguments.add("content");
         String name = "Dreamfix";
         architecture = getArchitecture();
         splash = new ZyneonSplash();

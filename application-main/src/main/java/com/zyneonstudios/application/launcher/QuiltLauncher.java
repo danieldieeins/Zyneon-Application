@@ -2,7 +2,7 @@ package com.zyneonstudios.application.launcher;
 
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.installer.FabricInstaller;
+import com.zyneonstudios.application.installer.QuiltInstaller;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
 import com.zyneonstudios.application.integrations.zyndex.ZyndexIntegration;
 import com.zyneonstudios.application.integrations.zyndex.instance.ReadableInstance;
@@ -14,14 +14,14 @@ import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import javax.swing.*;
 import java.nio.file.Path;
 
-public class FabricLauncher {
+public class QuiltLauncher {
 
     public void launch(ReadableInstance instance) {
         ZyndexIntegration.update(instance);
-        launch(instance.getMinecraftVersion(), instance.getFabricVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
+        launch(instance.getMinecraftVersion(), instance.getQuiltVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
     }
 
-    public void launch(String minecraftVersion, String fabricVersion, int ram, Path instancePath,String id) {
+    public void launch(String minecraftVersion, String quiltVersion, int ram, Path instancePath,String id) {
         MinecraftVersion.Type type = MinecraftVersion.getType(minecraftVersion);
         if(type!=null) {
             Launcher.setJava(type);
@@ -29,7 +29,7 @@ public class FabricLauncher {
         if(ram<512) {
             ram = 512;
         }
-        if(new FabricInstaller().download(minecraftVersion,fabricVersion,instancePath)) {
+        if(new QuiltInstaller().download(minecraftVersion,quiltVersion,instancePath)) {
             NoFramework framework = new NoFramework(
                     instancePath,
                     Application.auth.getAuthInfos(),
@@ -41,7 +41,7 @@ public class FabricLauncher {
                 framework.getAdditionalVmArgs().add("-XstartOnFirstThread");
             }
             try {
-                Process game = framework.launch(minecraftVersion, fabricVersion, NoFramework.ModLoader.FABRIC);
+                Process game = framework.launch(minecraftVersion, quiltVersion, NoFramework.ModLoader.QUILT);
                 Application.getFrame().executeJavaScript("launchStarted();");
                 if(!Application.running.contains(id)) {
                     Application.running.add(id);
@@ -49,7 +49,7 @@ public class FabricLauncher {
                 Application.getFrame().setState(JFrame.ICONIFIED);
                 LogFrame log;
                 if (Application.logOutput) {
-                    log = new LogFrame(game.getInputStream(), "Minecraft " + minecraftVersion + " (with Fabric " + fabricVersion + ")");
+                    log = new LogFrame(game.getInputStream(), "Minecraft " + minecraftVersion + " (with Quilt " + quiltVersion + ")");
                 } else {
                     log = null;
                 }
@@ -67,13 +67,13 @@ public class FabricLauncher {
                 if(!Application.auth.isLoggedIn()) {
                     Application.getFrame().getBrowser().loadURL(Application.getSettingsURL()+"?tab=profile");
                 }
-                Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
+                Main.getLogger().error("[LAUNCHER] Couldn't start Quilt "+quiltVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
                 throw new RuntimeException(e);
             }
         } else {
             Application.getFrame().executeJavaScript("launchDefault();");
             Application.running.remove(id);
-            Main.getLogger().error("[LAUNCHER] Couldn't start Fabric "+fabricVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
+            Main.getLogger().error("[LAUNCHER] Couldn't start Quilt "+quiltVersion+" for Minecraft "+minecraftVersion+" in "+instancePath+" with "+ram+"M RAM.");
         }
     }
 }

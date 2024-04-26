@@ -19,6 +19,10 @@ select {
     box-shadow: none;
 }
 
+#quilt-button {
+    display: none;
+}
+
 input#zyndex-url {
     border: none;
     font-size: 1.25rem;

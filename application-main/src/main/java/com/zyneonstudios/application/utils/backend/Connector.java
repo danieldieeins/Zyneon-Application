@@ -8,14 +8,15 @@ import com.google.gson.stream.JsonReader;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.auth.MicrosoftAuth;
-import com.zyneonstudios.application.integrations.index.Integrator;
-import com.zyneonstudios.application.integrations.index.curseforge.*;
-import com.zyneonstudios.application.integrations.index.modrinth.*;
-import com.zyneonstudios.application.integrations.index.zyndex.ZyndexIntegration;
-import com.zyneonstudios.application.integrations.index.zyndex.instance.ReadableInstance;
-import com.zyneonstudios.application.integrations.index.zyndex.instance.WritableInstance;
+import com.zyneonstudios.application.integrations.Integrator;
+import com.zyneonstudios.application.integrations.curseforge.*;
+import com.zyneonstudios.application.integrations.modrinth.*;
+import com.zyneonstudios.application.integrations.zyndex.ZyndexIntegration;
+import com.zyneonstudios.application.integrations.zyndex.instance.ReadableInstance;
+import com.zyneonstudios.application.integrations.zyndex.instance.WritableInstance;
 import com.zyneonstudios.application.launcher.FabricLauncher;
 import com.zyneonstudios.application.launcher.ForgeLauncher;
+import com.zyneonstudios.application.launcher.QuiltLauncher;
 import com.zyneonstudios.application.launcher.VanillaLauncher;
 import com.zyneonstudios.application.utils.frame.MemoryFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
@@ -105,6 +106,13 @@ public class Connector {
                 ArrayList<String> versions;
                 switch (request_) {
                     case "snapshots" -> versions = Verget.getMinecraftVersions(MinecraftVerget.Filter.EXPERIMENTAL);
+                    case "quilt" -> {
+                        versions = Verget.getQuiltGameVersions(true);
+                        ArrayList<String> mlversions = Verget.getQuiltVersions(versions.getFirst());
+                        for (String version : mlversions) {
+                            frame.executeJavaScript("addToSelect('creator-mlversion','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+                        }
+                    }
                     case "fabric" -> {
                         versions = Verget.getFabricGameVersions(true);
                         ArrayList<String> mlversions = Verget.getFabricVersions(true, versions.getFirst());
@@ -150,6 +158,11 @@ public class Connector {
                     for (String v : mlversions) {
                         frame.executeJavaScript("addToSelect('creator-mlversion','" + v.toLowerCase().replace(" (latest)", "") + "','" + v + "')");
                     }
+                } else if (type.equalsIgnoreCase("quilt")) {
+                    ArrayList<String> mlversions = Verget.getQuiltVersions(version);
+                    for (String v : mlversions) {
+                        frame.executeJavaScript("addToSelect('creator-mlversion','" + v.toLowerCase().replace(" (latest)", "") + "','" + v + "')");
+                    }
                 }
             });
         } else if(request.startsWith("sync.updater.")) {
@@ -158,6 +171,13 @@ public class Connector {
                 ArrayList<String> versions;
                 switch (request_) {
                     case "snapshots" -> versions = Verget.getMinecraftVersions(MinecraftVerget.Filter.EXPERIMENTAL);
+                    case "quilt" -> {
+                        versions = Verget.getQuiltGameVersions(true);
+                        ArrayList<String> mlversions = Verget.getQuiltVersions(versions.getFirst());
+                        for (String version : mlversions) {
+                            frame.executeJavaScript("addToSelect('settings-mlversion','" + version.toLowerCase().replace(" (latest)", "") + "','" + version + "')");
+                        }
+                    }
                     case "fabric" -> {
                         versions = Verget.getFabricGameVersions(true);
                         ArrayList<String> mlversions = Verget.getFabricVersions(true, versions.getFirst());
@@ -197,6 +217,11 @@ public class Connector {
                     }
                     for (String v : mlversions) {
                         frame.executeJavaScript("addToSelect('settings-mlversion','" + prefix + v.toLowerCase().replace(" (latest)", "") + "','" + prefix + v + "')");
+                    }
+                } else if(type.equalsIgnoreCase("quilt")) {
+                    ArrayList<String> mlversions = Verget.getQuiltVersions(version);
+                    for (String v : mlversions) {
+                        frame.executeJavaScript("addToSelect('settings-mlversion','" + v.toLowerCase().replace(" (latest)", "") + "','" + v + "')");
                     }
                 } else if(type.equalsIgnoreCase("fabric")) {
                     ArrayList<String> mlversions = Verget.getFabricVersions(true,version);
@@ -321,6 +346,8 @@ public class Connector {
                     String mlversion;
                     if (modloader.equalsIgnoreCase("forge")) {
                         mlversion = instance.getForgeVersion();
+                    } else if (modloader.equalsIgnoreCase("quilt")) {
+                        mlversion = instance.getQuiltVersion();
                     } else if (modloader.equalsIgnoreCase("fabric")) {
                         mlversion = instance.getFabricVersion();
                     } else {
@@ -414,7 +441,7 @@ public class Connector {
             String instanceID = request_[5];
             String zyndexUrl = request_[6];
             if(source.equalsIgnoreCase("modrinth")) {
-                if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
+                if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("quilt") || type.equalsIgnoreCase("fabric")) {
                     Integrator.modrinthToConnector(ModrinthMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("shaders")) {
                     Integrator.modrinthToConnector(ModrinthShaders.search(query, version, b, 20),instanceID);
@@ -425,7 +452,7 @@ public class Connector {
                 }
 
             } else if(source.equalsIgnoreCase("curseforge")) {
-                if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("fabric")) {
+                if (type.equalsIgnoreCase("forge") || type.equalsIgnoreCase("quilt") || type.equalsIgnoreCase("fabric")) {
                     Integrator.curseForgeToConnector(CurseForgeMods.search(query, NoFramework.ModLoader.valueOf(type.toUpperCase()), version, b, 20),instanceID);
                 } else if (type.equalsIgnoreCase("shaders")) {
                     Integrator.curseForgeToConnector(CurseForgeShaders.search(query, version, b, 20),instanceID);
@@ -481,23 +508,30 @@ public class Connector {
                 instance.setDescription(description);
                 instance.setMinecraftVersion(minecraft);
                 if (modloader.equalsIgnoreCase("forge")) {
+                    instanceConfig.delete("instance.versions.fabric");
+                    instanceConfig.delete("instance.versions.quilt");
                     if (mlversion.toLowerCase().startsWith("old")) {
-                        instanceConfig.delete("instance.versions.fabric");
                         instance.setForgeType("OLD");
                         instance.setForgeVersion(mlversion.replace("old", ""));
                     } else if (mlversion.toLowerCase().startsWith("neo")) {
-                        instanceConfig.delete("instance.versions.fabric");
                         instance.setForgeType("NEO_FORGE");
                         instance.setForgeVersion(mlversion.replace("neo", ""));
                     } else {
-                        instanceConfig.delete("instance.versions.fabric");
                         instance.setForgeType("NEW");
                         instance.setForgeVersion(mlversion.replace("new", ""));
                     }
-                } else if (modloader.equalsIgnoreCase("fabric")) {
+                } else if (modloader.equalsIgnoreCase("quilt")) {
+                    instanceConfig.delete("instance.versions.fabric");
                     instanceConfig.delete("instance.versions.forge");
-                    instance.setFabricVersion(mlversion.replace("old", "").replace("neo", "").replace("new",""));
+                    instanceConfig.delete("instance.meta.forgeType");
+                    instance.setQuiltVersion(mlversion);
+                } else if (modloader.equalsIgnoreCase("fabric")) {
+                    instanceConfig.delete("instance.versions.quilt");
+                    instanceConfig.delete("instance.versions.forge");
+                    instanceConfig.delete("instance.meta.forgeType");
+                    instance.setFabricVersion(mlversion);
                 } else {
+                    instanceConfig.delete("instance.versions.quilt");
                     instanceConfig.delete("instance.versions.fabric");
                     instanceConfig.delete("instance.versions.forge");
                     instanceConfig.delete("instance.meta.forgeType");
@@ -542,8 +576,10 @@ public class Connector {
                         instance.setForgeType("NEW");
                         instance.setForgeVersion(mlversion.replace("new", ""));
                     }
+                } else if (modloader.equalsIgnoreCase("quilt")) {
+                    instance.setQuiltVersion(mlversion);
                 } else if (modloader.equalsIgnoreCase("fabric")) {
-                    instance.setFabricVersion(mlversion.replace("old", "").replace("neo", "").replace("new", ""));
+                    instance.setFabricVersion(mlversion);
                 }
                 instance.createFile();
             }
@@ -1144,6 +1180,8 @@ public class Connector {
     private void launch(ReadableInstance instance) {
         if(instance.getModloader().equalsIgnoreCase("fabric")) {
             new FabricLauncher().launch(instance);
+        } else if(instance.getModloader().equalsIgnoreCase("quilt")) {
+            new QuiltLauncher().launch(instance);
         } else if(instance.getModloader().equalsIgnoreCase("forge")) {
             new ForgeLauncher().launch(instance);
         } else {
