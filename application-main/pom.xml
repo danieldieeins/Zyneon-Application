@@ -20,7 +20,7 @@
 
     <repositories>
         <repository>
-            <id>zyneon</id>
+            <id>github</id>
             <url>https://maven.pkg.github.com/zyneonstudios/zyneon-maven</url>
             <snapshots>
                 <enabled>true</enabled>
