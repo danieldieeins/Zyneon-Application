@@ -44,15 +44,13 @@ public class Application {
     public static String lastInstance;
     public static ArrayList<String> args;
 
-    public static String ui;
     public static final Runner runner = new Runner();
     public static ArrayList<String> running = new ArrayList<>();
 
     public Application(ArrayList<String> arguments) {
         args = arguments;
-        if(args.size()>1) {
-            Application.ui = arguments.get(0);
-            version = arguments.get(1);
+        if(!args.isEmpty()) {
+            version = arguments.getFirst();
         } else {
             throw new RuntimeException("Missing arguments");
         }
@@ -252,11 +250,15 @@ public class Application {
         return getStartURL();
     }
 
+    public static String getURLBase() {
+        return Main.getDirectoryPath()+"temp/ui/";
+    }
+
     public static String getNewsURL() {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/start.html";
         } else {
-            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + "start.html";
+            return Main.getDirectoryPath()+"temp/ui/start.html";
         }
     }
 
@@ -264,7 +266,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/instances.html";
         } else {
-            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + "instances.html";
+            return Main.getDirectoryPath()+"temp/ui/instances.html";
         }
     }
 
@@ -272,7 +274,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/settings.html";
         } else {
-            return "file://" + Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + "settings.html";
+            return Main.getDirectoryPath()+"temp/ui/settings.html";
         }
     }
 

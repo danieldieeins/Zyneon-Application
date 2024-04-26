@@ -2,7 +2,6 @@ package com.zyneonstudios.application.integrations;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
 import com.zyneonstudios.nexus.instance.ReadableZynstance;
 
@@ -69,7 +68,7 @@ public class Integrator {
                     if (instance.getThumbnailUrl() != null) {
                         icon = instance.getThumbnailUrl();
                     } else {
-                        icon = Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/assets/zyneon/images/instances/default.png";
+                        icon = Application.getURLBase()+"assets/zyneon/images/instances/default.png";
                     }
                     addItemCard(icon, instance.getName(), instance.getAuthor(), instance.getDescription(), id, id, "zyneon");
                 }
@@ -86,7 +85,7 @@ public class Integrator {
                     if (instance.getThumbnailUrl() != null) {
                         icon = instance.getThumbnailUrl();
                     } else {
-                        icon = Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/assets/zyneon/images/instances/default.png";
+                        icon = Application.getURLBase()+ "assets/zyneon/images/instances/default.png";
                     }
                     addItemCard(icon, instance.getName(), instance.getAuthor(), instance.getDescription(), id, id, "zyndex");
                 }

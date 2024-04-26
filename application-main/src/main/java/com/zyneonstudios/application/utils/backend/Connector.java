@@ -274,7 +274,7 @@ public class Connector {
                     for (JsonElement element : instances) {
                         JsonObject instance = element.getAsJsonObject();
                         String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
-                        if (new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/" + png).exists()) {
+                        if (new File(Application.getURLBase() + png).exists()) {
                             frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
                         } else if (instance.get("icon") != null) {
                             png = instance.get("icon").toString().replace("\"", "");
@@ -376,9 +376,9 @@ public class Connector {
                     } else {
                         mlversion = "No mods";
                     }
-                    File icon = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".png");
-                    File logo = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + "-logo.png");
-                    File background = new File(Main.getDirectoryPath() + "libs/zyneon/" + Application.ui + "/assets/zyneon/images/instances/" + id + ".webp");
+                    File icon = new File(Application.getURLBase() + "assets/zyneon/images/instances/" + id + ".png");
+                    File logo = new File(Application.getURLBase() + "assets/zyneon/images/instances/" + id + "-logo.png");
+                    File background = new File(Application.getURLBase() + "assets/zyneon/images/instances/" + id + ".webp");
                     String icon_ = "";
                     String logo_ = "";
                     String background_ = "";
@@ -908,7 +908,7 @@ public class Connector {
 
     private void resolveCurseForgeRequest(String request) {
         if(request.startsWith("install.modpack.")) {
-            Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/sub/installing.html"));
+            Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Application.getURLBase()+"sub/installing.html"));
             String[] modpack = request.replace("install.modpack.", "").split("\\.", 2);
             int mID = Integer.parseInt(modpack[0]);
             String vID = modpack[1];
@@ -1040,7 +1040,7 @@ public class Connector {
 
     private void resolveModrinthRequest(String request) {
         if(request.startsWith("install.modpack.")) {
-            Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Main.getDirectoryPath()+"libs/zyneon/"+Application.ui+"/sub/installing.html"));
+            Application.getFrame().getBrowser().loadURL(StringUtil.getURLFromFile(Application.getURLBase()+"sub/installing.html"));
             String[] modpack = request.replace("install.modpack.", "").split("\\.", 2);
             String mID = modpack[0];
             String vID = modpack[1];

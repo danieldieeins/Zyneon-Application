@@ -29,17 +29,16 @@ public class Main {
     private static boolean test = false;
 
     public static void main(String[] args) {
+        FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         version = "2024.4.7";
         ArrayList<String> arguments = new ArrayList<>();
-        arguments.add("content");
-        String name = "Dreamfix";
+        String name = "Update";
         architecture = getArchitecture();
         splash = new ZyneonSplash();
         splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
-        logger.log("[MAIN] Updated user interface: "+update(arguments.getFirst()));
-        FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
+        logger.log("[MAIN] Updated user interface: "+update());
         boolean online = false;
         for(String arg:args) {
             arg = arg.toLowerCase();
@@ -66,19 +65,16 @@ public class Main {
         return logger;
     }
 
-    private static boolean update(String ui) {
+    private static boolean update() {
         boolean updated;
         try {
-            if (!new File(getDirectoryPath() + "libs/zyneon/" + ui + "/start.html").exists()) {
-                FileUtil.deleteFolder(new File(getDirectoryPath() + "libs/zyneon/"));
-                logger.log("[MAIN] Deleted old user interface files: " + new File(getDirectoryPath() + "libs/zyneon/").mkdirs());
-                FileUtil.downloadFile("https://github.com/danieldieeins/ZyneonApplicationContent/raw/main/h/" + ui + "/content.zip", getDirectoryPath() + "libs/zyneon/" + ui + ".zip");
-                FileUtil.unzipFile(getDirectoryPath() + "libs/zyneon/" + ui + ".zip", getDirectoryPath() + "libs/zyneon/" + ui);
-                logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath() + "libs/zyneon/" + ui + ".zip").delete());
-                updated = true;
-            } else {
-                updated = false;
-            }
+            FileUtil.deleteFolder(new File(getDirectoryPath() + "libs/zyneon/"));
+            logger.log("[MAIN] Deleted old user interface files: " + new File(getDirectoryPath() + "libs/zyneon/").mkdirs());
+            logger.log("[MAIN] Created new user interface extraction folder: " + new File(getDirectoryPath() + "temp/ui/").mkdirs());
+            FileUtil.extractResourceFile("ui.zip",getDirectoryPath()+"temp/ui.zip",Main.class);
+            FileUtil.unzipFile(getDirectoryPath()+"temp/ui.zip", getDirectoryPath() + "temp/ui");
+            logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath()+"temp/ui.zip").delete());
+            updated = true;
         } catch (Exception e) {
             logger.error("[MAIN] Couldn't update application user interface: "+e.getMessage());
             updated = false;
