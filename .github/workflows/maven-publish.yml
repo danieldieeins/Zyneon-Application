@@ -38,10 +38,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-        mvn -B package --file pom.xml --settings ${{ github.workspace }}/settings.xml
-        mv application-main/target/application-main-${VERSION}.jar target/application-experimental.jar
+        mvn clean package --settings ${{ github.workspace }}/settings.xml
 
     - name: Archive artifacts
+      run: mv application-main/target/application-main-${VERSION}.jar target/application-experimental.jar
       uses: actions/upload-artifact@v2
       with:
         name: application-experimental
