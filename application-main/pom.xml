@@ -22,6 +22,9 @@
         <repository>
             <id>zyneon</id>
             <url>https://maven.pkg.github.com/zyneonstudios/zyneon-maven</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
