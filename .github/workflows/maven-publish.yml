@@ -67,6 +67,6 @@ jobs:
         with:
           files: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
           tag_name: v${{ steps.extract_version.outputs.version }}
-          release_name: Release ${{ steps.extract_version.outputs.version }}
+          release_name: ${{ steps.extract_version.outputs.version }}
           body: |
             Release ${{ steps.extract_version.outputs.version }}
