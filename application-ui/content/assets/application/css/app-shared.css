@@ -43,3 +43,9 @@
 li:hover {
     animation: wiggle 2.5s infinite;
 }
+
+.cnt {
+    width: 100%;
+    padding: 1rem;
+    position: relative;
+}

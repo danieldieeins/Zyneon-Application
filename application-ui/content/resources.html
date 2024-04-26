@@ -17,50 +17,53 @@
     </head>
     <body>
         <div class="flex full">
-            <div class="side-menu" id="menu">
-                <div class="menu-title">
-                    <img alt="The logo of the Zyneon NEXUS App" src="assets/cronos/images/icons/app.png">
-                    <p>
-                        Zyneon Studios<br>
-                        <span class="bold">NEXUS Application</span>
-                    </p>
+            <div class="flex">
+                <div class="side-menu" id="menu">
+                    <div class="menu-title">
+                        <img alt="The logo of the Zyneon NEXUS App" src="assets/cronos/images/icons/app.png">
+                        <p>
+                            Zyneon Studios<br>
+                            <span class="bold">NEXUS Application</span>
+                        </p>
+                    </div>
+                    <ul>
+                        <li onclick="toggleMainMenu();">
+                            <i class='bx bx-menu'></i>
+                            <p>Toggle Menu</p>
+                        </li>
+                        <li onclick="window.location.href = 'start.html';">
+                            <i class='bx bxs-home'></i>
+                            <p>Home & news</p>
+                        </li>
+                        <li onclick="window.location.href = 'instances.html';">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <p>Instances</p>
+                        </li>
+                        <li class="highlighted">
+                            <i class='bx bxs-store'></i>
+                            <p>Resources</p>
+                        </li>
+                        <li onclick="window.location.href = 'settings.html';">
+                            <i class='bx bxs-cog'></i>
+                            <p>Settings</p>
+                        </li>
+                    </ul>
+                    <div class="menu-panel">
+                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="activateMenu('menu');" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                        <p>
+                            <span class="bold">Synchronizing...</span>
+                            <br>Unknown user
+                        </p>
+                    </div>
                 </div>
-                <ul>
-                    <li onclick="toggleMainMenu();">
-                        <i class='bx bx-menu'></i>
-                        <p>Toggle Menu</p>
-                    </li>
-                    <li onclick="window.location.href = 'start.html';">
-                        <i class='bx bxs-home'></i>
-                        <p>Home & news</p>
-                    </li>
-                    <li onclick="window.location.href = 'instances.html';">
-                        <i class='bx bxs-objects-horizontal-left'></i>
-                        <p>Instances</p>
-                    </li>
-                    <li class="highlighted">
-                        <i class='bx bxs-store'></i>
-                        <p>Resources</p>
-                    </li>
-                    <li onclick="window.location.href = 'settings.html';">
-                        <i class='bx bxs-cog'></i>
-                        <p>Settings</p>
-                    </li>
-                </ul>
-                <div class="menu-panel">
-                    <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="activateMenu('menu');" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
-                    <p>
-                        <span class="bold">Synchronizing...</span>
-                        <br>Unknown user
-                    </p>
-                </div>
-            </div>
-            <div class="main">
                 <div class="side-menu submenu" id="submenu">
                     <ul>
+
                     </ul>
-                </div>
-                <script>initMainMenu();</script>
+                </div><script>initMainMenu();</script>
+            </div>
+            <div class="cnt">
+
             </div>
         </div>
     </body>
