@@ -39,10 +39,10 @@ jobs:
       run: |
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         mvn -B package --file pom.xml --settings ${{ github.workspace }}/settings.xml
-        mv target/application-updater-${VERSION}-shaded.jar target/application-main.jar
+        mv target/application-main-${VERSION}.jar target/application-experimental.jar
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: application-main
-        path: target/application-main.jar
+        name: application-experimental
+        path: target/application-experimental.jar
