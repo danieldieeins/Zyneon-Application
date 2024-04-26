@@ -36,4 +36,13 @@ jobs:
     - name: Build with Maven
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn -B package --file pom.xml --settings ${{ github.workspace }}/settings.xml
+      run: |
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        mvn -B package --file pom.xml --settings ${{ github.workspace }}/settings.xml
+        mv target/application-updater-${VERSION}-shaded.jar target/application-main.jar
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: application-main
+        path: target/application-main.jar
