@@ -184,7 +184,9 @@ function syncSettings(id,ram,name,version,description,minecraft,modloader,mlvers
     document.getElementById("memory-int").style.display = "inline";
     document.getElementById("settings-save").onclick = function () { updateInstance(id); };
     document.getElementById("content").onclick = function () {
-        if(modloader==="Fabric") {
+        if(modloader==="Quilt") {
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge&i="+id);
+        } else if(modloader==="Fabric") {
             link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge&i="+id);
         } else if(modloader==="Forge") {
             link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=fabric&i="+id);
