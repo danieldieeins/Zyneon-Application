@@ -49,6 +49,18 @@ jobs:
           name: application-experimental
           path: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
 
+      - name: Create Tag
+        if: success() && github.event_name == 'push' && github.ref_type == 'tag'
+        run: git tag -a v${{ steps.extract_version.outputs.version }} -m "Release version v${{ steps.extract_version.outputs.version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Tag
+        if: success() && github.event_name == 'push' && github.ref_type == 'tag'
+        run: git push origin v${{ steps.extract_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: success()
