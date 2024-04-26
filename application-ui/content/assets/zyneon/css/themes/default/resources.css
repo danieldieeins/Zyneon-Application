@@ -19,7 +19,7 @@ select {
     box-shadow: none;
 }
 
-#quilt-button {
+#quilt-button, #neoforge-button {
     display: none;
 }
 

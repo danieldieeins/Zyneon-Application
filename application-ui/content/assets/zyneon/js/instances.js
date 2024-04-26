@@ -185,11 +185,13 @@ function syncSettings(id,ram,name,version,description,minecraft,modloader,mlvers
     document.getElementById("settings-save").onclick = function () { updateInstance(id); };
     document.getElementById("content").onclick = function () {
         if(modloader==="Quilt") {
-            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge&i="+id);
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge,neoforge&i="+id);
+        } else if(modloader==="NeoForge") {
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=fabric,quilt&i="+id);
         } else if(modloader==="Fabric") {
-            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge&i="+id);
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=forge,quilt,neoforge&i="+id);
         } else if(modloader==="Forge") {
-            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=fabric&i="+id);
+            link("resources.html?s=modrinth&t="+modloader.toLowerCase()+"&v="+minecraft+"&d=fabric,neoforge,quilt&i="+id);
         } else {
             showSettings();
         }

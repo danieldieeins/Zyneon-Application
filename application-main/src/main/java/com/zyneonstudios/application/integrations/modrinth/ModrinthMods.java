@@ -12,7 +12,8 @@ public class ModrinthMods {
             return search(query,modLoader,offset,limit);
         }
         try {
-            String search = "https://api.modrinth.com/v2/search?query="+query.toLowerCase()+"&facets=[[%22categories:"+modLoader.toString().toLowerCase()+"%22],[%22versions:"+version+"%22],[%22project_type:mod%22]]&offset="+offset+"&limit="+limit;
+            String modloader = modLoader.toString().toLowerCase().replace("_","");
+            String search = "https://api.modrinth.com/v2/search?query="+query.toLowerCase()+"&facets=[[%22categories:"+modloader+"%22],[%22versions:"+version+"%22],[%22project_type:mod%22]]&offset="+offset+"&limit="+limit;
             return GsonUtil.getObject(search);
         } catch (Exception e) {
             Main.getLogger().error("[MODRINTH] (MODS) Couldn't complete search: "+e.getMessage());
@@ -22,7 +23,8 @@ public class ModrinthMods {
 
     public static JsonObject search(String query, NoFramework.ModLoader modLoader, int offset, int limit) {
         try {
-            String search = "https://api.modrinth.com/v2/search?query="+query.toLowerCase()+"&facets=[[%22categories:"+modLoader.toString().toLowerCase()+"%22],[%22project_type:mod%22]]&offset="+offset+"&limit="+limit;
+            String modloader = modLoader.toString().toLowerCase().replace("_","");
+            String search = "https://api.modrinth.com/v2/search?query="+query.toLowerCase()+"&facets=[[%22categories:"+modloader+"%22],[%22project_type:mod%22]]&offset="+offset+"&limit="+limit;
             return GsonUtil.getObject(search);
         } catch (Exception e) {
             Main.getLogger().error("[MODRINTH] (MODS) Couldn't complete search: "+e.getMessage());
