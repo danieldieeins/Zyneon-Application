@@ -46,3 +46,14 @@ jobs:
       with:
         name: application-experimental
         path: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: success() && github.event_name == 'push' && github.ref_type == 'tag'
+      with:
+        files: /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Release ${{ github.ref }}
+        prerelease: true
