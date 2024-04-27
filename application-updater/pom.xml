@@ -19,9 +19,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version>
+            <groupId>com.zyneonstudios</groupId>
+            <artifactId>nexus-smblib</artifactId>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -35,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.zyneonstudios.Updater</mainClass>
+                            <mainClass>com.zyneonstudios.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -62,7 +62,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.zyneonstudios.Updater</mainClass>
+                                    <mainClass>com.zyneonstudios.Launcher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

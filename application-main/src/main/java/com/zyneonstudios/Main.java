@@ -68,7 +68,7 @@ public class Main {
     private static boolean update() {
         boolean updated;
         try {
-            FileUtil.deleteFolder(new File(getDirectoryPath() + "libs/zyneon/"));
+            new File(getDirectoryPath() + "libs/zyneon/instances.json").delete();
             logger.log("[MAIN] Deleted old user interface files: " + new File(getDirectoryPath() + "libs/zyneon/").mkdirs());
             logger.log("[MAIN] Created new user interface extraction folder: " + new File(getDirectoryPath() + "temp/ui/").mkdirs());
             FileUtil.extractResourceFile("ui.zip",getDirectoryPath()+"temp/ui.zip",Main.class);
