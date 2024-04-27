@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.frame;
 
+import com.zyneonstudios.Main;
 import live.nerotv.shademebaby.frame.WebFrame;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
@@ -38,7 +39,7 @@ public class ApplicationFrame extends WebFrame {
     }
 
     public void setTitle(String title, Color background, Color foreground) {
-        setTitle(title);
+        setTitle("Zyneon Application ("+title+", "+Main.getOS()+")");
         setTitleBackground(background);
         setTitleForeground(foreground);
     }

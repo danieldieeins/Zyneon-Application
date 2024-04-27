@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-zyndex</artifactId>
-            <version>2024.4.3.1</version>
+            <version>2024.4.3.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
