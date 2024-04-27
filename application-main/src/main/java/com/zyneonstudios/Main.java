@@ -29,13 +29,13 @@ public class Main {
     private static boolean test = false;
 
     public static void main(String[] args) {
+        splash = new ZyneonSplash();
+        splash.setVisible(true);
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         version = "2024.4.7";
         ArrayList<String> arguments = new ArrayList<>();
         String name = "";
         architecture = getArchitecture();
-        splash = new ZyneonSplash();
-        splash.setVisible(true);
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
         logger.log("[MAIN] Updated user interface: "+update());
