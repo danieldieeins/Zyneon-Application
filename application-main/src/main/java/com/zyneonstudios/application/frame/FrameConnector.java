@@ -1,5 +1,7 @@
 package com.zyneonstudios.application.frame;
 
+import com.zyneonstudios.Main;
+
 import java.awt.*;
 
 public class FrameConnector {

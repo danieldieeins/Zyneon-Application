@@ -1,0 +1,76 @@
+#library-entry {
+    display: none !important;
+}
+
+#java-point {
+    display: none;
+}
+
+#library-overview {
+    position: relative;
+    padding-top: 4.5rem;
+}
+
+#library-overview .bar {
+    width: calc(100% - 26rem);
+    top: 1rem;
+}
+
+.instance-card {
+    position: relative;
+    width: calc(100%) !important;
+    padding: 0;
+}
+
+.instance-card .flex {
+    padding: 1rem;
+}
+
+.instance-card .flex img {
+    padding-top: 0.4rem;
+    height: 9rem;
+    width: 9rem;
+}
+
+.instance-card .flex .library-instance-details {
+    padding-left: 1rem;
+}
+
+.instance-card .instance-card-panel {
+    border-bottom-left-radius: 0.9rem;
+    border-bottom-right-radius: 0.9rem;
+    padding: 0.5rem;
+    color: var(--foreground2);
+    background: var(--background6);
+    margin: 0 !important;
+    display: none;
+}
+
+.instance-card:hover .instance-card-panel {
+    background: var(--background5);
+    color: var(--foreground);
+    transition: all 0.5s !important;
+    display: block;
+}
+
+.cnt * {
+    transition: none !important;
+}
+
+.cnt *:hover {
+    transition: all 0.5s !important;
+}
+
+#library-overview .bar i {
+    font-size: 1.5rem;
+}
+
+#library-overview .bar input {
+    height: 1.45rem;
+    margin-left: 0.5rem;
+    padding: 0 0 0 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    background: var(--background2);
+    color: var(--highlight);
+}

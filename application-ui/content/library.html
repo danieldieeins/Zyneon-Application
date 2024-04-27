@@ -3,12 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Zyneon Studios • NEXUS Application • Resources</title>
+        <title>Zyneon Studios • NEXUS Application • Library</title>
         <link rel="stylesheet" href="assets/cronos/css/app-base.css">
         <link rel="stylesheet" id="css-colors" href="assets/cronos/css/app-colors-dark.css">
         <link rel="stylesheet" id="css-menu" href="assets/cronos/css/app-menu-side.css">
         <link rel="stylesheet" id="css-card" href="assets/cronos/css/app-cards.css">
         <link rel="stylesheet" id="css-shared" href="assets/application/css/app-shared.css">
+        <link rel="stylesheet" id="css-site" href="assets/application/css/app-library.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="assets/cronos/javascript/app-base.js"></script>
         <script src="assets/cronos/javascript/app-menu.js"></script>
@@ -35,13 +36,13 @@
                             <i class='bx bxs-home'></i>
                             <p>Home & news</p>
                         </li>
-                        <li onclick="window.location.href = 'instances.html';">
-                            <i class='bx bxs-objects-horizontal-left'></i>
-                            <p>Instances</p>
-                        </li>
                         <li class="highlighted">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <p>Library</p>
+                        </li>
+                        <li onclick="window.location.href = 'discover.html';">
                             <i class='bx bxs-store'></i>
-                            <p>Resources</p>
+                            <p>Discover</p>
                         </li>
                         <li onclick="window.location.href = 'settings.html';">
                             <i class='bx bxs-cog'></i>
@@ -58,12 +59,45 @@
                 </div>
                 <div class="side-menu submenu" id="submenu">
                     <ul>
-
+                        <li onclick="" class="action">
+                            <i class='bx bxs-dashboard'></i>
+                            <p>Overview</p>
+                        </li>
+                        <li onclick="" class="action">
+                            <i class='bx bx-plus'></i>
+                            <p>Add instance</p>
+                        </li>
+                        <li onclick="connector('sync.library')" class="action">
+                            <i class='bx bx-refresh'></i>
+                            <p>Refresh library</p>
+                        </li>
+                        <li class="title">
+                            <p>Minecraft: Java Edition</p>
+                        </li>
+                        <li id="java-point"></li>
+                        <li id="library-entry">
+                            <i class='bx bx-loader-alt bx-flip-horizontal bx-spin'></i>
+                            <img alt="instance icon" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                            <p>Loading instance...</p>
+                        </li>
                     </ul>
                 </div><script>initMainMenu();</script>
             </div>
             <div class="cnt">
-
+                <div id="library-overview">
+                    <div class="card fixed flex bar">
+                        <i class='bx bx-search-alt'></i>
+                        <label><input type="text" placeholder="Search"></label>
+                    </div>
+                    <div class="card instance-card">
+                        <div class="flex">
+                            <img alt="instance icon" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                            <div class="library-instance-details">
+                                <h2>Loading instance</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

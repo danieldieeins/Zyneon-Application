@@ -121,18 +121,16 @@ ul li.title {
     position: relative !important;
     background: none !important;
     box-shadow: none !important;
-    text-align: center !important;
     width: 100% !important;
     cursor: unset !important;
     display: none !important;
 }
 
 .side-menu.active ul li.title {
-    display: block;
+    display: block !important;
 }
 
 ul li.title p {
-    text-align: center !important;
     width: 100% !important;
     position: absolute !important;
     font-family: MPLUS1p-Thin, serif;
@@ -186,7 +184,7 @@ ul li.title p {
 }
 
 .submenu.inactive {
-    width: 5rem !important;
+    width: 4rem !important;
 }
 
 .submenu.active {
@@ -195,9 +193,13 @@ ul li.title p {
 
 .submenu ul {
     margin: 0 0 0 0 !important;
-    padding: 1rem 2rem 1rem 1rem !important;
+    padding: 1rem 0.5rem 0.5rem 0.5rem !important;
     max-height: calc(100% - 1rem) !important;
     background: none !important;
+}
+
+.submenu.active ul {
+    padding: 1rem 2rem 1rem 1rem !important;
 }
 
 .submenu ul li {
@@ -206,4 +208,14 @@ ul li.title p {
 
 .submenu, .side-menu p {
     font-weight: 600;
+}
+
+ul li img {
+    padding: 0.25rem !important;
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+}
+
+ul li {
+    white-space: nowrap;
 }

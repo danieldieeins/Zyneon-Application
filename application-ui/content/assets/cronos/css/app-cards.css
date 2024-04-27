@@ -1,6 +1,6 @@
 .card, .cards * {
     position: relative;
-    border: 1px var(--border) solid;
+    border: 2px var(--border) solid;
     width: fit-content;
     height: fit-content;
 
@@ -13,7 +13,7 @@
 }
 
 .card:hover, .cards *:hover {
-    border: 1px var(--border2) solid;
+    border: 2px var(--border2) solid;
     background: var(--background3);
 }
 
