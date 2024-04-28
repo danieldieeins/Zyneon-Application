@@ -26,11 +26,21 @@ public class ApplicationLauncher {
     public ApplicationLauncher(String[] args) {
         Launcher.getLogger().log("[UPDATER] Checking defaults...");
         config.checkEntry("updater.installed.info.version","0");
+        config.checkEntry("updater.installed.info.channel","null");
         version = config.getString("updater.installed.info.version");
         config.checkEntry("updater.settings.autoUpdate",true);
         config.checkEntry("updater.settings.updateChannel","stable");
-        autoUpdate = config.getBoolean("updater.settings.autoUpdate");
-        updateChannel = config.getString("updater.settings.updateChannel");
+        boolean au = config.getBoolean("updater.settings.autoUpdate");
+        String uc = config.getString("updater.settings.updateChannel");
+        for(String arg:args) {
+            if(arg.startsWith("--channel:")) {
+                uc = arg.replace("--channel:", "");
+            } else if(arg.equalsIgnoreCase("--update")) {
+                au = true;
+            }
+        }
+        autoUpdate = au;
+        updateChannel = uc;
     }
 
     public String getVersion() {
@@ -56,22 +66,24 @@ public class ApplicationLauncher {
     private boolean validate() {
         Launcher.getLogger().log("[UPDATER] Validating installed version...");
         File folder = new File(libraries+"versions/");
-        if(!folder.mkdirs()) {
-            if(folder.exists()) {
-                if(folder.isDirectory()) {
-                    Launcher.getLogger().log("[UPDATER] Found versions folder...");
-                    for(File versions: Objects.requireNonNull(folder.listFiles())) {
-                        if(versions.isDirectory()) {
-                            if(Objects.requireNonNull(versions.listFiles()).length <= 3) {
-                                for (File jar : Objects.requireNonNull(versions.listFiles())) {
-                                    Launcher.getLogger().log("[UPDATER] Found "+jar.getName());
-                                    if (jar.getName().contains("nexus-" + version + ".jar")) {
-                                        Launcher.getLogger().log("[UPDATER] Successfully validated installed version "+version+"!");
-                                        return true;
+        if(updateChannel.equals(config.getString("updater.installed.info.channel"))) {
+            if (!folder.mkdirs()) {
+                if (folder.exists()) {
+                    if (folder.isDirectory()) {
+                        Launcher.getLogger().log("[UPDATER] Found versions folder...");
+                        for (File versions : Objects.requireNonNull(folder.listFiles())) {
+                            if (versions.isDirectory()) {
+                                if (Objects.requireNonNull(versions.listFiles()).length <= 3) {
+                                    for (File jar : Objects.requireNonNull(versions.listFiles())) {
+                                        Launcher.getLogger().log("[UPDATER] Found " + jar.getName());
+                                        if (jar.getName().contains("nexus-" + version + ".jar")) {
+                                            Launcher.getLogger().log("[UPDATER] Successfully validated installed version " + version + "!");
+                                            return true;
+                                        }
                                     }
+                                } else {
+                                    Launcher.getLogger().error("[UPDATER] Too many versions!");
                                 }
-                            } else {
-                                Launcher.getLogger().error("[UPDATER] Too many versions!");
                             }
                         }
                     }
@@ -111,6 +123,7 @@ public class ApplicationLauncher {
                     if(app != null) {
                         this.version = newVersion;
                         config.set("updater.installed.info.version", this.version);
+                        config.set("updater.installed.info.channel", this.updateChannel);
                         return true;
                     } else {
                         Launcher.getLogger().error("[UPDATER] Couldn't download new version!");
