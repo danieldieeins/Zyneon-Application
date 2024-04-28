@@ -251,14 +251,14 @@ public class Application {
     }
 
     public static String getURLBase() {
-        return Main.getDirectoryPath()+"temp/ui/";
+        return "file://"+Main.getDirectoryPath()+"temp/ui/";
     }
 
     public static String getNewsURL() {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/start.html";
         } else {
-            return Main.getDirectoryPath()+"temp/ui/start.html";
+            return getURLBase()+"start.html";
         }
     }
 
@@ -266,7 +266,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/instances.html";
         } else {
-            return Main.getDirectoryPath()+"temp/ui/instances.html";
+            return getURLBase()+"instances.html";
         }
     }
 
@@ -274,7 +274,7 @@ public class Application {
         if(online) {
             return "https://danieldieeins.github.io/Zyneon-Application/content/settings.html";
         } else {
-            return Main.getDirectoryPath()+"temp/ui/settings.html";
+            return getURLBase()+"settings.html";
         }
     }
 
