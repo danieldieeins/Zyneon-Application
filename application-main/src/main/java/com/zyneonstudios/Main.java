@@ -12,12 +12,13 @@ import java.util.ArrayList;
 
 public class Main {
 
+    private static String[] args;
     private static String applicationPath = null;
-    private static Config config;
-    private static NexusApplication application;
     private static String os;
 
-    private static String[] args;
+    private static NexusApplication application;
+    private static Config config;
+    private static Config updaterConfig;
 
     public static void main(String[] args) {
         Main.args = args;
@@ -27,6 +28,7 @@ public class Main {
             }
         }
         config = new Config(getApplicationPath()+"config/settings.json");
+        updaterConfig = new Config(getApplicationPath()+"libs/zyneon/updater.json");
         getApplication().launch();
     }
 
@@ -39,6 +41,10 @@ public class Main {
 
     public static Config getConfig() {
         return config;
+    }
+
+    public static Config getUpdaterConfig() {
+        return updaterConfig;
     }
 
     public static String getApplicationPath() {

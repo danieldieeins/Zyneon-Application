@@ -9,10 +9,12 @@
         <link rel="stylesheet" id="css-menu" href="assets/cronos/css/app-menu-side.css">
         <link rel="stylesheet" id="css-card" href="assets/cronos/css/app-cards.css">
         <link rel="stylesheet" id="css-shared" href="assets/application/css/app-shared.css">
+        <link rel="stylesheet" id="css-site" href="assets/application/css/app-settings.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="assets/cronos/javascript/app-base.js"></script>
         <script src="assets/cronos/javascript/app-menu.js"></script>
         <script src="assets/application/javascript/app-shared.js"></script>
+        <script src="assets/application/javascript/app-settings.js"></script>
         <script>console.log("[CONNECTOR] sync.desktop"); init();</script>
     </head>
     <body>
@@ -84,10 +86,6 @@
                         <li class="title">
                             <p>Actions</p>
                         </li>
-                        <li onclick="changeThemeColors();" class="action">
-                            <i class='bx bxs-star-half'></i>
-                            <p>Change theme</p>
-                        </li>
                         <li onclick="window.location.href = 'start.html';" class="action">
                             <i class='bx bx-refresh hover-rotate'></i>
                             <p>Reload application</p>
@@ -100,8 +98,80 @@
                 </div><script>initMainMenu();</script>
             </div>
             <div class="cnt">
-                <div class="card">
-                    <h1>Settings</h1>
+                <div id="general-settings">
+                    <div class="card">
+                        <h2>General settings</h2>
+                        <h3>
+                            Start tab
+                            <span class="input">
+                                <label>
+                                    <select id="general-settings-starttab">
+                                        <option value="shervann">Home</option>
+                                        <option value="stable">Library</option>
+                                    </select>
+                                </label>
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="card">
+                        <h2>Update settings</h2>
+                        <h3>
+                            Enable automatic updates
+                            <span class="input" onclick="toggleUpdates();">
+                                <label>
+                                    <input id="general-updater-enable" type="checkbox">
+                                    <script>
+                                        document.getElementById('general-updater-enable').addEventListener('click', function(event) {
+                                            event.preventDefault();
+                                        });
+                                    </script>
+                                </label>
+                            </span>
+                        </h3>
+                        <h3>
+                            Update channel
+                            <span class="input">
+                                <label>
+                                    <select id="general-updater-channel">
+                                        <option disabled>Select an update channel</option>
+                                        <option value="shervann">Shervann (current)</option>
+                                        <option value="stable">Stable (recommended)</option>
+                                        <option value="experimental">Experimental (unstable)</option>
+                                    </select>
+                                </label>
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="card">
+                        <h2>Appearance settings</h2>
+                        <h3>
+                            Theme
+                            <span class="input">
+                                <label>
+                                    <select id="general-appearance-theme">
+                                        <option disabled>Select a theme</option>
+                                        <option value="default.auto" disabled>Default (Automatic)</option>
+                                        <option value="default.light">Default (Light)</option>
+                                        <option value="default.dark">Default (Dark)</option>
+                                        <option value="default.zyneon">Default (Zyneon)</option>
+                                        <option value="custom.disabled" disabled>Use custom design</option>
+                                    </select>
+                                </label>
+                            </span>
+                        </h3>
+                        <h3>
+                            Language
+                            <span class="input">
+                                <label>
+                                    <select id="general-appearance-language">
+                                        <option disabled>Select a language</option>
+                                        <option value="en-US">en-US (locked)</option>
+                                        <option value="de-DE" disabled>de-DE</option>
+                                    </select>
+                                </label>
+                            </span>
+                        </h3>
+                    </div>
                 </div>
             </div>
         </div>

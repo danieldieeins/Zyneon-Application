@@ -1,0 +1,77 @@
+.card {
+    width: calc(100% - 2rem);
+    margin-bottom: 1rem;
+}
+
+* {
+    transition: none !important;
+}
+
+*:hover {
+    transition: all 0.35s ease !important;
+}
+
+.card h3 {
+    position: relative !important;
+    font-family: MPLUS1p-Thin, serif;
+    padding: 0.25rem 0.5rem 0.5rem 0.75rem;
+    margin: 0.5rem 0 0.25rem 0;
+    border-radius: 1rem;
+    border: 2px var(--border) solid !important;
+    background: var(--background);
+}
+
+.card h3:hover {
+    background: var(--background2);
+}
+
+.card h3 .input {
+    border-radius: calc(1rem - 2px);
+    background: linear-gradient(90deg,var(--background2));
+    padding: 0.38rem 2rem;
+    position: absolute;
+    right: 0; top: 0;
+}
+
+.card h3 .input select {
+    font-weight: 1;
+    color: var(--foreground2);
+    background: var(--background);
+    position: absolute;
+    right: 0; top: 0;
+    font-size: inherit;
+    border-radius: calc(1rem - 2px);
+    padding: 0.52rem 0 0.52rem 0.52rem;
+}
+
+.card h3:hover .input select {
+    background: linear-gradient(90deg,var(--background2));
+}
+
+.card h3:hover .input select:hover {
+    cursor: pointer;
+    background: linear-gradient(90deg,var(--background2),var(--background3),var(--background3));
+}
+
+.card h3:hover .input {
+    background: linear-gradient(90deg,var(--background2));
+}
+
+.card h3:hover .input:hover {
+    cursor: pointer;
+    background: linear-gradient(90deg,var(--background2),var(--background3),var(--background3));
+}
+
+.input input {
+    cursor: pointer;
+}
+
+.input select option {
+    text-align: left;
+    background: var(--background);
+}
+
+.input select option:checked {
+    text-align: right;
+    background: var(--background);
+}

@@ -13,14 +13,26 @@ import static com.zyneonstudios.Main.getApplicationPath;
 public class NexusApplication{
 
     private final ApplicationFrame frame;
+    private String urlBase = null;
 
     public NexusApplication(String[] args) {
-        update();
+        resolveArgs(args); update();
         try {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
-        frame = new ApplicationFrame("file://"+getApplicationPath()+"temp/ui/start.html", getApplicationPath()+"libs/jcef/");
+        if(urlBase==null) {
+            urlBase = "file://"+getApplicationPath()+"temp/ui/";
+        }
+        frame = new ApplicationFrame(urlBase+"start.html", getApplicationPath()+"libs/jcef/");
+    }
+
+    private void resolveArgs(String[] args) {
+        for(String arg:args) {
+            if(arg.startsWith("--ui:")) {
+                urlBase = arg.replace("--ui:", "");
+            }
+        }
     }
 
     private static boolean update() {

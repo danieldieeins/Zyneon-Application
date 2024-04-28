@@ -42,6 +42,13 @@ public class FrameConnector {
             }
             String title = request_[1];
             frame.setTitle(title,background,foreground);
+        } else if(request.startsWith("autoUpdates.")) {
+            request = request.replace("autoUpdates.","");
+
+            boolean update = request.equals("on");
+            Main.getUpdaterConfig().set("updater.settings.autoUpdate",update);
+
+            frame.executeJavaScript("document.getElementById('general-updater-enable').checked = "+update+";");
         }
     }
 }
