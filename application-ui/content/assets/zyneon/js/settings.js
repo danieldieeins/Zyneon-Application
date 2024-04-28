@@ -149,8 +149,10 @@ function syncGeneral(start,channel) {
         channel = "stable";
     }
 
-    document.getElementById("channel").value = channel;
-    document.getElementById("updater-settings").style.display = "inherit";
+    if(channel!=="old") {
+        document.getElementById("channel").value = channel;
+        document.getElementById("updater-settings").style.display = "inherit";
+    }
 }
 
 function syncGlobal(memory,instance_path,log) {
