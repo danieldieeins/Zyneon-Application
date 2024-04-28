@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>application-updater</artifactId>
+    <version>2024.4.7</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
