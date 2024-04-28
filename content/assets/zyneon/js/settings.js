@@ -132,7 +132,7 @@ function syncApp(ver) {
     document.getElementById("startTitle").style.display = "inherit";
 }
 
-function syncGeneral(start) {
+function syncGeneral(start,channel) {
     const news = document.getElementById("general-tab-start");
     const instances = document.getElementById("general-tab-instances");
     if(start==="start") {
@@ -144,6 +144,13 @@ function syncGeneral(start) {
     }
     document.getElementById("settings_general").style.display = "inherit";
     document.getElementById("title_general").innerText = "Settings > General";
+
+    if(channel===undefined) {
+        channel = "stable";
+    }
+
+    document.getElementById("channel").value = channel;
+    document.getElementById("updater-settings").style.display = "inherit";
 }
 
 function syncGlobal(memory,instance_path,log) {

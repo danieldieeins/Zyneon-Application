@@ -175,6 +175,22 @@
                         <a class="button" id="general-tab-start" onclick="callJavaMethod('button.starttab.start');">Start</a>
                         <a class="button" id="general-tab-instances" onclick="callJavaMethod('button.starttab.instances');">Instances</a>
                     </h3>
+                    <br>
+                    <div id="updater-settings">
+                        <h3 class="background"><span class="highlight">Updater</span></h3>
+                        <h3>
+                            Update channel:
+                            <label>
+                                <select id="channel" onchange="callJavaMethod('button.updateChannel.'+document.getElementById('channel').value);">
+                                    <option value="stable">Stable (recommended)</option>
+                                    <option value="experimental">Experimental (could be unstable)</option>
+                                    <option disabled></option>
+                                    <option value="shervann">Shervann (unstable rewrite)</option>
+                                </select>
+                            </label>
+                        </h3>
+                        <br>
+                    </div>
                     <h3 class="background"><span class="highlight">Appearance</span></h3>
                     <h3>Theme:
                         <a class="button" id="appearance-theme-light" onclick="setTheme('default.light'); link('settings.html');">Light</a>
