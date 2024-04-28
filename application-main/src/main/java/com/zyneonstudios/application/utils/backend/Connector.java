@@ -65,7 +65,7 @@ public class Connector {
                 if (Application.getStartURL().toLowerCase().contains("instances.html")) {
                     tab = "instances";
                 }
-                frame.executeJavaScript("syncGeneral('" + tab + "');");
+                frame.executeJavaScript("syncGeneral('" + tab + "','"+Application.updateChannel+"');");
             }
             case "global" ->
                     frame.executeJavaScript("syncGlobal('" + Application.config.getString("settings.memory.default").replace(".0", "") + " MB','" + Application.getInstancePath() + "','"+Application.logOutput+"')");
@@ -78,7 +78,7 @@ public class Connector {
                 }
                 frame.executeJavaScript("logout();");
             }
-            case "version" -> frame.executeJavaScript("syncApp('" + Application.version + "');");
+            case "version" -> frame.executeJavaScript("syncApp('"+Application.updateChannel+" ▪ "+Application.version+"');");
         }
     }
 
@@ -90,6 +90,9 @@ public class Connector {
             clipboard.setContents(uuid, uuid);
         } else if (request.startsWith("button.notification.remove.")) {
             frame.removeNotification(request.replace("button.notification.remove.",""));
+        } else if (request.startsWith("button.updateChannel.")) {
+            Application.updateChannel = request.replace("button.updateChannel.","");
+            new Config(Main.getDirectoryPath()+"libs/zyneon/updater.json").set("updater.settings.updateChannel",Application.updateChannel);
         } else if (request.equals("button.online")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if(request.equals("sync.notifications")) {

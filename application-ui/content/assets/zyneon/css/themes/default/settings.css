@@ -85,6 +85,20 @@ h3 a.button {
     border-radius: 0.5rem 0 0 0.5rem;
 }
 
+#channel {
+    background: var(--background4);
+    color: var(--color);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    width: fit-content;
+    font-size: 1.1rem;
+}
+
+#updater-settings {
+    display: none;
+}
+
 h3 a.text,h3 a.text-link {
     position: absolute !important;
     left: 17rem !important;

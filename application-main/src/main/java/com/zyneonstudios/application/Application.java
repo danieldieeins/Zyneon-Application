@@ -43,6 +43,7 @@ public class Application {
     public static boolean thirdPartyWarn;
     public static String lastInstance;
     public static ArrayList<String> args;
+    public static String updateChannel = "stable";
 
     public static final Runner runner = new Runner();
     public static ArrayList<String> running = new ArrayList<>();
@@ -69,6 +70,11 @@ public class Application {
     }
 
     private void initConfig() {
+        Config updaterConfig = new Config(new File(Main.getDirectoryPath() + "libs/zyneon/updater.json"));
+        if(updaterConfig.getString("updater.settings.updateChannel")!=null) {
+            updateChannel = updaterConfig.getString("updater.settings.updateChannel");
+        }
+
         config = new Config(new File(Main.getDirectoryPath() + "config.json"));
         config.checkEntry("settings.starttab","start");
         config.checkEntry("settings.language","auto");
