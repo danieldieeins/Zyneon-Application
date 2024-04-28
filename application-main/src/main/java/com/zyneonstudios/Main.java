@@ -71,9 +71,9 @@ public class Main {
             new File(getDirectoryPath() + "libs/zyneon/instances.json").delete();
             logger.log("[MAIN] Deleted old user interface files: " + new File(getDirectoryPath() + "libs/zyneon/").mkdirs());
             logger.log("[MAIN] Created new user interface extraction folder: " + new File(getDirectoryPath() + "temp/ui/").mkdirs());
-            FileUtil.extractResourceFile("ui.zip",getDirectoryPath()+"temp/ui.zip",Main.class);
-            FileUtil.unzipFile(getDirectoryPath()+"temp/ui.zip", getDirectoryPath() + "temp/ui");
-            logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath()+"temp/ui.zip").delete());
+            FileUtil.extractResourceFile("content.zip",getDirectoryPath()+"temp/content.zip",Main.class);
+            FileUtil.unzipFile(getDirectoryPath()+"temp/content.zip", getDirectoryPath() + "temp/ui");
+            logger.log("[MAIN] Deleted user interface archive: " + new File(getDirectoryPath()+"temp/content.zip").delete());
             updated = true;
         } catch (Exception e) {
             logger.error("[MAIN] Couldn't update application user interface: "+e.getMessage());
