@@ -6,10 +6,11 @@
     <parent>
         <groupId>com.zyneonstudios</groupId>
         <artifactId>nexus-application</artifactId>
-        <version>2024.5-alpha.2</version>
+        <version>2024.5-beta.1</version>
     </parent>
 
     <artifactId>application-main</artifactId>
+    <version>2024.5-alpha.3</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

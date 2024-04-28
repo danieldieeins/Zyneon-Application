@@ -19,12 +19,12 @@ public class ApplicationFrame extends WebFrame {
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
-                CompletableFuture.runAsync(()->{
-                    if(message.contains("[CONNECTOR] ")) {
-                        String request = message.replace("[CONNECTOR] ","");
+                if (message.contains("[CONNECTOR] ")) {
+                    CompletableFuture.runAsync(() -> {
+                        String request = message.replace("[CONNECTOR] ", "");
                         connector.resolveRequest(request);
-                    }
-                });
+                    });
+                }
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });

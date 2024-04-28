@@ -24,7 +24,7 @@ public class FrameConnector {
 
     }
 
-    public void sync(String request) {
+    private void sync(String request) {
         frame.executeJavaScript("syncDesktop();");
         if(request.startsWith("title.")) {
             String[] request_ = request.replace("title.","").split("-.-",2);
@@ -42,6 +42,8 @@ public class FrameConnector {
             }
             String title = request_[1];
             frame.setTitle(title,background,foreground);
+        } else if(request.startsWith("settings.")) {
+            syncSettings(request.replaceFirst("settings.",""));
         } else if(request.startsWith("autoUpdates.")) {
             request = request.replace("autoUpdates.","");
 
@@ -54,6 +56,19 @@ public class FrameConnector {
             Main.getUpdaterConfig().set("updater.settings.updateChannel",request);
             System.out.println(Main.getUpdaterConfig().getJsonFile().getAbsolutePath());
             System.out.println(Main.getUpdaterConfig().getString("updater.settings.updateChannel"));
+        }
+    }
+
+    private void syncSettings(String request) {
+        if(request.equals("general")) {
+            String channel = "shervann"; boolean autoUpdate = false;
+            if(Main.getUpdaterConfig().getBoolean("updater.settings.autoUpdate")!=null) {
+                autoUpdate = Main.getUpdaterConfig().getBool("updater.settings.autoUpdate");
+            }
+            if(Main.getUpdaterConfig().getString("updater.settings.updateChannel")!=null) {
+                channel = Main.getUpdaterConfig().getString("updater.settings.updateChannel");
+            }
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('general-updater-enable').checked = updates; document.getElementById('general-updater-channel').value = \""+channel+"\";");
         }
     }
 }
