@@ -18,6 +18,17 @@
     animation: rotate 2.5s linear infinite !important;
 }
 
+li.disabled {
+    background: var(--background4) !important;
+    color: var(--background3) !important;
+}
+
+li.disabled:hover {
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    z-index: 0 !important;
+}
+
 .hover-wiggle:hover {
     animation: wiggle 2.5s infinite !important;
 }

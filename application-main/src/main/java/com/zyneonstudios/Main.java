@@ -43,7 +43,7 @@ public class Main {
 
     public static String getApplicationPath() {
         if (applicationPath == null) {
-            String folderName = "Zyneon/Application";
+            String folderName = "Zyneon/Application/experimental";
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
