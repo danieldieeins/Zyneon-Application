@@ -20,7 +20,7 @@ public class NexusApplication{
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
-        frame = new ApplicationFrame(getApplicationPath()+"temp/ui/start.html", getApplicationPath()+"libs/jcef/");
+        frame = new ApplicationFrame("file://"+getApplicationPath()+"temp/ui/start.html", getApplicationPath()+"libs/jcef/");
     }
 
     private static boolean update() {
