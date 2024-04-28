@@ -9,3 +9,7 @@ function toggleUpdates() {
         connector('sync.autoUpdates.on');
     }
 }
+
+function syncUpdates() {
+    connector('sync.updateChannel.'+document.getElementById('general-updater-channel').value);
+}

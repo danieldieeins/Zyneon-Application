@@ -105,7 +105,7 @@
                             Start tab
                             <span class="input">
                                 <label>
-                                    <select id="general-settings-starttab">
+                                    <select id="general-settings-starttab" disabled>
                                         <option value="shervann">Home</option>
                                         <option value="stable">Library</option>
                                     </select>
@@ -132,7 +132,7 @@
                             Update channel
                             <span class="input">
                                 <label>
-                                    <select id="general-updater-channel">
+                                    <select id="general-updater-channel" onchange="syncUpdates();">
                                         <option disabled>Select an update channel</option>
                                         <option value="shervann">Shervann (current)</option>
                                         <option value="stable">Stable (recommended)</option>
@@ -148,7 +148,7 @@
                             Theme
                             <span class="input">
                                 <label>
-                                    <select id="general-appearance-theme">
+                                    <select id="general-appearance-theme" disabled>
                                         <option disabled>Select a theme</option>
                                         <option value="default.auto" disabled>Default (Automatic)</option>
                                         <option value="default.light">Default (Light)</option>
@@ -163,7 +163,7 @@
                             Language
                             <span class="input">
                                 <label>
-                                    <select id="general-appearance-language">
+                                    <select id="general-appearance-language" disabled>
                                         <option disabled>Select a language</option>
                                         <option value="en-US">en-US (locked)</option>
                                         <option value="de-DE" disabled>de-DE</option>

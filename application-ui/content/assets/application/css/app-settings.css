@@ -49,6 +49,7 @@
 }
 
 .card h3:hover .input select:hover {
+    color: var(--highlight);
     cursor: pointer;
     background: linear-gradient(90deg,var(--background2),var(--background3),var(--background3));
 }

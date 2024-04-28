@@ -22,13 +22,13 @@ public class Main {
 
     public static void main(String[] args) {
         Main.args = args;
+        updaterConfig = new Config(getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
         for(String arg:args) {
             if(arg.startsWith("--path:")) {
                 applicationPath = arg.replace("--path:", "");
             }
         }
         config = new Config(getApplicationPath()+"config/settings.json");
-        updaterConfig = new Config(getApplicationPath()+"libs/zyneon/updater.json");
         getApplication().launch();
     }
 

@@ -49,6 +49,11 @@ public class FrameConnector {
             Main.getUpdaterConfig().set("updater.settings.autoUpdate",update);
 
             frame.executeJavaScript("document.getElementById('general-updater-enable').checked = "+update+";");
+        } else if(request.startsWith("updateChannel.")) {
+            request = request.replace("updateChannel.","");
+            Main.getUpdaterConfig().set("updater.settings.updateChannel",request);
+            System.out.println(Main.getUpdaterConfig().getJsonFile().getAbsolutePath());
+            System.out.println(Main.getUpdaterConfig().getString("updater.settings.updateChannel"));
         }
     }
 }
