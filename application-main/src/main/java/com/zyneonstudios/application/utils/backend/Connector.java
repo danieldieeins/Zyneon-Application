@@ -294,6 +294,9 @@ public class Connector {
         } else if (request.contains("sync.web")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if (request.contains("sync.start")) {
+            if(Application.updateChannel.equalsIgnoreCase("experimental")) {
+                frame.executeJavaScript("document.getElementById('experimental-notice').style.display = 'block';");
+            }
             frame.executeJavaScript("syncStart('app');");
             frame.executeJavaScript("loadNews(true);");
         } else if (request.contains("sync.login")) {
