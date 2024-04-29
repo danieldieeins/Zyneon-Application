@@ -58,123 +58,51 @@
                         </p>
                     </div>
                 </div>
-                <div class="side-menu submenu" id="submenu">
-                    <ul>
-                        <li class="title">
-                            <p>Settings</p>
-                        </li>
-                        <li class="highlighted">
-                            <i class='bx bx-compass'></i>
-                            <p>General settings</p>
-                        </li>
-                        <li>
-                            <i class='bx bx-globe'></i>
-                            <p>Global settings</p>
-                        </li>
-                        <li>
-                            <i class='bx bxs-user-detail'></i>
-                            <p>Profile settings</p>
-                        </li>
-                        <li>
-                            <i class='bx bxs-extension'></i>
-                            <p>Index settings</p>
-                        </li>
-                        <li>
-                            <i class='bx bx-info-circle'></i>
-                            <p>About this app</p>
-                        </li>
-                        <li class="title">
-                            <p>Actions</p>
-                        </li>
-                        <li onclick="window.location.href = 'start.html';" class="action">
-                            <i class='bx bx-refresh hover-rotate'></i>
-                            <p>Reload application</p>
-                        </li>
-                        <li onclick="window.location.href = 'start.html';" class="action danger hover-wiggle-extreme">
-                            <i class='bx bxs-exit'></i>
-                            <p>Exit application</p>
-                        </li>
-                    </ul>
-                </div><script>initMainMenu();</script>
-            </div>
+            </div><script>initMenu('menu');</script>
             <div class="cnt">
-                <div id="general-settings">
-                    <div class="card">
-                        <h2>General settings</h2>
-                        <h3>
-                            Start tab
-                            <span class="input">
-                                <label>
-                                    <select id="general-settings-starttab" disabled>
-                                        <option value="shervann">Home</option>
-                                        <option value="stable">Library</option>
-                                    </select>
-                                </label>
-                            </span>
-                        </h3>
+                <div class="settings">
+                    <div class="flex">
+                        <div class="settings-menu">
+                            <div class="card">
+
+                            </div>
+                        </div>
+                        <div class="settings-content">
+                            <div class="card">
+                                <div class="updater-settings">
+                                    <h2>Updater settings</h2>
+                                    <h3>
+                                        Enable automatic updates
+                                        <span class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
+                                                <script>
+                                                    document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
+                                                        event.preventDefault();
+                                                    });
+                                                </script>
+                                            </label>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Update channel
+                                        <span class="select">
+                                            <label>
+                                                <select id="updater-settings-update-channel" onchange="syncUpdates();">
+                                                    <option value="shervann">Shervann (current, test)</option>
+                                                    <option value="stable">Stable (recommended)</option>
+                                                    <option value="experimental">Experimental (unstable)</option>
+                                                </select>
+                                            </label>
+                                        </span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h2>Update settings</h2>
-                        <h3>
-                            Enable automatic updates
-                            <span class="input" onclick="toggleUpdates();">
-                                <label>
-                                    <input id="general-updater-enable" type="checkbox">
-                                    <script>
-                                        document.getElementById('general-updater-enable').addEventListener('click', function(event) {
-                                            event.preventDefault();
-                                        });
-                                    </script>
-                                </label>
-                            </span>
-                        </h3>
-                        <h3>
-                            Update channel
-                            <span class="input">
-                                <label>
-                                    <select id="general-updater-channel" onchange="syncUpdates();">
-                                        <option disabled>Select an update channel</option>
-                                        <option value="shervann">Shervann (current)</option>
-                                        <option value="stable">Stable (recommended)</option>
-                                        <option value="experimental">Experimental (unstable)</option>
-                                    </select>
-                                </label>
-                            </span>
-                        </h3>
-                    </div>
-                    <div class="card">
-                        <h2>Appearance settings</h2>
-                        <h3>
-                            Theme
-                            <span class="input">
-                                <label>
-                                    <select id="general-appearance-theme" disabled>
-                                        <option disabled>Select a theme</option>
-                                        <option value="default.auto" disabled>Default (Automatic)</option>
-                                        <option value="default.light">Default (Light)</option>
-                                        <option value="default.dark">Default (Dark)</option>
-                                        <option value="default.zyneon">Default (Zyneon)</option>
-                                        <option value="custom.disabled" disabled>Use custom design</option>
-                                    </select>
-                                </label>
-                            </span>
-                        </h3>
-                        <h3>
-                            Language
-                            <span class="input">
-                                <label>
-                                    <select id="general-appearance-language" disabled>
-                                        <option disabled>Select a language</option>
-                                        <option value="en-US">en-US (locked)</option>
-                                        <option value="de-DE" disabled>de-DE</option>
-                                    </select>
-                                </label>
-                            </span>
-                        </h3>
-                    </div>
-                    <script>connector('sync.settings.general')</script>
                 </div>
             </div>
         </div>
     </body>
+    <script>connector('sync.settings.general');</script>
 </html>

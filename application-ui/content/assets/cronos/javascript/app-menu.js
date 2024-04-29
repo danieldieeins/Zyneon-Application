@@ -39,16 +39,16 @@ function deactivateMenu(menuId,save) {
 
 function initMenu(menuId) {
     const urlParams = new URLSearchParams(window.location.search);
-    let active = false;
+    let active = true;
     if(urlParams.get("menu."+menuId)) {
         const menuMode = urlParams.get("menu."+menuId);
-        if(menuMode==="active") {
-            active = true;
+        if(menuMode!=="active") {
+            active = false;
         }
     } else if(localStorage.getItem('menu.'+menuId)) {
         const menuMode = localStorage.getItem('menu.'+menuId);
-        if(menuMode==="active") {
-            active = true;
+        if(menuMode!=="active") {
+            active = false;
         }
     }
     if(active) {

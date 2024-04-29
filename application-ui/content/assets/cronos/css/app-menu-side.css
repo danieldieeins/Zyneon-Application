@@ -62,10 +62,6 @@
     padding: 1rem 1rem 0.25rem 1rem;
 }
 
-.side-menu:hover ul {
-    background: var(--background4) !important;
-}
-
 #submenu:hover ul {
     background: unset !important;
 }

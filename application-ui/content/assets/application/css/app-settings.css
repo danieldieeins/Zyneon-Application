@@ -1,78 +1,72 @@
-.card {
-    width: calc(100% - 2rem);
-    margin-bottom: 1rem;
+.settings {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: calc(100%) !important;
 }
 
-* {
-    transition: none !important;
+.settings .settings-menu {
+    padding: 1rem 0.5rem 1rem 1rem;
+    width: 18rem;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
-*:hover {
-    transition: all 0.35s ease !important;
-}
-
-.card h3 {
+.settings .settings-content {
     position: relative !important;
-    font-family: MPLUS1p-Thin, serif;
-    padding: 0.25rem 0.5rem 0.5rem 0.75rem;
-    margin: 0.5rem 0 0.25rem 0;
+    padding: 1rem 1rem 1rem 0.5rem;
+    width: calc(100% - 18rem);
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.settings .settings-content .card h3 {
+    position: relative;
+    background: var(--shadow2);
     border-radius: 1rem;
-    border: 2px var(--border) solid !important;
-    background: var(--background);
+    border: 2px solid var(--border) !important;
+    margin: 0.5rem 0;
+    padding: 0.3rem 0.5rem 0.5rem 0.5rem;
 }
 
-.card h3:hover {
-    background: var(--background2);
+.settings .settings-content .card h3 .checkbox input {
+    position: absolute;
+    right: 1rem;
+    top: 0.825rem;
 }
 
-.card h3 .input {
-    border-radius: calc(1rem - 2px);
-    background: linear-gradient(90deg,var(--background2));
-    padding: 0.38rem 2rem;
+.settings .settings-content .card h3 .select select {
     position: absolute;
     right: 0; top: 0;
-}
 
-.card h3 .input select {
-    font-weight: 1;
-    color: var(--foreground2);
-    background: var(--background);
-    position: absolute;
-    right: 0; top: 0;
     font-size: inherit;
-    border-radius: calc(1rem - 2px);
-    padding: 0.52rem 0 0.52rem 0.52rem;
+    color: white;
+    padding: 0.575rem;
 }
 
-.card h3:hover .input select {
-    background: linear-gradient(90deg,var(--background2));
+select option {
+    background: var(--background5) !important;
 }
 
-.card h3:hover .input select:hover {
+.settings .card {
+    width: calc(100% - 2.25rem);
+}
+
+.search-bar {
+    width: fit-content;
+}
+
+.search-bar i {
+    font-size: 1.5rem;
+}
+
+.search-bar input {
+    height: 1.45rem;
+    margin-left: 0.5rem;
+    padding: 0 0 0 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    background: var(--background2);
     color: var(--highlight);
-    cursor: pointer;
-    background: linear-gradient(90deg,var(--background2),var(--background3),var(--background3));
 }
 
-.card h3:hover .input {
-    background: linear-gradient(90deg,var(--background2));
-}
-
-.card h3:hover .input:hover {
-    cursor: pointer;
-    background: linear-gradient(90deg,var(--background2),var(--background3),var(--background3));
-}
-
-.input input {
-    cursor: pointer;
-}
-
-.input select option {
-    text-align: left;
-    background: var(--background);
-}
-
-.input select option:checked {
-    text-align: right;
-    background: var(--background);
-}

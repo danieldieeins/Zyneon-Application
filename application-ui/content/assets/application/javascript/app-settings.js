@@ -11,5 +11,5 @@ function toggleUpdates() {
 }
 
 function syncUpdates() {
-    connector('sync.updateChannel.'+document.getElementById('general-updater-channel').value);
+    connector('sync.updateChannel.'+document.getElementById('updater-settings-update-channel').value);
 }

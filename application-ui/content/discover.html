@@ -57,13 +57,12 @@
                             <br>Unknown user
                         </p>
                     </div>
-                </div>
-                <div class="side-menu submenu" id="submenu">
-                    <ul>
-                        <li class="filter-button" onclick="toggleMainMenu();">
-                            <i class='bx bx-arrow-back'></i>
-                        </li>
-                        <li class="filter-card card" id="modrinth-filters">
+                </div><script>initMenu('menu');</script>
+            </div>
+            <div class="cnt">
+                <div class="flex search-table">
+                    <div class="search-menu">
+                        <div class="card filter-card">
                             <div id="general-filters">
                                 <h3 class="bold">Search filters</h3>
                                 <div class="flex">
@@ -240,37 +239,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                        <li class="placeholder disabled">test</li>
-                    </ul>
-                </div><script>initMainMenu();</script>
-            </div>
-            <div class="cnt">
-                <div class="card fixed flex bar">
-                    <i class='bx bx-search-alt'></i>
-                    <label><input type="text" placeholder="Search"></label>
-                </div>
-                <div class="results">
-                    <div class="card">
-                        <div class="flex">
-                            <img alt="instance icon" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
-                            <div class="result-details">
-                                <h2><span class="result-title">loading...</span> <span class="result-author-detail">by <span class="result-author">loading...</span></span></h2>
-                                <h3 class="result-description">loading...</h3>
-                                <h3 class="result-tags">loading...</h3>
-                            </div>
                         </div>
-                        <div class="card-panel">
-                            <br>
-                            <div class="flex result-panel">
-                                <div class="stats flex">
-                                    <h3><i class='bx bx-download'></i> loading...</h3><h3><i class='bx bx-heart'></i> loading...</h3><h3><i class='bx bx-calendar-alt'></i> loading...</h3>
-                                </div>
-                                <div class="buttons flex">
-                                    <h3><i class='bx bx-link-external'></i>loading...</h3>
-                                    <h3 class="install-button"><i class='bx bx-download'></i> loading...</h3>
-                                </div>
-                            </div>
+                    </div><script>document.getElementById(searchSource+"-modpacks").checked = true; syncType();</script>
+                    <div class="search-content">
+                        <div class="card search-bar flex">
+                            <i class='bx bx-search-alt'></i>
+                            <label><input type="text" placeholder="Search"></label>
                         </div>
                     </div>
                 </div>

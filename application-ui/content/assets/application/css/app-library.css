@@ -1,71 +1,38 @@
-#library-entry {
-    display: none !important;
-}
-
-#java-point {
-    display: none;
-}
-
-#library-overview {
-    position: relative;
-    padding-top: 4.5rem;
-}
-
-#library-overview .bar {
-    width: calc(100% - 26rem);
-    top: 1rem;
-}
-
-.instance-card {
-    position: relative;
-    width: calc(100%) !important;
+.library {
     padding: 0;
+    margin: 0;
+    width: 100%;
+    height: calc(100%) !important;
 }
 
-.instance-card .flex {
-    padding: 1rem;
+.library .library-menu {
+    padding: 1rem 0.5rem 1rem 1rem;
+    width: 18rem;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
-.instance-card .flex img {
-    padding-top: 0.4rem;
-    height: 9rem;
-    width: 9rem;
+.library .library-content {
+    position: relative !important;
+    padding: 1rem 1rem 1rem 0.5rem;
+    width: calc(100% - 18rem);
+    overflow: hidden;
+    overflow-y: auto;
 }
 
-.instance-card .flex .library-instance-details {
-    padding-left: 1rem;
+.library .card {
+    width: calc(100% - 2.25rem);
 }
 
-.instance-card .instance-card-panel {
-    border-bottom-left-radius: 0.9rem;
-    border-bottom-right-radius: 0.9rem;
-    padding: 0.5rem;
-    color: var(--foreground2);
-    background: var(--background6);
-    margin: 0 !important;
-    display: none;
+.search-bar {
+    width: fit-content;
 }
 
-.instance-card:hover .instance-card-panel {
-    background: var(--background5);
-    color: var(--foreground);
-    transition: all 0.5s !important;
-    display: block;
-}
-
-.cnt * {
-    transition: none !important;
-}
-
-.cnt *:hover {
-    transition: all 0.5s !important;
-}
-
-#library-overview .bar i {
+.search-bar i {
     font-size: 1.5rem;
 }
 
-#library-overview .bar input {
+.search-bar input {
     height: 1.45rem;
     margin-left: 0.5rem;
     padding: 0 0 0 0.5rem;

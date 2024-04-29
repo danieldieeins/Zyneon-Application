@@ -50,7 +50,7 @@ public class FrameConnector {
             boolean update = request.equals("on");
             Main.getUpdaterConfig().set("updater.settings.autoUpdate",update);
 
-            frame.executeJavaScript("document.getElementById('general-updater-enable').checked = "+update+";");
+            frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').checked = "+update+";");
         } else if(request.startsWith("updateChannel.")) {
             request = request.replace("updateChannel.","");
             Main.getUpdaterConfig().set("updater.settings.updateChannel",request);
@@ -68,7 +68,7 @@ public class FrameConnector {
             if(Main.getUpdaterConfig().getString("updater.settings.updateChannel")!=null) {
                 channel = Main.getUpdaterConfig().getString("updater.settings.updateChannel");
             }
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('general-updater-enable').checked = updates; document.getElementById('general-updater-channel').value = \""+channel+"\";");
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\";");
         }
     }
 }

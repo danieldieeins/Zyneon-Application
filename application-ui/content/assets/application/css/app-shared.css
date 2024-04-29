@@ -10,6 +10,10 @@
     100% { transform: rotate(360deg); }
 }
 
+body {
+    background: var(--background5);
+}
+
 .hover-rotate:hover {
     animation: rotate 2.5s linear infinite !important;
 }
@@ -47,6 +51,7 @@ li.disabled:hover {
 
 .danger:hover {
     background: red !important;
+    border-color: red !important;
     box-shadow: 0 0 0.8rem red !important;
     color: var(--foreground2) !important;
 }
@@ -55,8 +60,15 @@ li:hover {
     animation: wiggle 2.5s infinite;
 }
 
+.card {
+    margin-bottom: 1rem;
+}
+
 .cnt {
     width: 100%;
-    padding: 1rem;
+    padding: 0;
+    border-top-left-radius: 1.5rem;
     position: relative;
+    background: var(--background);
+    z-index: 101;
 }

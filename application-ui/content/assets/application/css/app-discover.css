@@ -1,13 +1,38 @@
-.bar {
-    width: calc(100% - 26rem);
-    top: 1rem;
+.search-table {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: calc(100%) !important;
 }
 
-.bar i {
+.search-table .search-menu {
+    padding: 1rem 0.5rem 1rem 1rem;
+    width: 18rem;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.search-table .search-content {
+    position: relative !important;
+    padding: 1rem 1rem 1rem 0.5rem;
+    width: calc(100% - 18rem);
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.search-table .card {
+    width: calc(100% - 2.25rem);
+}
+
+.search-bar {
+    width: fit-content;
+}
+
+.search-bar i {
     font-size: 1.5rem;
 }
 
-.bar input {
+.search-bar input {
     height: 1.45rem;
     margin-left: 0.5rem;
     padding: 0 0 0 0.5rem;
@@ -15,49 +40,6 @@
     font-size: 1.1rem;
     background: var(--background2);
     color: var(--highlight);
-}
-
-.cnt * {
-    transition: none !important;
-}
-
-.cnt *:hover {
-    transition: all 0.5s !important;
-}
-
-#submenu .filter-card {
-    background: var(--background2) !important;
-    height: 100% !important;
-    width: calc(16.6rem - 4px) !important;
-    padding: 0;
-    margin: 0;
-    box-shadow: 0 0 0.4rem var(--shadow3) !important;
-    display: none !important;
-    border-radius: 1rem;
-}
-
-#submenu.active .filter-card {
-    display: block !important;
-}
-
-.filter-button {
-    background: var(--background2) !important;
-    box-shadow: 0 0 0.8rem var(--shadow3) !important;
-    color: var(--foreground2) !important;
-}
-
-.filter-button:hover {
-    background: var(--background3) !important;
-    color: var(--foreground) !important;
-}
-
-#submenu.active .filter-button {
-    display: none !important;
-}
-
-#submenu {
-    background: linear-gradient(90deg,var(--background4),var(--background));
-    box-shadow: none !important;
 }
 
 .filter-card div {
@@ -118,112 +100,4 @@ li.placeholder {
 
 li.placeholder:hover {
     cursor: unset !important;
-}
-
-.results {
-    padding-top: 4.5rem;
-}
-
-.results .card {
-    position: relative;
-    width: calc(100%) !important;
-    padding: 0;
-}
-
-.results .card .flex {
-    padding: 1rem;
-}
-
-.results .card .flex img {
-    margin: 0;
-    padding: 0;
-    height: 9rem;
-    width: 9rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 0.4rem var(--shadow3) !important;
-    background: var(--background4);
-}
-
-.results .card .flex .result-details {
-    padding-left: 1rem;
-}
-
-.results .card .card-panel {
-    position: relative;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    color: var(--foreground2);
-}
-
-.result-panel {
-    bottom: -1.4rem;
-    left: -1.55rem;
-    position: absolute;
-    width: calc(100% - 1.25rem);
-}
-
-.result-panel .buttons {
-    position: absolute;
-    right: -1.75rem;
-}
-
-.result-panel .stats h3 {
-    position: relative;
-    background: var(--background1);
-    border-radius: 0.75rem;
-    border: 1px solid var(--background3) !important;
-    padding: 0.1rem 0.5rem 0.2rem 2rem;
-    font-size: 1.15rem;
-    margin-right: 0.5rem;
-}
-
-.result-panel .stats h3 i {
-    position: absolute;
-    top: 0.25rem;
-    left: 0.4rem;
-    font-size: 1.4rem;
-}
-
-.result-panel .stats h3:hover {
-    background: var(--background2);
-    color: var(--foreground2) !important;
-    border: 1px solid var(--border2) !important;
-}
-
-.result-panel .buttons h3 {
-    position: relative;
-    background: var(--foreground);
-    color: var(--background5);
-    border-radius: 0.75rem;
-    border: 1px solid var(--foreground2) !important;
-    padding: 0.1rem 0.5rem 0.2rem 2rem;
-    font-size: 1.15rem;
-    margin-right: 0.5rem;
-}
-
-.result-panel .buttons h3 i {
-    position: absolute;
-    top: 0.25rem;
-    left: 0.4rem;
-    font-size: 1.4rem;
-}
-
-.result-panel .buttons h3:hover {
-    cursor: pointer;
-    background: var(--highlight);
-    box-shadow: 0 0 0.4rem var(--highlight) !important;
-    color: var(--background5) !important;
-    border: 1px solid var(--foreground2) !important;
-}
-
-.result-panel .buttons h3.install-button {
-    background: #21e560 !important;
-    border-color: #4cf884 !important;
-}
-
-.result-panel .buttons h3.install-button:hover {
-    background: #0cff5a !important;
-    border-color: #21e560 !important;
-    color: var(--background5) !important;
-    box-shadow: 0 0 0.4rem #21e560 !important;
 }

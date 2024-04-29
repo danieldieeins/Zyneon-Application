@@ -9,6 +9,7 @@
         <link rel="stylesheet" id="css-menu" href="assets/cronos/css/app-menu-side.css">
         <link rel="stylesheet" id="css-card" href="assets/cronos/css/app-cards.css">
         <link rel="stylesheet" id="css-shared" href="assets/application/css/app-shared.css">
+        <link rel="stylesheet" id="css-site" href="assets/application/css/app-start.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="assets/cronos/javascript/app-base.js"></script>
         <script src="assets/cronos/javascript/app-menu.js"></script>
@@ -49,20 +50,21 @@
                         </li>
                     </ul>
                     <div class="menu-panel">
-                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="activateMenu('menu');" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
                         <p>
                             <span class="bold">Synchronizing...</span>
                             <br>Unknown user
                         </p>
                     </div>
                 </div>
-            </div>
+            </div><script>initMenu('menu');</script>
             <div class="cnt">
+                <div class="start">
+                    <div class="card danger">
 
+                    </div>
+                </div>
             </div>
         </div>
     </body>
-    <script>initMenu('menu'); window.addEventListener("load", function () {
-        activateMenu('menu',false);
-    });</script>
 </html>
