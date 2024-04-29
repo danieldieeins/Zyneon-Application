@@ -18,12 +18,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
-        <!--GitHub repositories from me-->
+        <!--Dependencies by Zyneon Studios' NEXUS Team-->
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-zyndex</artifactId>
-            <version>2024.4.2</version>
+            <version>2024.4.3.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -39,26 +47,28 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--Central repositories by FlowArg-->
+        <!--Dependencies by FlowArg-->
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>flowupdater</artifactId>
-            <version>LATEST</version>
+            <version>1.8.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>openlauncherlib</artifactId>
-            <version>LATEST</version>
+            <version>3.2.10</version>
             <scope>compile</scope>
         </dependency>
 
-        <!--TIpdwh, btaatm-->
+        <!--Something... that is used?.... in the code?-->
         <dependency>
             <groupId>com.moandjiezana.toml</groupId>
             <artifactId>toml4j</artifactId>
             <version>LATEST</version>
         </dependency>
+
+        <!--Fix vulnerabilities from dependencies with newer versions of their dependencies-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
