@@ -41,4 +41,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mvn clean package --settings ${{ github.workspace }}/settings.xml
-          mv /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-${{ steps.extract_version.outputs.version }}.jar /home/runner/work/Zyneon-Application/Zyneon-Application/application-main/target/application-main-experimental.jar
