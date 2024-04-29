@@ -57,7 +57,7 @@
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>openlauncherlib</artifactId>
-            <version>3.2.10</version>
+            <version>3.2.9</version>
             <scope>compile</scope>
         </dependency>
 
