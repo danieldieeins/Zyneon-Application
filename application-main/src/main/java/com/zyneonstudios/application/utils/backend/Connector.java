@@ -928,14 +928,18 @@ public class Connector {
             } catch (Exception e) {
                 Main.getLogger().error("[CONNECTOR] Couldn't install CurseForge modpack "+mID+" v"+vID+": "+e.getMessage());
             }
-        } else if(request.startsWith("install.fabric.")||request.startsWith("install.forge.")) {
+        } else if(request.startsWith("install.fabric.")||request.startsWith("install.neoforge.")||request.startsWith("install.quilt.")||request.startsWith("install.forge.")) {
             String modloader = "";
             if(request.startsWith("install.forge")) {
                 modloader = "forge";
             } else if(request.startsWith("install.fabric")) {
                 modloader = "fabric";
+            } else if(request.startsWith("install.neoforge")) {
+                modloader = "neoforge";
+            } else if(request.startsWith("install.quilt")) {
+                modloader = "quilt";
             }
-            request = request.replace("install.fabric.","").replace("install.forge.","");
+            request = request.replace("install."+modloader+".","");
             String[] request_ = request.split("\\.", 3);
             String slug = request_[0];
             String id = request_[1];
@@ -1061,14 +1065,18 @@ public class Connector {
             } catch (Exception e) {
                 Main.getLogger().error("[CONNECTOR] Couldn't install modrinth modpack "+mID+" v"+vID+": "+e.getMessage());
             }
-        } else if(request.startsWith("install.fabric.")||request.startsWith("install.forge.")) {
+        } else if(request.startsWith("install.fabric.")||request.startsWith("install.forge.")||request.startsWith("install.neoforge.")||request.startsWith("install.quilt.")) {
             String modloader = "";
             if(request.startsWith("install.forge")) {
                 modloader = "forge";
             } else if(request.startsWith("install.fabric")) {
                 modloader = "fabric";
+            } else if(request.startsWith("install.neoforge")) {
+                modloader = "neoforge";
+            } else if(request.startsWith("install.quilt")) {
+                modloader = "quilt";
             }
-            request = request.replace("install.fabric.","").replace("install.forge.","");
+            request = request.replace("install."+modloader+".","");
             String[] request_ = request.split("\\.", 3);
             String slug = request_[0];
             String id = request_[1];

@@ -34,7 +34,7 @@ public class Main {
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
         version = "2024.4.7";
         ArrayList<String> arguments = new ArrayList<>();
-        String name = "";
+        String name = "Horizon";
         architecture = getArchitecture();
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
