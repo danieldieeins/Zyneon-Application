@@ -42,3 +42,8 @@ function syncType() {
         document.getElementById("environment-filters").classList.add("active");
     }
 }
+
+function toggleCheck(id) {
+    const element = document.getElementById(id);
+    element.checked = !element.checked;
+}

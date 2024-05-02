@@ -70,3 +70,9 @@ function changeThemeColors() {
         setColors("assets/cronos/css/app-colors-dark.css");
     }
 }
+
+function preventClick(id) {
+    document.getElementById(id).addEventListener('click', function(event) {
+        event.preventDefault();
+    });
+}

@@ -68,7 +68,7 @@
                                 <div class="flex">
                                     <div>
                                         <h3>Game: <label><select id="modrinth-versions"><option id="modrinth-loading">loading...</option></select></label></h3>
-                                        <h3><label><input type="checkbox"></label> Open Source Only</h3>
+                                        <h3 onclick="toggleCheck('modrinth-oso');"><label><input onclick="toggleCheck('modrinth-oso');" id="modrinth-oso" type="checkbox"></label> Open Source Only</h3>
                                     </div>
                                 </div>
                             </div>
@@ -88,12 +88,12 @@
                                 <h3 class="bold">Loaders</h3>
                                 <div class="flex">
                                     <div>
-                                        <h3><label><input type="checkbox"></label> Fabric</h3>
-                                        <h3><label><input type="checkbox"></label> Forge</h3>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-fabric');"><label><input onclick="toggleCheck('modrinth-loaders-fabric');" id='modrinth-loaders-fabric' type="checkbox"></label> Fabric</h3>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-neoforge');"><label><input onclick="toggleCheck('modrinth-loaders-neoforge');" id='modrinth-loaders-neoforge' type="checkbox"></label> NeoForge</h3>
                                     </div>
                                     <div>
-                                        <h3><label><input type="checkbox"></label> NeoForge</h3>
-                                        <h3><label><input type="checkbox"></label> Quilt</h3>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-forge');"><label><input onclick="toggleCheck('modrinth-loaders-forge');" id='modrinth-loaders-forge' type="checkbox"></label> Forge</h3>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-quilt')"><label><input onclick="toggleCheck('modrinth-loaders-quilt');" id='modrinth-loaders-quilt' type="checkbox"></label> Quilt</h3>
                                     </div>
                                 </div>
                             </div>
@@ -245,6 +245,23 @@
                         <div class="card search-bar flex">
                             <i class='bx bx-search-alt'></i>
                             <label><input type="text" placeholder="Search"></label>
+                        </div>
+                        <div class="search-results">
+                            <div class="card search-result" id="search-result-template">
+                                <div class="flex">
+                                    <div class="result-image">
+                                        <img alt="Search result logo" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                                    </div>
+                                    <div class="result-details">
+                                        DETAILS
+                                    </div>
+                                </div>
+                                <div class="result-panel">
+                                    <h3 class="result-stat stat-downloads"></h3>
+                                </div>
+                            </div>
+                            <br><br>
+                            <br><br>
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,48 @@
     padding: 1rem 1rem 1rem 0.5rem;
     width: calc(100% - 18rem);
     overflow: hidden;
+}
+
+.search-table .search-content .search-results {
+    position: absolute;
+    width: calc(100% - 2.65rem);
+    padding: 1.4rem 0.5rem 0.5rem;
+    height: 100%;
+    overflow: hidden;
     overflow-y: auto;
+    top: 4.5rem;
+    z-index: 0;
+}
+
+.search-result {
+
+}
+
+.search-result .flex {
+    position: relative !important;
+}
+
+.search-result .result-image {
+    background: var(--background);
+    box-shadow: 0 0 0.4rem var(--shadow3);
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    width: 8rem;
+    height: 8rem;
+}
+
+.search-result .result-image img {
+    width: inherit;
+    height: inherit;
+}
+
+.search-result .result-details {
+    margin-left: 0.5rem;
+    width: calc(100% - 9rem);
+}
+
+.search-result .result-panel {
+
 }
 
 .search-table .card {
@@ -26,6 +67,7 @@
 
 .search-bar {
     width: fit-content;
+    z-index: 2;
 }
 
 .search-bar i {
