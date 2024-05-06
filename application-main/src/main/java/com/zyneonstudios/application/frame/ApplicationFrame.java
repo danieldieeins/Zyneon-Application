@@ -1,6 +1,7 @@
 package com.zyneonstudios.application.frame;
 
 import com.zyneonstudios.application.main.ApplicationConfig;
+import com.zyneonstudios.application.main.NexusApplication;
 import live.nerotv.shademebaby.frame.WebFrame;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
@@ -19,11 +20,17 @@ public class ApplicationFrame extends WebFrame {
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
-                if (message.contains("[CONNECTOR] ")) {
+                if (message.startsWith("[CONNECTOR] ")) {
                     CompletableFuture.runAsync(() -> {
                         String request = message.replace("[CONNECTOR] ", "");
                         connector.resolveRequest(request);
                     });
+                } else if (message.startsWith("[LOG] ")) {
+                    NexusApplication.getLogger().log(message.replace("[LOG] ",""));
+                } else if (message.startsWith("[ERR] ")) {
+                    NexusApplication.getLogger().error(message.replace("[ERR] ",""));
+                } else if (message.startsWith("[DEB] ")) {
+                    NexusApplication.getLogger().debug(message.replace("[DEB] ",""));
                 }
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
@@ -31,7 +38,6 @@ public class ApplicationFrame extends WebFrame {
         setMinimumSize(new Dimension(840,500));
         setSize(new Dimension(1200,720));
         setLocationRelativeTo(null);
-        setTitle("Zyneon Application");
     }
 
     public FrameConnector getConnector() {

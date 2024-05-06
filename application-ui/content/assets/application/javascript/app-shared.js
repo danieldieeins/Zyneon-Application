@@ -76,3 +76,23 @@ function preventClick(id) {
         event.preventDefault();
     });
 }
+
+function log(message) {
+    console.log("[LOG] [UI] "+message)
+}
+
+function err(message) {
+    console.log("[ERR] [UI] "+message)
+}
+
+function deb(message) {
+    console.log("[DEB] [UI] "+message)
+}
+
+function error(message) {
+    err(message);
+}
+
+function debug(message) {
+    deb(message);
+}

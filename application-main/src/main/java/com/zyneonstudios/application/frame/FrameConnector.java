@@ -14,13 +14,12 @@ public class FrameConnector {
     }
 
     public void resolveRequest(String request) {
-        NexusApplication.getLogger().log(" ");
-        NexusApplication.getLogger().log("[CONNECTOR] resolving "+request+"...");
+        NexusApplication.getLogger().debug("[CONNECTOR] resolving "+request+"...");
         if(request.startsWith("sync.")) {
             sync(request.replace("sync.",""));
-            NexusApplication.getLogger().log("[CONNECTOR] successfully resolved "+request);
+            NexusApplication.getLogger().debug("[CONNECTOR] successfully resolved "+request);
         } else {
-            System.err.println("[CONNECTOR] couldn't resolve "+request+".");
+            NexusApplication.getLogger().error("[CONNECTOR] couldn't resolve "+request+".");
         }
 
     }
