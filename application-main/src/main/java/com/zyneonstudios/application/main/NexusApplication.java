@@ -14,22 +14,15 @@ import static com.zyneonstudios.application.main.ApplicationConfig.getApplicatio
 public class NexusApplication{
 
     private final ApplicationFrame frame;
-
-    private static ApplicationConfig config = null;
     private static final Logger logger = new Logger("APP");
 
-    public NexusApplication(ApplicationConfig config) {
-        NexusApplication.config = config;
-        update();
+    public NexusApplication() {
+        logger.log("Updated application ui: "+update());
         try {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
         frame = new ApplicationFrame(ApplicationConfig.urlBase +"start.html", getApplicationPath()+"libs/jcef/");
-    }
-
-    public static ApplicationConfig getConfig() {
-        return config;
     }
 
     public static Logger getLogger() {
@@ -40,19 +33,19 @@ public class NexusApplication{
         boolean updated;
         try {
             if(new File(getApplicationPath() + "temp/ui/").exists()) {
-                new File(getApplicationPath() + "temp/ui/").delete();
+                logger.debug("Deleted old ui files: "+new File(getApplicationPath() + "temp/ui/").delete());
             }
-            new File(getApplicationPath() + "temp/ui/").mkdirs();
+            logger.debug("Created new ui path: "+new File(getApplicationPath() + "temp/ui/").mkdirs());
             FileUtil.extractResourceFile("ui.zip",getApplicationPath()+"temp/ui.zip",Main.class);
             FileUtil.unzipFile(getApplicationPath()+"temp/ui.zip", getApplicationPath() + "temp/ui");
-            new File(getApplicationPath()+"temp/ui.zip").delete();
+            logger.debug("Deleted ui archive: "+new File(getApplicationPath()+"temp/ui.zip").delete());
             updated = true;
         } catch (Exception e) {
-            System.err.println("Couldn't update application user interface: "+e.getMessage());
+            logger.error("Couldn't update application user interface: "+e.getMessage());
             updated = false;
         }
-        new File(getApplicationPath() + "updater.json").delete();
-        new File(getApplicationPath() + "version.json").delete();
+        logger.debug("Deleted old updatar json: "+new File(getApplicationPath() + "updater.json").delete());
+        logger.debug("Deleted older updater json: "+new File(getApplicationPath() + "version.json").delete());
         return updated;
     }
 

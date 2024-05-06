@@ -95,7 +95,6 @@ public record ApplicationConfig(String[] args) {
         if(updateConfig==null) {
             updateConfig = new Config(ApplicationConfig.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
         }
-        NexusApplication.getLogger().log(updateConfig.getJsonFile().getAbsolutePath());
         return updateConfig;
     }
 }
