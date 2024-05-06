@@ -1,38 +1,39 @@
-package com.zyneonstudios.application;
+package com.zyneonstudios.application.main;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.frame.ApplicationFrame;
+import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 
 import javax.swing.*;
 import java.io.File;
 
-import static com.zyneonstudios.Main.getApplicationPath;
+import static com.zyneonstudios.application.main.ApplicationConfig.getApplicationPath;
 
 public class NexusApplication{
 
     private final ApplicationFrame frame;
-    private String urlBase = null;
 
-    public NexusApplication(String[] args) {
-        resolveArgs(args); update();
+    private static ApplicationConfig config = null;
+    private static final Logger logger = new Logger("APP");
+
+    public NexusApplication(ApplicationConfig config) {
+        NexusApplication.config = config;
+        update();
         try {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
-        if(urlBase==null) {
-            urlBase = "file://"+getApplicationPath()+"temp/ui/";
-        }
-        frame = new ApplicationFrame(urlBase+"start.html", getApplicationPath()+"libs/jcef/");
+        frame = new ApplicationFrame(ApplicationConfig.urlBase +"start.html", getApplicationPath()+"libs/jcef/");
     }
 
-    private void resolveArgs(String[] args) {
-        for(String arg:args) {
-            if(arg.startsWith("--ui:")) {
-                urlBase = arg.replace("--ui:", "");
-            }
-        }
+    public static ApplicationConfig getConfig() {
+        return config;
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 
     private static boolean update() {

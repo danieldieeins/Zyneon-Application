@@ -1,6 +1,7 @@
 package com.zyneonstudios.application.frame;
 
-import com.zyneonstudios.Main;
+import com.zyneonstudios.application.main.ApplicationConfig;
+import com.zyneonstudios.application.main.NexusApplication;
 
 import java.awt.*;
 
@@ -13,11 +14,11 @@ public class FrameConnector {
     }
 
     public void resolveRequest(String request) {
-        System.out.println(" ");
-        System.out.println("[CONNECTOR] resolving "+request+"...");
+        NexusApplication.getLogger().log(" ");
+        NexusApplication.getLogger().log("[CONNECTOR] resolving "+request+"...");
         if(request.startsWith("sync.")) {
             sync(request.replace("sync.",""));
-            System.out.println("[CONNECTOR] successfully resolved "+request);
+            NexusApplication.getLogger().log("[CONNECTOR] successfully resolved "+request);
         } else {
             System.err.println("[CONNECTOR] couldn't resolve "+request+".");
         }
@@ -48,25 +49,23 @@ public class FrameConnector {
             request = request.replace("autoUpdates.","");
 
             boolean update = request.equals("on");
-            Main.getUpdaterConfig().set("updater.settings.autoUpdate",update);
+            ApplicationConfig.getUpdateSettings().set("updater.settings.autoUpdate",update);
 
             frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').checked = "+update+";");
         } else if(request.startsWith("updateChannel.")) {
             request = request.replace("updateChannel.","");
-            Main.getUpdaterConfig().set("updater.settings.updateChannel",request);
-            System.out.println(Main.getUpdaterConfig().getJsonFile().getAbsolutePath());
-            System.out.println(Main.getUpdaterConfig().getString("updater.settings.updateChannel"));
+            ApplicationConfig.getUpdateSettings().set("updater.settings.updateChannel",request);
         }
     }
 
     private void syncSettings(String request) {
         if(request.equals("general")) {
             String channel = "shervann"; boolean autoUpdate = false;
-            if(Main.getUpdaterConfig().getBoolean("updater.settings.autoUpdate")!=null) {
-                autoUpdate = Main.getUpdaterConfig().getBool("updater.settings.autoUpdate");
+            if(ApplicationConfig.getUpdateSettings().getBoolean("updater.settings.autoUpdate")!=null) {
+                autoUpdate = ApplicationConfig.getUpdateSettings().getBool("updater.settings.autoUpdate");
             }
-            if(Main.getUpdaterConfig().getString("updater.settings.updateChannel")!=null) {
-                channel = Main.getUpdaterConfig().getString("updater.settings.updateChannel");
+            if(ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel")!=null) {
+                channel = ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel");
             }
             frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\";");
         }
