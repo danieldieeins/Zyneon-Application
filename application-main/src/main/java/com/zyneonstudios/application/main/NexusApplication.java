@@ -15,19 +15,27 @@ import static com.zyneonstudios.application.main.ApplicationConfig.getApplicatio
 
 public class NexusApplication{
 
+    /*
+     * Zyneon Application "main" object
+     * by nerotvlive
+     * */
+
     private final JFrame frame;
     private static final Logger logger = new Logger("APP");
 
     public NexusApplication() {
+        // Initializing the application frame
         logger.log("[APP] Updated application ui: "+update());
         try {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
         if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")) {
+            // Creating a standard application frame for macOS and Windows
             frame = new ApplicationFrame(ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
             frame.pack(); frame.setSize(new Dimension(1200,720));
         } else {
+            // Creating a custom application frame for other operating systems
             frame = new CustomApplicationFrame(ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
             frame.pack();
         }
@@ -38,6 +46,7 @@ public class NexusApplication{
         return logger;
     }
 
+    // Method to update the application UI
     private static boolean update() {
         boolean updated;
         try {
@@ -58,6 +67,7 @@ public class NexusApplication{
         return updated;
     }
 
+    // Method to launch the application
     public void launch() {
         frame.setVisible(true);
     }

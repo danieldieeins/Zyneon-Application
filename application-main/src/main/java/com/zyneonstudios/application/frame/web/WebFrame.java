@@ -26,19 +26,27 @@ import java.io.IOException;
 
 public class WebFrame extends JFrame {
 
-    private CefApp app;
-    private CefClient client;
-    private CefBrowser browser;
-    private boolean browserFocus;
+    /*
+     * Zyneon Application web frame
+     * by nerotvlive
+     * */
 
+    // Instance variables
+    private CefApp app; // CEF application instance
+    private CefClient client; // CEF client instance
+    private CefBrowser browser; // CEF browser instance
+    private boolean browserFocus; // Flag indicating whether browser has focus
+
+    // Constructor
     public WebFrame(String url, String jcefPath) {
         try {
-            init(url, jcefPath);
+            init(url, jcefPath); // Initialize WebFrame
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Getter methods
     public CefApp getApp() {
         return app;
     }
@@ -55,64 +63,71 @@ public class WebFrame extends JFrame {
         return browser;
     }
 
+    // Initialization method
     private void init(String url, String jcefPath) throws UnsupportedPlatformException, IOException, CefInitializationException, InterruptedException {
-        browserFocus = true;
-        File installDir = new File(jcefPath);
-        ShadeMeBaby.getLogger().debug("[WEBFRAME] Is jCef installed: "+!installDir.mkdirs());
-        CefAppBuilder builder = new CefAppBuilder();
+        browserFocus = true; // Initially, browser has focus
+        File installDir = new File(jcefPath); // Directory where jCEF is installed
+        ShadeMeBaby.getLogger().debug("[WEBFRAME] Is jCef installed: "+!installDir.mkdirs()); // Log whether jCEF is installed
+        CefAppBuilder builder = new CefAppBuilder(); // Builder for creating CEF application
+        // Set up app handler to handle application state changes
         builder.setAppHandler(new MavenCefAppHandlerAdapter() {
             @Override @Deprecated
             public void stateHasChanged(CefApp.CefAppState state) {
-                if (state == CefApp.CefAppState.TERMINATED) Platform.exit();
+                if (state == CefApp.CefAppState.TERMINATED) Platform.exit(); // Exit JavaFX application when CEF terminates
             }
         });
-        builder.getCefSettings().cache_path = jcefPath+"/cache";
-        builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE;
-        builder.getCefSettings().persist_session_cookies = true;
-        builder.setInstallDir(installDir);
-        builder.install();
-        builder.getCefSettings().windowless_rendering_enabled = false;
-        app = builder.build();
-        client = app.createClient();
-        CefMessageRouter messageRouter = CefMessageRouter.create();
-        client.addMessageRouter(messageRouter);
+        builder.getCefSettings().cache_path = jcefPath+"/cache"; // Set cache path for CEF
+        builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE; // Disable logging
+        builder.getCefSettings().persist_session_cookies = true; // Persist session cookies
+        builder.setInstallDir(installDir); // Set installation directory for jCEF
+        builder.install(); // Install jCEF
+        builder.getCefSettings().windowless_rendering_enabled = false; // Enable windowed rendering
+        app = builder.build(); // Build CEF application
+        client = app.createClient(); // Create CEF client
+        CefMessageRouter messageRouter = CefMessageRouter.create(); // Create message router
+        client.addMessageRouter(messageRouter); // Add message router to client
+        // Set up download handler to handle file downloads
         client.addDownloadHandler(new CefDownloadHandler() {
             @Override
             public void onBeforeDownload(CefBrowser browser, CefDownloadItem item, String s, CefBeforeDownloadCallback callback) {
-                callback.Continue(s,true);
+                callback.Continue(s,true); // Continue the download
             }
 
             @Override
             public void onDownloadUpdated(CefBrowser cefBrowser, CefDownloadItem cefDownloadItem, CefDownloadItemCallback cefDownloadItemCallback) {
-
+                // Method not implemented, as we're not handling download updates
             }
         });
-        browser = client.createBrowser(url, false, false);
+        browser = client.createBrowser(url, false, false); // Create browser instance
+        // Set up drag handler to handle file drag events
         client.addDragHandler((cefBrowser, dragData, i) -> dragData.isFile());
-        Component ui = browser.getUIComponent();
+        Component ui = browser.getUIComponent(); // Get UI component of browser
+        // Set up focus handler to handle focus events
         client.addFocusHandler(new CefFocusHandlerAdapter() {
             @Override
             public void onGotFocus(CefBrowser browser) {
-                if (browserFocus) return;
-                browserFocus = true;
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-                browser.setFocus(true);
+                if (browserFocus) return; // If browser already has focus, return
+                browserFocus = true; // Update flag to indicate browser has focus
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner(); // Clear global focus owner
+                browser.setFocus(true); // Set focus to browser
             }
             @Override
             public void onTakeFocus(CefBrowser browser, boolean next) {
-                browserFocus = false;
+                browserFocus = false; // Browser lost focus
             }
         });
-        getContentPane().add(ui,BorderLayout.CENTER);
+        getContentPane().add(ui,BorderLayout.CENTER); // Add UI component to frame
+        // Add window listener to handle window closing event
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                CefApp.getInstance().dispose();
-                dispose();
+                CefApp.getInstance().dispose(); // Dispose CEF instance
+                dispose(); // Dispose frame
             }
         });
     }
 
+    // Method to execute JavaScript commands in the browser
     public void executeJavaScript(String command) {
         browser.executeJavaScript(command,browser.getURL(),5);
     }

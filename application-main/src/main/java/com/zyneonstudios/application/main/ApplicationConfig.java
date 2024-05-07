@@ -11,6 +11,11 @@ import java.util.ArrayList;
 
 public record ApplicationConfig(String[] args) {
 
+    /*
+     * Zyneon Application config
+     * by nerotvlive
+     * */
+
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
 
     private static String applicationPath = null;
@@ -18,17 +23,27 @@ public record ApplicationConfig(String[] args) {
     private static String os = null;
     private static Config updateConfig = null;
 
+    // Constructor for ApplicationConfig class
     public ApplicationConfig(String[] args) {
         this.args = args;
+        // Iterating through the command-line arguments
         for (String arg : args) {
+            // Checking if the argument starts with "--ui:"
             if (arg.startsWith("--ui:")) {
+                // If the argument starts with "--ui:", update the urlBase by replacing "--ui:" with an empty string
+                // This extracts the URL specified after "--ui:" and sets it as the base URL for the application
                 urlBase = arg.replace("--ui:", "");
-            } else if(arg.startsWith("--path:")) {
+            }
+            // Checking if the argument starts with "--path:"
+            else if(arg.startsWith("--path:")) {
+                // If the argument starts with "--path:", update the applicationPath by replacing "--path:" with an empty string
+                // This extracts the path specified after "--path:" and sets it as the application path
                 applicationPath = arg.replace("--path:", "");
             }
         }
     }
 
+    // Method to get the application path as a string
     public static String getApplicationPath() {
         if (applicationPath == null) {
             String folderName = "Zyneon/Application/experimental";
@@ -64,6 +79,7 @@ public record ApplicationConfig(String[] args) {
         return URLDecoder.decode(applicationPath, StandardCharsets.UTF_8);
     }
 
+    // Method to get the architecture of the operating system (String)
     private static String getArchitecture() {
         String os = System.getProperty("os.arch");
         ArrayList<String> aarch = new ArrayList<>();
@@ -80,10 +96,12 @@ public record ApplicationConfig(String[] args) {
         return "x64";
     }
 
+    // Method to get the operating system (string)
     public static String getOS() {
         return os;
     }
 
+    // Method to get the application settings file
     public static Config getSettings() {
         if(configuration==null) {
             configuration = new Config(getApplicationPath()+"config/settings.json");
@@ -91,6 +109,7 @@ public record ApplicationConfig(String[] args) {
         return configuration;
     }
 
+    // Method to get the updater settings file
     public static Config getUpdateSettings() {
         if(updateConfig==null) {
             updateConfig = new Config(ApplicationConfig.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
