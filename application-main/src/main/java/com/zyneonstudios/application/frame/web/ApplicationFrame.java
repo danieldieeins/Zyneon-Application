@@ -12,6 +12,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class ApplicationFrame extends WebFrame {
 
+    /*
+     * Zyneon Application default application frame
+     * by nerotvlive
+     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
+     * */
+
     private final FrameConnector connector; // Instance of FrameConnector for handling frame requests
 
     // Constructor

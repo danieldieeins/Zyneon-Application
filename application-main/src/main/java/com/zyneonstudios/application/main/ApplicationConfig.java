@@ -14,6 +14,7 @@ public record ApplicationConfig(String[] args) {
     /*
      * Zyneon Application config
      * by nerotvlive
+     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";

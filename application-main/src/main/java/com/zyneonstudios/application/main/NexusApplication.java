@@ -18,6 +18,7 @@ public class NexusApplication{
     /*
      * Zyneon Application "main" object
      * by nerotvlive
+     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
     private final JFrame frame;

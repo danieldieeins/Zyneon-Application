@@ -11,6 +11,7 @@ public class FrameConnector {
     /*
      * Zyneon Application frame connector
      * by nerotvlive
+     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
     // Instance variable to hold the ApplicationFrame object

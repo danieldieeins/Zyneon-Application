@@ -29,6 +29,7 @@ public class WebFrame extends JFrame {
     /*
      * Zyneon Application web frame
      * by nerotvlive
+     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
     // Instance variables

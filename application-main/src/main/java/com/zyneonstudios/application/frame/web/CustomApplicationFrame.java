@@ -10,6 +10,7 @@ public class CustomApplicationFrame extends ApplicationFrame {
     /*
      * Zyneon Application custom application frame
      * by nerotvlive
+     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
     private static Point mouseDownCompCoords; // Stores mouse coordinates for frame dragging
