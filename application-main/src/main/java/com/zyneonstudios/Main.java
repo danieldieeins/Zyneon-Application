@@ -12,7 +12,9 @@ public class Main {
     */
 
     public static void main(String[] args) {
+        // Creating application config
         new ApplicationConfig(args);
+        // Launch new application object
         new NexusApplication().launch();
     }
 }
