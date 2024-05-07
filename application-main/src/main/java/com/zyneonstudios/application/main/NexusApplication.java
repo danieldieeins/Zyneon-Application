@@ -45,9 +45,9 @@ public class NexusApplication{
                 logger.debug("[APP] Deleted old ui files: "+new File(getApplicationPath() + "temp/ui/").delete());
             }
             logger.debug("[APP] Created new ui path: "+new File(getApplicationPath() + "temp/ui/").mkdirs());
-            FileUtil.extractResourceFile("ui.zip",getApplicationPath()+"temp/ui.zip",Main.class);
-            FileUtil.unzipFile(getApplicationPath()+"temp/ui.zip", getApplicationPath() + "temp/ui");
-            logger.debug("[APP] Deleted ui archive: "+new File(getApplicationPath()+"temp/ui.zip").delete());
+            FileUtil.extractResourceFile("content.zip",getApplicationPath()+"temp/content.zip",Main.class);
+            FileUtil.unzipFile(getApplicationPath()+"temp/content.zip", getApplicationPath() + "temp/ui");
+            logger.debug("[APP] Deleted ui archive: "+new File(getApplicationPath()+"temp/content.zip").delete());
             updated = true;
         } catch (Exception e) {
             logger.error("[APP] Couldn't update application user interface: "+e.getMessage());
