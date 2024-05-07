@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.frame;
 
+import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.main.ApplicationConfig;
 import com.zyneonstudios.application.main.NexusApplication;
 
@@ -41,7 +42,7 @@ public class FrameConnector {
                 foreground = Color.white;
             }
             String title = request_[1];
-            frame.setTitle(title,background,foreground);
+            frame.setTitlebar(title,background,foreground);
         } else if(request.startsWith("settings.")) {
             syncSettings(request.replaceFirst("settings.",""));
         } else if(request.startsWith("autoUpdates.")) {

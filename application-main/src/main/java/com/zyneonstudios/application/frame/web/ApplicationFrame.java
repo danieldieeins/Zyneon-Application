@@ -1,8 +1,8 @@
-package com.zyneonstudios.application.frame;
+package com.zyneonstudios.application.frame.web;
 
+import com.zyneonstudios.application.frame.FrameConnector;
 import com.zyneonstudios.application.main.ApplicationConfig;
 import com.zyneonstudios.application.main.NexusApplication;
-import live.nerotv.shademebaby.frame.WebFrame;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefDisplayHandlerAdapter;
@@ -36,15 +36,13 @@ public class ApplicationFrame extends WebFrame {
             }
         });
         setMinimumSize(new Dimension(840,500));
-        setSize(new Dimension(1200,720));
-        setLocationRelativeTo(null);
     }
 
     public FrameConnector getConnector() {
         return connector;
     }
 
-    public void setTitle(String title, Color background, Color foreground) {
+    public void setTitlebar(String title, Color background, Color foreground) {
         setTitle("Zyneon Application ("+title+", "+ ApplicationConfig.getOS()+")");
         setTitleBackground(background);
         setTitleForeground(foreground);

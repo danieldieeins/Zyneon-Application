@@ -2,18 +2,20 @@ package com.zyneonstudios.application.main;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
-import com.zyneonstudios.application.frame.ApplicationFrame;
+import com.zyneonstudios.application.frame.web.ApplicationFrame;
+import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 import static com.zyneonstudios.application.main.ApplicationConfig.getApplicationPath;
 
 public class NexusApplication{
 
-    private final ApplicationFrame frame;
+    private final JFrame frame;
     private static final Logger logger = new Logger("APP");
 
     public NexusApplication() {
@@ -22,7 +24,14 @@ public class NexusApplication{
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
-        frame = new ApplicationFrame(ApplicationConfig.urlBase +"start.html", getApplicationPath()+"libs/jcef/");
+        if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")) {
+            frame = new ApplicationFrame(ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
+            frame.pack(); frame.setSize(new Dimension(1200,720));
+        } else {
+            frame = new CustomApplicationFrame(ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
+            frame.pack();
+        }
+        frame.setLocationRelativeTo(null);
     }
 
     public static Logger getLogger() {
