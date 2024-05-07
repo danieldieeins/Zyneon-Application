@@ -1,4 +1,5 @@
 Zyneon Application ```2024.4.7 (Horizon)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
+<br>`Contributions are welcome!` [Visit the rewrite branch to contribute](https://github.com/danieldieeins/Zyneon-Application/tree/shervann)
 
 ---
 ![Zyneon Application logo and text](https://i.ibb.co/tsKhXtB/23.png)
