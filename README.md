@@ -1,6 +1,8 @@
 Zyneon Application ```2024.4.7 (Horizon)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
 <br>`Contributions are welcome!` [Visit the rewrite branch to contribute](https://github.com/danieldieeins/Zyneon-Application/tree/shervann)
 
+Download the Zyneon Application from https://github.com/danieldieeins/Zyneon-Application/releases and https://nexus.zyneonstudios.com/application only! All other sources are not verified and we assume no liability!
+
 ---
 ![Zyneon Application logo and text](https://i.ibb.co/tsKhXtB/23.png)
 by [Zyneon Studios](https://www.zyneonstudios.com). Metadata and update repository: [here](https://github.com/danieldieeins/ZyneonApplicationContent)
