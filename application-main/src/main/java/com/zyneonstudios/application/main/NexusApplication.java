@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
+import com.zyneonstudios.application.modules.ModuleLoader;
+import com.zyneonstudios.application.modules.test.TestModule;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 
@@ -23,6 +25,7 @@ public class NexusApplication{
 
     private final JFrame frame;
     private static final Logger logger = new Logger("APP");
+    private ModuleLoader moduleLoader = new ModuleLoader(this);
 
     public NexusApplication() {
         // Initializing the application frame
@@ -33,18 +36,48 @@ public class NexusApplication{
         } catch (Exception ignore) {}
         if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")) {
             // Creating a standard application frame for macOS and Windows
-            frame = new ApplicationFrame(ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
+            frame = new ApplicationFrame(this, ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
             frame.pack(); frame.setSize(new Dimension(1200,720));
         } else {
             // Creating a custom application frame for other operating systems
-            frame = new CustomApplicationFrame(ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
+            frame = new CustomApplicationFrame(this, ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
             frame.pack();
         }
         frame.setLocationRelativeTo(null);
+        if(ApplicationConfig.test) {
+            moduleLoader.loadModule(new TestModule(this));
+        }
+
+        File modules = new File(getApplicationPath()+"modules/");
+        if(modules.exists()) {
+            if(modules.isDirectory()) {
+                try {
+                    for(File module : modules.listFiles()) {
+                        if(!module.isDirectory()) {
+                            try {
+                                moduleLoader.loadModule(moduleLoader.readModule(module));
+                            } catch (Exception e) {
+                                getLogger().debug("[APP] Cant read module "+module.getName()+": "+e.getMessage());
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    getLogger().error("[APP] Can't read modules: "+e.getMessage());
+                }
+            }
+        }
     }
 
     public static Logger getLogger() {
         return logger;
+    }
+
+    public ModuleLoader getModuleLoader() {
+        return moduleLoader;
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 
     // Method to update the application UI
@@ -70,6 +103,7 @@ public class NexusApplication{
 
     // Method to launch the application
     public void launch() {
+        moduleLoader.activateModules();
         frame.setVisible(true);
     }
 }

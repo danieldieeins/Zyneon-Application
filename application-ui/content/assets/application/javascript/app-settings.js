@@ -13,3 +13,7 @@ function toggleUpdates() {
 function syncUpdates() {
     connector('sync.updateChannel.'+document.getElementById('updater-settings-update-channel').value);
 }
+
+function syncTheme() {
+    setColors(document.getElementById("appearance-settings-theme").value)
+}

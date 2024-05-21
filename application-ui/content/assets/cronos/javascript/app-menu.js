@@ -59,3 +59,54 @@ function initMenu(menuId) {
     }
     return false;
 }
+
+function addMenuEntry(entryId,icon,text,clickRequest) {
+    if(entryId) {
+        if (text) {
+            const template = document.getElementById('side-menu-item');
+            const entry = template.cloneNode(true);
+            entry.id = entryId;
+
+            const p = entry.querySelector("p");
+            if(p) {
+                p.innerText = text.toString();
+            }
+
+            if (clickRequest) {
+                entry.onclick = function () {
+                    connector(clickRequest.toString());
+                }
+            }
+
+            template.parentNode.insertBefore(entry,template);
+
+            if (icon) {
+                const i = icon.toString().toLowerCase();
+                if (i.endsWith(".png") || i.endsWith(".svg") || i.endsWith(".jpg") || i.endsWith(".gif") || i.endsWith(".jpeg")) {
+                    const ie = entry.querySelector("i");
+                    const img = entry.querySelector("img");
+                    if (ie) {
+                        ie.style.display = "none";
+                    }
+                    if (img) {
+                        img.src = icon.toString();
+                        img.classList.remove("invisible");
+                    }
+                } else {
+                    const ie = entry.querySelector("i");
+                    if (ie) {
+                        ie.classList.remove("bx");
+                        ie.classList.remove("bx-loader-circle");
+                        ie.classList.remove("bx-spin");
+                        const classList = i.toString().split(/\s+/);
+                        classList.forEach(className => {
+                            if (className.trim() !== "") { // Leere Klassen ignorieren
+                                ie.classList.add(className);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    }
+}

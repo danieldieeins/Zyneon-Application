@@ -19,10 +19,12 @@ public class ApplicationFrame extends WebFrame {
      * */
 
     private final FrameConnector connector; // Instance of FrameConnector for handling frame requests
+    private final NexusApplication application; //Instance of the owning application
 
     // Constructor
-    public ApplicationFrame(String url, String jcefPath) {
+    public ApplicationFrame(NexusApplication application, String url, String jcefPath) {
         super(url, jcefPath); // Call superclass constructor
+        this.application = application; //Initialize application
         this.connector = new FrameConnector(this); // Initialize FrameConnector
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             // Override method to handle console messages
@@ -52,6 +54,11 @@ public class ApplicationFrame extends WebFrame {
         return connector;
     }
 
+    //Getter method for application
+    public NexusApplication getApplication() {
+        return application;
+    }
+
     // Method to set title bar properties
     public void setTitlebar(String title, Color background, Color foreground) {
         setTitle("Zyneon Application ("+title+", "+ ApplicationConfig.getOS()+")"); // Set frame title
@@ -73,5 +80,9 @@ public class ApplicationFrame extends WebFrame {
     // Method to execute JavaScript commands in the browser
     public void executeJavaScript(String command) {
         getBrowser().executeJavaScript(command,getBrowser().getURL(),5); // Execute JavaScript command
+    }
+
+    public void openCustomPage(String title, String pageId, String url) {
+        getBrowser().loadURL(ApplicationConfig.urlBase+"custom.html?title="+title+"&id="+pageId+"&url="+url);
     }
 }

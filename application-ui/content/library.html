@@ -14,7 +14,7 @@
         <script src="assets/cronos/javascript/app-base.js"></script>
         <script src="assets/cronos/javascript/app-menu.js"></script>
         <script src="assets/application/javascript/app-shared.js"></script>
-        <script>console.log("[CONNECTOR] sync.desktop"); init();</script>
+        <script>console.log("[CONNECTOR] init.library"); init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -47,6 +47,11 @@
                         <li onclick="window.location.href = 'settings.html';">
                             <i class='bx bxs-cog'></i>
                             <p>Settings</p>
+                        </li>
+                        <li id="side-menu-item">
+                            <img class="invisible" alt="button icon" src="https://cravatar.eu/helmhead/MHF_Question/64.png">
+                            <i class='bx bx-loader-circle bx-spin'></i>
+                            <p></p>
                         </li>
                     </ul>
                     <div class="menu-panel">

@@ -113,3 +113,7 @@ a.button:hover {
 .main {
     position: relative;
 }
+
+.invisible {
+    display: none;
+}

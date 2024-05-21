@@ -12,7 +12,7 @@
     color: var(--highlight);
     transition: all 0.25s ease;
     display: none;
-    box-shadow: 0 0 0.8rem var(--shadow3);
+    box-shadow: none;
 }
 
 .side-menu.active {
@@ -68,7 +68,7 @@
 
 .side-menu ul li {
     height: 3rem;
-    box-shadow: 0 0 0.8rem var(--shadow3);
+    box-shadow: none;
     width: 3rem;
     border-radius: 0.5rem;
     background: var(--background5);
@@ -220,4 +220,8 @@ ul li img {
 
 ul li {
     white-space: nowrap;
+}
+
+#side-menu-item {
+    display: none;
 }

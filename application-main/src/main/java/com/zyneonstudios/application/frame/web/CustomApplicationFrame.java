@@ -1,5 +1,7 @@
 package com.zyneonstudios.application.frame.web;
 
+import com.zyneonstudios.application.main.NexusApplication;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -19,8 +21,8 @@ public class CustomApplicationFrame extends ApplicationFrame {
     private boolean border; // Flag to track frame border state
 
     // Constructor
-    public CustomApplicationFrame(String url, String jcefPath) {
-        super(url,jcefPath); // Call superclass constructor
+    public CustomApplicationFrame(NexusApplication application, String url, String jcefPath) {
+        super(application,url,jcefPath); // Call superclass constructor
         setUndecorated(true); // Remove default window decorations
         title = "  Zyneon Application"; // Set default title
         JPanel customTitleBar = createCustomTitleBar(); // Create custom title bar

@@ -10,13 +10,20 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.5-alpha.5</version>
+    <version>2024.5-alpha.6</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -35,6 +42,21 @@
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-zyndex</artifactId>
             <version>2024.4.3.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.flowarg</groupId>
+            <artifactId>azuljavadownloader</artifactId>
+            <version>1.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Dependencies to fix other dependencies-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

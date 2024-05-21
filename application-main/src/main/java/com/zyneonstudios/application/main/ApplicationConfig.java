@@ -18,6 +18,7 @@ public record ApplicationConfig(String[] args) {
      * */
 
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
+    public static boolean test = false;
 
     private static String applicationPath = null;
     private static Config configuration = null;
@@ -40,6 +41,11 @@ public record ApplicationConfig(String[] args) {
                 // If the argument starts with "--path:", update the applicationPath by replacing "--path:" with an empty string
                 // This extracts the path specified after "--path:" and sets it as the application path
                 applicationPath = arg.replace("--path:", "");
+            }
+            // Checking if the argument starts with "--test:"
+            else if(arg.startsWith("--test")) {
+                // If the argument starts with "--test", the test mode will be enabled
+                test = true;
             }
         }
     }

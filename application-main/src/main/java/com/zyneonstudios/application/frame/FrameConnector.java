@@ -3,6 +3,7 @@ package com.zyneonstudios.application.frame;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.main.ApplicationConfig;
 import com.zyneonstudios.application.main.NexusApplication;
+import com.zyneonstudios.application.modules.ApplicationModule;
 
 import java.awt.*;
 
@@ -30,20 +31,27 @@ public class FrameConnector {
         // Checking the type of request
         if(request.startsWith("sync.")) {
             // If the request starts with "sync.", call the sync method
-            sync(request.replace("sync.",""));
+            sync(request.replace("sync.", ""));
             // Log successful resolution
-            NexusApplication.getLogger().debug("[CONNECTOR] successfully resolved "+request);
-        } else {
-            // Log inability to resolve the request
-            NexusApplication.getLogger().error("[CONNECTOR] couldn't resolve "+request+".");
+            NexusApplication.getLogger().debug("[CONNECTOR] successfully resolved " + request);
+        } else if(request.startsWith("init.")) {
+            // If the request starts with "init.", call the init method
+            init(request.replace("init.", ""));
+            // Log successful resolution
+            NexusApplication.getLogger().debug("[CONNECTOR] successfully resolved " + request);
         }
+        for(ApplicationModule module:frame.getApplication().getModuleLoader().getApplicationModules()) {
+            module.getConnector().resolveFrameRequest(request);
+        }
+    }
 
+    private void init(String request) {
+        frame.executeJavaScript("syncDesktop();");
     }
 
     // Method to synchronize settings and updates
     private void sync(String request) {
         // Execute JavaScript function to sync with desktop
-        frame.executeJavaScript("syncDesktop();");
         // Check the type of synchronization request
         if(request.startsWith("title.")) {
             // If the request starts with "title.", update the titlebar
@@ -97,7 +105,7 @@ public class FrameConnector {
                 channel = ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel");
             }
             // Execute JavaScript to update the UI with retrieved settings
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\";");
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit';");
         }
     }
 }
