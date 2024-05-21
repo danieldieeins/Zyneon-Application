@@ -69,7 +69,10 @@ public class FrameConnector {
                 background = Color.decode("#0a0310");
                 foreground = Color.white;
             }
-            ApplicationConfig.getSettings().set("settings.theme",request_[0]);
+            if(ApplicationConfig.theme.equalsIgnoreCase(request_[0])) {
+                ApplicationConfig.getSettings().set("settings.theme", request_[0]);
+                ApplicationConfig.theme = request_[0];
+            }
             String title = request_[1];
             // Set the titlebar with the specified title, background, and foreground colors
             frame.setTitlebar(title,background,foreground);
