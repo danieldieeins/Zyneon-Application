@@ -44,7 +44,7 @@ public class ModuleLoader {
     }
 
     public void loadModule(ApplicationModule module) {
-        NexusApplication.getLogger().log("[MODULES] Loading module "+module.getId()+" v"+module.getVersion());
+        NexusApplication.getLogger().log("[MODULES] Loading module "+module.getId()+" v"+module.getVersion()+" by "+module.getAuthor()+"...");
         if(!modules.containsValue(module)) {
             modules.put(module.getId(),module);
             module.onLoad();

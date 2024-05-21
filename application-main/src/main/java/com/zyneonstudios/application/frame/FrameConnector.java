@@ -59,10 +59,10 @@ public class FrameConnector {
             Color background;
             Color foreground;
             // Set title bar background and foreground colors based on the request
-            if(request_[0].equalsIgnoreCase("assets/cronos/css/app-colors-dark.css")) {
+            if(request_[0].equalsIgnoreCase("../assets/cronos/css/app-colors-dark.css")) {
                 background = Color.black;
                 foreground = Color.white;
-            } else if(request_[0].equalsIgnoreCase("assets/cronos/css/app-colors-light.css")) {
+            } else if(request_[0].equalsIgnoreCase("../assets/cronos/css/app-colors-light.css")) {
                 background = Color.white;
                 foreground = Color.black;
             } else {
@@ -90,6 +90,14 @@ public class FrameConnector {
             request = request.replace("updateChannel.","");
             // Update the update channel setting
             ApplicationConfig.getUpdateSettings().set("updater.settings.updateChannel",request);
+        } else if(request.startsWith("startPage.")) {
+            request = request.replaceFirst("startPage.","");
+            ApplicationConfig.startPage = request;
+            ApplicationConfig.getSettings().set("settings.startPage",request);
+        } else if(request.startsWith("language.")) {
+            request = request.replaceFirst("language.","");
+            ApplicationConfig.language = request;
+            ApplicationConfig.getSettings().set("settings.language",request);
         }
     }
 
@@ -105,7 +113,7 @@ public class FrameConnector {
                 channel = ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel");
             }
             // Execute JavaScript to update the UI with retrieved settings
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit';");
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ApplicationConfig.startPage+"';");
         }
     }
 }

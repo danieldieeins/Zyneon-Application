@@ -83,6 +83,6 @@ public class ApplicationFrame extends WebFrame {
     }
 
     public void openCustomPage(String title, String pageId, String url) {
-        getBrowser().loadURL(ApplicationConfig.urlBase+"custom.html?title="+title+"&id="+pageId+"&url="+url);
+        getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
     }
 }

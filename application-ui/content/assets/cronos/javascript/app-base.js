@@ -1,5 +1,5 @@
 let desktop = false;
-let colors = "assets/cronos/css/app-colors-dark.css";
+let colors = "automatic";
 
 document.addEventListener('contextmenu',function(e){
     e.preventDefault();
@@ -27,16 +27,26 @@ function connector(request) {
 
 function setColors(newColors) {
     colors=newColors;
-    document.getElementById("css-colors").href = newColors;
     localStorage.setItem('theme.colors', newColors);
-    connector("sync.title."+colors+"-.-"+document.title);
+    if(newColors==="automatic") {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-dark.css";
+            connector("sync.title." + "../assets/cronos/css/app-colors-dark.css" + "-.-" + document.title);
+        } else {
+            document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-light.css";
+            connector("sync.title." + "../assets/cronos/css/app-colors-light.css" + "-.-" + document.title);
+        }
+    } else {
+        document.getElementById("css-colors").href = newColors;
+        connector("sync.title." + colors + "-.-" + document.title);
+    }
 }
 
 function changeTheme() {
-    if(colors==="assets/cronos/css/app-colors-dark.css") {
-        setColors("assets/cronos/css/app-colors-light.css");
+    if(colors==="../assets/cronos/css/app-colors-dark.css") {
+        setColors("../assets/cronos/css/app-colors-light.css");
     } else {
-        setColors("assets/cronos/css/app-colors-dark.css");
+        setColors("../assets/cronos/css/app-colors-dark.css");
     }
 }
 

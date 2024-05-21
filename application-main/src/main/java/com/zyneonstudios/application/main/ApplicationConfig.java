@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public record ApplicationConfig(String[] args) {
 
@@ -17,7 +18,9 @@ public record ApplicationConfig(String[] args) {
      * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
+    public static String language = "en";
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
+    public static String startPage = "start.html";
     public static boolean test = false;
 
     private static String applicationPath = null;
@@ -47,6 +50,18 @@ public record ApplicationConfig(String[] args) {
                 // If the argument starts with "--test", the test mode will be enabled
                 test = true;
             }
+        }
+        String lang = Locale.getDefault().toLanguageTag();
+        if(lang.startsWith("de-")) {
+            getSettings().checkEntry("settings.language","de");
+        } else {
+            getSettings().checkEntry("settings.language","en");
+        }
+        if(getSettings().get("settings.startPage")!=null) {
+            startPage = getSettings().getString("settings.startPage");
+        }
+        if(getSettings().get("settings.language")!=null) {
+            language = getSettings().getString("settings.language");
         }
     }
 

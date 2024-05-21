@@ -16,7 +16,7 @@ public class TestConnector extends ModuleConnector {
     }
 
     @Override
-    public void resolveFrameRequest(String request) {
+    public void resolveRequest(String request) {
         if(request.startsWith("init.")) {
             frame.executeJavaScript("addMenuEntry('test-page-button','bx bx-test-tube','Test','test.page');");
             request = request.replaceFirst("init.","");

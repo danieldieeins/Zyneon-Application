@@ -36,11 +36,11 @@ public class NexusApplication{
         } catch (Exception ignore) {}
         if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")) {
             // Creating a standard application frame for macOS and Windows
-            frame = new ApplicationFrame(this, ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
+            frame = new ApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + ApplicationConfig.startPage, getApplicationPath() + "libs/jcef/");
             frame.pack(); frame.setSize(new Dimension(1200,720));
         } else {
             // Creating a custom application frame for other operating systems
-            frame = new CustomApplicationFrame(this, ApplicationConfig.urlBase + "start.html", getApplicationPath() + "libs/jcef/");
+            frame = new CustomApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + ApplicationConfig.startPage, getApplicationPath() + "libs/jcef/");
             frame.pack();
         }
         frame.setLocationRelativeTo(null);

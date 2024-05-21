@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Loading...</title>
+    </head>
+    <script>
+        let start = "start.html";
+        if(localStorage.getItem('settings.startPage')!=null) {
+            start = localStorage.getItem('settings.startPage');
+        }
+        location.href = start;
+    </script>
+</html>

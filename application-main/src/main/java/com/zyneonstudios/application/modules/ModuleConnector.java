@@ -9,15 +9,14 @@ public class ModuleConnector {
     }
 
     public void resolveFrameRequest(String request) {
-
+        resolveRequest(request);
     }
 
     public void resolveBackendRequest(String request) {
-
+        resolveRequest(request);
     }
 
     public void resolveRequest(String request) {
-        resolveFrameRequest(request);
-        resolveBackendRequest(request);
+
     }
 }

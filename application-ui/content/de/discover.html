@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Entdecken</title>
+        <link rel="stylesheet" href="../assets/cronos/css/app-base.css">
+        <link rel="stylesheet" id="css-colors" href="../assets/cronos/css/app-colors-dark.css">
+        <link rel="stylesheet" id="css-menu" href="../assets/cronos/css/app-menu-side.css">
+        <link rel="stylesheet" id="css-card" href="../assets/cronos/css/app-cards.css">
+        <link rel="stylesheet" id="css-shared" href="../assets/application/css/app-shared.css">
+        <link rel="stylesheet" id="css-site" href="../assets/application/css/app-discover.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <script src="../assets/cronos/javascript/app-base.js"></script>
+        <script src="../assets/cronos/javascript/app-menu.js"></script>
+        <script src="../assets/application/javascript/app-shared.js"></script>
+        <script src="../assets/application/javascript/app-discover.js"></script>
+        <script>console.log("[CONNECTOR] init.discover"); init();</script>
+    </head>
+    <body>
+        <div class="flex full">
+            <div class="flex">
+                <div class="side-menu" id="menu">
+                    <div class="menu-title">
+                        <img alt="The logo of the Zyneon NEXUS App" src="../assets/application/images/icons/app.png">
+                        <p>
+                            Zyneon Studios<br>
+                            <span class="bold">NEXUS Application</span>
+                        </p>
+                    </div>
+                    <ul>
+                        <li onclick="toggleMainMenu();">
+                            <i class='bx bx-menu'></i>
+                            <p>Menü umschalten</p>
+                        </li>
+                        <li onclick="window.location.href = 'start.html';">
+                            <i class='bx bxs-home'></i>
+                            <p>Start & Neues</p>
+                        </li>
+                        <li onclick="window.location.href = 'library.html';">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <p>Bibliothek</p>
+                        </li>
+                        <li class="highlighted">
+                            <i class='bx bx-world'></i>
+                            <p>Entdecken</p>
+                        </li>
+                        <li onclick="window.location.href = 'settings.html';">
+                            <i class='bx bxs-cog'></i>
+                            <p>Einstellungen</p>
+                        </li>
+                        <li id="side-menu-item">
+                            <img class="invisible" alt="button icon" src="https://cravatar.eu/helmhead/MHF_Question/64.png">
+                            <i class='bx bx-loader-circle bx-spin'></i>
+                            <p></p>
+                        </li>
+                    </ul>
+                    <div class="menu-panel">
+                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                        <p>
+                            <span class="bold">Synchronisieren...</span>
+                            <br>Unbekannter Spieler
+                        </p>
+                    </div>
+                </div><script>initMenu('menu');</script>
+            </div>
+            <div class="cnt">
+                <div class="flex search-table">
+                    <div class="search-menu">
+                        <div class="card filter-card">
+                            <div id="general-filters">
+                                <h3 class="bold">Suchfilter</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3>Spiel: <label><select id="modrinth-versions"><option id="modrinth-loading">Ladevorgang...</option></select></label></h3>
+                                        <h3 onclick="toggleCheck('modrinth-oso');"><label><input onclick="toggleCheck('modrinth-oso');" id="modrinth-oso" type="checkbox"></label> Nur Open-Source</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="type-filters">
+                                <h3 class="bold">Projekttyp</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3 onclick="searchType='modpacks'; syncType();"><label><input id="modrinth-modpacks" type="radio" name="type" value="modpacks"></label> Modpakete</h3>
+                                        <h3 onclick="searchType='mods'; syncType();"><label><input id="modrinth-mods" type="radio" name="type" value="mods"></label> Mods</h3>
+                                        <h3 onclick="searchType='datapacks'; syncType();"><label><input id="modrinth-datapacks" type="radio" name="type" value="datapacks"></label> Datenpakete</h3>
+                                        <h3 onclick="searchType='shaders'; syncType();"><label><input id="modrinth-shaders" type="radio" name="type" value="shaders"></label> Shaderpakete</h3>
+                                        <h3 onclick="searchType='resourcepacks'; syncType();"><label><input id="modrinth-resourcepacks" type="radio" name="type" value="resourcepacks"></label> Ressourcenpakete</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="loader-filters">
+                                <h3 class="bold">Modloader</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-fabric');"><label><input onclick="toggleCheck('modrinth-loaders-fabric');" id='modrinth-loaders-fabric' type="checkbox"></label> Fabric</h3>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-neoforge');"><label><input onclick="toggleCheck('modrinth-loaders-neoforge');" id='modrinth-loaders-neoforge' type="checkbox"></label> NeoForge</h3>
+                                    </div>
+                                    <div>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-forge');"><label><input onclick="toggleCheck('modrinth-loaders-forge');" id='modrinth-loaders-forge' type="checkbox"></label> Forge</h3>
+                                        <h3 onclick="toggleCheck('modrinth-loaders-quilt')"><label><input onclick="toggleCheck('modrinth-loaders-quilt');" id='modrinth-loaders-quilt' type="checkbox"></label> Quilt</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="resourcepack-category-filters">
+                                <h3 class="bold">Kategorien</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Kampf</h3>
+                                        <h3><label><input type="checkbox"></label> Verflucht</h3>
+                                        <h3><label><input type="checkbox"></label> Dekorationen</h3>
+                                        <h3><label><input type="checkbox"></label> Modifiziert</h3>
+                                        <h3><label><input type="checkbox"></label> Realistisch</h3>
+                                        <h3><label><input type="checkbox"></label> Simpel</h3>
+                                        <h3><label><input type="checkbox"></label> Thematisch</h3>
+                                        <h3><label><input type="checkbox"></label> Verbesserungen</h3>
+                                        <h3><label><input type="checkbox"></label> Werkzeuge</h3>
+                                        <h3><label><input type="checkbox"></label> Vanilla-typisch</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="shader-category-filters">
+                                <h3 class="bold">Kategorien</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Zeichentrick</h3>
+                                        <h3><label><input type="checkbox"></label> Verflucht</h3>
+                                        <h3><label><input type="checkbox"></label> Fantasie</h3>
+                                        <h3><label><input type="checkbox"></label> Realistisch</h3>
+                                        <h3><label><input type="checkbox"></label> Semi-realistisch</h3>
+                                        <h3><label><input type="checkbox"></label> Vanilla-typisch</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="modpack-category-filters">
+                                <h3 class="bold">Kategorien</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Abenteuer</h3>
+                                        <h3><label><input type="checkbox"></label> Herausfordernd</h3>
+                                        <h3><label><input type="checkbox"></label> Kampf</h3>
+                                        <h3><label><input type="checkbox"></label> Küchenspüle</h3>
+                                        <h3><label><input type="checkbox"></label> Leicht</h3>
+                                        <h3><label><input type="checkbox"></label> Magisch</h3>
+                                        <h3><label><input type="checkbox"></label> Mehrspieler</h3>
+                                        <h3><label><input type="checkbox"></label> Optimierungen</h3>
+                                        <h3><label><input type="checkbox"></label> Aufgaben</h3>
+                                        <h3><label><input type="checkbox"></label> Technologie</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="category-filters">
+                                <h3 class="bold">Kategorien</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Abenteuer</h3>
+                                        <h3><label><input type="checkbox"></label> Verflucht</h3>
+                                        <h3><label><input type="checkbox"></label> Dekorationen</h3>
+                                        <h3><label><input type="checkbox"></label> Wirtschaft</h3>
+                                        <h3><label><input type="checkbox"></label> Ausrüstung</h3>
+                                        <h3><label><input type="checkbox"></label> Essen</h3>
+                                        <h3><label><input type="checkbox"></label> Spielmechaniken</h3>
+                                        <h3><label><input type="checkbox"></label> Bibliotheken</h3>
+                                        <h3><label><input type="checkbox"></label> Magisch</h3>
+                                        <h3><label><input type="checkbox"></label> Verwaltung</h3>
+                                        <h3><label><input type="checkbox"></label> Minispiele</h3>
+                                        <h3><label><input type="checkbox"></label> Mobs</h3>
+                                        <h3><label><input type="checkbox"></label> Optimierungen</h3>
+                                        <h3><label><input type="checkbox"></label> Soziales</h3>
+                                        <h3><label><input type="checkbox"></label> Logistik</h3>
+                                        <h3><label><input type="checkbox"></label> Technologie</h3>
+                                        <h3><label><input type="checkbox"></label> Transportation</h3>
+                                        <h3><label><input type="checkbox"></label> Werkzeuge</h3>
+                                        <h3><label><input type="checkbox"></label> Weltgeneratoren</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="resourcepack-features-filters">
+                                <h3 class="bold">Funktionen</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Töne</h3>
+                                        <h3><label><input type="checkbox"></label> Blöcke</h3>
+                                        <h3><label><input type="checkbox"></label> Basis-Shader</h3>
+                                        <h3><label><input type="checkbox"></label> Entitäten</h3>
+                                        <h3><label><input type="checkbox"></label> Umgebung</h3>
+                                        <h3><label><input type="checkbox"></label> Ausrüstung</h3>
+                                        <h3><label><input type="checkbox"></label> Schriftarten</h3>
+                                        <h3><label><input type="checkbox"></label> Oberfläche</h3>
+                                        <h3><label><input type="checkbox"></label> Gegenstände</h3>
+                                        <h3><label><input type="checkbox"></label> Sprachen</h3>
+                                        <h3><label><input type="checkbox"></label> Modelle</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="shader-features-filters">
+                                <h3 class="bold">Funktionen</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Atmosphäre</h3>
+                                        <h3><label><input type="checkbox"></label> Florierend</h3>
+                                        <h3><label><input type="checkbox"></label> Farbiges Licht</h3>
+                                        <h3><label><input type="checkbox"></label> Laub</h3>
+                                        <h3><label><input type="checkbox"></label> Path Tracing</h3>
+                                        <h3><label><input type="checkbox"></label> PBR</h3>
+                                        <h3><label><input type="checkbox"></label> Reflexionen</h3>
+                                        <h3><label><input type="checkbox"></label> Schatten</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="resolution-filters">
+                                <h3 class="bold">Auflösungen</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> 8x oder weniger</h3>
+                                        <h3><label><input type="checkbox"></label> 16x</h3>
+                                        <h3><label><input type="checkbox"></label> 32x</h3>
+                                        <h3><label><input type="checkbox"></label> 48x</h3>
+                                        <h3><label><input type="checkbox"></label> 64x</h3>
+                                        <h3><label><input type="checkbox"></label> 128x</h3>
+                                        <h3><label><input type="checkbox"></label> 256x</h3>
+                                        <h3><label><input type="checkbox"></label> 512x oder mehr</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="performance-filters">
+                                <h3 class="bold">Leistungseinfluss</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Hoch</h3>
+                                        <h3><label><input type="checkbox"></label> Mittelmäßig</h3>
+                                        <h3><label><input type="checkbox"></label> Klein</h3>
+                                        <h3><label><input type="checkbox"></label> Kartoffel</h3>
+                                        <h3><label><input type="checkbox"></label> 1FPS</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="environment-filters">
+                                <h3 class="bold">Umgebungen</h3>
+                                <div class="flex">
+                                    <div>
+                                        <h3><label><input type="checkbox"></label> Server</h3>
+                                        <h3><label><input type="checkbox"></label> Client</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><script>document.getElementById(searchSource+"-modpacks").checked = true; syncType();</script>
+                    <div class="search-content">
+                        <div class="card search-bar flex">
+                            <i class='bx bx-search-alt'></i>
+                            <label><input type="text" placeholder="Search"></label>
+                        </div>
+                        <div class="search-results">
+                            <div class="card search-result" id="search-result-template">
+                                <div class="flex">
+                                    <div class="result-image">
+                                        <img alt="Search result logo" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                                    </div>
+                                    <div class="result-details">
+                                        DETAILS
+                                    </div>
+                                </div>
+                                <div class="result-panel">
+                                    <h3 class="result-stat stat-downloads"></h3>
+                                </div>
+                            </div>
+                            <br><br>
+                            <br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
