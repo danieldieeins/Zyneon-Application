@@ -21,6 +21,7 @@ public record ApplicationConfig(String[] args) {
     public static String language = "en";
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
     public static String startPage = "start.html";
+    public static String theme = "automatic";
     public static boolean test = false;
 
     private static String applicationPath = null;
@@ -62,6 +63,9 @@ public record ApplicationConfig(String[] args) {
         }
         if(getSettings().get("settings.language")!=null) {
             language = getSettings().getString("settings.language");
+        }
+        if(getSettings().get("settings.theme")!=null) {
+            theme = getSettings().getString("settings.theme");
         }
     }
 

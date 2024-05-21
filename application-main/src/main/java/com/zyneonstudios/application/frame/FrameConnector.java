@@ -46,7 +46,7 @@ public class FrameConnector {
     }
 
     private void init(String request) {
-        frame.executeJavaScript("syncDesktop();");
+        frame.executeJavaScript("syncDesktop(); setColors('"+ApplicationConfig.theme+"');");
     }
 
     // Method to synchronize settings and updates
@@ -69,6 +69,7 @@ public class FrameConnector {
                 background = Color.decode("#0a0310");
                 foreground = Color.white;
             }
+            ApplicationConfig.getSettings().set("settings.theme",request_[0]);
             String title = request_[1];
             // Set the titlebar with the specified title, background, and foreground colors
             frame.setTitlebar(title,background,foreground);
