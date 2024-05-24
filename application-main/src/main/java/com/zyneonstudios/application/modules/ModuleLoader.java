@@ -93,8 +93,8 @@ public class ModuleLoader {
     }
 
     public void loadModule(ApplicationModule module) {
-        NexusApplication.getLogger().log("[MODULES] Loading module "+module.getId()+" v"+module.getVersion()+" by "+module.getAuthor()+"...");
         if(!modules.containsKey(module.getId())) {
+            NexusApplication.getLogger().log("[MODULES] Loading module "+module.getId()+" v"+module.getVersion()+" by "+module.getAuthor()+"...");
             modules.put(module.getId(),module);
             module.onLoad();
         }
