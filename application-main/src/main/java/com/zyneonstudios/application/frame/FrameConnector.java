@@ -59,23 +59,41 @@ public class FrameConnector {
             Color background;
             Color foreground;
             // Set title bar background and foreground colors based on the request
+            String fReq = request_[0];
             if(request_[0].equalsIgnoreCase("../assets/cronos/css/app-colors-dark.css")) {
                 background = Color.black;
                 foreground = Color.white;
             } else if(request_[0].equalsIgnoreCase("../assets/cronos/css/app-colors-light.css")) {
                 background = Color.white;
                 foreground = Color.black;
+            } else if(request_[0].startsWith("automatic-")) {
+                request = request_[0].replaceFirst("automatic-","");
+                if(request.equals("dark")) {
+                    background = Color.black;
+                    foreground = Color.white;
+                } else {
+                    background = Color.white;
+                    foreground = Color.black;
+                }
+                fReq = "automatic";
             } else {
                 background = Color.decode("#0a0310");
                 foreground = Color.white;
             }
-            if(!ApplicationConfig.theme.equalsIgnoreCase(request_[0])) {
-                ApplicationConfig.theme = request_[0];
+            if(!ApplicationConfig.theme.equalsIgnoreCase(fReq)) {
+                ApplicationConfig.theme = fReq;
                 ApplicationConfig.getSettings().set("settings.theme", ApplicationConfig.theme);
             }
             String title = request_[1];
             // Set the titlebar with the specified title, background, and foreground colors
             frame.setTitlebar(title,background,foreground);
+        } else if(request.equals("exit")) {
+            frame.getApplication().getModuleLoader().deactivateModules();
+            System.exit(1);
+        } else if(request.equals("refresh")) {
+            frame.getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/"+ApplicationConfig.startPage);
+        } else if(request.equals("restart")) {
+            frame.getApplication().restart();
         } else if(request.startsWith("settings.")) {
             // If the request starts with "settings.", synchronize settings
             syncSettings(request.replaceFirst("settings.",""));

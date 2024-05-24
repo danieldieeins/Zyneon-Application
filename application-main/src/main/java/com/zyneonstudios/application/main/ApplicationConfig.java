@@ -29,9 +29,12 @@ public record ApplicationConfig(String[] args) {
     private static String os = null;
     private static Config updateConfig = null;
 
+    public static String[] arguments = null;
+
     // Constructor for ApplicationConfig class
     public ApplicationConfig(String[] args) {
         this.args = args;
+        this.arguments = this.args;
         // Iterating through the command-line arguments
         for (String arg : args) {
             // Checking if the argument starts with "--ui:"
@@ -67,6 +70,10 @@ public record ApplicationConfig(String[] args) {
         if(getSettings().get("settings.theme")!=null) {
             theme = getSettings().getString("settings.theme");
         }
+    }
+
+    public static String[] getArguments() {
+        return arguments;
     }
 
     // Method to get the application path as a string

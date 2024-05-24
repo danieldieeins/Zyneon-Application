@@ -12,6 +12,14 @@
     overflow-y: auto;
 }
 
+.library #add-game-module, .library #game-content, .library #add-module-advanced, .library #game-module-advanced {
+    display: none;
+}
+
+.library #add-game-module.active, .library #add-module-advanced.active, .library #game-module-advanced.active, .library #game-content.active {
+    display: inherit;
+}
+
 .library .library-content {
     position: relative !important;
     padding: 1rem 1rem 1rem 0.5rem;
@@ -22,6 +30,20 @@
 
 .library .card {
     width: calc(100% - 2.25rem);
+}
+
+.library #game-module-title {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.library #game-module-title #select-game-module {
+    color: var(--foreground2);
+    font-size: 1.05rem;
+}
+
+.library #game-module-title #select-game-module option {
+    background: var(--background);
 }
 
 .search-bar {

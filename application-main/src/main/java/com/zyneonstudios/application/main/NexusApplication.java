@@ -12,10 +12,12 @@ import live.nerotv.shademebaby.utils.FileUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
 
 import static com.zyneonstudios.application.main.ApplicationConfig.getApplicationPath;
 
-public class NexusApplication{
+public class NexusApplication {
 
     /*
      * Zyneon Application "main" object
@@ -105,5 +107,36 @@ public class NexusApplication{
     public void launch() {
         moduleLoader.activateModules();
         frame.setVisible(true);
+        if(Main.splash!=null) {
+            Main.splash.setVisible(false);
+            Main.splash = null;
+            System.gc();
+        }
+    }
+
+    public void restart() {
+        CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
+        if (codeSource != null) {
+            URL jarUrl = codeSource.getLocation();
+            String jarPath = jarUrl.getPath();
+            if(jarPath.startsWith("/")) {
+                jarPath = jarPath.replaceFirst("/","");
+            }
+            StringBuilder args = new StringBuilder();
+            if(ApplicationConfig.getArguments()!=null) {
+                for(String arg : ApplicationConfig.getArguments()) {
+                    args.append(arg).append(" ");
+                }
+            }
+            ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, args.toString());
+            try {
+                pb.start();
+            } catch (Exception e) {
+                logger.error("[APP] Couldn't restart application: "+e.getMessage());
+            }
+            getModuleLoader().deactivateModules();
+            System.exit(0);
+        }
+        System.exit(-1);
     }
 }

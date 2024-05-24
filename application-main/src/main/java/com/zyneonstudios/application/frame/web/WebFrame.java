@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.frame.web;
 
+import com.zyneonstudios.application.main.NexusApplication;
 import javafx.application.Platform;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import me.friwi.jcefmaven.CefAppBuilder;
@@ -17,12 +18,14 @@ import org.cef.callback.CefDownloadItemCallback;
 import org.cef.handler.CefDownloadHandler;
 import org.cef.handler.CefFocusHandlerAdapter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class WebFrame extends JFrame {
 
@@ -39,9 +42,9 @@ public class WebFrame extends JFrame {
     private boolean browserFocus; // Flag indicating whether browser has focus
 
     // Constructor
-    public WebFrame(String url, String jcefPath) {
+    public WebFrame(String url, String jcefPath, NexusApplication application) {
         try {
-            init(url, jcefPath); // Initialize WebFrame
+            init(url, jcefPath, application); // Initialize WebFrame
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -65,7 +68,7 @@ public class WebFrame extends JFrame {
     }
 
     // Initialization method
-    private void init(String url, String jcefPath) throws UnsupportedPlatformException, IOException, CefInitializationException, InterruptedException {
+    private void init(String url, String jcefPath, NexusApplication application) throws UnsupportedPlatformException, IOException, CefInitializationException, InterruptedException {
         browserFocus = true; // Initially, browser has focus
         File installDir = new File(jcefPath); // Directory where jCEF is installed
         ShadeMeBaby.getLogger().debug("[WEBFRAME] Is jCef installed: "+!installDir.mkdirs()); // Log whether jCEF is installed
@@ -74,9 +77,13 @@ public class WebFrame extends JFrame {
         builder.setAppHandler(new MavenCefAppHandlerAdapter() {
             @Override @Deprecated
             public void stateHasChanged(CefApp.CefAppState state) {
-                if (state == CefApp.CefAppState.TERMINATED) Platform.exit(); // Exit JavaFX application when CEF terminates
+                if (state == CefApp.CefAppState.TERMINATED) {
+                    application.getModuleLoader().deactivateModules();
+                    Platform.exit(); System.exit(0); // Exit JavaFX application when CEF terminates
+                }
             }
         });
+        setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
         builder.getCefSettings().cache_path = jcefPath+"/cache"; // Set cache path for CEF
         builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE; // Disable logging
         builder.getCefSettings().persist_session_cookies = true; // Persist session cookies

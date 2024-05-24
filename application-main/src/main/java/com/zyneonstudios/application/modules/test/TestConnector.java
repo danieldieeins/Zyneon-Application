@@ -1,6 +1,7 @@
 package com.zyneonstudios.application.modules.test;
 
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
+import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
 import com.zyneonstudios.application.modules.ModuleConnector;
 
@@ -17,6 +18,7 @@ public class TestConnector extends ModuleConnector {
 
     @Override
     public void resolveRequest(String request) {
+        NexusApplication.getLogger().log("[REQUEST-READER] "+request);
         if(request.startsWith("init.")) {
             frame.executeJavaScript("addMenuEntry('test-page-button','bx bx-test-tube','Test','test.page');");
             request = request.replaceFirst("init.","");

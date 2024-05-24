@@ -14,6 +14,7 @@
         <script src="../assets/cronos/javascript/app-base.js"></script>
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
+        <script src="../assets/application/javascript/app-library.js"></script>
         <script>console.log("[CONNECTOR] init.library"); init();</script>
     </head>
     <body>
@@ -67,16 +68,30 @@
                 <div class="library flex">
                     <div class="library-menu">
                         <div class="card">
+                            <h4 id="game-module-title">
+                                Spiel:
+                                <label>
+                                    <select id="select-game-module" onchange="onModuleChange();">
+                                        <option id="add-module-option" value="-1">Modul hinzufügen...</option>
+                                    </select>
+                                </label>
+                            </h4>
+                        </div>
+                        <div id="game-submenu">
 
                         </div>
                     </div>
                     <div class="library-content">
-                        <div class="card">
+                        <div id="add-game-module">
+                            <div class="card"><h4>Ein Spielmodul hinzufügen...</h4></div>
+                        </div>
+                        <div id="game-content">
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script>initLibrary();</script>
     </body>
 </html>

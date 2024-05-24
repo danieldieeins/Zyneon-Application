@@ -1,14 +1,20 @@
 package com.zyneonstudios.application.modules;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.zyneonstudios.application.main.NexusApplication;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.jar.JarFile;
 
 public class ModuleLoader {
 
@@ -33,8 +39,17 @@ public class ModuleLoader {
 
     public ApplicationModule readModule(File moduleJar) {
         try {
+            String mainPath;
+            try (JarFile jarFile = new JarFile(moduleJar.getAbsolutePath())) {
+                InputStream is = jarFile.getInputStream(jarFile.getJarEntry("module.json"));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                mainPath = new Gson().fromJson(reader, JsonObject.class).get("main").getAsString();
+            } catch (Exception e) {
+                NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+                return null;
+            }
             URLClassLoader classLoader = new URLClassLoader(new URL[]{moduleJar.toURI().toURL()});
-            Class<?> module = classLoader.loadClass("live.nerotv.requestreader.RequestReader");
+            Class<?> module = classLoader.loadClass(mainPath);
             Constructor<?> constructor = module.getConstructor(NexusApplication.class);
             return (ApplicationModule) constructor.newInstance(application);
         } catch (Exception e) {

@@ -23,7 +23,7 @@ public class ApplicationFrame extends WebFrame {
 
     // Constructor
     public ApplicationFrame(NexusApplication application, String url, String jcefPath) {
-        super(url, jcefPath); // Call superclass constructor
+        super(url, jcefPath, application); // Call superclass constructor
         this.application = application; //Initialize application
         this.connector = new FrameConnector(this); // Initialize FrameConnector
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
@@ -84,5 +84,9 @@ public class ApplicationFrame extends WebFrame {
 
     public void openCustomPage(String title, String pageId, String url) {
         getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
+    }
+
+    public void executeCustomPageJS(String command) {
+        executeJavaScript("document.getElementById('iframe').contentWindow."+command);
     }
 }

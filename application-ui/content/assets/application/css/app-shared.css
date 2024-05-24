@@ -56,12 +56,20 @@ li.disabled:hover {
     color: var(--foreground2) !important;
 }
 
+.danger:hover * {
+    color: var(--foreground2) !important;
+}
+
 li:hover {
     animation: wiggle 2.5s infinite;
 }
 
 .card {
     margin-bottom: 1rem;
+}
+
+.menu-panel {
+    display: none !important;
 }
 
 .cnt {

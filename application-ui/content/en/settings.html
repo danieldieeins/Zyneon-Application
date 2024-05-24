@@ -66,32 +66,82 @@
             </div><script>initMenu('menu');</script>
             <div class="cnt">
                 <div class="settings">
-                    <div class="flex">
-                        <div class="settings-menu">
-                            <div class="card">
-                                <a class="danger hover-wiggle-extreme">Exit app</a>
-                            </div>
+                    <div class="settings-menu">
+                        <div class="card card-disabled">
+                            <h2>Settings</h2>
                         </div>
-                        <div class="settings-content">
-                            <div class="scroll">
-                                <div class="card">
-                                    <h2>General settings</h2>
+                        <div class="card settings-menu-card card-disabled">
+                            <h3>Navigation</h3>
+                            <ul>
+                                <li id="settings-general-button">
+                                    <i class='bx bx-compass'></i>
+                                    <span>General settings</span>
+                                </li>
+                                <li id="settings-global-button">
+                                    <i class='bx bx-globe'></i>
+                                    <span>Global settings</span>
+                                </li>
+                                <li id="settings-indexes-button">
+                                    <i class='bx bx-sort-down'></i>
+                                    <span>Index settings</span>
+                                </li>
+                                <li id="settings-modules-button">
+                                    <i class='bx bx-extension'></i>
+                                    <span>Module settings</span>
+                                </li>
+                                <li id="settings-about-button">
+                                    <i class='bx bx-info-circle'></i>
+                                    <span>About NEXUS App</span>
+                                </li>
+                            </ul>
+                            <div class="settings-modules-section" id="settings-modules-section">
+                                <h3>Modules</h3>
+                                <ul>
+                                    <li id="settings-module-template">
+                                        <i></i>
+                                        <img alt="settings menu entry icon" src="">
+                                        <span>Loading menu entry...</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h3>Actions</h3>
+                            <ul>
+                                <li onclick="connector('sync.refresh')">
+                                    <i class='bx bx-refresh'></i>
+                                    <span>Refresh application</span>
+                                </li>
+                                <li onclick="connector('sync.restart')">
+                                    <i class='bx bx-revision'></i>
+                                    <span>Restart application</span>
+                                </li>
+                                <li onclick="connector('sync.exit')" class="danger">
+                                    <i class='bx bx-exit'></i>
+                                    <span>Exit application</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="settings-content">
+                        <div class="card card-disabled">
+                            <h2 id="settings-title"></h2>
+                        </div>
+                        <div class="card settings-content-card card-disabled">
+                            <div id="settings-general">
+                                <div class="group" id="settings-general-appearance">
+                                    <h4>Appearance</h4>
                                     <h3>
                                         Start page
                                         <span class="select">
                                             <label>
-                                                    <select id="general-settings-start-page" onchange="syncStartPage();">
-                                                        <option value="start.html">Home & news</option>
-                                                        <option value="library.html">Library</option>
-                                                        <option value="discover.html">Discover</option>
-                                                        <option value="settings.html">Settings</option>
-                                                    </select>
-                                                </label>
+                                                <select id="general-settings-start-page" onchange="syncStartPage();">
+                                                    <option value="start.html">Home & news</option>
+                                                    <option value="library.html">Library</option>
+                                                    <option value="discover.html">Discover</option>
+                                                    <option value="settings.html">Settings</option>
+                                                </select>
+                                            </label>
                                         </span>
                                     </h3>
-                                </div>
-                                <div class="card">
-                                    <h2>Appearance settings</h2>
                                     <h3>
                                         Theme
                                         <span class="select">
@@ -101,7 +151,7 @@
                                                     <option value="../assets/cronos/css/app-colors-dark.css">Default: Dark</option>
                                                     <option value="../assets/cronos/css/app-colors-light.css">Default: Light</option>
                                                     <option value="../assets/application/css/app-colors-zyneon.css">Default: Zyneon</option>
-                                                </select>
+                                                </select><script>document.getElementById("appearance-settings-theme").value = colors;</script>
                                             </label>
                                         </span>
                                     </h3>
@@ -116,63 +166,34 @@
                                             </label>
                                         </span>
                                     </h3>
-                                </div><br>
-                                <script>document.getElementById("appearance-settings-theme").value = colors;</script>
-                                <div id="updater-settings">
-                                    <div class="card">
-                                        <div class="updater-settings">
-                                            <h2>Updater settings</h2>
-                                            <h3>
-                                                Enable automatic updates
-                                                <span class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
-                                                        <script>
-                                                            document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
-                                                                event.preventDefault();
-                                                            });
-                                                        </script>
-                                                    </label>
-                                                </span>
-                                            </h3>
-                                            <h3>
-                                                Update channel
-                                                <span class="select">
-                                                    <label>
-                                                        <select id="updater-settings-update-channel" onchange="syncUpdates();">
-                                                            <option value="shervann">Shervann (current, test)</option>
-                                                            <option value="stable">Stable (recommended)</option>
-                                                            <option value="experimental">Experimental (unstable)</option>
-                                                        </select>
-                                                    </label>
-                                                </span>
-                                            </h3>
-                                        </div>
-                                    </div><br>
                                 </div>
-                                <div class="card">
-                                    <div class="updater-settings">
-                                        <h2>Global settings</h2>
-                                        <h3>
-                                            Loading...
-                                        </h3>
-                                    </div>
-                                </div><br>
-                                <div class="card">
-                                    <div class="updater-settings">
-                                        <h2>Module settings</h2>
-                                        <h3>
-                                            Loading...
-                                        </h3>
-                                    </div>
-                                </div><br>
-                                <div class="card">
-                                    <div class="updater-settings">
-                                        <h2>Index settings</h2>
-                                        <h3>
-                                            Loading...
-                                        </h3>
-                                    </div>
+                                <div class="group" id="settings-general-startup">
+                                    <h4>Startup</h4>
+                                    <h3>
+                                        Check for updates
+                                        <span class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
+                                                <script>
+                                                    document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
+                                                        event.preventDefault();
+                                                    });
+                                                </script>
+                                            </label>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Update channel
+                                        <span class="select">
+                                            <label>
+                                                <select id="updater-settings-update-channel" onchange="syncUpdates();">
+                                                    <option value="shervann">Shervann (current, test)</option>
+                                                    <option value="stable">Stable (recommended)</option>
+                                                    <option value="experimental">Experimental (unstable)</option>
+                                                </select>
+                                            </label>
+                                        </span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
@@ -182,6 +203,7 @@
         </div>
     </body>
     <script>
+        highlight(document.getElementById('settings-general-button'));
         let start = "start.html";
         if(localStorage.getItem('settings.startPage')!=null) {
             start = localStorage.getItem('settings.startPage');

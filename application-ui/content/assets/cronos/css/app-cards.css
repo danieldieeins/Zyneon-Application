@@ -24,3 +24,8 @@
     border: none !important;
     margin: 0;
 }
+
+.card-disabled:hover {
+    background: var(--background2) !important;
+    border: solid 2px var(--border) !important;
+}

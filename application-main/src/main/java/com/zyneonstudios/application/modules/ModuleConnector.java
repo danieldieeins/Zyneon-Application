@@ -16,6 +16,7 @@ public class ModuleConnector {
         resolveRequest(request);
     }
 
+    @Deprecated
     public void resolveRequest(String request) {
 
     }

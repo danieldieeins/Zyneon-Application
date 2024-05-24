@@ -31,10 +31,10 @@ function setColors(newColors) {
     if(newColors==="automatic") {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-dark.css";
-            connector("sync.title." + "../assets/cronos/css/app-colors-dark.css" + "-.-" + document.title);
+            connector("sync.title.automatic-dark-.-" + document.title);
         } else {
             document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-light.css";
-            connector("sync.title." + "../assets/cronos/css/app-colors-light.css" + "-.-" + document.title);
+            connector("sync.title.automatic-light-.-" + document.title);
         }
     } else {
         document.getElementById("css-colors").href = newColors;
