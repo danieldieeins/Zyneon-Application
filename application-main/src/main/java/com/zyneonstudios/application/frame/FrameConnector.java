@@ -47,6 +47,11 @@ public class FrameConnector {
 
     private void init(String request) {
         frame.executeJavaScript("syncDesktop(); setColors('"+ApplicationConfig.theme+"');");
+        if(request.equals("start")) {
+            frame.executeJavaScript("activateMenu('menu',true);");
+        } else {
+            frame.executeJavaScript("deactivateMenu('menu',true);");
+        }
     }
 
     // Method to synchronize settings and updates

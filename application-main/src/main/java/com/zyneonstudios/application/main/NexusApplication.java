@@ -27,10 +27,11 @@ public class NexusApplication {
 
     private final JFrame frame;
     private static final Logger logger = new Logger("APP");
-    private ModuleLoader moduleLoader = new ModuleLoader(this);
+    private static ModuleLoader moduleLoader = null;
 
     public NexusApplication() {
         // Initializing the application frame
+        moduleLoader = new ModuleLoader(this);
         logger.log("[APP] Updated application ui: "+update());
         try {
             FlatDarkLaf.setup();
@@ -86,12 +87,31 @@ public class NexusApplication {
     private static boolean update() {
         boolean updated;
         try {
-            if(!new File(getApplicationPath() + "modules/").exists()) {
-                logger.debug("[APP] Created modules path: "+new File(getApplicationPath() + "modules/").mkdirs());
+            if(!new File(getApplicationPath() + "temp/modules/").exists()) {
+                logger.debug("[APP] Created modules path: "+new File(getApplicationPath() + "temp/modules/").mkdirs());
             }
-            FileUtil.extractResourceFile("modules.zip",getApplicationPath()+"temp/modules.zip",Main.class);
-            FileUtil.unzipFile(getApplicationPath()+"temp/modules.zip", getApplicationPath() + "modules/");
+            FileUtil.extractResourceFile("modules.zip",getApplicationPath()+"temp/modules.zip",NexusApplication.class);
+            FileUtil.unzipFile(getApplicationPath()+"temp/modules.zip", getApplicationPath() + "temp/modules/");
             logger.debug("[APP] Deleted modules archive: "+new File(getApplicationPath()+"temp/modules.zip").delete());
+            File modules = new File(getApplicationPath() + "temp/modules/");
+            if(modules.exists()) {
+                System.out.println(1);
+                if(modules.isDirectory()) {
+                    System.out.println(2);
+                    for(File module : modules.listFiles()) {
+                        System.out.println(3);
+                        if(module.getName().toLowerCase().endsWith(".jar")) {
+                            System.out.println(4);
+                            try {
+                                System.out.println(5);
+                                moduleLoader.loadModule(moduleLoader.readModule(module));
+                            } catch (Exception e) {
+                                getLogger().error("Couldn't load module "+module.getName()+": "+e.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             logger.error("[APP] Couldn't extract modules: "+e.getMessage());
         }
