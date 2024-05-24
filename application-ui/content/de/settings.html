@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,8 +58,8 @@
                     <div class="menu-panel">
                         <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
                         <p>
-                            <span class="bold">Synchronisierung...</span>
-                            <br>Unbekannter Spieler
+                            <span class="bold"></span>
+                            <br>
                         </p>
                     </div>
                 </div>
@@ -73,23 +73,23 @@
                         <div class="card settings-menu-card card-disabled">
                             <h3>Navigation</h3>
                             <ul>
-                                <li id="settings-general-button">
+                                <li id="settings-general-button" onclick="setContent('settings-general');">
                                     <i class='bx bx-compass'></i>
-                                    <span>Allgemeines</span>
+                                    <span>Allgemein</span>
                                 </li>
-                                <li id="settings-global-button">
+                                <li id="settings-global-button" onclick="setContent('settings-global');">
                                     <i class='bx bx-globe'></i>
-                                    <span>Standardwerte</span>
+                                    <span>Global</span>
                                 </li>
-                                <li id="settings-indexes-button">
+                                <li id="settings-indexes-button" onclick="setContent('settings-indexes');">
                                     <i class='bx bx-sort-down'></i>
-                                    <span>Indexverwaltung</span>
+                                    <span>Indexe</span>
                                 </li>
-                                <li id="settings-modules-button">
+                                <li id="settings-modules-button" onclick="setContent('settings-modules');">
                                     <i class='bx bx-extension'></i>
-                                    <span>Modulverwaltung</span>
+                                    <span>Module</span>
                                 </li>
-                                <li id="settings-about-button">
+                                <li id="settings-about-button" onclick="setContent('settings-about');">
                                     <i class='bx bx-info-circle'></i>
                                     <span>Über NEXUS App</span>
                                 </li>
@@ -104,7 +104,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <h3>Aktionen</h3>
+                            <h3>Actions</h3>
                             <ul>
                                 <li onclick="connector('sync.refresh')">
                                     <i class='bx bx-refresh'></i>
@@ -116,7 +116,7 @@
                                 </li>
                                 <li onclick="connector('sync.exit')" class="danger">
                                     <i class='bx bx-exit'></i>
-                                    <span>App schließen</span>
+                                    <span>App beenden</span>
                                 </li>
                             </ul>
                         </div>
@@ -128,7 +128,7 @@
                         <div class="card settings-content-card card-disabled">
                             <div id="settings-general">
                                 <div class="group" id="settings-general-appearance">
-                                    <h4>Erscheinung</h4>
+                                    <h4>Darstellung</h4>
                                     <h3>
                                         Startseite
                                         <span class="select">
@@ -143,7 +143,7 @@
                                         </span>
                                     </h3>
                                     <h3>
-                                        Theme
+                                        Design
                                         <span class="select">
                                             <label>
                                                 <select id="appearance-settings-theme" onchange="syncTheme();">
@@ -168,9 +168,9 @@
                                     </h3>
                                 </div>
                                 <div class="group" id="settings-general-startup">
-                                    <h4>Beim Starten...</h4>
+                                    <h4>Aktualisierungen</h4>
                                     <h3>
-                                        ...auf Updates prüfen
+                                        Beim Starten auf Updates prüfen
                                         <span class="checkbox">
                                             <label>
                                                 <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
@@ -183,7 +183,7 @@
                                         </span>
                                     </h3>
                                     <h3>
-                                        Updatekanal
+                                        Update-Kanal
                                         <span class="select">
                                             <label>
                                                 <select id="updater-settings-update-channel" onchange="syncUpdates();">
@@ -196,6 +196,22 @@
                                     </h3>
                                 </div>
                             </div>
+                            <div id="settings-global">
+
+                            </div>
+                            <div id="settings-indexes">
+
+                            </div>
+                            <div id="settings-modules">
+
+                            </div>
+                            <div id="settings-about">
+
+                            </div>
+                            <!--TODO: Add other setting pages-->
+                            <div id="settings-custom">
+                                <iframe id="settings-custom-iframe" src=""></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,7 +219,7 @@
         </div>
     </body>
     <script>
-        highlight(document.getElementById('settings-general-button'));
+        initSettings();
         let start = "start.html";
         if(localStorage.getItem('settings.startPage')!=null) {
             start = localStorage.getItem('settings.startPage');

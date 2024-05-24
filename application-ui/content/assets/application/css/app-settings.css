@@ -138,12 +138,12 @@
 }
 
 /*Disable inactive elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section, #settings-module-template {
+.settings .settings-menu .settings-menu-card .settings-modules-section, #settings-module-template, #settings-general {
     display: none;
 }
 
 /*Enable active elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section.active {
+.settings .settings-menu .settings-menu-card .settings-modules-section.active, #settings-general.active {
     display: inherit !important;
 }
 
@@ -227,4 +227,10 @@
 
 .settings .settings-content .settings-content-card h3:hover select {
     color: var(--foreground);
+}
+
+.settings .settings-content .settings-content-card #settings-custom iframe {
+    position: absolute;
+    width: calc(100% - 1rem); height: calc(100% - 1rem);
+    border-radius: 0.5rem;
 }

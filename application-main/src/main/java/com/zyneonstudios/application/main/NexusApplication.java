@@ -86,6 +86,16 @@ public class NexusApplication {
     private static boolean update() {
         boolean updated;
         try {
+            if(!new File(getApplicationPath() + "modules/").exists()) {
+                logger.debug("[APP] Created modules path: "+new File(getApplicationPath() + "modules/").mkdirs());
+            }
+            FileUtil.extractResourceFile("modules.zip",getApplicationPath()+"temp/modules.zip",Main.class);
+            FileUtil.unzipFile(getApplicationPath()+"temp/modules.zip", getApplicationPath() + "modules/");
+            logger.debug("[APP] Deleted modules archive: "+new File(getApplicationPath()+"temp/modules.zip").delete());
+        } catch (Exception e) {
+            logger.error("[APP] Couldn't extract modules: "+e.getMessage());
+        }
+        try {
             if(new File(getApplicationPath() + "temp/ui/").exists()) {
                 logger.debug("[APP] Deleted old ui files: "+new File(getApplicationPath() + "temp/ui/").delete());
             }

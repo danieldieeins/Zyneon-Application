@@ -1,5 +1,6 @@
 let updates = false;
 let highlighted = undefined;
+let content = undefined;
 
 function toggleUpdates() {
     if(updates) {
@@ -99,5 +100,50 @@ function highlight(newHighlight) {
 function setTitle(title) {
     if(title) {
         document.getElementById("settings-title").innerText = title;
+    }
+}
+
+function setContent(newContent,newHighlight,url) {
+    const f = document.getElementById('settings-custom-iframe');
+    f.src = "";
+    if(url) {
+        f.src = url;
+    }
+    if(newHighlight) {
+        newHighlight = document.getElementById(newHighlight);
+    } else {
+        newHighlight = document.getElementById(newContent+"-button")
+    }
+    newContent = document.getElementById(newContent);
+    if(newContent) {
+        if(!newContent.classList.contains("active")) {
+            newContent.classList.add("active");
+            if(content) {
+                if(content.classList.contains("active")) {
+                    content.classList.remove("active");
+                }
+            }
+            content = newContent;
+            highlight(newHighlight);
+        }
+    }
+}
+
+function initSettings() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let id = "settings-general";
+    if(urlParams.get('t')) {
+        id = urlParams.get("t");
+    }
+
+    let hid = id+"-button";
+    if(urlParams.get('h')) {
+        hid = urlParams.get("h");
+    }
+
+    if(urlParams.get("u")) {
+        setContent(id,hid,urlParams.get("u"));
+    } else {
+        setContent(id,hid);
     }
 }

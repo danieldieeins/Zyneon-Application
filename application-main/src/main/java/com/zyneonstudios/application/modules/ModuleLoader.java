@@ -1,6 +1,8 @@
 package com.zyneonstudios.application.modules;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.application.main.NexusApplication;
 
@@ -11,6 +13,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -41,9 +44,10 @@ public class ModuleLoader {
         try {
             String mainPath;
             try (JarFile jarFile = new JarFile(moduleJar.getAbsolutePath())) {
-                InputStream is = jarFile.getInputStream(jarFile.getJarEntry("module.json"));
+                InputStream is = jarFile.getInputStream(jarFile.getJarEntry("nexus.json"));
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                mainPath = new Gson().fromJson(reader, JsonObject.class).get("main").getAsString();
+                JsonArray array = new Gson().fromJson(reader, JsonObject.class).getAsJsonArray("modules");
+                mainPath = array.get(0).getAsJsonObject().get("main").getAsString();
             } catch (Exception e) {
                 NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
                 return null;
@@ -52,6 +56,36 @@ public class ModuleLoader {
             Class<?> module = classLoader.loadClass(mainPath);
             Constructor<?> constructor = module.getConstructor(NexusApplication.class);
             return (ApplicationModule) constructor.newInstance(application);
+        } catch (Exception e) {
+            NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<ApplicationModule> readModules(File moduleJar) {
+        try {
+            String mainPath;
+            try (JarFile jarFile = new JarFile(moduleJar.getAbsolutePath())) {
+                InputStream is = jarFile.getInputStream(jarFile.getJarEntry("nexus.json"));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                JsonArray array = new Gson().fromJson(reader, JsonObject.class).getAsJsonArray("modules");
+                ArrayList<ApplicationModule> modules = new ArrayList<>();
+                for(JsonElement e:array) {
+                    mainPath = e.getAsJsonObject().get("main").getAsString();
+                    URLClassLoader classLoader = new URLClassLoader(new URL[]{moduleJar.toURI().toURL()});
+                    Class<?> module = classLoader.loadClass(mainPath);
+                    Constructor<?> constructor = module.getConstructor(NexusApplication.class);
+                    modules.add((ApplicationModule)constructor.newInstance(application));
+                }
+                if(modules.isEmpty()) {
+                    return null;
+                } else {
+                    return modules;
+                }
+            } catch (Exception e) {
+                NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+                return null;
+            }
         } catch (Exception e) {
             NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
             return null;
