@@ -47,8 +47,8 @@ public class FrameConnector {
 
     private void init(String request) {
         frame.executeJavaScript("syncDesktop(); setColors('"+ApplicationConfig.theme+"');");
-        if(request.equals("start")) {
-            frame.executeJavaScript("activateMenu('menu',true);");
+        if(request.equals("discover")) {
+            frame.executeJavaScript("activateMenu('menu',true); document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = 'Click to search';");
         } else {
             frame.executeJavaScript("deactivateMenu('menu',true);");
         }
@@ -71,6 +71,9 @@ public class FrameConnector {
             } else if(request_[0].equalsIgnoreCase("../assets/cronos/css/app-colors-light.css")) {
                 background = Color.white;
                 foreground = Color.black;
+            } else if(request_[0].equalsIgnoreCase("../assets/application/css/app-colors-oled.css")) {
+                background = Color.black;
+                foreground = Color.white;
             } else if(request_[0].startsWith("automatic-")) {
                 request = request_[0].replaceFirst("automatic-","");
                 if(request.equals("dark")) {
@@ -139,7 +142,7 @@ public class FrameConnector {
                 channel = ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel");
             }
             // Execute JavaScript to update the UI with retrieved settings
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ApplicationConfig.startPage+"';");
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ApplicationConfig.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
         }
     }
 }

@@ -20,7 +20,7 @@ public record ApplicationConfig(String[] args) {
 
     public static String language = "en";
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
-    public static String startPage = "start.html";
+    public static String startPage = "discover.html";
     public static String theme = "automatic";
     public static boolean test = false;
 

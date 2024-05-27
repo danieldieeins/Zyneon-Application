@@ -1,8 +1,0 @@
-.start {
-    position: relative;
-    padding: 1rem;
-}
-
-.start .card {
-    width: calc(100% - 2.25rem);
-}

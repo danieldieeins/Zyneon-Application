@@ -9,7 +9,7 @@
         <link rel="stylesheet" id="css-menu" href="../assets/cronos/css/app-menu-side.css">
         <link rel="stylesheet" id="css-card" href="../assets/cronos/css/app-cards.css">
         <link rel="stylesheet" id="css-shared" href="../assets/application/css/app-shared.css">
-        <link rel="stylesheet" id="css-site" href="../assets/application/css/app-settings.css">
+        <link rel="stylesheet" id="css-page" href="../assets/application/css/app-settings.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="../assets/cronos/javascript/app-base.js"></script>
         <script src="../assets/cronos/javascript/app-menu.js"></script>
@@ -33,17 +33,13 @@
                             <i class='bx bx-menu'></i>
                             <p>Toggle Menu</p>
                         </li>
-                        <li onclick="window.location.href = 'start.html';">
-                            <i class='bx bxs-home'></i>
-                            <p>Home & news</p>
+                        <li onclick="window.location.href = 'discover.html';">
+                            <i class='bx bx-world'></i>
+                            <p>Discover</p>
                         </li>
                         <li onclick="window.location.href = 'library.html';">
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <p>Library</p>
-                        </li>
-                        <li onclick="window.location.href = 'discover.html';">
-                            <i class='bx bx-world'></i>
-                            <p>Discover</p>
                         </li>
                         <li class="highlighted">
                             <i class='bx bxs-cog'></i>
@@ -127,21 +123,50 @@
                         </div>
                         <div class="card settings-content-card card-disabled">
                             <div id="settings-general">
-                                <div class="group" id="settings-general-appearance">
-                                    <h4>Appearance</h4>
+                                <div class="group" id="settings-general-startup">
+                                    <h4>Startup</h4>
                                     <h3>
                                         Start page
                                         <span class="select">
                                             <label>
                                                 <select id="general-settings-start-page" onchange="syncStartPage();">
-                                                    <option value="start.html">Home & news</option>
-                                                    <option value="library.html">Library</option>
                                                     <option value="discover.html">Discover</option>
+                                                    <option value="library.html">Library</option>
                                                     <option value="settings.html">Settings</option>
                                                 </select>
                                             </label>
                                         </span>
                                     </h3>
+                                    <div id="updater-settings">
+                                        <h3>
+                                            Check for updates
+                                            <span class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
+                                                    <script>
+                                                        document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
+                                                            event.preventDefault();
+                                                        });
+                                                    </script>
+                                                </label>
+                                            </span>
+                                        </h3>
+                                        <h3>
+                                            Update channel
+                                            <span class="select">
+                                                <label>
+                                                    <select id="updater-settings-update-channel" onchange="syncUpdates();">
+                                                        <option value="shervann">Shervann (current, test)</option>
+                                                        <option value="stable">Stable (recommended)</option>
+                                                        <option value="experimental">Experimental (unstable)</option>
+                                                    </select>
+                                                </label>
+                                            </span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="group" id="settings-general-appearance">
+                                    <h4>Appearance</h4>
                                     <h3>
                                         Theme
                                         <span class="select">
@@ -150,6 +175,7 @@
                                                     <option value="automatic">Default: System</option>
                                                     <option value="../assets/cronos/css/app-colors-dark.css">Default: Dark</option>
                                                     <option value="../assets/cronos/css/app-colors-light.css">Default: Light</option>
+                                                    <option value="../assets/application/css/app-colors-oled.css">Default: OLED (BETA)</option>
                                                     <option value="../assets/application/css/app-colors-zyneon.css">Default: Zyneon</option>
                                                 </select><script>document.getElementById("appearance-settings-theme").value = colors;</script>
                                             </label>
@@ -162,34 +188,6 @@
                                                 <select id="appearance-settings-language" onchange="syncLanguage();">
                                                     <option value="en">English (English)</option>
                                                     <option value="de">Deutsch (German)</option>
-                                                </select>
-                                            </label>
-                                        </span>
-                                    </h3>
-                                </div>
-                                <div class="group" id="settings-general-startup">
-                                    <h4>Startup</h4>
-                                    <h3>
-                                        Check for updates
-                                        <span class="checkbox">
-                                            <label>
-                                                <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
-                                                <script>
-                                                    document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
-                                                        event.preventDefault();
-                                                    });
-                                                </script>
-                                            </label>
-                                        </span>
-                                    </h3>
-                                    <h3>
-                                        Update channel
-                                        <span class="select">
-                                            <label>
-                                                <select id="updater-settings-update-channel" onchange="syncUpdates();">
-                                                    <option value="shervann">Shervann (current, test)</option>
-                                                    <option value="stable">Stable (recommended)</option>
-                                                    <option value="experimental">Experimental (unstable)</option>
                                                 </select>
                                             </label>
                                         </span>
@@ -220,7 +218,7 @@
     </body>
     <script>
         initSettings();
-        let start = "start.html";
+        let start = "discover.html";
         if(localStorage.getItem('settings.startPage')!=null) {
             start = localStorage.getItem('settings.startPage');
         }
