@@ -1,7 +1,6 @@
 package com.zyneonstudios.application.frame.web;
 
 import com.zyneonstudios.application.main.NexusApplication;
-import javafx.application.Platform;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import me.friwi.jcefmaven.CefAppBuilder;
 import me.friwi.jcefmaven.CefInitializationException;
@@ -78,8 +77,7 @@ public class WebFrame extends JFrame {
             @Override @Deprecated
             public void stateHasChanged(CefApp.CefAppState state) {
                 if (state == CefApp.CefAppState.TERMINATED) {
-                    application.getModuleLoader().deactivateModules();
-                    Platform.exit(); System.exit(0); // Exit JavaFX application when CEF terminates
+                    NexusApplication.stop();
                 }
             }
         });

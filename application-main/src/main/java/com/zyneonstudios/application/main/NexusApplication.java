@@ -158,15 +158,23 @@ public class NexusApplication {
                     args.append(arg).append(" ");
                 }
             }
+            File updater = new File(ApplicationConfig.getApplicationPath().replace("/experimental/","/app.jar"));
+            if(updater.exists()) {
+                jarPath = updater.getAbsolutePath();
+            }
             ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, args.toString());
             try {
                 pb.start();
             } catch (Exception e) {
                 logger.error("[APP] Couldn't restart application: "+e.getMessage());
             }
-            getModuleLoader().deactivateModules();
-            System.exit(0);
+            stop();
         }
         System.exit(-1);
+    }
+
+    public static void stop() {
+        moduleLoader.deactivateModules();
+        System.exit(0);
     }
 }

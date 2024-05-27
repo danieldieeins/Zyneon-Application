@@ -93,8 +93,7 @@ public class FrameConnector {
             // Set the titlebar with the specified title, background, and foreground colors
             frame.setTitlebar(title,background,foreground);
         } else if(request.equals("exit")) {
-            frame.getApplication().getModuleLoader().deactivateModules();
-            System.exit(1);
+            NexusApplication.stop();
         } else if(request.equals("refresh")) {
             frame.getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/"+ApplicationConfig.startPage);
         } else if(request.equals("restart")) {
