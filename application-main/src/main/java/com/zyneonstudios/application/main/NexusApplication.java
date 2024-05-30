@@ -158,7 +158,8 @@ public class NexusApplication {
                     args.append(arg).append(" ");
                 }
             }
-            File updater = new File(ApplicationConfig.getApplicationPath().replace("/experimental/","/app.jar"));
+            System.out.println(ApplicationConfig.getApplicationPath().replace("\\","/").replace("/experimental/","/app.jar"));
+            File updater = new File(ApplicationConfig.getApplicationPath().replace("\\","/").replace("/experimental/","/app.jar"));
             if(updater.exists()) {
                 jarPath = updater.getAbsolutePath();
             }

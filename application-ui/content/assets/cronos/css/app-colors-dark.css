@@ -21,7 +21,7 @@
     --foreground1: var(--foreground);
     --foreground2: #ffffff99;
 
-    --highlight: #ffffff;
+    --highlight: var(--foreground);
     --accent: #8732ec;
 }
 
