@@ -138,12 +138,12 @@
 }
 
 /*Disable inactive elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section, #settings-module-template, #settings-general, #updater-settings {
+.settings .settings-menu .settings-menu-card .settings-modules-section, #settings-module-template, #settings-general, #settings-global, #settings-indexes, #settings-modules, #settings-about, #updater-settings, #settings-custom {
     display: none;
 }
 
 /*Enable active elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section.active, #settings-general.active {
+.settings .settings-menu .settings-menu-card .settings-modules-section.active, #settings-general.active, #settings-global.active, #settings-indexes.active, #settings-modules.active, #settings-about.active, #settings-custom.active {
     display: inherit !important;
 }
 
@@ -174,19 +174,22 @@
 }
 
 .settings .settings-content .settings-content-card .group {
-    transition: all 0.25s ease !important;
+    transition: background-color 0.25s ease !important;
     padding: 0.5rem 0 0.5rem 0;
+    border-radius: 0.5rem;
 }
 
 .settings .settings-content .settings-content-card .group:hover {
     background: var(--background);
     padding: 0.5rem;
-    transition: all 0.25s ease;
-    border-radius: 0.5rem;
 }
 
 .settings .settings-content .settings-content-card .group:hover h4 {
     margin: 0.4rem 0 0.25rem 0.25rem;
+}
+
+.settings .settings-content .settings-content-card .group h3 {
+    transition: background-color 0.25s ease !important;
 }
 
 .settings .settings-content .settings-content-card .group:hover h3 {
@@ -199,13 +202,10 @@
 }
 
 .settings .settings-content .settings-content-card h3 input {
+    cursor: pointer;
     position: absolute;
     top: 0.6rem;
     right: 0.7rem;
-}
-
-.settings .settings-content .settings-content-card h3 input {
-    cursor: pointer;
 }
 
 .settings .settings-content .settings-content-card h3 select {
@@ -213,7 +213,8 @@
     top: 0; right: 0;
     font-size: 1rem;
     color: var(--foreground2);
-    padding: 0.5rem;
+    padding: 0.46rem;
+    border-radius: 0.35rem;
 }
 
 .settings .settings-content .settings-content-card h3 select:hover {

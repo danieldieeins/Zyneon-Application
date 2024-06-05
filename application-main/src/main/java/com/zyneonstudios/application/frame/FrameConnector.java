@@ -49,6 +49,11 @@ public class FrameConnector {
         frame.executeJavaScript("syncDesktop(); setColors('"+ApplicationConfig.theme+"');");
         if(request.equals("discover")) {
             frame.executeJavaScript("activateMenu('menu',true); document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = 'Click to search';");
+        } else if(request.equals("settings")) {
+            frame.executeJavaScript("deactivateMenu('menu',true);");
+            frame.executeJavaScript("syncVersion(\""+ApplicationConfig.getApplicationVersion().replace("\"","''")+"\");");
+        } else if(request.equals("library")) {
+
         } else {
             frame.executeJavaScript("deactivateMenu('menu',true);");
         }

@@ -1,6 +1,8 @@
 package com.zyneonstudios.application.main;
 
+import com.zyneonstudios.Main;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.utils.FileUtil;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -18,23 +20,26 @@ public record ApplicationConfig(String[] args) {
      * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
      * */
 
+    // changeable variables
     public static String language = "en";
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
     public static String startPage = "discover.html";
     public static String theme = "automatic";
     public static boolean test = false;
 
+    // non-changeable variables
+    private static String applicationVersion = "unknown";
     private static String applicationPath = null;
     private static Config configuration = null;
     private static String os = null;
     private static Config updateConfig = null;
 
-    public static String[] arguments = null;
+    private static String[] arguments = null;
 
     // Constructor for ApplicationConfig class
     public ApplicationConfig(String[] args) {
         this.args = args;
-        this.arguments = this.args;
+        arguments = this.args;
         // Iterating through the command-line arguments
         for (String arg : args) {
             // Checking if the argument starts with "--ui:"
@@ -55,12 +60,16 @@ public record ApplicationConfig(String[] args) {
                 test = true;
             }
         }
+
+        // Resolving language
         String lang = Locale.getDefault().toLanguageTag();
         if(lang.startsWith("de-")) {
             getSettings().checkEntry("settings.language","de");
         } else {
             getSettings().checkEntry("settings.language","en");
         }
+
+        // Resolving landing page
         if(getSettings().get("settings.startPage")!=null) {
             startPage = getSettings().getString("settings.startPage");
         }
@@ -70,8 +79,11 @@ public record ApplicationConfig(String[] args) {
         if(getSettings().get("settings.theme")!=null) {
             theme = getSettings().getString("settings.theme");
         }
+
+        applicationVersion = new Config(FileUtil.getResourceFile("nexus.json", Main.class)).getString("version");
     }
 
+    //Method to get the startup arguments
     public static String[] getArguments() {
         return arguments;
     }
@@ -148,5 +160,10 @@ public record ApplicationConfig(String[] args) {
             updateConfig = new Config(ApplicationConfig.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
         }
         return updateConfig;
+    }
+
+    //Method to get the application version
+    public static String getApplicationVersion() {
+        return applicationVersion;
     }
 }

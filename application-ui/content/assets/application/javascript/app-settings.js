@@ -33,6 +33,19 @@ function syncLanguage() {
     location.href = "../"+language+"/settings.html";
 }
 
+function syncVersion(version) {
+    if(version) {
+        log("Got version: "+version);
+        const allTextNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let node;
+        while (node = allTextNodes.nextNode()) {
+            node.nodeValue = node.nodeValue.replaceAll("${application.version}", version);
+        }
+    } else {
+        error("No version specified");
+    }
+}
+
 function addModuleSetting(icon,text,onclick,id,image) {
     const template = document.getElementById("settings-module-template");
     const entry = template.cloneNode(true);

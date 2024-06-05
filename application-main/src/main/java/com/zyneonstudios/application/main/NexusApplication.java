@@ -83,8 +83,16 @@ public class NexusApplication {
         return frame;
     }
 
-    // Method to update the application UI
+    // Method to extract the application UI
     private static boolean update() {
+        File temp = new File(getApplicationPath() + "temp");
+        if(temp.exists()) {
+            if(temp.isDirectory()) {
+                FileUtil.deleteFolder(temp);
+            } else {
+                logger.debug("[APP] Deleted temporary files: "+temp.delete());
+            }
+        }
         boolean updated;
         try {
             if(!new File(getApplicationPath() + "temp/modules/").exists()) {
@@ -95,15 +103,10 @@ public class NexusApplication {
             logger.debug("[APP] Deleted modules archive: "+new File(getApplicationPath()+"temp/modules.zip").delete());
             File modules = new File(getApplicationPath() + "temp/modules/");
             if(modules.exists()) {
-                System.out.println(1);
                 if(modules.isDirectory()) {
-                    System.out.println(2);
                     for(File module : modules.listFiles()) {
-                        System.out.println(3);
                         if(module.getName().toLowerCase().endsWith(".jar")) {
-                            System.out.println(4);
                             try {
-                                System.out.println(5);
                                 moduleLoader.loadModule(moduleLoader.readModule(module));
                             } catch (Exception e) {
                                 getLogger().error("Couldn't load module "+module.getName()+": "+e.getMessage());
@@ -144,6 +147,7 @@ public class NexusApplication {
         }
     }
 
+    //Method to close the application and start the updater (restart method)
     public void restart() {
         CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
         if (codeSource != null) {
@@ -174,6 +178,7 @@ public class NexusApplication {
         System.exit(-1);
     }
 
+    //Default stop closing method
     public static void stop() {
         moduleLoader.deactivateModules();
         System.exit(0);
