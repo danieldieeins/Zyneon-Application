@@ -95,6 +95,7 @@ public class ApplicationLauncher {
     }
 
     public boolean update(String updateChannelId, boolean overwrite) {
+        boolean updated = false;
         Launcher.getLogger().log("[UPDATER] Connecting to update channel "+updateChannelId+"...");
         try {
             JsonArray versions = new Gson().fromJson(GsonUtil.getFromURL("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/application/index.json"), JsonObject.class).getAsJsonArray("versions");
@@ -114,7 +115,8 @@ public class ApplicationLauncher {
                             app.delete();
                         } else {
                             Launcher.getLogger().log("[UPDATER] Version "+this.version+" is already installed! Skipping update process...");
-                            return true;
+                            updated = true;
+                            break;
                         }
                     }
                     Launcher.getLogger().log("[UPDATER] Downloading...");
@@ -124,7 +126,8 @@ public class ApplicationLauncher {
                         this.version = newVersion;
                         config.set("updater.installed.info.version", this.version);
                         config.set("updater.installed.info.channel", this.updateChannel);
-                        return true;
+                        updated = true;
+                        break;
                     } else {
                         Launcher.getLogger().error("[UPDATER] Couldn't download new version!");
                     }
@@ -135,7 +138,10 @@ public class ApplicationLauncher {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return false;
+        if(!updated) {
+            return update("stable",overwrite);
+        }
+        return updated;
     }
 
     public int launch(String updateChannelId) {
