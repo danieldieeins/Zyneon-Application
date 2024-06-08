@@ -41,6 +41,10 @@ li.disabled:hover {
     animation: wiggle 1s infinite !important;
 }
 
+.wiggle-low {
+    animation: wiggle 30s infinite !important;
+}
+
 .hover-wiggle-extreme:hover {
     animation: wiggle 0.1s linear infinite !important;
 }
@@ -74,6 +78,7 @@ li:hover {
 
 .cnt {
     width: 100%;
+    height: 100%;
     padding: 0;
     border-top-left-radius: 1.5rem;
     position: relative;
@@ -83,4 +88,76 @@ li:hover {
 
 .highlighted, .active {
     transition: all 0.25s ease !important;
+}
+
+#overlay {
+    position: absolute !important;
+    width: 100%; height: 100% !important;
+    opacity: 0 !important;
+    z-index: -1 !important;
+    transition: all 0.25s ease !important;
+    border-top-left-radius: 1.5rem !important;
+    overflow: hidden !important;
+}
+
+#overlay.active {
+    background: var(--background) !important;
+    opacity: 1 !important;
+    z-index: 999999 !important;
+    transition: all 2s ease !important;
+    overflow: hidden !important;
+}
+
+#overlay #overlay-frame {
+    border: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    transition: all 0.25s ease !important;
+    border-top-left-radius: 1.5rem !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+}
+
+#overlay.active #overlay-frame {
+    opacity: 1 !important;
+    transition: all 1.5s ease !important;
+}
+
+#overlay .close-overlay {
+    position: fixed !important;
+    top: 0.75rem !important;
+    right: 0.25rem !important;
+    border-radius: 0.5rem !important;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 0.4rem var(--shadow3);
+    background: #ff000050 !important;
+    border: 1px solid #ff000025;
+    transition: all 0.25s ease !important;
+    padding: 0.5rem 2.5rem 0.5rem 1rem !important;
+    color: #ffffff !important;
+    font-weight: 1000 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+}
+
+#overlay.active .close-overlay {
+    opacity: 1 !important;
+    transition: all 1s ease !important;
+}
+
+#overlay .close-overlay:hover {
+    opacity: 1 !important;
+    transition: all 0.25s ease !important;
+    background: red !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+}
+
+#overlay .close-overlay i {
+    font-weight: 1000 !important;
+    font-size: 1.75rem !important;
+    right: 0.65rem !important;
+    top: 0.3rem !important;
+    position: absolute !important;
+    overflow: hidden !important;
 }

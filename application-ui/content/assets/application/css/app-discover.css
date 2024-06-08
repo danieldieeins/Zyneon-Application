@@ -124,6 +124,10 @@
     color: var(--foreground1);
 }
 
+.search .search-bar input:disabled {
+    cursor: not-allowed;
+}
+
 .search:hover .search-bar input {
     transition: all 0.25s ease;
     background: var(--background6);
@@ -187,10 +191,54 @@
 }
 
 .discover-content #discover-search .search-flex #search-content .search-result {
+    position: relative;
     margin: 1.25rem 0 0 0;
-    width: calc(100% - 2.45rem);
-    max-width: calc(100% - 2.45rem);
-    height: 9rem;
-    max-height: 9rem;
+    padding: 0;
+    width: calc(100% - 0.45rem);
+    max-width: calc(100% - 0.45rem);
+    height: 11rem;
+    max-height: 11rem;
     overflow: hidden;
+}
+
+.discover-content #discover-search .search-flex #search-content .search-result .flex {
+    position: absolute;
+    width: 100%;
+    height: 11rem;
+    max-height: 11rem;
+    max-width: 100%;
+}
+
+.discover-content #discover-search .search-flex #search-content .search-result .flex .search-image {
+    width: 11rem;
+    height: 11rem;
+}
+
+
+.discover-content #discover-search .search-flex #search-content .search-result .flex .search-image img {
+    width: calc(9.5rem - 4px);
+    height: calc(9.5rem - 4px);
+    border-radius: 0.5rem;
+    border: 2px solid var(--background2) !important;
+    transition: all 0.25s ease;
+    box-shadow: 0 0 0.8rem var(--shadow3);
+    margin: 0.75rem;
+}
+
+.discover-content #discover-search .search-flex #search-content .search-result .flex .search-image img:hover {
+    width: calc(10rem);
+    height: calc(10rem);
+    rotate: 1deg;
+    border: none !important;
+    box-shadow: 0 0 0.8rem var(--shadow);
+    margin: 0.5rem;
+}
+
+.discover-content #discover-search .search-flex #search-content .search-result .flex .search-details {
+    position: absolute;
+    right: 0; top: 0;
+    width: calc(100% - 12.5rem);
+    height: 9rem;
+    padding: 0.75rem 0.75rem 0.75rem 0;
+    overflow-y: auto;
 }

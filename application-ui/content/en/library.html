@@ -61,11 +61,14 @@
                 </div><script>initMenu('menu');</script>
             </div>
             <div class="cnt">
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
+                </div>
                 <div class="library flex">
                     <div class="library-menu">
                         <div class="card">
                             <h4 id="game-module-title">
-                                Game:
                                 <label>
                                     <select id="select-game-module" onchange="onModuleChange();">
                                         <option id="add-module-option" value="-1">Add game module...</option>

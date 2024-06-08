@@ -61,6 +61,10 @@
             </div>
         </div><script>initMenu('menu');</script>
         <div class="discover-content">
+            <div id="overlay">
+                <iframe id="overlay-frame"></iframe>
+                <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
+            </div>
             <div class="card search flex" id="search-card">
                 <div class="search-buttons flex">
                     <div class="buttons" id="discover-buttons">
@@ -96,12 +100,20 @@
                     </div>
                     <div id="search-content">
                         <div class="card search-result" id="result-template">
-
+                            <div class="flex">
+                                <div class="search-image">
+                                    <img alt="result image" onclick="connector('java.overlay');" src="../assets/application/images/nero.png">
+                                </div>
+                                <div class="search-details">
+                                    <div class="flex">
+                                        <h2 class="search-title">title</h2>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
     </body>
 </html>

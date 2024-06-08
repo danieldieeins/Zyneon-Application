@@ -15,3 +15,7 @@ function initModulePage() {
         document.getElementById("iframe").src = urlParams.get("url");
     }
 }
+
+function executeCustomScript(script) {
+    document.getElementById("iframe").contentWindow.eval(script);
+}

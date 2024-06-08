@@ -11,6 +11,15 @@ document.addEventListener('dragstart', function(e){
 
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
+    if(location.href.includes("http://localhost:63342/Zyneon-Application/")) {
+        if (!urlParams.get("_ij_reload")) {
+            if(location.href.includes("?")) {
+                location.href = location.href + "&_ij_reload=RELOAD_ON_SAVE";
+            } else {
+                location.href = location.href + "?_ij_reload=RELOAD_ON_SAVE";
+            }
+        }
+    }
     let theme = colors;
     if(localStorage.getItem("theme.colors")) {
         theme = localStorage.getItem("theme.colors");
@@ -52,4 +61,26 @@ function changeTheme() {
 
 function syncDesktop() {
     desktop = true;
+}
+
+function enableOverlay(url) {
+    if(url) {
+        if(typeof url === "string") {
+            const overlay = document.getElementById("overlay");
+            const frame = document.getElementById("overlay-frame");
+            frame.src = url;
+            if (!overlay.classList.contains("active")) {
+                overlay.classList.add("active");
+            }
+        }
+    }
+}
+
+function disableOverlay() {
+    const overlay = document.getElementById("overlay");
+    if(overlay.classList.contains("active")) {
+        overlay.classList.remove("active");
+    }
+    const frame = document.getElementById("overlay-frame");
+    frame.src = "";
 }

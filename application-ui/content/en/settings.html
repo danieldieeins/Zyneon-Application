@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-settings.js"></script>
-        <script>console.log("[CONNECTOR] init.settings"); init();</script>
+        <script>init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -61,6 +61,10 @@
                 </div>
             </div><script>initMenu('menu');</script>
             <div class="cnt">
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
+                </div>
                 <div class="settings">
                     <div class="settings-menu">
                         <div class="card card-disabled">
@@ -99,6 +103,7 @@
                                         <span>Loading menu entry...</span>
                                     </li>
                                 </ul>
+                                <script>connector('init.settings.modules');</script>
                             </div>
                             <h3>Actions</h3>
                             <ul>

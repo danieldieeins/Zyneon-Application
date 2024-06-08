@@ -58,9 +58,15 @@
                     </div>
                 </div>
             </div><script>initMenu('menu');</script>
-            <iframe id="iframe" class="cnt" style="border: none;">
-                Error...
-            </iframe>
+            <div class="cnt">
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
+                </div>
+                <iframe id="iframe" class="cnt" style="border: none;">
+                    Error...
+                </iframe>
+            </div>
         </div>
         <script>initModulePage(); init();</script>
     </body>

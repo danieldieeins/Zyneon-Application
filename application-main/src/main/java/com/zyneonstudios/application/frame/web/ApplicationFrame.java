@@ -82,11 +82,8 @@ public class ApplicationFrame extends WebFrame {
         getBrowser().executeJavaScript(command,getBrowser().getURL(),5); // Execute JavaScript command
     }
 
+    // Method to open a custom page
     public void openCustomPage(String title, String pageId, String url) {
         getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
-    }
-
-    public void executeCustomPageJS(String command) {
-        executeJavaScript("document.getElementById('iframe').contentWindow."+command);
     }
 }
