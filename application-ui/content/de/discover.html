@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-discover.js"></script>
-        <script>console.log("[CONNECTOR] init.start"); init();</script>
+        <script>searchTerm = "Klicke zum Suchen"; console.log("[CONNECTOR] init.discover"); init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -31,7 +31,7 @@
                     <ul>
                         <li onclick="toggleMainMenu();">
                             <i class='bx bx-menu'></i>
-                            <p>Menü umschalten</p>
+                            <p>Menü schließen</p>
                         </li>
                         <li class="highlighted">
                             <i class='bx bx-world'></i>
@@ -46,7 +46,7 @@
                             <p>Einstellungen</p>
                         </li>
                         <li id="side-menu-item">
-                            <img class="invisible" alt="button icon" src="https://cravatar.eu/helmhead/MHF_Question/64.png">
+                            <img class="invisible" alt="button icon" src="">
                             <i class='bx bx-loader-circle bx-spin'></i>
                             <p></p>
                         </li>
@@ -61,11 +61,58 @@
                 </div>
             </div><script>initMenu('menu');</script>
             <div class="discover-content">
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Schließen <i class='bx bx-x'></i></a>
+                </div>
+                <div class="card search flex" id="search-card">
+                    <div class="search-buttons flex">
+                        <div class="buttons" id="discover-buttons">
+                            <h4>Start</h4>
+                            <h4>Neuigkeiten</h4>
+                            <h4>Spiele</h4>
+                        </div>
+                        <div class="buttons" id="search-buttons">
+                            <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
+                            <label>
+                                <select id="search-type-select">
+                                    <option>App-Module</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="search-bar flex">
+                        <label>
+                            <input type="text" placeholder="Suche deaktiviert" id="search-bar" onclick="openSearch();" disabled>
+                        </label>
+                        <i class='bx bx-search-alt'></i>
+                    </div>
+                </div>
                 <div id="discover-start">
 
                 </div>
                 <div id="discover-search">
+                    <div class="flex search-flex">
+                        <div class="card card-disabled">
+                            <div id="search-filter">
 
+                            </div>
+                        </div>
+                        <div id="search-content">
+                            <div class="card result-card" id="result-template">
+                                <div class="flex">
+                                    <div class="result-image">
+                                        <img alt="result image" onclick="connector('java.overlay');" src="../assets/application/images/nero.png">
+                                    </div>
+                                    <div class="result-details">
+                                        <div class="flex">
+                                            <h2 class="result-title">Titel</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

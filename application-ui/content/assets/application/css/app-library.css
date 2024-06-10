@@ -1,65 +1,128 @@
+body {
+    overflow: hidden !important;
+}
+
 .library {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: calc(100%) !important;
+    position: absolute;
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
+    padding: 0.5rem;
+}
+
+.library .flex {
+    height: 100%;
 }
 
 .library .library-menu {
-    padding: 1rem 0.5rem 1rem 1rem;
+    position: relative;
+    padding: 0.5rem;
     width: 18rem;
-    overflow: hidden;
-    overflow-y: auto;
 }
 
-.library #add-game-module, .library #game-content, .library #add-module-advanced, .library #game-module-advanced {
+.library .library-menu .title-card {
+    transition: none !important;
+    padding: 1rem 0 1rem 0.5rem;
+    width: 18rem;
+    max-width: 18rem;
+    height: 3.75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.25rem;
+    color: var(--foreground);
+}
+
+.library .library-menu .title-card:hover {
+    transition: all 0.25s ease !important;
+}
+
+.library .library-menu .menu-card {
+    padding: 1rem; width: calc(16rem - 4px);
+    overflow: hidden;
+    height: calc(100% - 7rem);
+    transition: none !important;
+}
+
+#menu-group-template, #group-actions-entry {
     display: none;
 }
 
-.library #add-game-module.active, .library #add-module-advanced.active, .library #game-module-advanced.active, .library #game-content.active {
-    display: inherit;
-}
-
 .library .library-content {
-    position: relative !important;
-    padding: 1rem 1rem 1rem 0.5rem;
-    width: calc(100% - 18rem);
+    position: relative;
+    padding: 0.5rem;
+    width: calc(100% - 20rem);
+}
+
+.library .library-content .title-menu-card {
+    width: calc(100% - 0.25rem);
+    transition: none !important;
+    padding: 0;
+    height: calc(3.75rem - 4px);
     overflow: hidden;
-    overflow-y: auto;
 }
 
-.library .card {
-    width: calc(100% - 2.25rem);
+.library .library-content .title-menu-card .flex {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.library #game-module-title {
-    overflow: hidden;
-    white-space: nowrap;
+.library .library-content .title-menu-card .flex img {
+    width: 2.9rem;
+    height: 2.9rem;
+    margin: 0.3rem 0 0.3rem 0.3rem;
+    border-radius: 0.75rem;
+    display: none;
 }
 
-.library #game-module-title #select-game-module {
-    color: var(--foreground2);
-    font-size: 1.05rem;
+.library .library-content .title-menu-card .flex img:hover {
+    width: 3rem;
+    height: 3rem;
+    margin: 0.28rem 0 0.28rem 0.28rem;
+    transition: all 0.25s ease;
 }
 
-.library #game-module-title #select-game-module option {
-    background: var(--background);
+.library .library-content .title-menu-card .flex h2 {
+    padding: 0.35rem 0.35rem 0.35rem 0.8rem;
+    font-size: 1.75rem;
+    height: 2.7rem;
 }
 
-.search-bar {
-    width: fit-content;
-}
-
-.search-bar i {
-    font-size: 1.5rem;
-}
-
-.search-bar input {
-    height: 1.45rem;
-    margin-left: 0.5rem;
-    padding: 0 0 0 0.5rem;
-    border-radius: 0.5rem;
-    font-size: 1.1rem;
+.library .library-content .title-menu-card .flex .title-options {
+    position: absolute;
+    right: 0; top: 0;
+    padding: 0.7rem 1.2rem 0.7rem 0.25rem;
+    font-size: 1.3rem;
     background: var(--background2);
-    color: var(--highlight);
+    display: none;
+}
+
+.library .library-content .title-menu-card .flex .title-options .options-transition {
+    position: absolute;
+    background: linear-gradient(90deg, #00000000, var(--background2));
+    height: 100%; width: 1rem;
+    top: 0;
+    left: -1rem;
+}
+
+.library .library-content #library-overview {
+    position: absolute;
+    width: calc(100% - 1rem);
+    height: calc(100% - 4.75rem);
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.25s ease;
+    background: var(--background1);
+    padding: 0.4rem;
+}
+
+.library .library-content #library-overview .card {
+    width: calc(100% - 1rem);
+    max-width: calc(100% - 1rem);
+    margin: 0 0 1rem 0;
+}
+
+.library .library-content #library-overview.active {
+    opacity: 1;
+    z-index: 100;
+    overflow-y: auto;
 }

@@ -1,3 +1,5 @@
+let searchTerm = "Click to search";
+
 function openSearch() {
     const search = document.getElementById("discover-search");
     if(!search.classList.contains('active')) {
@@ -45,7 +47,7 @@ function closeSearch() {
     }
 
     activateMenu("menu",true);
-    document.getElementById("search-bar").placeholder = "Click to search";
+    document.getElementById("search-bar").placeholder = searchTerm;
 }
 
 function toggleSearch() {

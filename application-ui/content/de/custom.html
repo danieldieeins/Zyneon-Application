@@ -14,6 +14,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-custom.js"></script>
+        <style>body {overflow: hidden !important;}</style>
     </head>
     <body>
         <div class="flex full">
@@ -29,7 +30,7 @@
                     <ul>
                         <li onclick="toggleMainMenu();">
                             <i class='bx bx-menu'></i>
-                            <p>Menü umschalten</p>
+                            <p>Menü schließen</p>
                         </li>
                         <li id="discover-button" onclick="window.location.href = 'discover.html';">
                             <i class='bx bx-world'></i>
@@ -44,7 +45,7 @@
                             <p>Einstellungen</p>
                         </li>
                         <li id="side-menu-item">
-                            <img class="invisible" alt="button icon" src="https://cravatar.eu/helmhead/MHF_Question/64.png">
+                            <img class="invisible" alt="button icon" src="">
                             <i class='bx bx-loader-circle bx-spin'></i>
                             <p></p>
                         </li>
@@ -52,15 +53,21 @@
                     <div class="menu-panel">
                         <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
                         <p>
-                            <span class="bold">Synchronisieren...</span>
-                            <br>Unbekannter Spieler
+                            <span class="bold"></span>
+                            <br>
                         </p>
                     </div>
                 </div>
             </div><script>initMenu('menu');</script>
-            <iframe id="iframe" class="cnt" style="border: none;">
-                Fehler...
-            </iframe>
+            <div class="cnt">
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Schließen <i class='bx bx-x'></i></a>
+                </div>
+                <iframe id="iframe" class="cnt" style="border: none;">
+                    Fehler...
+                </iframe>
+            </div>
         </div>
         <script>initModulePage(); init();</script>
     </body>

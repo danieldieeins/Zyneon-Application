@@ -18,95 +18,96 @@
         <script>console.log("[CONNECTOR] init.discover"); init();</script>
     </head>
     <body>
-    <div class="flex full">
-        <div class="flex">
-            <div class="side-menu" id="menu">
-                <div class="menu-title">
-                    <img alt="The logo of the Zyneon NEXUS App" src="../assets/application/images/icons/app.png">
-                    <p>
-                        Zyneon Studios<br>
-                        <span class="bold">NEXUS Application</span>
-                    </p>
-                </div>
-                <ul>
-                    <li onclick="toggleMainMenu();">
-                        <i class='bx bx-menu'></i>
-                        <p>Toggle Menu</p>
-                    </li>
-                    <li class="highlighted">
-                        <i class='bx bx-world'></i>
-                        <p>Discover</p>
-                    </li>
-                    <li onclick="window.location.href = 'library.html';">
-                        <i class='bx bxs-objects-horizontal-left'></i>
-                        <p>Library</p>
-                    </li>
-                    <li onclick="window.location.href = 'settings.html';">
-                        <i class='bx bxs-cog'></i>
-                        <p>Settings</p>
-                    </li>
-                    <li id="side-menu-item">
-                        <img class="invisible" alt="button icon" src="https://cravatar.eu/helmhead/MHF_Question/64.png">
-                        <i class='bx bx-loader-circle bx-spin'></i>
-                        <p></p>
-                    </li>
-                </ul>
-                <div class="menu-panel">
-                    <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
-                    <p>
-                        <span class="bold"></span>
-                        <br>
-                    </p>
-                </div>
-            </div>
-        </div><script>initMenu('menu');</script>
-        <div class="discover-content">
-            <div id="overlay">
-                <iframe id="overlay-frame"></iframe>
-                <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
-            </div>
-            <div class="card search flex" id="search-card">
-                <div class="search-buttons flex">
-                    <div class="buttons" id="discover-buttons">
-                        <h4>Start</h4>
-                        <h4>News</h4>
-                        <h4>Games</h4>
+        <div class="flex full">
+            <div class="flex">
+                <div class="side-menu" id="menu">
+                    <div class="menu-title">
+                        <img alt="The logo of the Zyneon NEXUS App" src="../assets/application/images/icons/app.png">
+                        <p>
+                            Zyneon Studios<br>
+                            <span class="bold">NEXUS Application</span>
+                        </p>
                     </div>
-                    <div class="buttons" id="search-buttons">
-                        <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
-                        <label>
-                            <select id="search-type-select">
-                                <option>App modules</option>
-                            </select>
-                        </label>
+                    <ul>
+                        <li onclick="toggleMainMenu();">
+                            <i class='bx bx-menu'></i>
+                            <p>Toggle Menu</p>
+                        </li>
+                        <li class="highlighted">
+                            <i class='bx bx-world'></i>
+                            <p>Discover</p>
+                        </li>
+                        <li onclick="window.location.href = 'library.html';">
+                            <i class='bx bxs-objects-horizontal-left'></i>
+                            <p>Library</p>
+                        </li>
+                        <li onclick="window.location.href = 'settings.html';">
+                            <i class='bx bxs-cog'></i>
+                            <p>Settings</p>
+                        </li>
+                        <li id="side-menu-item">
+                            <img class="invisible" alt="button icon" src="https://cravatar.eu/helmhead/MHF_Question/64.png">
+                            <i class='bx bx-loader-circle bx-spin'></i>
+                            <p></p>
+                        </li>
+                    </ul>
+                    <div class="menu-panel">
+                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                        <p>
+                            <span class="bold"></span>
+                            <br>
+                        </p>
                     </div>
                 </div>
-                <div class="search-bar flex">
-                    <label>
-                        <input type="text" placeholder="Search disabled" id="search-bar" onclick="openSearch();" disabled>
-                    </label>
-                    <i class='bx bx-search-alt'></i>
+            </div><script>initMenu('menu');</script>
+            <div class="discover-content">
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
                 </div>
-            </div>
-            <div id="discover-start">
-
-            </div>
-            <div id="discover-search">
-                <div class="flex search-flex">
-                    <div class="card card-disabled">
-                        <div id="search-filter">
-
+                <div class="card search flex" id="search-card">
+                    <div class="search-buttons flex">
+                        <div class="buttons" id="discover-buttons">
+                            <h4>Start</h4>
+                            <h4>News</h4>
+                            <h4>Games</h4>
+                        </div>
+                        <div class="buttons" id="search-buttons">
+                            <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
+                            <label>
+                                <select id="search-type-select">
+                                    <option>App modules</option>
+                                </select>
+                            </label>
                         </div>
                     </div>
-                    <div id="search-content">
-                        <div class="card search-result" id="result-template">
-                            <div class="flex">
-                                <div class="search-image">
-                                    <img alt="result image" onclick="connector('java.overlay');" src="../assets/application/images/nero.png">
-                                </div>
-                                <div class="search-details">
-                                    <div class="flex">
-                                        <h2 class="search-title">title</h2>
+                    <div class="search-bar flex">
+                        <label>
+                            <input type="text" placeholder="Search disabled" id="search-bar" onclick="openSearch();" disabled>
+                        </label>
+                        <i class='bx bx-search-alt'></i>
+                    </div>
+                </div>
+                <div id="discover-start">
+
+                </div>
+                <div id="discover-search">
+                    <div class="flex search-flex">
+                        <div class="card card-disabled">
+                            <div id="search-filter">
+
+                            </div>
+                        </div>
+                        <div id="search-content">
+                            <div class="card result-card" id="result-template">
+                                <div class="flex">
+                                    <div class="result-image">
+                                        <img alt="result image" onclick="connector('java.overlay');" src="../assets/application/images/nero.png">
+                                    </div>
+                                    <div class="result-details">
+                                        <div class="flex">
+                                            <h2 class="result-title">title</h2>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -114,6 +115,6 @@
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
     </body>
 </html>

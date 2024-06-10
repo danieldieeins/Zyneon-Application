@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.UUID;
 
 public record ApplicationConfig(String[] args) {
 
@@ -28,6 +29,7 @@ public record ApplicationConfig(String[] args) {
     public static boolean test = false;
 
     // non-changeable variables
+    private static UUID applicationId = UUID.randomUUID();
     private static String applicationVersion = "unknown";
     private static String applicationPath = null;
     private static Config configuration = null;
@@ -35,6 +37,7 @@ public record ApplicationConfig(String[] args) {
     private static Config updateConfig = null;
 
     private static String[] arguments = null;
+
 
     // Constructor for ApplicationConfig class
     public ApplicationConfig(String[] args) {
@@ -68,6 +71,10 @@ public record ApplicationConfig(String[] args) {
         } else {
             getSettings().checkEntry("settings.language","en");
         }
+
+        // Resolving application id
+        getSettings().checkEntry("settings.applicationId", applicationId);
+        applicationId = UUID.fromString(getSettings().getString("settings.applicationId"));
 
         // Resolving landing page
         if(getSettings().get("settings.startPage")!=null) {
@@ -162,8 +169,13 @@ public record ApplicationConfig(String[] args) {
         return updateConfig;
     }
 
-    //Method to get the application version
+    // Method to get the application version
     public static String getApplicationVersion() {
         return applicationVersion;
+    }
+
+    // Method to get the application id
+    public static UUID getApplicationId() {
+        return applicationId;
     }
 }

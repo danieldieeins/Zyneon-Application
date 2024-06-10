@@ -31,7 +31,7 @@
                     <ul>
                         <li onclick="toggleMainMenu();">
                             <i class='bx bx-menu'></i>
-                            <p>Menü umschalten</p>
+                            <p>Menü schließen</p>
                         </li>
                         <li onclick="window.location.href = 'discover.html';">
                             <i class='bx bx-world'></i>
@@ -41,7 +41,7 @@
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <p>Bibliothek</p>
                         </li>
-                        <li onclick="window.location.href = 'settings.html';">
+                        <li onclick="window.location.href = 'settings.html'">
                             <i class='bx bxs-cog'></i>
                             <p>Einstellungen</p>
                         </li>
@@ -54,35 +54,77 @@
                     <div class="menu-panel">
                         <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
                         <p>
-                            <span class="bold">Synchronisieren...</span>
-                            <br>Unbekannter Spieler
+                            <span class="bold"></span>
+                            <br>
                         </p>
                     </div>
                 </div><script>initMenu('menu');</script>
             </div>
             <div class="cnt">
-                <div class="library flex">
-                    <div class="library-menu">
-                        <div class="card">
-                            <h4 id="game-module-title">
-                                Spiel:
-                                <label>
-                                    <select id="select-game-module" onchange="onModuleChange();">
-                                        <option id="add-module-option" value="-1">Modul hinzufügen...</option>
-                                    </select>
-                                </label>
-                            </h4>
+                <div id="overlay">
+                    <iframe id="overlay-frame"></iframe>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Schließen <i class='bx bx-x'></i></a>
+                </div>
+                <div class="library">
+                    <div class="flex">
+                        <div class="library-menu">
+                            <label>
+                                <select class="card title-card" id="select-game-module" onchange="onModuleChange();">
+                                    <option id="add-module-option" value="-1">Spielmodul auswählen...</option>
+                                </select>
+                            </label>
+                            <div class="card card-disabled menu-card card-scroll">
+                                <div class="library-group" id="actions">
+                                    <h3>Aktionen</h3>
+                                    <ul>
+                                        <li id="overview-button" onclick="toggleLibraryOverview('Bibliotheksübersicht');">
+                                            <i class='bx bxs-dashboard'></i>
+                                            <p>Übersicht</p>
+                                        </li>
+                                        <li id="group-actions-entry">
+                                            <i></i>
+                                            <img alt="settings menu entry icon" src="">
+                                            <p>Aktionseintrag...</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="library-group" id="menu-group-template">
+                                    <h3>Gruppentitel</h3>
+                                    <ul>
+                                        <li id="template-group-entry">
+                                            <i></i>
+                                            <img alt="settings menu entry icon" src="">
+                                            <p>Gruppeneintrag...</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div id="game-submenu">
-
-                        </div>
-                    </div>
-                    <div class="library-content">
-                        <div id="add-game-module">
-                            <div class="card"><h4>Ein Spielmodul hinzufügen...</h4></div>
-                        </div>
-                        <div id="game-content">
-
+                        <div class="library-content">
+                            <div class="card card-disabled title-menu-card">
+                                <div class="flex">
+                                    <img id="title-image" alt="title icon" src="">
+                                    <h2 id="title-name"></h2>
+                                    <div class="title-options">
+                                        <div class="options-transition"></div>
+                                        <div id="title-options"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="library-overview">
+                                <div class="card result-card" id="result-template">
+                                    <div class="flex">
+                                        <div class="result-image">
+                                            <img id="template-image" alt="instance image" onclick="" src="">
+                                        </div>
+                                        <div class="result-details">
+                                            <div class="flex">
+                                                <h2 class="result-title" id="template-title">Titel</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

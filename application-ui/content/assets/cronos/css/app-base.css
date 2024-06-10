@@ -58,6 +58,11 @@ body {
     src: url("../fonts/MPLUS1p/MPLUS1p-Thin.ttf");
 }
 
+@font-face {
+    font-family: OpenSans;
+    src: url("../fonts/OpenSans/OpenSans-Regular.ttf");
+}
+
 h1, h2, h3, h4, h5, h6 {
     color: var(--highlight);
 }
