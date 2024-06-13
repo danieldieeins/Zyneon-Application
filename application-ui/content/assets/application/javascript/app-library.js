@@ -93,3 +93,37 @@ function addAction(title,iconClass,onclick,id) {
     }
     actionTemplate.parentNode.insertBefore(actionEntry,actionTemplate);
 }
+
+function addGroup(title,id) {
+    const actionTemplate = document.getElementById("menu-group-template");
+    const actionEntry = actionTemplate.cloneNode(true);
+    actionEntry.querySelector("h3").innerText = title;
+    actionEntry.querySelector("li").id = "template-"+id+"-entry";
+    actionEntry.querySelector("li").style.display = "none";
+    actionEntry.id = id;
+    actionTemplate.parentNode.insertBefore(actionEntry,actionTemplate);
+}
+
+function addGroupEntry(groupId,title,id,image) {
+    const actionTemplate = document.getElementById("template-"+groupId+"-entry");
+    const actionEntry = actionTemplate.cloneNode(true);
+
+    actionEntry.id = id;
+    actionEntry.style.display = "inherit";
+    actionEntry.onclick = function () {
+        connector("sync.button.library.menu.group."+groupId+"."+id);
+    }
+
+    if(title) {
+        actionEntry.querySelector("p").innerText = title;
+    }
+
+    if(image) {
+        actionEntry.querySelector("i").style.display = "none";
+        actionEntry.querySelector("img").src = image;
+    } else {
+        actionEntry.querySelector("i").classList = "bx bx-x";
+    }
+
+    actionTemplate.parentNode.insertBefore(actionEntry,actionTemplate);
+}

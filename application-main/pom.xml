@@ -11,11 +11,10 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.6-beta.1</version>
+    <version>2024.6-beta.4</version>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -23,26 +22,26 @@
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-auth</artifactId>
-            <version>2024.4.2</version>
+            <version>2024.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>verget-all</artifactId>
-            <version>2024.4.2.2</version>
+            <version>2024.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-zyndex</artifactId>
-            <version>2024.4.3.2</version>
+            <version>2024.6</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>azuljavadownloader</artifactId>
-            <version>1.0.1</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
 
@@ -81,9 +80,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                    <release>21</release>
+                    <source>17</source>
+                    <release>17</release>
                 </configuration>
             </plugin>
 
