@@ -66,7 +66,7 @@
                     <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
                 </div>
                 <div class="library">
-                    <div class="flex">
+                    <div class="flex library-flex">
                         <div class="library-menu">
                             <label>
                                 <select class="card title-card" id="select-game-module" onchange="onModuleChange();">
@@ -122,6 +122,18 @@
                                                 <h2 class="result-title" id="template-title">title</h2>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="library-view">
+                                <div class="flex">
+                                    <div class="view-image" id="view-image-container">
+                                        <img id="view-image" alt=" " src="">
+                                    </div>
+                                    <div class="view-description">
+                                        <h4 id="view-description">
+                                            <i class='bx bx-loader-alt bx-spin'></i> Loading...
+                                        </h4>
                                     </div>
                                 </div>
                             </div>

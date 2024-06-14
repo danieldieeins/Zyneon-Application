@@ -1,11 +1,10 @@
-let lastTitle = "";
-let lastHighlighted;
-let highlighted;
+let lastHighlighted = "";
+let highlighted = "";
+let moduleId = "shared";
 
 function initLibrary() {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("moduleId")!==null||localStorage.getItem("settings.lastLibraryModule")!==null) {
-        let moduleId;
         if(urlParams.get("moduleId")!==null) {
             moduleId = urlParams.get('moduleId');
         } else {
@@ -13,7 +12,12 @@ function initLibrary() {
         }
         if(moduleId!=="-1"&&moduleId!==-1) {
             connector("sync.library.module." + moduleId);
-            document.getElementById("select-game-module").value = moduleId;
+            if(optionExists("select-game-module",moduleId)) {
+                document.getElementById("select-game-module").value = moduleId;
+            }
+            if(urlParams.get("viewId")!==null) {
+                showView(urlParams.get("viewId"));
+            }
             return;
         }
     }
@@ -25,6 +29,17 @@ function initLibrary() {
     if(!addModule.classList.contains("active")) {
         addModule.classList.add("active");
     }
+}
+
+function optionExists(selectId, value) {
+    const selectElement = document.getElementById(selectId);
+    const options = selectElement.options;
+    for (let i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function addModuleToList(title,moduleId,image) {
@@ -47,36 +62,21 @@ function onModuleChange() {
     }
 }
 
-function toggleLibraryOverview(title_) {
-    const overview = document.getElementById("library-overview");
-    const title = document.getElementById("title-name");
-    overview.classList.toggle("active");
-    if(overview.classList.contains("active")) {
-        lastTitle = title.innerText;
-        if(highlighted) {
-            lastHighlighted = highlighted;
-        }
-        title.innerText = title_;
-        highlight(document.getElementById("overview-button"));
-    } else {
-        title.innerText = lastTitle;
-        if(lastHighlighted) {
-            highlight(lastHighlighted);
-        } else {
-            if(highlighted) {
-                highlighted.classList.remove("active");
-                highlighted = null;
+function highlight(id) {
+    const highlight = document.getElementById(id);
+    if(highlight) {
+        const oldHighlight = document.getElementById(highlighted);
+        if(oldHighlight) {
+            if(oldHighlight.classList.contains("active")) {
+                oldHighlight.classList.remove("active");
             }
         }
+        if(!highlight.classList.contains("active")) {
+            highlight.classList.add("active");
+        }
+        lastHighlighted = highlight;
+        highlighted = id;
     }
-}
-
-function highlight(element) {
-    if(highlighted) {
-        highlighted.classList.remove("active");
-    }
-    element.classList.add("active");
-    highlighted = element;
 }
 
 function addAction(title,iconClass,onclick,id) {
@@ -114,16 +114,102 @@ function addGroupEntry(groupId,title,id,image) {
         connector("sync.button.library.menu.group."+groupId+"."+id);
     }
 
+    actionEntry.addEventListener("dblclick", function() {
+        connector("java.button.launch."+id);
+        actionEntry.querySelector("p").innerText = "Starting...";
+        let seconds = 5;
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            if (seconds <= 0) {
+                actionEntry.querySelector("p").innerText = title;
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+    });
+
     if(title) {
         actionEntry.querySelector("p").innerText = title;
     }
 
-    if(image) {
-        actionEntry.querySelector("i").style.display = "none";
-        actionEntry.querySelector("img").src = image;
+    const n = Math.floor(Math.random() * 6) + 1;
+    let i = "";
+    if(Math.random() < 0.5) {
+        i="bx bx-dice-"+n;
     } else {
-        actionEntry.querySelector("i").classList = "bx bx-x";
+        i="bx bxs-dice-"+n;
+    }
+    if(image) {
+        if(image!=="") {
+            actionEntry.querySelector("i").style.display = "none";
+            actionEntry.querySelector("img").src = image;
+        } else {
+            actionEntry.querySelector("img").style.display = "none";
+            actionEntry.querySelector("i").classList = i;
+        }
+    } else {
+        actionEntry.querySelector("img").style.display = "none";
+        actionEntry.querySelector("i").classList = i;
     }
 
     actionTemplate.parentNode.insertBefore(actionEntry,actionTemplate);
+
+    if(id === highlighted) {
+        highlighted = "";
+        highlight(actionEntry);
+    }
+}
+
+function setTitle(img,text,options_) {
+    const title = document.getElementById("title-name");
+    const image = document.getElementById("title-image");
+    const options = document.getElementById("title-options");
+    if(text) {
+        title.innerText = text;
+    } else {
+        title.innerText = ""
+    }
+    if(img) {
+        image.style.display = "inherit";
+        image.src = img;
+    } else {
+        image.style.display = "none";
+        image.src = "";
+    }
+    if(options_) {
+        image.style.display = "inherit";
+        image.innerHTML = options_;
+    } else {
+        options.style.display = "none";
+        options.innerHTML = "";
+    }
+}
+
+function setViewDescription(description) {
+    const desc = document.getElementById("view-description");
+    if(description) {
+        desc.innerText = description;
+    } else {
+        desc.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Loading...";
+    }
+}
+
+function setViewImage(image_) {
+    const image = document.getElementById("view-image");
+    const container = document.getElementById("view-image-container");
+    if(image_) {
+        container.style.display = "inherit";
+        image.src = image_;
+    } else {
+        container.style.display = "none";
+        image.src = "";
+    }
+}
+
+function showView(id) {
+    document.getElementById("library-view").style.display = "inherit";
+    document.querySelector(".cnt").style.backgroundImage = "url('')";
+    const button = document.getElementById(id);
+    setTitle(); setViewImage(); setViewDescription();
+    connector("sync.library.module." + moduleId + ".view." + id);
+    highlight(id);
 }

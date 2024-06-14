@@ -1,8 +1,6 @@
 package com.zyneonstudios.application.main;
 
-import com.zyneonstudios.Main;
 import live.nerotv.shademebaby.file.Config;
-import live.nerotv.shademebaby.utils.FileUtil;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -87,7 +85,7 @@ public record ApplicationConfig(String[] args) {
             theme = getSettings().getString("settings.theme");
         }
 
-        applicationVersion = new Config(FileUtil.getResourceFile("nexus.json", Main.class)).getString("version");
+        //applicationVersion = new Config(FileUtil.getResourceFile("nexus.json", Main.class)).getString("version");
     }
 
     //Method to get the startup arguments

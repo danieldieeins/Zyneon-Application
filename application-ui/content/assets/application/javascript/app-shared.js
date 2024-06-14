@@ -98,3 +98,13 @@ function error(message) {
 function debug(message) {
     deb(message);
 }
+
+const colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+function handleColorSchemeChange(e) {
+    if(colors==="automatic") {
+        setColors(colors);
+    }
+}
+
+colorSchemeQuery.addListener(handleColorSchemeChange);
