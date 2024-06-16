@@ -1221,17 +1221,17 @@ public class Connector {
                 String s = "https://raw.githubusercontent.com/danieldieeins/ZyneonApplicationContent/main/m/" + instanceString + ".json";
                 instanceJson = FileUtil.downloadFile(s, Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
             }
-            launch(new ReadableInstance(instanceJson));
+            launch(new WritableInstance(instanceJson));
         } else {
             File file = new File(Application.getInstancePath() + "instances/" + instanceString + "/zyneonInstance.json");
             if (file.exists()) {
-                launch(new ReadableInstance(file));
+                launch(new WritableInstance(file));
             }
         }
         System.gc();
     }
 
-    private void launch(ReadableInstance instance) {
+    private void launch(WritableInstance instance) {
         if(instance.getModloader().equalsIgnoreCase("fabric")) {
             new FabricLauncher().launch(instance);
         } else if(instance.getModloader().equalsIgnoreCase("quilt")) {

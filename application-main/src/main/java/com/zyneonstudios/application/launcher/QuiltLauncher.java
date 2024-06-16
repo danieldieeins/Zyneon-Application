@@ -5,7 +5,7 @@ import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.installer.QuiltInstaller;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
 import com.zyneonstudios.application.integrations.zyndex.ZyndexIntegration;
-import com.zyneonstudios.application.integrations.zyndex.instance.ReadableInstance;
+import com.zyneonstudios.application.integrations.zyndex.instance.WritableInstance;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.utils.frame.LogFrame;
 import fr.flowarg.openlauncherlib.NoFramework;
@@ -16,9 +16,14 @@ import java.nio.file.Path;
 
 public class QuiltLauncher {
 
-    public void launch(ReadableInstance instance) {
-        ZyndexIntegration.update(instance);
-        launch(instance.getMinecraftVersion(), instance.getQuiltVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
+    public void launch(WritableInstance instance) {
+        WritableInstance updatedInstance = ZyndexIntegration.update(instance);
+        if(updatedInstance!=null) {
+            launch(updatedInstance.getMinecraftVersion(), updatedInstance.getQuiltVersion(), updatedInstance.getSettings().getMemory(), Path.of(updatedInstance.getPath()),updatedInstance.getId());
+        } else {
+            launch(instance.getMinecraftVersion(), instance.getQuiltVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
+        }
+        System.gc();
     }
 
     public void launch(String minecraftVersion, String quiltVersion, int ram, Path instancePath,String id) {

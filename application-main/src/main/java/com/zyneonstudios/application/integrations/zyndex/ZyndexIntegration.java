@@ -2,7 +2,6 @@ package com.zyneonstudios.application.integrations.zyndex;
 
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.Application;
-import com.zyneonstudios.application.integrations.zyndex.instance.ReadableInstance;
 import com.zyneonstudios.application.integrations.zyndex.instance.WritableInstance;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
 import com.zyneonstudios.nexus.instance.ReadableZynstance;
@@ -47,7 +46,7 @@ public class ZyndexIntegration {
         }
     }
 
-    public static boolean update(ReadableInstance localInstance) {
+    public static WritableInstance update(WritableInstance localInstance) {
         try {
             ReadableZynstance onlineInstance;
             try {
@@ -106,7 +105,7 @@ public class ZyndexIntegration {
                         }
                         Main.getLogger().log("[ZYNDEX] Updating json file...");
                         String url = onlineInstance.getLocation();
-                        localInstance = new ReadableInstance(FileUtil.downloadFile(url, path + "/zyneonInstance.json"));
+                        localInstance = new WritableInstance(FileUtil.downloadFile(url, path + "/zyneonInstance.json"));
                         Main.getLogger().log("[ZYNDEX] Updated json file!");
                         Main.getLogger().log("[ZYNDEX] Downloading new pack file...");
                         pack = FileUtil.downloadFile(onlineInstance.getDownloadUrl(), path + "meta/pack.zip");
@@ -161,12 +160,14 @@ public class ZyndexIntegration {
                     }
                     Main.getLogger().debug("[ZYNDEX] Updated instance!");
                 }
-                return true;
+                System.out.println(onlineInstance.getMinecraftVersion());
+                localInstance.setMinecraftVersion(onlineInstance.getMinecraftVersion());
+                return localInstance;
             }
         } catch (Exception e) {
             Main.getLogger().err("[ZYNDEX] Couldn't update " + localInstance.getName() + " (" + localInstance.getId() + "): " + e.getMessage());
         }
-        return false;
+        return null;
     }
 
     public static ArrayList<ReadableZynstance> search(ReadableZyndex zyndex, String query, String minecraftVersion) {

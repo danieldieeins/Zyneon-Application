@@ -5,7 +5,7 @@ import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.installer.VanillaInstaller;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
 import com.zyneonstudios.application.integrations.zyndex.ZyndexIntegration;
-import com.zyneonstudios.application.integrations.zyndex.instance.ReadableInstance;
+import com.zyneonstudios.application.integrations.zyndex.instance.WritableInstance;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.utils.frame.LogFrame;
 import fr.flowarg.openlauncherlib.NoFramework;
@@ -16,7 +16,7 @@ import java.nio.file.Path;
 
 public class VanillaLauncher {
 
-    public void launch(ReadableInstance instance) {
+    public void launch(WritableInstance instance) {
         ZyndexIntegration.update(instance);
         launch(instance.getMinecraftVersion(), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
     }

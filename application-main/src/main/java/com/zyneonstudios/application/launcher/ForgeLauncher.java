@@ -5,7 +5,7 @@ import com.zyneonstudios.application.Application;
 import com.zyneonstudios.application.installer.ForgeInstaller;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
 import com.zyneonstudios.application.integrations.zyndex.ZyndexIntegration;
-import com.zyneonstudios.application.integrations.zyndex.instance.ReadableInstance;
+import com.zyneonstudios.application.integrations.zyndex.instance.WritableInstance;
 import com.zyneonstudios.application.utils.backend.MinecraftVersion;
 import com.zyneonstudios.application.utils.frame.LogFrame;
 import fr.flowarg.flowupdater.versions.ForgeVersionType;
@@ -17,9 +17,14 @@ import java.nio.file.Path;
 
 public class ForgeLauncher {
 
-    public void launch(ReadableInstance instance) {
-        ZyndexIntegration.update(instance);
-        launch(instance.getMinecraftVersion(), instance.getForgeVersion(), ForgeVersionType.valueOf(instance.getForgeType().toUpperCase()), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
+    public void launch(WritableInstance instance) {
+        WritableInstance updatedInstance = ZyndexIntegration.update(instance);
+        if(updatedInstance!=null) {
+            launch(updatedInstance.getMinecraftVersion(), updatedInstance.getForgeVersion(), ForgeVersionType.valueOf(updatedInstance.getForgeType().toUpperCase()), updatedInstance.getSettings().getMemory(), Path.of(updatedInstance.getPath()),updatedInstance.getId());
+        } else {
+            launch(instance.getMinecraftVersion(), instance.getForgeVersion(), ForgeVersionType.valueOf(instance.getForgeType().toUpperCase()), instance.getSettings().getMemory(), Path.of(instance.getPath()),instance.getId());
+        }
+        System.gc();
     }
 
     public void launch(String minecraftVersion, String forgeVersion, ForgeVersionType forgeType, int ram, Path instancePath, String id) {
