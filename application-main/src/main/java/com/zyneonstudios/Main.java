@@ -32,9 +32,9 @@ public class Main {
         splash = new ZyneonSplash();
         splash.setVisible(true);
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        version = "2024.6.1";
+        version = "2024.6.3";
         ArrayList<String> arguments = new ArrayList<>();
-        String name = "Protonium²";
+        String name = "Tricky Protonium";
         architecture = getArchitecture();
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
