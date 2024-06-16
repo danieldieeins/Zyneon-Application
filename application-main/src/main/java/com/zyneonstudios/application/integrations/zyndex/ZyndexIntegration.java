@@ -72,14 +72,19 @@ public class ZyndexIntegration {
                     try {
                         String path = Application.getInstancePath() + "instances/" + onlineInstance.getId() + "/";
                         File pack = new File(path + "meta/pack.zip");
-                        File mods = new File(path + "/mods/");
-                        File libraries = new File(path + "/libraries/");
+                        File mods = new File(path + "mods/");
+                        File libraries = new File(path + "libraries/");
                         Main.getLogger().log("[ZYNDEX] Deleting old libraries...");
+                        String lT = "!";
                         try {
                             FileUtil.deleteFolder(libraries);
-                        } catch (Exception ignore) {}
+                        } catch (Exception e) {
+                            lT = ": "+e.getMessage();
+                        }
                         if(!libraries.exists()) {
                             Main.getLogger().log("[ZYNDEX] Old libraries deleted!");
+                        } else {
+                            Main.getLogger().error("[ZYNDEX] Couldn't delete old libraries"+lT);
                         }
                         Main.getLogger().log("[ZYNDEX] Checking if old pack file exists...");
                         if (pack.exists()) {
@@ -107,8 +112,16 @@ public class ZyndexIntegration {
                         pack = FileUtil.downloadFile(onlineInstance.getDownloadUrl(), path + "meta/pack.zip");
                         Main.getLogger().log("[ZYNDEX] New pack file downloaded!");
                         Main.getLogger().log("[ZYNDEX] Deleting old mods...");
-                        if (!mods.mkdirs()) {
+                        String mT = "!";
+                        try {
                             FileUtil.deleteFolder(mods);
+                        } catch (Exception e) {
+                            mT = ": "+e.getMessage();
+                        }
+                        if(!mods.exists()) {
+                            Main.getLogger().log("[ZYNDEX] Old mods deleted!");
+                        } else {
+                            Main.getLogger().error("[ZYNDEX] Couldn't delete old mods"+lT);
                         }
                         Main.getLogger().log("[ZYNDEX] Old mods deleted!");
                         Main.getLogger().log("[ZYNDEX] Unzipping pack file...");
