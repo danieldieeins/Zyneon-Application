@@ -74,6 +74,13 @@ public class ZyndexIntegration {
                         File pack = new File(path + "meta/pack.zip");
                         File mods = new File(path + "/mods/");
                         File libraries = new File(path + "/libraries/");
+                        Main.getLogger().log("[ZYNDEX] Deleting old libraries...");
+                        try {
+                            FileUtil.deleteFolder(libraries);
+                        } catch (Exception ignore) {}
+                        if(!libraries.exists()) {
+                            Main.getLogger().log("[ZYNDEX] Old libraries deleted!");
+                        }
                         Main.getLogger().log("[ZYNDEX] Checking if old pack file exists...");
                         if (pack.exists()) {
                             Main.getLogger().log("[ZYNDEX] Found old pack file!");
@@ -99,13 +106,6 @@ public class ZyndexIntegration {
                         Main.getLogger().log("[ZYNDEX] Downloading new pack file...");
                         pack = FileUtil.downloadFile(onlineInstance.getDownloadUrl(), path + "meta/pack.zip");
                         Main.getLogger().log("[ZYNDEX] New pack file downloaded!");
-
-                        Main.getLogger().log("[ZYNDEX] Deleting old libraries...");
-                        if (!libraries.mkdirs()) {
-                            FileUtil.deleteFolder(libraries);
-                        }
-                        Main.getLogger().log("[ZYNDEX] Old libraries deleted!");
-
                         Main.getLogger().log("[ZYNDEX] Deleting old mods...");
                         if (!mods.mkdirs()) {
                             FileUtil.deleteFolder(mods);
