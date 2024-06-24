@@ -141,7 +141,7 @@ public class FrameConnector {
     // Method to synchronize general settings
     private void syncSettings(String request) {
         if(request.equals("general")) {
-            String channel = "shervann"; boolean autoUpdate = false;
+            String channel = "experimental"; boolean autoUpdate = false;
             // Retrieve auto-update and update channel settings
             if(ApplicationConfig.getUpdateSettings().getBoolean("updater.settings.autoUpdate")!=null) {
                 autoUpdate = ApplicationConfig.getUpdateSettings().getBool("updater.settings.autoUpdate");
