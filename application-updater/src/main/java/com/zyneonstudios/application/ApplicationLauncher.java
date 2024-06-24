@@ -40,7 +40,7 @@ public class ApplicationLauncher {
             }
         }
         autoUpdate = au;
-        updateChannel = uc;
+        updateChannel = uc.replace("shervann","experimental");
     }
 
     public String getVersion() {
