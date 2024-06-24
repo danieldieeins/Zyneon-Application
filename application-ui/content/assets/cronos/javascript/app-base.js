@@ -34,7 +34,7 @@ function connector(request) {
     console.log("[CONNECTOR] " + request);
 }
 
-function setColors(newColors) {
+function setColors(newColors,fromApp) {
     colors=newColors;
     localStorage.setItem('theme.colors', newColors);
     if(newColors==="automatic") {

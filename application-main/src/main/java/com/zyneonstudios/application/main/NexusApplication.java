@@ -5,7 +5,7 @@ import com.zyneonstudios.Main;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
 import com.zyneonstudios.application.modules.ModuleLoader;
-import com.zyneonstudios.application.modules.test.TestModule;
+import com.zyneonstudios.application.modules.localcommands.LocalCommandsModule;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 
@@ -47,9 +47,7 @@ public class NexusApplication {
             frame.pack();
         }
         frame.setLocationRelativeTo(null);
-        if(ApplicationConfig.test) {
-            moduleLoader.loadModule(new TestModule(this));
-        }
+        moduleLoader.loadModule(new LocalCommandsModule(this));
 
         File modules = new File(getApplicationPath()+"modules/");
         if(modules.exists()) {

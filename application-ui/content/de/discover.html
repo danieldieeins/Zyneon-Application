@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-discover.js"></script>
-        <script>searchTerm = "Klicke zum Suchen"; console.log("[CONNECTOR] init.discover"); init();</script>
+        <script>console.log("[CONNECTOR] init.discover"); init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -51,11 +51,11 @@
                             <p></p>
                         </li>
                     </ul>
-                    <div class="menu-panel">
-                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                    <div class="menu-panel" id="menu-panel">
+                        <img alt="menu panel image" id="panel-image" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="">
                         <p>
-                            <span class="bold"></span>
-                            <br>
+                            <span class="bold" id="panel-title"></span>
+                            <br><span id="panel-description"></span>
                         </p>
                     </div>
                 </div>

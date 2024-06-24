@@ -51,11 +51,11 @@
                             <p></p>
                         </li>
                     </ul>
-                    <div class="menu-panel">
-                        <img alt="Users ingame skin" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="https://cravatar.eu/helmhead/MHF_Question/128.png">
+                    <div class="menu-panel" id="menu-panel">
+                        <img alt="menu panel image" id="panel-image" class="hover-wiggle pointer" onclick="toggleMainMenu();" src="">
                         <p>
-                            <span class="bold"></span>
-                            <br>
+                            <span class="bold" id="panel-title"></span>
+                            <br><span id="panel-description"></span>
                         </p>
                     </div>
                 </div>
@@ -83,15 +83,15 @@
                                 </li>
                                 <li id="settings-indexes-button" onclick="setContent('settings-indexes');">
                                     <i class='bx bx-sort-down'></i>
-                                    <p>Index-Optionen</p>
+                                    <p>Index Optionen</p>
                                 </li>
                                 <li id="settings-modules-button" onclick="setContent('settings-modules');">
                                     <i class='bx bx-extension'></i>
-                                    <p>Modul-Optionen</p>
+                                    <p>Modul Optionen</p>
                                 </li>
                                 <li id="settings-about-button" onclick="setContent('settings-about');">
                                     <i class='bx bx-info-circle'></i>
-                                    <p>Über die NEXUS App</p>
+                                    <p>Über NEXUS App</p>
                                 </li>
                             </ul>
                             <div class="settings-modules-section" id="settings-modules-section">
@@ -100,7 +100,7 @@
                                     <li id="settings-module-template">
                                         <i></i>
                                         <img alt="settings menu entry icon" src="">
-                                        <p>Lade Moduleintrag...</p>
+                                        <p>Menüeintrag laden...</p>
                                     </li>
                                 </ul>
                                 <script>connector('init.settings.modules');</script>
@@ -129,22 +129,22 @@
                         <div class="card settings-content-card card-disabled">
                             <div id="settings-general">
                                 <div class="group" id="settings-general-startup">
-                                    <h4>Starteinstellungen</h4>
+                                    <h4>Beim Starten</h4>
                                     <h3>
                                         Startseite
                                         <span class="select">
                                             <label>
                                                 <select id="general-settings-start-page" onchange="syncStartPage();">
-                                                    <option value="discover.html">Discover</option>
-                                                    <option value="library.html">Library</option>
-                                                    <option value="settings.html">Settings</option>
+                                                    <option value="discover.html">Entdecken</option>
+                                                    <option value="library.html">Bibliothek</option>
+                                                    <option value="settings.html">Einstellungen</option>
                                                 </select>
                                             </label>
                                         </span>
                                     </h3>
                                     <div id="updater-settings">
                                         <h3>
-                                            Beim Starten aktualisieren
+                                            Auf Updates prüfen
                                             <span class="checkbox">
                                                 <label>
                                                     <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
@@ -157,13 +157,12 @@
                                             </span>
                                         </h3>
                                         <h3>
-                                            Aktualisierungskanal
+                                            Updatekanal
                                             <span class="select">
                                                 <label>
                                                     <select id="updater-settings-update-channel" onchange="syncUpdates();">
-                                                        <option value="shervann">Shervann (aktueller Testkanal)</option>
-                                                        <option value="stable">Stabil (empfohlener Kanal)</option>
-                                                        <option value="experimental">Experimentell (Testkanal)</option>
+                                                        <option value="experimental">Experimentell (aktuell,test)</option>
+                                                        <option value="stable">Stabil (empfohlen)</option>
                                                     </select>
                                                 </label>
                                             </span>
@@ -180,7 +179,7 @@
                                                     <option value="automatic">Standard: System</option>
                                                     <option value="../assets/cronos/css/app-colors-dark.css">Standard: Dunkel</option>
                                                     <option value="../assets/cronos/css/app-colors-light.css">Standard: Hell</option>
-                                                    <option value="../assets/application/css/app-colors-oled.css">Standard: OLED (BETA)</option>
+                                                    <option value="../assets/application/css/app-colors-oled.css">Standard: OLED (Beta)</option>
                                                     <option value="../assets/application/css/app-colors-zyneon.css">Standard: Zyneon</option>
                                                 </select><script>document.getElementById("appearance-settings-theme").value = colors;</script>
                                             </label>
@@ -192,7 +191,7 @@
                                             <label>
                                                 <select id="appearance-settings-language" onchange="syncLanguage();">
                                                     <option value="de">Deutsch (German)</option>
-                                                    <option value="en">English (English)</option>
+                                                    <option value="en">English (Englisch)</option>
                                                 </select>
                                             </label>
                                         </span>

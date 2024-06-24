@@ -108,3 +108,39 @@ function handleColorSchemeChange(e) {
 }
 
 colorSchemeQuery.addListener(handleColorSchemeChange);
+
+function setMenuPanel(img,title,description,show) {
+    hideMenuPanel();
+    const image = document.getElementById("panel-image");
+    image.src = "";
+    if(img) {
+        image.src = img;
+    }
+
+    const pTitle = document.getElementById("panel-title");
+    pTitle.innerHTML = "";
+    if(title) {
+        pTitle.innerHTML = title;
+    }
+
+    const pDescription = document.getElementById("panel-description");
+    pDescription.innerHTML = "";
+    if(description) {
+        pDescription.innerHTML = description;
+    }
+
+    if(show) {
+        if(show===true) {
+            showMenuPanel();
+        }
+    }
+}
+
+function showMenuPanel() {
+    document.getElementById("menu-panel").style.display = "inherit";
+
+}
+
+function hideMenuPanel() {
+    document.getElementById("menu-panel").style.display = "none";
+}

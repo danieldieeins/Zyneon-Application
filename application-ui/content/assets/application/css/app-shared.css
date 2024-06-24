@@ -72,8 +72,8 @@ li:hover {
     margin-bottom: 1rem;
 }
 
-.menu-panel {
-    display: none !important;
+#menu-panel {
+    display: none;
 }
 
 .cnt {

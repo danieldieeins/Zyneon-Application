@@ -26,8 +26,13 @@ public class FrameConnector {
 
     // Method to resolve requests received by the FrameConnector
     public void resolveRequest(String request) {
-        // Logging the resolution process
-        NexusApplication.getLogger().debug("[CONNECTOR] resolving "+request+"...");
+        //If test or debug is enabled, print out every request
+        if(ApplicationConfig.test) {
+            NexusApplication.getLogger().error("[CONNECTOR] (Request-Reader) resolving "+request+"...");
+        } else {
+            NexusApplication.getLogger().debug("[CONNECTOR] (Request-Reader) resolving "+request+"...");
+        }
+
         // Checking the type of request
         if(request.startsWith("sync.")) {
             // If the request starts with "sync.", call the sync method
@@ -46,7 +51,7 @@ public class FrameConnector {
     }
 
     private void init(String request) {
-        frame.executeJavaScript("syncDesktop(); setColors('"+ApplicationConfig.theme+"');");
+        frame.executeJavaScript("syncDesktop();");
         if(request.equals("discover")) {
             frame.executeJavaScript("activateMenu('menu',true); document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = searchTerm;");
         } else {

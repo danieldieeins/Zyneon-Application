@@ -82,7 +82,7 @@ public class WebFrame extends JFrame {
             }
         });
         setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
-        builder.getCefSettings().cache_path = jcefPath+"/cache"; // Set cache path for CEF
+        builder.getCefSettings().cache_path = (jcefPath+"/cache").replace("\\\\","\\").replace("//","/"); // Set cache path for CEF
         builder.getCefSettings().log_severity = CefSettings.LogSeverity.LOGSEVERITY_DISABLE; // Disable logging
         builder.getCefSettings().persist_session_cookies = true; // Persist session cookies
         builder.setInstallDir(installDir); // Set installation directory for jCEF

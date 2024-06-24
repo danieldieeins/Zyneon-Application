@@ -15,7 +15,9 @@ public class Main {
     */
 
     public static void main(String[] args) {
+        // Creating new splash icon
         splash = new ZyneonSplash();
+        // Showing splash icon
         splash.setVisible(true);
         // Creating application config
         new ApplicationConfig(args);
