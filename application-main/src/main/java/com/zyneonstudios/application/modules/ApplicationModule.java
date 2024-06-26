@@ -9,11 +9,11 @@ public class ApplicationModule {
     private final String id;
     private final String name;
     private final String version;
-    private final String author;
+    private final String authors;
 
     private final NexusApplication application;
 
-    public ApplicationModule(NexusApplication application, String id, String name, String version, String author) {
+    public ApplicationModule(NexusApplication application, String id, String name, String version, String authors) {
         NexusApplication.getLogger().debug("[MODULES] Creating object for "+name+" ("+id+") v"+version);
 
         this.id = id;
@@ -23,18 +23,7 @@ public class ApplicationModule {
         this.application = application;
 
         this.connector = new ModuleConnector(this);
-        this.author = author;
-    }
-
-    @Deprecated
-    public ApplicationModule(NexusApplication application, String id, String name, String version) {
-        NexusApplication.getLogger().debug("[MODULES] Creating object for "+name+" ("+id+") v"+version);
-        this.id = id;
-        this.name = name;
-        this.version = version;
-        this.application = application;
-        this.connector = new ModuleConnector(this);
-        this.author = "Unknown";
+        this.authors = authors;
     }
 
     public NexusApplication getApplication() {
@@ -61,19 +50,19 @@ public class ApplicationModule {
         return version;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthors() {
+        return authors;
     }
 
     public void onLoad() {
-        NexusApplication.getLogger().log("[MODULES] loading "+name+" ("+id+"-v"+version+") by "+author+"...");
+        NexusApplication.getLogger().log("[MODULES] loading "+name+" ("+id+"-v"+version+") by "+authors+"...");
     }
 
     public void onEnable() {
-        NexusApplication.getLogger().log("[MODULES] enabling "+name+" ("+id+"-v"+version+") by "+author+"...");
+        NexusApplication.getLogger().log("[MODULES] enabling "+name+" ("+id+"-v"+version+") by "+authors+"...");
     }
 
     public void onDisable() {
-        NexusApplication.getLogger().log("[MODULES] disabling "+name+" ("+id+"-v"+version+") by "+author+"...");
+        NexusApplication.getLogger().log("[MODULES] disabling "+name+" ("+id+"-v"+version+") by "+authors+"...");
     }
 }

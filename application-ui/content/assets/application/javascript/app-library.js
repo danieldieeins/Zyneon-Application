@@ -2,7 +2,7 @@ let lastHighlighted = "";
 let highlighted = "";
 let moduleId = "shared";
 
-function initLibrary() {
+function initLibrary(skipConnector) {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("moduleId")!==null||localStorage.getItem("settings.lastLibraryModule")!==null) {
         if(urlParams.get("moduleId")!==null) {
@@ -11,23 +11,16 @@ function initLibrary() {
             moduleId = localStorage.getItem("settings.lastLibraryModule");
         }
         if(moduleId!=="-1"&&moduleId!==-1) {
-            connector("sync.library.module." + moduleId);
+            if(skipConnector!==true) {
+                connector("sync.library.module." + moduleId);
+            }
             if(optionExists("select-game-module",moduleId)) {
                 document.getElementById("select-game-module").value = moduleId;
             }
             if(urlParams.get("viewId")!==null) {
                 showView(urlParams.get("viewId"));
             }
-            return;
         }
-    }
-    const gameContent = document.getElementById("game-content");
-    if(gameContent.classList.contains("active")) {
-        gameContent.classList.remove("active");
-    }
-    const addModule = document.getElementById('add-game-module');
-    if(!addModule.classList.contains("active")) {
-        addModule.classList.add("active");
     }
 }
 
@@ -80,6 +73,9 @@ function highlight(id) {
 }
 
 function addAction(title,iconClass,onclick,id) {
+    if(document.getElementById(id)) {
+        return;
+    }
     const actionTemplate = document.getElementById("group-actions-entry");
     const actionEntry = actionTemplate.cloneNode(true);
     actionEntry.querySelector("img").style.display = "none";
@@ -95,6 +91,9 @@ function addAction(title,iconClass,onclick,id) {
 }
 
 function addGroup(title,id) {
+    if(document.getElementById(id)) {
+        return;
+    }
     const actionTemplate = document.getElementById("menu-group-template");
     const actionEntry = actionTemplate.cloneNode(true);
     actionEntry.querySelector("h3").innerText = title;
@@ -105,6 +104,9 @@ function addGroup(title,id) {
 }
 
 function addGroupEntry(groupId,title,id,image) {
+    if(document.getElementById(id)) {
+        return;
+    }
     const actionTemplate = document.getElementById("template-"+groupId+"-entry");
     const actionEntry = actionTemplate.cloneNode(true);
 

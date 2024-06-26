@@ -73,7 +73,7 @@ public class NexusApplication {
         return logger;
     }
 
-    public ModuleLoader getModuleLoader() {
+    public static ModuleLoader getModuleLoader() {
         return moduleLoader;
     }
 
@@ -118,7 +118,11 @@ public class NexusApplication {
         }
         try {
             if(new File(getApplicationPath() + "temp/ui/").exists()) {
-                logger.debug("[APP] Deleted old ui files: "+new File(getApplicationPath() + "temp/ui/").delete());
+                try {
+                    FileUtil.deleteFolder(new File(getApplicationPath() + "temp/ui/"));
+                } catch (Exception e) {
+                    getLogger().error("Couldn't delete old temporary ui files: "+e.getMessage());
+                }
             }
             logger.debug("[APP] Created new ui path: "+new File(getApplicationPath() + "temp/ui/").mkdirs());
             FileUtil.extractResourceFile("content.zip",getApplicationPath()+"temp/content.zip",Main.class);

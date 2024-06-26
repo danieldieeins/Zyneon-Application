@@ -1,7 +1,10 @@
 package com.zyneonstudios.application.main;
 
+import com.zyneonstudios.Main;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.utils.FileUtil;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -33,6 +36,7 @@ public record ApplicationConfig(String[] args) {
     private static Config configuration = null;
     private static String os = null;
     private static Config updateConfig = null;
+    private static Config properties = null;
 
     private static String[] arguments = null;
 
@@ -61,6 +65,20 @@ public record ApplicationConfig(String[] args) {
                 test = true;
             }
         }
+
+        if(new File(getApplicationPath() + "temp/").exists()) {
+            try {
+                FileUtil.deleteFolder(new File(getApplicationPath() + "temp/"));
+            } catch (Exception e) {
+                NexusApplication.getLogger().error("[CONFIG] Couldn't delete old temp files: "+e.getMessage());
+            }
+        }
+        if(new File(getApplicationPath() + "temp/nexus.json").exists()) {
+            NexusApplication.getLogger().debug("[CONFIG] Deleted old properties: "+new File(getApplicationPath() + "temp/nexus.json").delete());
+        }
+        FileUtil.extractResourceFile("nexus.json",getApplicationPath()+"temp/nexus.json", Main.class);
+        properties = new Config(new File(getApplicationPath() + "temp/nexus.json"));
+        applicationVersion = properties.getString("version");
 
         // Resolving language
         String lang = Locale.getDefault().toLanguageTag();

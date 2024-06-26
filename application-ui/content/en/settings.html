@@ -73,23 +73,23 @@
                         <div class="card settings-menu-card card-disabled">
                             <h3>Navigation</h3>
                             <ul>
-                                <li id="settings-general-button" onclick="setContent('settings-general');">
+                                <li id="settings-general-button" onclick="setContent('settings-general'); connector('sync.settings.general');">
                                     <i class='bx bx-compass'></i>
                                     <p>General settings</p>
                                 </li>
-                                <li id="settings-global-button" onclick="setContent('settings-global');">
+                                <li id="settings-global-button" onclick="setContent('settings-global'); connector('sync.settings.global');">
                                     <i class='bx bx-globe'></i>
                                     <p>Global settings</p>
                                 </li>
-                                <li id="settings-indexes-button" onclick="setContent('settings-indexes');">
+                                <li id="settings-indexes-button" onclick="setContent('settings-indexes'); connector('sync.settings.indexes');">
                                     <i class='bx bx-sort-down'></i>
                                     <p>Index settings</p>
                                 </li>
-                                <li id="settings-modules-button" onclick="setContent('settings-modules');">
+                                <li id="settings-modules-button" onclick="setContent('settings-modules'); connector('sync.settings.modules');">
                                     <i class='bx bx-extension'></i>
                                     <p>Module settings</p>
                                 </li>
-                                <li id="settings-about-button" onclick="setContent('settings-about');">
+                                <li id="settings-about-button" onclick="setContent('settings-about'); connector('sync.settings.about');">
                                     <i class='bx bx-info-circle'></i>
                                     <p>About NEXUS App</p>
                                 </li>
@@ -209,7 +209,7 @@
                             </div>
                             <div id="settings-about">
                                 <div class="card">
-                                    ${application.version}
+                                    <span id="settings-global-application-version">${application.version}</span>
                                 </div>
                             </div>
                             <!--TODO: Add other setting pages-->

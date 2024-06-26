@@ -76,7 +76,7 @@
                             <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
                             <label>
                                 <select id="search-type-select">
-                                    <option>App modules</option>
+                                    <option value="modules">App modules</option>
                                 </select>
                             </label>
                         </div>
@@ -99,14 +99,25 @@
                             </div>
                         </div>
                         <div id="search-content">
+                            <div class="result-overlay"></div>
                             <div class="card result-card" id="result-template">
                                 <div class="flex">
                                     <div class="result-image">
-                                        <img alt="result image" onclick="connector('java.overlay');" src="../assets/application/images/nero.png">
+                                        <img alt="result image" src="../assets/application/images/templates/thumbnail.png">
                                     </div>
                                     <div class="result-details">
                                         <div class="flex">
                                             <h2 class="result-title">title</h2>
+                                            <h2 class="result-author">by <span class="result-authors">authors</span></h2>
+                                        </div>
+                                        <p class="result-description">
+                                            description
+                                        </p>
+                                        <p class="result-meta">
+                                            meta
+                                        </p>
+                                        <div class="result-actions">
+                                            <a><i class='bx bx-spreadsheet'></i> More</a>
                                         </div>
                                     </div>
                                 </div>

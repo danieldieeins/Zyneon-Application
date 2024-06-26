@@ -4,8 +4,10 @@ import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.main.ApplicationConfig;
 import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
+import com.zyneonstudios.application.modules.search.ModuleSearch;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class FrameConnector {
 
@@ -17,6 +19,7 @@ public class FrameConnector {
 
     // Instance variable to hold the ApplicationFrame object
     private final ApplicationFrame frame;
+    private ModuleSearch moduleSearch = new ModuleSearch("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
 
     // Constructor for FrameConnector class
     public FrameConnector(ApplicationFrame frame) {
@@ -122,6 +125,8 @@ public class FrameConnector {
 
             // Execute JavaScript to update the UI accordingly
             frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').checked = "+update+";");
+        } else if(request.startsWith("discover.")) {
+            syncDiscover(request.replaceFirst("discover.",""));
         } else if(request.startsWith("updateChannel.")) {
             // If the request starts with "updateChannel.", synchronize update channel settings
             request = request.replace("updateChannel.","");
@@ -151,6 +156,41 @@ public class FrameConnector {
             }
             // Execute JavaScript to update the UI with retrieved settings
             frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ApplicationConfig.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
+        } else if(request.equals("about")) {
+            frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \""+ApplicationConfig.getApplicationVersion()+"\"");
+        }
+    }
+
+    private void syncDiscover(String request) {
+        if(request.startsWith("search.")) {
+            if(request.replace("search.","").equals("modules")) {
+                if(moduleSearch==null) {
+                    moduleSearch = new ModuleSearch("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
+                }
+                if(moduleSearch.getCachedResults()==null) {
+                    moduleSearch.search("");
+                }
+                if(moduleSearch.getCachedSearchTerm()!=null) {
+                    if(!moduleSearch.getCachedSearchTerm().isEmpty()&&!moduleSearch.getCachedSearchTerm().isBlank()) {
+                        frame.executeJavaScript("document.getElementById(\"search-bar\").placeholder = \""+moduleSearch.getCachedSearchTerm()+"\";");
+                    }
+                }
+                for(HashMap<String,String> result : moduleSearch.getCachedResults()) {
+                    String tags = "Tags: "+result.get("meta.tags").replace("[\"","").replace("\"]","").replace("\"","").replace(",",", ");
+                    String meta = result.get("meta.id")+" | v"+result.get("info.version")+" | Hidden: "+result.get("meta.isHidden")+"<br>"+tags;
+                    String actions = "<a onclick=\\\"connector('sync.discover.details.module.nexus-minecraft-module');\\\"><i class='bx bx-spreadsheet'></i> More</a> ";
+                    if(NexusApplication.getModuleLoader().getModuleIds().contains(result.get("meta.id"))) {
+                        actions = "v"+NexusApplication.getModuleLoader().getModules().get(result.get("meta.id")).getVersion()+"  <a onclick=\\\"connector('sync.discover.details.module.nexus-minecraft-module');\\\"><i class='bx bx-spreadsheet'></i> More</a> <a style=\\\"background: #473e5c !important; color: white!important; cursor: not-allowed !important; box-shadow: 0 0 0.2rem var(--shadow3) !important;\\\"><i class='bx bx-check'></i> Installed</a>";
+                    } else {
+                        actions = actions+"<a style=\\\"background: #5632a8; color: white;\\\" onclick=\\\"connector('sync.discover.install.module.nexus-minecraft-module');\\\"><i class='bx bx-download'></i> Install</a>";
+                    }
+                    String command = "addResult(\""+result.get("meta.id")+"\",\""+result.get("resources.thumbnail")+"\",\""+result.get("info.name")+"\",\""+result.get("info.author")+"\",\""+result.get("info.description")+"\",\""+meta+"\",\""+actions+"\");";
+                    frame.executeJavaScript(command);
+                }
+            }
+        } else if(request.startsWith("details.")) {
+            request = request.replaceFirst("details.","");
+            frame.executeJavaScript("enableOverlay(\"https://www.zyneonstudios.com\");");
         }
     }
 }

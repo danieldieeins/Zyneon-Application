@@ -104,7 +104,6 @@ li:hover {
     background: var(--background) !important;
     opacity: 1 !important;
     z-index: 999999 !important;
-    transition: all 2s ease !important;
     overflow: hidden !important;
 }
 
@@ -120,7 +119,7 @@ li:hover {
 
 #overlay.active #overlay-frame {
     opacity: 1 !important;
-    transition: all 1.5s ease !important;
+    transition: all 0.5s ease !important;
 }
 
 #overlay .close-overlay {

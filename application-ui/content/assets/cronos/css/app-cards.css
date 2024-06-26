@@ -139,6 +139,7 @@
     position: relative;
     margin: 1.25rem 0 0 0;
     padding: 0;
+    box-shadow: 0 0 0.3rem var(--shadow3);
     width: calc(100% - 0.45rem);
     max-width: calc(100% - 0.45rem);
     height: 11rem;
@@ -176,6 +177,7 @@
     rotate: 1deg;
     border: none !important;
     box-shadow: 0 0 0.8rem var(--shadow);
+    cursor: pointer;
     margin: 0.5rem;
 }
 
@@ -185,5 +187,100 @@
     width: calc(100% - 12.5rem);
     height: 9rem;
     padding: 0.75rem 0.75rem 0.75rem 0;
-    overflow-y: auto;
+
+    .result-title {
+        position: absolute;
+        height: fit-content;
+        font-family: OpenSans, sans-serif;
+        padding: 0.1rem 0.4rem 0.25rem 0.25rem;
+        left: -0.3rem;
+        border-radius: 0.5rem;
+        max-width: 65%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .result-title:hover {
+        background: var(--background2);
+        max-width: 100%;
+        z-index: 10;
+    }
+
+    .result-author {
+        position: absolute;
+        font-family: OpenSans, sans-serif;
+        max-width: 35%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        height: fit-content;
+        right: 0.75rem;
+        padding: 0 0.3rem 0.25rem 0.25rem;
+        border-radius: 0.5rem;
+
+        font-size: 1.25rem !important;
+    }
+
+    .result-author:hover {
+        background: var(--background2);
+        max-width: 100%;
+        z-index: 10;
+    }
+
+    .result-description, .result-meta {
+        position: absolute;
+        top: 3rem; left: 0;
+        right: 0.5rem;
+        overflow: hidden;
+        display: -webkit-box;
+        font-family: OpenSans, sans-serif;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+
+    .result-meta {
+        background: var(--background3);
+        height: 5.5rem;
+        opacity: 0;
+        z-index: 10;
+    }
+
+    .result-meta:hover {
+        transition: all 0.5s ease;
+        opacity: 1;
+    }
+
+    .result-actions {
+        position: absolute;
+        right: 0.75rem;
+        bottom: 0.25rem;
+
+        a {
+            i {
+                position: relative;
+                top: 0.16rem;
+                font-size: 1.25rem;
+            }
+
+            background: var(--background6);
+            color: var(--foreground);
+            transition: all 0.25s ease;
+            width: fit-content;
+            height: fit-content;
+            padding: 0.15rem 0.4rem 0.25rem 0.35rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 0.2rem var(--shadow3);
+            margin-left: 0.25rem;
+        }
+
+        a:hover {
+            cursor: pointer;
+            background: var(--highlight) !important;
+            color: var(--background5) !important;
+            box-shadow: 0 0 0.4rem var(--shadow3);
+        }
+    }
 }
+

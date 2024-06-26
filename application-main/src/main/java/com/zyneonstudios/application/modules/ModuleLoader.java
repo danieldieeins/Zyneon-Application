@@ -43,19 +43,27 @@ public class ModuleLoader {
     public ApplicationModule readModule(File moduleJar) {
         try {
             String mainPath;
+            String id;
+            String name;
+            String version;
+            String authors;
             try (JarFile jarFile = new JarFile(moduleJar.getAbsolutePath())) {
                 InputStream is = jarFile.getInputStream(jarFile.getJarEntry("nexus.json"));
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 JsonArray array = new Gson().fromJson(reader, JsonObject.class).getAsJsonArray("modules");
                 mainPath = array.get(0).getAsJsonObject().get("main").getAsString();
+                id = array.get(0).getAsJsonObject().get("id").getAsString();
+                name = array.get(0).getAsJsonObject().get("name").getAsString();
+                version = array.get(0).getAsJsonObject().get("version").getAsString();
+                authors = array.get(0).getAsJsonObject().get("authors").getAsJsonArray().toString();
             } catch (Exception e) {
                 NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
                 return null;
             }
             URLClassLoader classLoader = new URLClassLoader(new URL[]{moduleJar.toURI().toURL()});
             Class<?> module = classLoader.loadClass(mainPath);
-            Constructor<?> constructor = module.getConstructor(NexusApplication.class);
-            return (ApplicationModule) constructor.newInstance(application);
+            Constructor<?> constructor = module.getConstructor(NexusApplication.class, String.class, String.class, String.class, String.class);
+            return (ApplicationModule) constructor.newInstance(application, id, name, version, authors);
         } catch (Exception e) {
             NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
             return null;
@@ -94,7 +102,7 @@ public class ModuleLoader {
 
     public void loadModule(ApplicationModule module) {
         if(!modules.containsKey(module.getId())) {
-            NexusApplication.getLogger().log("[MODULES] Loading module "+module.getId()+" v"+module.getVersion()+" by "+module.getAuthor()+"...");
+            NexusApplication.getLogger().log("[MODULES] Loading module "+module.getId()+" v"+module.getVersion()+" by "+module.getAuthors()+"...");
             modules.put(module.getId(),module);
             module.onLoad();
         }

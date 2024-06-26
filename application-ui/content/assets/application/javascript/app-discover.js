@@ -4,6 +4,7 @@ function openSearch() {
     const search = document.getElementById("discover-search");
     if(!search.classList.contains('active')) {
         search.classList.add('active');
+        connector("sync.discover.search."+document.getElementById("search-type-select").value);
     }
 
     const buttons = document.getElementById("search-buttons");
@@ -26,28 +27,7 @@ function openSearch() {
 }
 
 function closeSearch() {
-    const search = document.getElementById("discover-search");
-    if(search.classList.contains('active')) {
-        search.classList.remove('active');
-    }
-
-    const buttons = document.getElementById("search-buttons");
-    if(buttons.classList.contains('active')) {
-        buttons.classList.remove('active');
-    }
-
-    const start = document.getElementById("discover-buttons");
-    if(start.classList.contains('active')) {
-        start.classList.remove('active');
-    }
-
-    const bar = document.getElementById("search-card");
-    if(bar.classList.contains('active')) {
-        bar.classList.remove('active');
-    }
-
-    activateMenu("menu",true);
-    document.getElementById("search-bar").placeholder = searchTerm;
+    window.location.reload();
 }
 
 function toggleSearch() {
@@ -56,5 +36,46 @@ function toggleSearch() {
         closeSearch();
     } else {
         openSearch();
+    }
+}
+
+function addResult(id,img,title,authors,description,meta,actions) {
+    const template = document.getElementById("result-template");
+    if(template) {
+        const result = template.cloneNode(true);
+        if(id) {
+            result.id = id;
+            result.querySelector("img").onclick = function () {
+                connector("sync.discover.details.module."+id);
+            };
+            result.querySelector("a").onclick = function () {
+                connector("sync.discover.details.module."+id);
+            };
+        } else {
+            result.id = "";
+        }
+        if(img) {
+            result.querySelector("img").src = img;
+        }
+        if(title) {
+            result.querySelector(".result-title").innerText = title;
+        }
+        if(authors) {
+            result.querySelector(".result-authors").innerText = authors;
+        }
+        if(description) {
+            result.querySelector(".result-description").innerHTML = description;
+        }
+        if(meta) {
+            result.querySelector(".result-meta").innerHTML = meta;
+        } else {
+            result.querySelector(".result-meta").style.display = "none";
+        }
+        if(actions) {
+            result.querySelector(".result-actions").innerHTML = actions;
+        }
+        template.parentNode.insertBefore(result,template);
+    } else {
+        error("Couldn't find result template.");
     }
 }
