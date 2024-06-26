@@ -135,6 +135,10 @@
     margin-bottom: 0.25rem;
 }
 
+.card.tabs {
+    padding: 1rem 0.5rem 0.65rem 0.5rem;
+}
+
 .result-card {
     position: relative;
     margin: 1.25rem 0 0 0;

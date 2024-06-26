@@ -5,7 +5,6 @@ import com.zyneonstudios.Main;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
 import com.zyneonstudios.application.modules.ModuleLoader;
-import com.zyneonstudios.application.modules.localcommands.LocalCommandsModule;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
 
@@ -19,18 +18,11 @@ import static com.zyneonstudios.application.main.ApplicationConfig.getApplicatio
 
 public class NexusApplication {
 
-    /*
-     * Zyneon Application "main" object
-     * by nerotvlive
-     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
-     * */
-
     private final JFrame frame;
     private static final Logger logger = new Logger("APP");
     private static ModuleLoader moduleLoader = null;
 
     public NexusApplication() {
-        // Initializing the application frame
         moduleLoader = new ModuleLoader(this);
         logger.log("[APP] Updated application ui: "+update());
         try {
@@ -38,17 +30,13 @@ public class NexusApplication {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
         if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")) {
-            // Creating a standard application frame for macOS and Windows
             frame = new ApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + ApplicationConfig.startPage, getApplicationPath() + "libs/jcef/");
             frame.pack(); frame.setSize(new Dimension(1200,720));
         } else {
-            // Creating a custom application frame for other operating systems
             frame = new CustomApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + ApplicationConfig.startPage, getApplicationPath() + "libs/jcef/");
             frame.pack();
         }
         frame.setLocationRelativeTo(null);
-        moduleLoader.loadModule(new LocalCommandsModule(this));
-
         File modules = new File(getApplicationPath()+"modules/");
         if(modules.exists()) {
             if(modules.isDirectory()) {
@@ -81,7 +69,6 @@ public class NexusApplication {
         return frame;
     }
 
-    // Method to extract the application UI
     private static boolean update() {
         File temp = new File(getApplicationPath() + "temp");
         if(temp.exists()) {
@@ -138,7 +125,6 @@ public class NexusApplication {
         return updated;
     }
 
-    // Method to launch the application
     public void launch() {
         moduleLoader.activateModules();
         frame.setVisible(true);
@@ -149,7 +135,6 @@ public class NexusApplication {
         }
     }
 
-    //Method to close the application and start the updater (restart method)
     public void restart() {
         CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
         if (codeSource != null) {
@@ -179,9 +164,9 @@ public class NexusApplication {
         System.exit(-1);
     }
 
-    //Default stop closing method
     public static void stop() {
         moduleLoader.deactivateModules();
+        FileUtil.deleteFolder(new File(getApplicationPath() + "temp/"));
         System.exit(0);
     }
 }

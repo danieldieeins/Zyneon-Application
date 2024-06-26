@@ -13,9 +13,11 @@ public class ModuleSearch {
     private final JsonArray array;
     private ArrayList<HashMap<String,String>> cachedResults = null;
     private String cachedSearchTerm = null;
+    private final boolean officialSource;
 
     public ModuleSearch(String zyndexUrl) {
         array = GsonUtil.getObject(zyndexUrl).getAsJsonArray("modules");
+        officialSource = zyndexUrl.equals("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
     }
 
     public ArrayList<HashMap<String, String>> search(String searchTerm) {
@@ -48,14 +50,20 @@ public class ModuleSearch {
                     JsonObject resources = result.getAsJsonObject("resources");
                     HashMap<String,String> module = new HashMap<>();
 
-                    module.put("info.author",info.get("author").getAsString().replace("\"","''"));
-                    module.put("info.description",info.get("description").getAsString().replace("\\n","<br>").replace("\n","<br>").replace("\"","''"));
+                    module.put("info.authors",info.get("authors").getAsString().replace("\"","''"));
+                    module.put("info.summary",info.get("summary").getAsString().replace("\\n","<br>").replace("\n","<br>").replace("\"","''"));
                     module.put("info.name",info.get("name").getAsString().replace("\"","''"));
                     module.put("info.version",info.get("version").getAsString().replace("\"","''"));
 
                     module.put("meta.download",meta.get("download").getAsString());
+                    if(meta.get("description")!=null) {
+                        module.put("meta.description", meta.get("description").getAsString().replace("\"","''"));
+                    } else {
+                        module.put("meta.description", info.get("summary").getAsString().replace("\\n","<br>").replace("\n","<br>").replace("\"","''"));
+                    }
                     module.put("meta.id",id);
                     module.put("meta.isHidden",meta.get("isHidden").getAsString());
+                    module.put("meta.isOfficial",officialSource+"");
                     module.put("meta.location",meta.get("location").getAsString());
                     module.put("meta.origin",meta.get("origin").getAsString());
                     module.put("meta.tags",meta.get("tags").toString());

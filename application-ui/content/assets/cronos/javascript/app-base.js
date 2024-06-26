@@ -38,6 +38,23 @@ function setColors(newColors,fromApp) {
     colors=newColors;
     localStorage.setItem('theme.colors', newColors);
     if(newColors==="automatic") {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-dark.css";
+            connector("sync.title.automatic-dark-.-" + document.title);
+            return;
+        }
+        document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-light.css";
+        connector("sync.title.automatic-light-.-" + document.title);
+    } else {
+        document.getElementById("css-colors").href = newColors;
+        connector("sync.title." + colors + "-.-" + document.title);
+    }
+}
+
+function setColors_(newColors,fromApp) {
+    colors=newColors;
+    localStorage.setItem('theme.colors', newColors);
+    if(newColors==="automatic") {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.getElementById("css-colors").href = "../assets/cronos/css/app-colors-dark.css";
             connector("sync.title.automatic-dark-.-" + document.title);

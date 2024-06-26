@@ -144,3 +144,9 @@ function showMenuPanel() {
 function hideMenuPanel() {
     document.getElementById("menu-panel").style.display = "none";
 }
+
+function decodeURL(string) {
+    string = decodeURIComponent(decodeURI(string));
+    string = string.replaceAll("%plus%","+");
+    return string;
+}

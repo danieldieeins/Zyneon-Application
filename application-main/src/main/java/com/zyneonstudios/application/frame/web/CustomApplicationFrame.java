@@ -10,171 +10,147 @@ import java.awt.event.MouseEvent;
 
 public class CustomApplicationFrame extends ApplicationFrame {
 
-    /*
-     * Zyneon Application custom application frame
-     * by nerotvlive
-     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
-     * */
+    private static Point mouseDownCompCoords;
+    private String title;
+    private JPanel titleBar;
+    private boolean border;
 
-    private static Point mouseDownCompCoords; // Stores mouse coordinates for frame dragging
-    private String title; // Title of the frame
-    private JPanel titleBar; // Panel for custom title bar
-    private boolean border; // Flag to track frame border state
-
-    // Constructor
     public CustomApplicationFrame(NexusApplication application, String url, String jcefPath) {
-        super(application,url,jcefPath); // Call superclass constructor
-        setUndecorated(true); // Remove default window decorations
-        title = "  Zyneon Application (v"+ApplicationConfig.getApplicationVersion()+")"; // Set default title
-        JPanel customTitleBar = createCustomTitleBar(); // Create custom title bar
-        getContentPane().add(customTitleBar, BorderLayout.NORTH); // Add custom title bar to content pane
-        addDragAndDropFunctionality(); // Add drag-and-drop functionality
-        setBorder(true); // Set default border state
-        setMinimumSize(new Dimension(1150,700)); // Set minimum size for the frame
+        super(application,url,jcefPath);
+        setUndecorated(true);
+        title = "  Zyneon Application (v"+ApplicationConfig.getApplicationVersion()+")";
+        JPanel customTitleBar = createCustomTitleBar();
+        getContentPane().add(customTitleBar, BorderLayout.NORTH);
+        addDragAndDropFunctionality();
+        setBorder(true);
+        setMinimumSize(new Dimension(1150,700));
     }
 
-    // Method to set the title bar properties
     @Override
     public void setTitlebar(String title, Color background, Color foreground) {
-        setTitle(title); // Set frame title
-        setTitleBackground(background); // Set title bar background color
-        setTitleForeground(foreground); // Set title bar foreground color
+        setTitle(title);
+        setTitleBackground(background);
+        setTitleForeground(foreground);
     }
 
-    // Setter method for the title
     @Override
     public void setTitle(String title) {
-        super.setTitle(title); // Call superclass method
-        this.title = title; // Update title
+        super.setTitle(title);
+        this.title = title;
     }
 
-    // Setter method for the title bar background color
     @Override
     public void setTitleBackground(Color color) {
-        setBackground(color); // Set frame background color
-        titleBar.setBackground(color); // Set title bar background color
+        setBackground(color);
+        titleBar.setBackground(color);
     }
 
-    // Setter method for the title bar foreground color
     @Override
     public void setTitleForeground(Color color) {
-        titleBar.setForeground(color); // Set title bar foreground color
+        titleBar.setForeground(color);
     }
 
-    // Method to create custom title bar
     private JPanel createCustomTitleBar() {
-        titleBar = new JPanel(new BorderLayout()); // Create title bar panel
-        titleBar.setBackground(Color.BLACK); // Set default background color
-        titleBar.setForeground(Color.WHITE); // Set default foreground color
+        titleBar = new JPanel(new BorderLayout());
+        titleBar.setBackground(Color.BLACK);
+        titleBar.setForeground(Color.WHITE);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0)); // Panel for buttons
-        buttonPanel.setBackground(null); // Set background color to null
-        buttonPanel.setForeground(null); // Set foreground color to null
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        buttonPanel.setBackground(null);
+        buttonPanel.setForeground(null);
 
-        // Minimize button
         JButton minimizeButton = new JButton("-");
         minimizeButton.setPreferredSize(new Dimension(30,30));
-        minimizeButton.addActionListener(e -> setState(ICONIFIED)); // Minimize the frame
+        minimizeButton.addActionListener(e -> setState(ICONIFIED));
         minimizeButton.setBorder(null);
         minimizeButton.setBackground(null);
         minimizeButton.setForeground(null);
         buttonPanel.add(minimizeButton);
 
-        // Maximize button
         JButton maximizeButton = new JButton("◻");
         maximizeButton.setPreferredSize(new Dimension(30,30));
         maximizeButton.setBorder(null);
         maximizeButton.setBackground(null);
         maximizeButton.setForeground(null);
-        maximizeButton.addActionListener(e -> toggleMaximizeState()); // Toggle maximize state
+        maximizeButton.addActionListener(e -> toggleMaximizeState());
         buttonPanel.add(maximizeButton);
 
-        // Close button
         JButton closeButton = new JButton("X");
         closeButton.setPreferredSize(new Dimension(30,30));
         closeButton.setBorder(null);
         closeButton.setBackground(null);
         closeButton.setForeground(null);
         closeButton.addMouseListener(new MouseAdapter() {
-            // Change background color on mouse hover
             public void mouseEntered(MouseEvent evt) {
                 closeButton.setBackground(Color.RED);
             }
 
             public void mouseExited(MouseEvent evt) {
-                closeButton.setBackground(null); // Reset background color
+                closeButton.setBackground(null);
             }
         });
-        closeButton.addActionListener(e -> System.exit(0)); // Exit application
+        closeButton.addActionListener(e -> NexusApplication.stop());
         buttonPanel.add(closeButton);
 
-        JLabel titleLabel = new JLabel(title); // Label for title
+        JLabel titleLabel = new JLabel(title);
         titleLabel.setBackground(null);
         titleLabel.setForeground(null);
 
-        titleBar.add(buttonPanel, BorderLayout.EAST); // Add button panel to title bar
-        titleBar.add(titleLabel, BorderLayout.CENTER); // Add title label to title bar
+        titleBar.add(buttonPanel, BorderLayout.EAST);
+        titleBar.add(titleLabel, BorderLayout.CENTER);
 
-        return titleBar; // Return the custom title bar
+        return titleBar;
     }
 
-    // Method to toggle maximize state of the frame
     private void toggleMaximizeState() {
         if ((getExtendedState() & MAXIMIZED_BOTH) == 0) {
-            setExtendedState(getExtendedState() | MAXIMIZED_BOTH); // Maximize the frame
+            setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         } else {
-            setExtendedState(getExtendedState() & ~MAXIMIZED_BOTH); // Restore normal state
+            setExtendedState(getExtendedState() & ~MAXIMIZED_BOTH);
         }
-        toggleBorder(); // Toggle frame border
+        toggleBorder();
     }
 
-    // Method to add drag-and-drop functionality to the frame
     private void addDragAndDropFunctionality() {
-        // Mouse listener for mouse press event
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if ((getExtendedState() & MAXIMIZED_BOTH) == 0) {
                     if (isWithinTitleBar(e)) {
-                        mouseDownCompCoords = e.getPoint(); // Store mouse coordinates
+                        mouseDownCompCoords = e.getPoint();
                     }
                 } else {
-                    setExtendedState(NORMAL); // Restore normal state
-                    setBorder(true); // Set frame border
-                    mouseDownCompCoords = e.getPoint(); // Store mouse coordinates
+                    setExtendedState(NORMAL);
+                    setBorder(true);
+                    mouseDownCompCoords = e.getPoint();
                 }
             }
-            // Check if mouse event is within title bar
             private boolean isWithinTitleBar(MouseEvent e) {
                 return (e.getY() < titleBar.getHeight() && e.getX() > 0 && e.getX() < getWidth());
             }
         });
-        // Mouse motion listener for drag events
         addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
                 if (isWithinTitleBar(e)) {
                     Point currCoords = e.getLocationOnScreen();
-                    setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y); // Move frame
+                    setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
                 }
             }
-            // Check if mouse event is within title bar
             private boolean isWithinTitleBar(MouseEvent e) {
                 return (e.getY() < titleBar.getHeight() && e.getX() > 0 && e.getX() < getWidth());
             }
         });
     }
 
-    // Method to toggle frame border
     private void toggleBorder() {
-        setBorder(!border); // Toggle border state
+        setBorder(!border);
     }
 
-    // Method to set frame border
     private void setBorder(boolean state) {
         if (state) {
-            getRootPane().setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY)); // Set frame border
+            getRootPane().setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         } else {
-            getRootPane().setBorder(null); // Remove frame border
+            getRootPane().setBorder(null);
         }
-        border = state; // Update border state
+        border = state;
     }
 }

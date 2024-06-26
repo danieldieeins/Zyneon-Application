@@ -39,17 +39,17 @@ function toggleSearch() {
     }
 }
 
-function addResult(id,img,title,authors,description,meta,actions) {
+function addResult(id,img,title,authors,description,meta,actions,location) {
     const template = document.getElementById("result-template");
     if(template) {
         const result = template.cloneNode(true);
         if(id) {
             result.id = id;
             result.querySelector("img").onclick = function () {
-                connector("sync.discover.details.module."+id);
+                connector("sync.discover.details.module."+location);
             };
             result.querySelector("a").onclick = function () {
-                connector("sync.discover.details.module."+id);
+                connector("sync.discover.details.module."+location);
             };
         } else {
             result.id = "";
@@ -64,6 +64,7 @@ function addResult(id,img,title,authors,description,meta,actions) {
             result.querySelector(".result-authors").innerText = authors;
         }
         if(description) {
+            description = decodeURL(description);
             result.querySelector(".result-description").innerHTML = description;
         }
         if(meta) {

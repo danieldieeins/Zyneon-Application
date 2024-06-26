@@ -12,77 +12,53 @@ import java.util.concurrent.CompletableFuture;
 
 public class ApplicationFrame extends WebFrame {
 
-    /*
-     * Zyneon Application default application frame
-     * by nerotvlive
-     * Contributions are welcome. Please add your name to the "by" line if you make any modifications.
-     * */
+    private final FrameConnector connector;
+    private final NexusApplication application;
 
-    private final FrameConnector connector; // Instance of FrameConnector for handling frame requests
-    private final NexusApplication application; //Instance of the owning application
-
-    // Constructor
     public ApplicationFrame(NexusApplication application, String url, String jcefPath) {
-        super(url, jcefPath, application); // Call superclass constructor
-        this.application = application; //Initialize application
-        this.connector = new FrameConnector(this); // Initialize FrameConnector
+        super(url, jcefPath, application);
+        this.application = application;
+        this.connector = new FrameConnector(this,application);
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
-            // Override method to handle console messages
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
-                // Check message prefix to determine the type of message
                 if (message.startsWith("[CONNECTOR] ")) {
                     CompletableFuture.runAsync(() -> {
                         String request = message.replace("[CONNECTOR] ", "");
-                        connector.resolveRequest(request); // Resolve connector request asynchronously
+                        connector.resolveRequest(request);
                     });
                 } else if (message.startsWith("[LOG] ")) {
-                    NexusApplication.getLogger().log(message.replace("[LOG] ","")); // Log message
+                    NexusApplication.getLogger().log(message.replace("[LOG] ",""));
                 } else if (message.startsWith("[ERR] ")) {
-                    NexusApplication.getLogger().error(message.replace("[ERR] ","")); // Log error
+                    NexusApplication.getLogger().error(message.replace("[ERR] ",""));
                 } else if (message.startsWith("[DEB] ")) {
-                    NexusApplication.getLogger().debug(message.replace("[DEB] ","")); // Log debug message
+                    NexusApplication.getLogger().debug(message.replace("[DEB] ",""));
                 }
-                return super.onConsoleMessage(browser, level, message, source, line); // Call superclass method
+                return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
-        setMinimumSize(new Dimension(840,500)); // Set minimum size for the frame
+        setMinimumSize(new Dimension(840,500));
     }
 
-    // Getter method for FrameConnector
-    public FrameConnector getConnector() {
-        return connector;
-    }
-
-    //Getter method for application
-    public NexusApplication getApplication() {
-        return application;
-    }
-
-    // Method to set title bar properties
     public void setTitlebar(String title, Color background, Color foreground) {
-        setTitle("Zyneon Application ("+title+", v"+ApplicationConfig.getApplicationVersion()+", "+ ApplicationConfig.getOS()+")"); // Set frame title
-        setTitleBackground(background); // Set title bar background color
-        setTitleForeground(foreground); // Set title bar foreground color
+        setTitle("Zyneon Application ("+title+", v"+ApplicationConfig.getApplicationVersion()+", "+ ApplicationConfig.getOS()+")");
+        setTitleBackground(background);
+        setTitleForeground(foreground);
     }
 
-    // Method to set title bar background color
     public void setTitleBackground(Color color) {
-        setBackground(color); // Set frame background color
-        getRootPane().putClientProperty("JRootPane.titleBarBackground", color); // Set title bar background color
+        setBackground(color);
+        getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
     }
 
-    // Method to set title bar foreground color
     public void setTitleForeground(Color color) {
-        getRootPane().putClientProperty("JRootPane.titleBarForeground", color); // Set title bar foreground color
+        getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
     }
 
-    // Method to execute JavaScript commands in the browser
     public void executeJavaScript(String command) {
-        getBrowser().executeJavaScript(command,getBrowser().getURL(),5); // Execute JavaScript command
+        getBrowser().executeJavaScript(command,getBrowser().getURL(),5);
     }
 
-    // Method to open a custom page
     public void openCustomPage(String title, String pageId, String url) {
         getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
     }

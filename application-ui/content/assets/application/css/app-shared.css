@@ -101,7 +101,7 @@ li:hover {
 }
 
 #overlay.active {
-    background: var(--background) !important;
+    background: var(--background5) !important;
     opacity: 1 !important;
     z-index: 999999 !important;
     overflow: hidden !important;
