@@ -240,6 +240,7 @@ public class FrameConnector {
         if(logo!=null) {
             url = url+"&logo="+formatForDetails(logo);
         }
+        url = url.replace("\\","/");
         frame.executeJavaScript("enableOverlay(\""+url+"\");");
     }
 
