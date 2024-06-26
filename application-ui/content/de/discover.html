@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-discover.js"></script>
-        <script>console.log("[CONNECTOR] init.discover"); init();</script>
+        <script>searchTerm = "Klicke zum Suchen"; console.log("[CONNECTOR] init.discover"); init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -76,14 +76,14 @@
                             <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
                             <label>
                                 <select id="search-type-select">
-                                    <option>App-Module</option>
+                                    <option value="modules">App-Module</option>
                                 </select>
                             </label>
                         </div>
                     </div>
                     <div class="search-bar flex">
                         <label>
-                            <input type="text" placeholder="Suche deaktiviert" id="search-bar" onclick="openSearch();" disabled>
+                            <input type="text" placeholder="Search disabled" id="search-bar" onclick="openSearch();" disabled>
                         </label>
                         <i class='bx bx-search-alt'></i>
                     </div>
@@ -99,14 +99,25 @@
                             </div>
                         </div>
                         <div id="search-content">
+                            <div class="result-overlay"></div>
                             <div class="card result-card" id="result-template">
                                 <div class="flex">
                                     <div class="result-image">
-                                        <img alt="result image" onclick="connector('java.overlay');" src="../assets/application/images/templates/thumbnail.png">
+                                        <img alt="result image" src="../assets/application/images/templates/thumbnail.png">
                                     </div>
                                     <div class="result-details">
                                         <div class="flex">
                                             <h2 class="result-title">Titel</h2>
+                                            <h2 class="result-author">von <span class="result-authors">Autoren</span></h2>
+                                        </div>
+                                        <p class="result-description">
+                                            Beschreibung
+                                        </p>
+                                        <p class="result-meta">
+                                            Meta-Informationen
+                                        </p>
+                                        <div class="result-actions">
+                                            <a><i class='bx bx-spreadsheet'></i> Mehr</a>
                                         </div>
                                     </div>
                                 </div>
@@ -117,5 +128,4 @@
             </div>
         </div>
     </body>
-    <script>searchTerm = "Klicke zum Suchen"</script>
 </html>

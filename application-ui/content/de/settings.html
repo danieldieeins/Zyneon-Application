@@ -63,33 +63,33 @@
             <div class="cnt">
                 <div id="overlay">
                     <iframe id="overlay-frame"></iframe>
-                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Schließen <i class='bx bx-x'></i></a>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
                 </div>
                 <div class="settings">
                     <div class="settings-menu">
                         <div class="card card-disabled">
-                            <h2>Einstellungen</h2>
+                            <h2>Settings</h2>
                         </div>
                         <div class="card settings-menu-card card-disabled">
                             <h3>Navigation</h3>
                             <ul>
-                                <li id="settings-general-button" onclick="setContent('settings-general');">
+                                <li id="settings-general-button" onclick="setContent('settings-general'); connector('sync.settings.general');">
                                     <i class='bx bx-compass'></i>
                                     <p>Allgemeine Optionen</p>
                                 </li>
-                                <li id="settings-global-button" onclick="setContent('settings-global');">
+                                <li id="settings-global-button" onclick="setContent('settings-global'); connector('sync.settings.global');">
                                     <i class='bx bx-globe'></i>
                                     <p>Globale Optionen</p>
                                 </li>
-                                <li id="settings-indexes-button" onclick="setContent('settings-indexes');">
+                                <li id="settings-indexes-button" onclick="setContent('settings-indexes'); connector('sync.settings.indexes');">
                                     <i class='bx bx-sort-down'></i>
                                     <p>Index Optionen</p>
                                 </li>
-                                <li id="settings-modules-button" onclick="setContent('settings-modules');">
+                                <li id="settings-modules-button" onclick="setContent('settings-modules'); connector('sync.settings.modules');">
                                     <i class='bx bx-extension'></i>
                                     <p>Modul Optionen</p>
                                 </li>
-                                <li id="settings-about-button" onclick="setContent('settings-about');">
+                                <li id="settings-about-button" onclick="setContent('settings-about'); connector('sync.settings.about');">
                                     <i class='bx bx-info-circle'></i>
                                     <p>Über NEXUS App</p>
                                 </li>
@@ -100,7 +100,7 @@
                                     <li id="settings-module-template">
                                         <i></i>
                                         <img alt="settings menu entry icon" src="">
-                                        <p>Menüeintrag laden...</p>
+                                        <p>Lade Moduleintrag...</p>
                                     </li>
                                 </ul>
                                 <script>connector('init.settings.modules');</script>
@@ -117,7 +117,7 @@
                                 </li>
                                 <li onclick="connector('sync.exit')" class="danger">
                                     <i class='bx bx-exit'></i>
-                                    <p>App beenden</p>
+                                    <p>App schließen</p>
                                 </li>
                             </ul>
                         </div>
@@ -129,7 +129,7 @@
                         <div class="card settings-content-card card-disabled">
                             <div id="settings-general">
                                 <div class="group" id="settings-general-startup">
-                                    <h4>Beim Starten</h4>
+                                    <h4>Beim Start</h4>
                                     <h3>
                                         Startseite
                                         <span class="select">
@@ -144,7 +144,7 @@
                                     </h3>
                                     <div id="updater-settings">
                                         <h3>
-                                            Auf Updates prüfen
+                                            Auf Aktualisierungen prüfen
                                             <span class="checkbox">
                                                 <label>
                                                     <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
@@ -157,11 +157,11 @@
                                             </span>
                                         </h3>
                                         <h3>
-                                            Updatekanal
+                                            Aktualisierungskanal
                                             <span class="select">
                                                 <label>
                                                     <select id="updater-settings-update-channel" onchange="syncUpdates();">
-                                                        <option value="experimental">Experimentell (aktuell,test)</option>
+                                                        <option value="experimental">Experimentell (aktuell, test)</option>
                                                         <option value="stable">Stabil (empfohlen)</option>
                                                     </select>
                                                 </label>
@@ -170,23 +170,23 @@
                                     </div>
                                 </div>
                                 <div class="group" id="settings-general-appearance">
-                                    <h4>Erscheinung</h4>
+                                    <h4>Appearance</h4>
                                     <h3>
-                                        Aussehen
+                                        Theme
                                         <span class="select">
                                             <label>
                                                 <select id="appearance-settings-theme" onchange="syncTheme();">
                                                     <option value="automatic">Standard: System</option>
-                                                    <option value="../assets/cronos/css/app-colors-dark.css">Standard: Dunkel</option>
-                                                    <option value="../assets/cronos/css/app-colors-light.css">Standard: Hell</option>
-                                                    <option value="../assets/application/css/app-colors-oled.css">Standard: OLED (Beta)</option>
+                                                    <option value="../assets/cronos/css/app-colors-dark.css">Standard: Dark</option>
+                                                    <option value="../assets/cronos/css/app-colors-light.css">Standard: Light</option>
+                                                    <option value="../assets/application/css/app-colors-oled.css">Standard: OLED (BETA)</option>
                                                     <option value="../assets/application/css/app-colors-zyneon.css">Standard: Zyneon</option>
                                                 </select><script>document.getElementById("appearance-settings-theme").value = colors;</script>
                                             </label>
                                         </span>
                                     </h3>
                                     <h3>
-                                        Sprache
+                                        Language
                                         <span class="select">
                                             <label>
                                                 <select id="appearance-settings-language" onchange="syncLanguage();">
@@ -209,7 +209,7 @@
                             </div>
                             <div id="settings-about">
                                 <div class="card">
-                                    ${application.version}
+                                    <span id="settings-global-application-version">${application.version}</span>
                                 </div>
                             </div>
                             <!--TODO: Add other setting pages-->

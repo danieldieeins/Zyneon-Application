@@ -61,7 +61,7 @@ public class ApplicationFrame extends WebFrame {
 
     // Method to set title bar properties
     public void setTitlebar(String title, Color background, Color foreground) {
-        setTitle("Zyneon Application ("+title+", "+ ApplicationConfig.getOS()+")"); // Set frame title
+        setTitle("Zyneon Application ("+title+", v"+ApplicationConfig.getApplicationVersion()+", "+ ApplicationConfig.getOS()+")"); // Set frame title
         setTitleBackground(background); // Set title bar background color
         setTitleForeground(foreground); // Set title bar foreground color
     }
