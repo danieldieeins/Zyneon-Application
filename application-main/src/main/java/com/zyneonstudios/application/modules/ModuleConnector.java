@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.modules;
 
+@SuppressWarnings("all")
 public class ModuleConnector {
 
     private final ApplicationModule module;

@@ -288,3 +288,9 @@
     }
 }
 
+.card .line {
+    width: calc(100% - 2rem);
+    height: 2px;
+    margin: 1rem;
+    background: var(--foreground2);
+}

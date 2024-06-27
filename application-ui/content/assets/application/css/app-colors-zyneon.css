@@ -20,6 +20,7 @@
     --foreground: #e3e3e3;
     --foreground1: var(--foreground);
     --foreground2: #ffffff99;
+    --foreground3: #29292b;
 
     --highlight: #ffffff;
     --accent: #8732ec;

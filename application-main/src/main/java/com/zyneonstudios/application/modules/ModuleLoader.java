@@ -40,6 +40,7 @@ public class ModuleLoader {
         return modules.keySet();
     }
 
+    @SuppressWarnings("all")
     public ApplicationModule readModule(File moduleJar) {
         try {
             String mainPath;
@@ -70,6 +71,7 @@ public class ModuleLoader {
         }
     }
 
+    @SuppressWarnings("all")
     public ArrayList<ApplicationModule> readModules(File moduleJar) {
         try {
             String mainPath;
@@ -124,6 +126,7 @@ public class ModuleLoader {
         modules.remove(module.getId());
     }
 
+    @SuppressWarnings("unused")
     public void unloadModules() {
         for(ApplicationModule module: modules.values()) {
             unloadModule(module);

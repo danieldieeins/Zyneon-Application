@@ -49,7 +49,7 @@
 */
 
 /*Disable inactive elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section, #settings-module-template, #settings-general, #settings-global, #settings-indexes, #settings-modules, #settings-about, #updater-settings, #settings-custom {
+.settings .settings-menu .settings-menu-card .settings-modules-section, #linux-settings-custom-frame, #settings-module-template, #settings-general, #settings-global, #settings-indexes, #settings-modules, #settings-about, #updater-settings, #settings-custom {
     display: none;
 }
 

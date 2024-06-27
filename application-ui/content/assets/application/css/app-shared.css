@@ -64,6 +64,10 @@ li.disabled:hover {
     color: var(--foreground2) !important;
 }
 
+* {
+    scroll-behavior: smooth;
+}
+
 li:hover {
     animation: wiggle 2.5s infinite;
 }

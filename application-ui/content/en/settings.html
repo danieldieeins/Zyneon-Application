@@ -196,6 +196,19 @@
                                             </label>
                                         </span>
                                     </h3>
+                                    <h3 id="linux-settings-custom-frame">
+                                        Use custom frame for Linux
+                                        <span class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="linux-settings-enable-custom-frame" onclick="toggleLinuxFrame();">
+                                                <script>
+                                                    document.getElementById('linux-settings-enable-custom-frame').addEventListener('click', function(event) {
+                                                        event.preventDefault();
+                                                    });
+                                                </script>
+                                            </label>
+                                        </span>
+                                    </h3>
                                 </div>
                             </div>
                             <div id="settings-global">

@@ -1,4 +1,5 @@
 let updates = false;
+let linuxFrame = false;
 let highlighted = undefined;
 let content = undefined;
 
@@ -9,6 +10,16 @@ function toggleUpdates() {
     } else {
         updates = true;
         connector('sync.autoUpdates.on');
+    }
+}
+
+function toggleLinuxFrame() {
+    if(linuxFrame) {
+        linuxFrame = false;
+        connector('sync.linuxFrame.off');
+    } else {
+        linuxFrame = true;
+        connector('sync.linuxFrame.on');
     }
 }
 

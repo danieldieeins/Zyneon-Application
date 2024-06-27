@@ -13,8 +13,7 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.security.CodeSource;
-
-import static com.zyneonstudios.application.main.ApplicationConfig.getApplicationPath;
+import java.util.Objects;
 
 public class NexusApplication {
 
@@ -29,19 +28,52 @@ public class NexusApplication {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
-        if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")) {
-            frame = new ApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + ApplicationConfig.startPage, getApplicationPath() + "libs/jcef/");
+        boolean disableCustomFrame = false;
+        if(ApplicationConfig.getSettings().get("settings.linux.customFrame")!=null) {
+            try {
+                disableCustomFrame = !ApplicationConfig.getSettings().getBool("settings.linux.customFrame");
+            } catch (Exception ignore) {}
+        }
+        String startPage = ApplicationConfig.startPage;
+        if(ApplicationConfig.getSettings().get("settings.setupFinished")==null) {
+            ApplicationConfig.getSettings().set("settings.setupFinished",false);
+        }
+        try {
+            if(!ApplicationConfig.getSettings().getBool("settings.setupFinished")) {
+                startPage = "firstrun.html";
+            }
+        } catch (Exception ignore) {}
+        if(ApplicationConfig.getSettings().get("cache.restartPage")!=null) {
+            try {
+                startPage = ApplicationConfig.getSettings().get("cache.restartPage").toString();
+                ApplicationConfig.getSettings().delete("cache.restartPage");
+            } catch (Exception ignore) {}
+        }
+        if(ApplicationConfig.getOS().startsWith("macOS")||ApplicationConfig.getOS().startsWith("Windows")||disableCustomFrame) {
+            frame = new ApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + startPage, ApplicationConfig.getApplicationPath() + "libs/jcef/");
             frame.pack(); frame.setSize(new Dimension(1200,720));
         } else {
-            frame = new CustomApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + ApplicationConfig.startPage, getApplicationPath() + "libs/jcef/");
-            frame.pack();
+            JFrame frame_ = null;
+            try {
+                frame_ = new CustomApplicationFrame(this, ApplicationConfig.urlBase + ApplicationConfig.language + "/" + startPage, ApplicationConfig.getApplicationPath() + "libs/jcef/");
+                frame_.pack(); frame_.setSize(new Dimension(1150,700));
+            } catch (Exception e) {
+                logger.error("[APP] Couldn't load custom Linux frame: "+e.getMessage());
+                logger.error("[APP] Disabling custom Linux frame and restarting...");
+                ApplicationConfig.getSettings().set("settings.linux.customFrame",false);
+                restart(false);
+            }
+            frame = frame_;
+        }
+        if(frame==null) {
+            System.exit(-1); return;
         }
         frame.setLocationRelativeTo(null);
-        File modules = new File(getApplicationPath()+"modules/");
+        File modules = new File(ApplicationConfig.getApplicationPath()+"modules/");
         if(modules.exists()) {
             if(modules.isDirectory()) {
                 try {
-                    for(File module : modules.listFiles()) {
+                    for(File module : Objects.requireNonNull(modules.listFiles())) {
                         if(!module.isDirectory()) {
                             try {
                                 moduleLoader.loadModule(moduleLoader.readModule(module));
@@ -70,7 +102,7 @@ public class NexusApplication {
     }
 
     private static boolean update() {
-        File temp = new File(getApplicationPath() + "temp");
+        File temp = new File(ApplicationConfig.getApplicationPath() + "temp");
         if(temp.exists()) {
             if(temp.isDirectory()) {
                 FileUtil.deleteFolder(temp);
@@ -80,16 +112,16 @@ public class NexusApplication {
         }
         boolean updated;
         try {
-            if(!new File(getApplicationPath() + "temp/modules/").exists()) {
-                logger.debug("[APP] Created modules path: "+new File(getApplicationPath() + "temp/modules/").mkdirs());
+            if(!new File(ApplicationConfig.getApplicationPath() + "temp/modules/").exists()) {
+                logger.debug("[APP] Created modules path: "+new File(ApplicationConfig.getApplicationPath() + "temp/modules/").mkdirs());
             }
-            FileUtil.extractResourceFile("modules.zip",getApplicationPath()+"temp/modules.zip",NexusApplication.class);
-            FileUtil.unzipFile(getApplicationPath()+"temp/modules.zip", getApplicationPath() + "temp/modules/");
-            logger.debug("[APP] Deleted modules archive: "+new File(getApplicationPath()+"temp/modules.zip").delete());
-            File modules = new File(getApplicationPath() + "temp/modules/");
+            FileUtil.extractResourceFile("modules.zip",ApplicationConfig.getApplicationPath()+"temp/modules.zip",NexusApplication.class);
+            FileUtil.unzipFile(ApplicationConfig.getApplicationPath()+"temp/modules.zip", ApplicationConfig.getApplicationPath() + "temp/modules/");
+            logger.debug("[APP] Deleted modules archive: "+new File(ApplicationConfig.getApplicationPath()+"temp/modules.zip").delete());
+            File modules = new File(ApplicationConfig.getApplicationPath() + "temp/modules/");
             if(modules.exists()) {
                 if(modules.isDirectory()) {
-                    for(File module : modules.listFiles()) {
+                    for(File module : Objects.requireNonNull(modules.listFiles())) {
                         if(module.getName().toLowerCase().endsWith(".jar")) {
                             try {
                                 moduleLoader.loadModule(moduleLoader.readModule(module));
@@ -104,24 +136,24 @@ public class NexusApplication {
             logger.error("[APP] Couldn't extract modules: "+e.getMessage());
         }
         try {
-            if(new File(getApplicationPath() + "temp/ui/").exists()) {
+            if(new File(ApplicationConfig.getApplicationPath() + "temp/ui/").exists()) {
                 try {
-                    FileUtil.deleteFolder(new File(getApplicationPath() + "temp/ui/"));
+                    FileUtil.deleteFolder(new File(ApplicationConfig.getApplicationPath() + "temp/ui/"));
                 } catch (Exception e) {
                     getLogger().error("Couldn't delete old temporary ui files: "+e.getMessage());
                 }
             }
-            logger.debug("[APP] Created new ui path: "+new File(getApplicationPath() + "temp/ui/").mkdirs());
-            FileUtil.extractResourceFile("content.zip",getApplicationPath()+"temp/content.zip",Main.class);
-            FileUtil.unzipFile(getApplicationPath()+"temp/content.zip", getApplicationPath() + "temp/ui");
-            logger.debug("[APP] Deleted ui archive: "+new File(getApplicationPath()+"temp/content.zip").delete());
+            logger.debug("[APP] Created new ui path: "+new File(ApplicationConfig.getApplicationPath() + "temp/ui/").mkdirs());
+            FileUtil.extractResourceFile("content.zip",ApplicationConfig.getApplicationPath()+"temp/content.zip",Main.class);
+            FileUtil.unzipFile(ApplicationConfig.getApplicationPath()+"temp/content.zip", ApplicationConfig.getApplicationPath() + "temp/ui");
+            logger.debug("[APP] Deleted ui archive: "+new File(ApplicationConfig.getApplicationPath()+"temp/content.zip").delete());
             updated = true;
         } catch (Exception e) {
             logger.error("[APP] Couldn't update application user interface: "+e.getMessage());
             updated = false;
         }
-        logger.debug("[APP] Deleted old updatar json: "+new File(getApplicationPath() + "updater.json").delete());
-        logger.debug("[APP] Deleted older updater json: "+new File(getApplicationPath() + "version.json").delete());
+        logger.debug("[APP] Deleted old updatar json: "+new File(ApplicationConfig.getApplicationPath() + "updater.json").delete());
+        logger.debug("[APP] Deleted older updater json: "+new File(ApplicationConfig.getApplicationPath() + "version.json").delete());
         return updated;
     }
 
@@ -135,38 +167,66 @@ public class NexusApplication {
         }
     }
 
-    public void restart() {
+    public void restart(boolean soft) {
         CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
-        if (codeSource != null) {
-            URL jarUrl = codeSource.getLocation();
-            String jarPath = jarUrl.getPath();
-            if(jarPath.startsWith("/")) {
-                jarPath = jarPath.replaceFirst("/","");
-            }
-            StringBuilder args = new StringBuilder();
-            if(ApplicationConfig.getArguments()!=null) {
-                for(String arg : ApplicationConfig.getArguments()) {
-                    args.append(arg).append(" ");
+        if(soft) {
+            if (codeSource != null) {
+                URL jarUrl = codeSource.getLocation();
+                String jarPath = jarUrl.getPath();
+                if(!ApplicationConfig.getOS().startsWith("Linux")) {
+                    if (jarPath.startsWith("/")) {
+                        jarPath = jarPath.replaceFirst("/", "");
+                    }
                 }
+                StringBuilder args = new StringBuilder();
+                if(ApplicationConfig.getArguments()!=null) {
+                    for(String arg : ApplicationConfig.getArguments()) {
+                        args.append(arg).append(" ");
+                    }
+                }
+                ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, args.toString());
+                try {
+                    pb.start();
+                } catch (Exception e) {
+                    logger.error("[APP] Couldn't restart application: "+e.getMessage());
+                }
+                getModuleLoader().deactivateModules();
+                System.exit(0);
             }
-            File updater = new File(ApplicationConfig.getApplicationPath().replace("\\","/").replace("/experimental/","/app.jar"));
-            if(updater.exists()) {
-                jarPath = updater.getAbsolutePath();
+        } else {
+            if (codeSource != null) {
+                URL jarUrl = codeSource.getLocation();
+                String jarPath = jarUrl.getPath();
+                if(!ApplicationConfig.getOS().startsWith("Linux")) {
+                    if (jarPath.startsWith("/")) {
+                        jarPath = jarPath.replaceFirst("/", "");
+                    }
+                }
+                StringBuilder args = new StringBuilder();
+                if (ApplicationConfig.getArguments() != null) {
+                    for (String arg : ApplicationConfig.getArguments()) {
+                        args.append(arg).append(" ");
+                    }
+                }
+                File updater = new File(ApplicationConfig.getApplicationPath().replace("\\", "/").replace("/experimental/", "/app.jar"));
+                if (updater.exists()) {
+                    jarPath = updater.getAbsolutePath();
+                }
+                ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, args.toString());
+                try {
+                    pb.start();
+                } catch (Exception e) {
+                    logger.error("[APP] Couldn't restart application: " + e.getMessage());
+                }
+                stop();
             }
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, args.toString());
-            try {
-                pb.start();
-            } catch (Exception e) {
-                logger.error("[APP] Couldn't restart application: "+e.getMessage());
-            }
-            stop();
         }
         System.exit(-1);
     }
 
     public static void stop() {
         moduleLoader.deactivateModules();
-        FileUtil.deleteFolder(new File(getApplicationPath() + "temp/"));
+        FileUtil.deleteFolder(new File(ApplicationConfig.getApplicationPath() + "temp/"));
         System.exit(0);
     }
 }

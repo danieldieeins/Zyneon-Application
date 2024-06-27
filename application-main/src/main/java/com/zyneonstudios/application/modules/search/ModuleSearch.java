@@ -20,6 +20,7 @@ public class ModuleSearch {
         officialSource = zyndexUrl.equals("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
     }
 
+    @SuppressWarnings("all")
     public ArrayList<HashMap<String, String>> search(String searchTerm) {
         if(!searchTerm.replace(" ","").isEmpty()) {
             cachedSearchTerm = searchTerm;

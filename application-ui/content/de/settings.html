@@ -63,12 +63,12 @@
             <div class="cnt">
                 <div id="overlay">
                     <iframe id="overlay-frame"></iframe>
-                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Close <i class='bx bx-x'></i></a>
+                    <a class="close-overlay button danger hover-wiggle wiggle-low" onclick="disableOverlay();">Schließen <i class='bx bx-x'></i></a>
                 </div>
                 <div class="settings">
                     <div class="settings-menu">
                         <div class="card card-disabled">
-                            <h2>Settings</h2>
+                            <h2>Einstellungen</h2>
                         </div>
                         <div class="card settings-menu-card card-disabled">
                             <h3>Navigation</h3>
@@ -170,9 +170,9 @@
                                     </div>
                                 </div>
                                 <div class="group" id="settings-general-appearance">
-                                    <h4>Appearance</h4>
+                                    <h4>Erscheinungsbild</h4>
                                     <h3>
-                                        Theme
+                                        Farbschema
                                         <span class="select">
                                             <label>
                                                 <select id="appearance-settings-theme" onchange="syncTheme();">
@@ -186,13 +186,26 @@
                                         </span>
                                     </h3>
                                     <h3>
-                                        Language
+                                        Sprache
                                         <span class="select">
                                             <label>
                                                 <select id="appearance-settings-language" onchange="syncLanguage();">
                                                     <option value="de">Deutsch (German)</option>
-                                                    <option value="en">English (Englisch)</option>
+                                                    <option value="en">English (English)</option>
                                                 </select>
+                                            </label>
+                                        </span>
+                                    </h3>
+                                    <h3 id="linux-settings-custom-frame">
+                                        Optimiertes Linux-Fenster verwenden
+                                        <span class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="linux-settings-enable-custom-frame" onclick="toggleLinuxFrame();">
+                                                <script>
+                                                    document.getElementById('linux-settings-enable-custom-frame').addEventListener('click', function(event) {
+                                                        event.preventDefault();
+                                                    });
+                                                </script>
                                             </label>
                                         </span>
                                     </h3>

@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.frame.web;
 
+import com.zyneonstudios.application.main.ApplicationConfig;
 import com.zyneonstudios.application.main.NexusApplication;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import me.friwi.jcefmaven.CefAppBuilder;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class WebFrame extends JFrame {
 
     private CefApp app;
@@ -64,6 +66,11 @@ public class WebFrame extends JFrame {
                 if (state == CefApp.CefAppState.TERMINATED) {
                     NexusApplication.stop();
                 }
+                if(!ApplicationConfig.getOS().startsWith("Windows")) {
+                    if(state == CefApp.CefAppState.SHUTTING_DOWN) {
+                        NexusApplication.stop();
+                    }
+                }
             }
         });
         setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
@@ -76,9 +83,17 @@ public class WebFrame extends JFrame {
         app = builder.build();
         client = app.createClient();
         CefMessageRouter messageRouter = CefMessageRouter.create();
+        if(client==null) {
+            NexusApplication.getLogger().error("[WEBFRAME] Couldn't initialize WebFrame: CefClient client can't be null!");
+            System.exit(-1); return;
+        }
         client.addMessageRouter(messageRouter);
         browser = client.createBrowser(url, false, false);
         client.addDragHandler((cefBrowser, dragData, i) -> dragData.isFile());
+        if(browser==null) {
+            NexusApplication.getLogger().error("[WEBFRAME] Couldn't initialize WebFrame: CefBrowser browser can't be null!");
+            System.exit(-1); return;
+        }
         Component ui = browser.getUIComponent();
         client.addFocusHandler(new CefFocusHandlerAdapter() {
             @Override

@@ -34,6 +34,7 @@ public class ApplicationModule {
         return connector;
     }
 
+    @SuppressWarnings("unused")
     public void setConnector(ModuleConnector connector) {
         this.connector = connector;
     }

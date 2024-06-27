@@ -10,14 +10,13 @@ import org.cef.handler.CefDisplayHandlerAdapter;
 import java.awt.*;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public class ApplicationFrame extends WebFrame {
 
     private final FrameConnector connector;
-    private final NexusApplication application;
 
     public ApplicationFrame(NexusApplication application, String url, String jcefPath) {
         super(url, jcefPath, application);
-        this.application = application;
         this.connector = new FrameConnector(this,application);
         getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
