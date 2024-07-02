@@ -67,9 +67,6 @@
                 </div>
                 <div class="settings">
                     <div class="settings-menu">
-                        <div class="card card-disabled">
-                            <h2>Einstellungen</h2>
-                        </div>
                         <div class="card settings-menu-card card-disabled">
                             <h3>Navigation</h3>
                             <ul>
@@ -107,6 +104,10 @@
                             </div>
                             <h3>Aktionen</h3>
                             <ul>
+                                <li onclick="location.href = 'firstrun.html?back=true'">
+                                    <i class='bx bxs-dashboard'></i>
+                                    <p>Setup wiederholen</p>
+                                </li>
                                 <li onclick="connector('sync.refresh')">
                                     <i class='bx bx-refresh'></i>
                                     <p>App neu laden</p>

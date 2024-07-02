@@ -5,6 +5,8 @@ import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
 
 import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,14 +36,14 @@ public record ApplicationConfig(String[] args) {
         this.args = args;
         arguments = this.args;
         for (String arg : args) {
-            if (arg.startsWith("--ui:")) {
+            if(arg.startsWith("--test")) {
+                test = true;
+                NexusApplication.getLogger().setDebugEnabled(true);
+            } else if (arg.startsWith("--ui:")) {
                 urlBase = arg.replace("--ui:", "");
             }
             else if(arg.startsWith("--path:")) {
                 applicationPath = arg.replace("--path:", "");
-            }
-            else if(arg.startsWith("--test")) {
-                test = true;
             }
         }
 
@@ -159,5 +161,17 @@ public record ApplicationConfig(String[] args) {
 
     public static UUID getApplicationId() {
         return applicationId;
+    }
+
+    public static boolean isOffline() {
+        try {
+            URL url = new URL("https://zyneonstudios.github.io/nexus-nex/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            return !(responseCode == HttpURLConnection.HTTP_OK);
+        } catch (Exception e) {
+            return true;
+        }
     }
 }

@@ -200,3 +200,36 @@ body {
 .library .library-content #library-view .flex .view-description:hover h4 {
     color: var(--highlight);
 }
+
+#view-launch {
+    transition: all 0.25s ease;
+    font-family: MPLUS1p-ExtraBold, sans-serif;
+    position: absolute;
+    bottom: 1rem; right: 1rem;
+    padding: 1rem;
+    background: var(--background2);
+    border: 2px solid var(--background3);
+    font-size: 1.5rem;
+    box-shadow: 0 0 0.8rem var(--shadow3);
+    opacity: 0.9;
+    border-radius: 1rem;
+}
+
+#view-launch:hover {
+    cursor: not-allowed;
+    animation: none !important;
+}
+
+#view-launch.active {
+    background: var(--accent2);
+    border: 2px solid var(--accent);
+}
+
+#view-launch.active:hover {
+    cursor: pointer;
+    opacity: 1;
+    background: var(--accent);
+    border: 2px solid var(--accent2);
+    box-shadow: 0 0 0.4rem var(--accent);
+    animation: inherit !important;
+}

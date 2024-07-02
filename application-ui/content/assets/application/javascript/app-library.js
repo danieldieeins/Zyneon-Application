@@ -22,6 +22,7 @@ function initLibrary(skipConnector) {
             }
         }
     }
+    console.log("[CONNECTOR] init.library");
 }
 
 function optionExists(selectId, value) {
@@ -211,7 +212,66 @@ function showView(id) {
     document.getElementById("library-view").style.display = "inherit";
     document.querySelector(".cnt").style.backgroundImage = "url('')";
     const button = document.getElementById(id);
-    setTitle(); setViewImage(); setViewDescription();
+    setTitle(); setViewImage(); setViewDescription(); disableLaunch();
     connector("sync.library.module." + moduleId + ".view." + id);
     highlight(id);
 }
+
+function disableLaunch() {
+    const button = document.getElementById("view-launch");
+    setLaunch("LAUNCH","bx bx-x-circle");
+}
+
+let launchRequest = "";
+function launch_() {
+    if(launchRequest) {
+        const button = document.getElementById("view-launch");
+        if(button.classList.contains("active")) {
+            connector(launchRequest);
+        }
+    }
+}
+
+function setLaunch(title,icon,className,connectorRequest) {
+    const button = document.getElementById("view-launch");
+
+    let launch = "LAUNCH";
+    if(title) {
+        launch = title;
+    }
+    button.querySelector("span").innerText = title;
+
+    let i = "bx bx-rocket";
+    if(icon) {
+        i = icon;
+    }
+    button.querySelector("i").className = icon;
+
+    let cN = "hover-wiggle";
+    if(className) {
+        cN = "hover-wiggle "+className;
+    }
+    button.className = cN;
+
+    if(connectorRequest) {
+        button.onclick = function () {
+            launchRequest = connectorRequest;
+            launch_();
+            launchRequest = "";
+        }
+    } else {
+        launchRequest = "";
+        button.onclick = null;
+    }
+}
+
+function enableLaunch() {
+    const button = document.getElementById("view-launch");
+    if(!button.classList.contains("active")) {
+        button.classList.add("active");
+    }
+}
+
+addEventListener("DOMContentLoaded", () => {
+    disableLaunch(); initLibrary();
+});

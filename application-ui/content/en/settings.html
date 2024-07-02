@@ -41,6 +41,10 @@
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <p>Library</p>
                         </li>
+                        <li onclick="window.location.href = 'downloads.html';">
+                            <i class='bx bxs-download'></i>
+                            <p>Downloads</p>
+                        </li>
                         <li class="highlighted">
                             <i class='bx bxs-cog'></i>
                             <p>Settings</p>
@@ -67,9 +71,6 @@
                 </div>
                 <div class="settings">
                     <div class="settings-menu">
-                        <div class="card card-disabled">
-                            <h2>Settings</h2>
-                        </div>
                         <div class="card settings-menu-card card-disabled">
                             <h3>Navigation</h3>
                             <ul>
@@ -94,19 +95,23 @@
                                     <p>About NEXUS App</p>
                                 </li>
                             </ul>
-                            <div class="settings-modules-section" id="settings-modules-section">
-                                <h3>Modules</h3>
+                            <div class="settings-modules-section" id="settings-group-template">
+                                <h3>group title</h3>
                                 <ul>
                                     <li id="settings-module-template">
                                         <i></i>
                                         <img alt="settings menu entry icon" src="">
-                                        <p>Loading menu entry...</p>
+                                        <p>loading group entry...</p>
                                     </li>
                                 </ul>
                                 <script>connector('init.settings.modules');</script>
                             </div>
                             <h3>Actions</h3>
                             <ul>
+                                <li onclick="location.href = 'firstrun.html?back=true'">
+                                    <i class='bx bxs-dashboard'></i>
+                                    <p>Rerun app setup</p>
+                                </li>
                                 <li onclick="connector('sync.refresh')">
                                     <i class='bx bx-refresh'></i>
                                     <p>Refresh application</p>

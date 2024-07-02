@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-library.js"></script>
-        <script>console.log("[CONNECTOR] init.library"); init();</script>
+        <script>init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -40,6 +40,10 @@
                         <li class="highlighted">
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <p>Library</p>
+                        </li>
+                        <li onclick="window.location.href = 'downloads.html';">
+                            <i class='bx bxs-download'></i>
+                            <p>Downloads</p>
                         </li>
                         <li onclick="window.location.href = 'settings.html'">
                             <i class='bx bxs-cog'></i>
@@ -136,16 +140,14 @@
                                         </h4>
                                     </div>
                                 </div>
+                                <div class="view-launch">
+                                    <a id="view-launch" class="hover-wiggle"><i class='bx bx-rocket'></i> <span>LAUNCH</span></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <script>
-            addEventListener("DOMContentLoaded", () => {
-                initLibrary();
-            });
-        </script>
     </body>
 </html>

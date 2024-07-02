@@ -93,10 +93,10 @@
 }
 
 .card ul li p {
-    margin: 0 0 0 2.25rem !important;
+    margin: 0 0 0 2.1rem !important;
     font-size: 1.15rem;
     display: block;
-    max-width: 11.5rem;
+    max-width: 12.9rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -122,7 +122,7 @@
 .card ul li.highlighted, .card ul li.active {
     background: var(--accent) !important;
     box-shadow: 0 0 0.4rem var(--accent) !important;
-    border: solid 1px #a458ff !important;
+    border: solid 1px var(--accent2) !important;
 }
 
 .card ul li.highlighted *, .card ul li.active * {

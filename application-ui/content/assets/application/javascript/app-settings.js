@@ -57,7 +57,21 @@ function syncVersion(version) {
     }
 }
 
-function addModuleSetting(icon,text,onclick,id,image) {
+function addGroup(title,id) {
+    if(id) {
+        if(title) {
+            if (document.getElementById(id) == null) {
+                const template = document.getElementById("settings-group-template");
+                const group = template.cloneNode(true);
+                group.id = id;
+                group.querySelector("h3").innerText = title;
+                template.parentNode.insertBefore(group,template);
+            }
+        }
+    }
+}
+
+function addModuleSetting(icon,text,onclick,id,image,group) {
     const template = document.getElementById("settings-module-template");
     const entry = template.cloneNode(true);
     if(!id) {
@@ -87,10 +101,10 @@ function addModuleSetting(icon,text,onclick,id,image) {
         }
     }
 
-    const span = entry.querySelector("span");
-    if(span) {
+    const p = entry.querySelector("p");
+    if(p) {
         if(text) {
-            span.innerText = text;
+            p.innerText = text;
         }
     }
 

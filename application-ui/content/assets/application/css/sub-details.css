@@ -1,9 +1,16 @@
+body {
+    background: var(--background5) !important;
+    border-top-left-radius: 1.5rem !important;
+    overflow: hidden !important;
+}
+
 .cnt {
     border-top-left-radius: 1.5rem;
     position: fixed;
     width: 100%;
     min-height: 100%;
-    overflow-y: auto;
+    overflow: hidden !important;
+    overflow-y: auto !important;
     background: var(--background);
 
     * {
@@ -125,6 +132,40 @@
                 .card {
                     width: calc(100% - 3.1rem);
                     margin-bottom: 1rem;
+
+                    #dh-thumbnail {
+                        transition: all 0.25s ease;
+                        border-radius: 0.5rem;
+                        background: var(--background6);
+                        padding: 0.6rem 0.6rem 0.4rem 0.6rem;
+                        width: calc(100% - 1rem);
+                        position: relative;
+                        overflow: hidden;
+                        margin: 0 0 0.5rem 0;
+
+                        img {
+                            transition: all 0.25s ease;
+                            border-radius: 0.5rem;
+                            padding: 0.5rem;
+                            width: calc(100% - 1rem);
+                        }
+                    }
+
+                    #dh-thumbnail:hover {
+                        border: none !important;
+                        background: var(--background);
+                        box-shadow: 0 0 0.8rem var(--shadow3);
+                        width: 100%;
+                        padding: 0;
+                        overflow: auto;
+
+                        img {
+                            width: 100%;
+                            padding: 0;
+                            border: none !important;
+                            margin: 0;
+                        }
+                    }
                 }
             }
 

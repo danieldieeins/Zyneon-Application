@@ -40,7 +40,7 @@
 /*Sizing the cards and enable scrolling*/
 .settings .settings-content .settings-content-card, .settings .settings-menu .settings-menu-card {
     position: relative;
-    height: calc(100% - 7.8rem);
+    height: calc(100% - 2.3rem);
     overflow-y: auto !important;
 }
 
@@ -49,12 +49,12 @@
 */
 
 /*Disable inactive elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section, #linux-settings-custom-frame, #settings-module-template, #settings-general, #settings-global, #settings-indexes, #settings-modules, #settings-about, #updater-settings, #settings-custom {
+.settings .settings-menu .settings-menu-card #settings-group-template, #linux-settings-custom-frame, #settings-module-template, #settings-general, #settings-global, #settings-indexes, #settings-modules, #settings-about, #updater-settings, #settings-custom {
     display: none;
 }
 
 /*Enable active elements*/
-.settings .settings-menu .settings-menu-card .settings-modules-section.active, #settings-general.active, #settings-global.active, #settings-indexes.active, #settings-modules.active, #settings-about.active, #settings-custom.active {
+.settings .settings-menu .settings-menu-card, #settings-general.active, #settings-global.active, #settings-indexes.active, #settings-modules.active, #settings-about.active, #settings-custom.active {
     display: inherit !important;
 }
 
@@ -68,15 +68,15 @@
     height: calc(100% - 6.8rem);
 }
 
-.settings .settings-content .settings-content-card h4 {
+.settings .settings-content h4 {
     color: var(--foreground2);
     font-size: 1rem;
     margin: 0.4rem 0 0.25rem 0.75rem;
 }
 
-.settings .settings-content .settings-content-card h3 {
+.settings .settings-content h3 {
     position: relative;
-    background: var(--background2);
+    background: var(--background3);
     border: 2px solid var(--border2) !important;
     padding: 0.125rem 0.5rem 0.25rem 0.5rem;
     border-radius: 0.5rem;
@@ -84,42 +84,42 @@
     transition: all 0.25s ease;
 }
 
-.settings .settings-content .settings-content-card .group {
+.settings .settings-content .group {
     transition: background-color 0.25s ease !important;
     padding: 0.5rem 0 0.5rem 0;
     border-radius: 0.5rem;
 }
 
-.settings .settings-content .settings-content-card .group:hover {
+.settings .settings-content .group:hover {
     background: var(--background);
     padding: 0.5rem;
 }
 
-.settings .settings-content .settings-content-card .group:hover h4 {
+.settings .settings-content .group:hover h4 {
     margin: 0.4rem 0 0.25rem 0.25rem;
 }
 
-.settings .settings-content .settings-content-card .group h3 {
+.settings .settings-content .group h3 {
     transition: background-color 0.25s ease !important;
 }
 
-.settings .settings-content .settings-content-card .group:hover h3 {
+.settings .settings-content .group:hover h3 {
     background: var(--background3);
     margin: 0 0 0.5rem 0;
 }
 
-.settings .settings-content .settings-content-card h3:hover {
+.settings .settings-content h3:hover {
     background: var(--border2) !important;
 }
 
-.settings .settings-content .settings-content-card h3 input {
+.settings .settings-content h3 input {
     cursor: pointer;
     position: absolute;
     top: 0.6rem;
     right: 0.7rem;
 }
 
-.settings .settings-content .settings-content-card h3 select {
+.settings .settings-content h3 select {
     position: absolute;
     top: 0; right: 0;
     font-size: 1rem;
@@ -128,25 +128,25 @@
     border-radius: 0.35rem;
 }
 
-.settings .settings-content .settings-content-card h3 select:hover {
+.settings .settings-content h3 select:hover {
     cursor: pointer;
 }
 
-.settings .settings-content .settings-content-card h3 select option {
+.settings .settings-content h3 select option {
     text-align: left;
     background: var(--background4);
     color: var(--foreground);
 }
 
-.settings .settings-content .settings-content-card h3 select option:checked {
+.settings .settings-content h3 select option:checked {
     text-align: right;
 }
 
-.settings .settings-content .settings-content-card h3:hover select {
+.settings .settings-content h3:hover select {
     color: var(--foreground);
 }
 
-.settings .settings-content .settings-content-card #settings-custom iframe {
+.settings .settings-content #settings-custom iframe {
     position: absolute;
     width: calc(100% - 1rem); height: calc(100% - 1rem);
     border-radius: 0.5rem;

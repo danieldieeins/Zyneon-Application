@@ -6,9 +6,9 @@ function initDetails() {
     let name = "Unknown";
     if(urlParams.get("title")||urlParams.get("name")) {
         if(urlParams.get("title")) {
-            name = urlParams.get("title");
+            name = urlParams.get("title").replaceAll("%plus%","+");
         } else {
-            name = urlParams.get("name");
+            name = urlParams.get("name").replaceAll("%plus%","+");
         }
     }
     document.getElementById("details-title").innerText = name;
@@ -16,39 +16,39 @@ function initDetails() {
 
     let description = "No description...";
     if(urlParams.get("description")) {
-        description = urlParams.get("description");
+        description = urlParams.get("description").replaceAll("%plus%","+");
     }
     setDescription(description);
 
     if(urlParams.get("changelog")) {
-        setChangelog(urlParams.get("changelog"));
+        setChangelog(urlParams.get("changelog").replaceAll("%plus%","+"));
     }
 
     if(urlParams.get("versions")) {
-        setVersions(urlParams.get("versions"))
+        setVersions(urlParams.get("versions").replaceAll("%plus%","+"))
     }
 
     let type = "Unknown";
     if(urlParams.get("type")) {
-        type = urlParams.get("type");
+        type = urlParams.get("type").replaceAll("%plus%","+");
     }
     document.getElementById("details-type").innerText = type;
 
     let id = "unknown";
     if(urlParams.get("id")) {
-        id = urlParams.get("id");
+        id = urlParams.get("id").replaceAll("%plus%","+");
     }
     document.getElementById("details-id").innerText = id;
 
     let version = "Unknown";
     if(urlParams.get("version")) {
-        version = urlParams.get("version");
+        version = urlParams.get("version").replaceAll("%plus%","+");
     }
     document.getElementById("details-version").innerText = version;
 
     let customInfo = "";
     if(urlParams.get("c")) {
-        customInfo = "<br>"+urlParams.get("c").replaceAll("\\'","%hhdn%").replaceAll("'","\"").replaceAll("%hhdn%","'");
+        customInfo = "<br>"+urlParams.get("c").replaceAll("\\'","%hhdn%").replaceAll("'","\"").replaceAll("%hhdn%","'").replaceAll("%plus%","+");
     }
     if(customInfo) {
         document.getElementById("details-custom").innerHTML = customInfo;
@@ -56,13 +56,13 @@ function initDetails() {
 
     let summary = "No summary...";
     if(urlParams.get("summary")) {
-        summary = urlParams.get("summary");
+        summary = urlParams.get("summary").replaceAll("%plus%","+");
     }
     document.getElementById("details-summary").innerHTML = summary;
 
     let authors = "Unknown";
     if(urlParams.get("authors")) {
-        authors = urlParams.get("authors");
+        authors = urlParams.get("authors").replaceAll("%plus%","+");
     }
     document.getElementById("details-authors").innerText = authors;
 
@@ -74,13 +74,13 @@ function initDetails() {
 
     let tags = "No tags...";
     if(urlParams.get("tags")) {
-        tags = urlParams.get("tags");
+        tags = urlParams.get("tags").replaceAll("%plus%","+");
     }
     document.getElementById("details-tags").innerText = tags;
 
     if(urlParams.get("cc")) {
         const customCard = document.getElementById("details-custom-card");
-        customCard.innerHTML = urlParams.get("cc");
+        customCard.innerHTML = urlParams.get("cc").replaceAll("%plus%","+");
         customCard.style.display = "inherit";
     }
 
@@ -102,6 +102,12 @@ function initDetails() {
         document.getElementById("dh-logo").src = decodeURL(urlParams.get("logo"));
     } else {
         document.getElementById("dh-logo").style.display = "none";
+    }
+
+    if(urlParams.get("thumbnail")) {
+        document.getElementById("details-thumbnail").src = decodeURL(urlParams.get("thumbnail"));
+    } else {
+        document.getElementById("dh-thumbnail").style.display = "none";
     }
 }
 

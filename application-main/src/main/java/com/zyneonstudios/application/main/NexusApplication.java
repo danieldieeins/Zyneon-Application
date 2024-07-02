@@ -1,18 +1,24 @@
 package com.zyneonstudios.application.main;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
+import com.zyneonstudios.application.download.Download;
+import com.zyneonstudios.application.download.DownloadManager;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
 import com.zyneonstudios.application.modules.ModuleLoader;
 import live.nerotv.shademebaby.logger.Logger;
 import live.nerotv.shademebaby.utils.FileUtil;
+import live.nerotv.shademebaby.utils.GsonUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class NexusApplication {
@@ -20,6 +26,9 @@ public class NexusApplication {
     private final JFrame frame;
     private static final Logger logger = new Logger("APP");
     private static ModuleLoader moduleLoader = null;
+
+    private final ApplicationRunner runner;
+    private final DownloadManager downloadManager;
 
     public NexusApplication() {
         moduleLoader = new ModuleLoader(this);
@@ -66,9 +75,15 @@ public class NexusApplication {
             frame = frame_;
         }
         if(frame==null) {
-            System.exit(-1); return;
+            System.exit(-1);;
         }
         frame.setLocationRelativeTo(null);
+
+        this.runner = new ApplicationRunner(this);
+        this.runner.start();
+        this.downloadManager = new DownloadManager(this);
+
+        logger.log("[APP] Updated application modules: "+updateModules());
         File modules = new File(ApplicationConfig.getApplicationPath()+"modules/");
         if(modules.exists()) {
             if(modules.isDirectory()) {
@@ -89,6 +104,14 @@ public class NexusApplication {
         }
     }
 
+    public DownloadManager getDownloadManager() {
+        return downloadManager;
+    }
+
+    public ApplicationRunner getRunner() {
+        return runner;
+    }
+
     public static Logger getLogger() {
         return logger;
     }
@@ -101,7 +124,9 @@ public class NexusApplication {
         return frame;
     }
 
-    private static boolean update() {
+    private boolean update() {
+
+        // TRYING TO DELETE OLD TEMP FOLDER
         File temp = new File(ApplicationConfig.getApplicationPath() + "temp");
         if(temp.exists()) {
             if(temp.isDirectory()) {
@@ -110,31 +135,9 @@ public class NexusApplication {
                 logger.debug("[APP] Deleted temporary files: "+temp.delete());
             }
         }
+
+        // UI UPDATE
         boolean updated;
-        try {
-            if(!new File(ApplicationConfig.getApplicationPath() + "temp/modules/").exists()) {
-                logger.debug("[APP] Created modules path: "+new File(ApplicationConfig.getApplicationPath() + "temp/modules/").mkdirs());
-            }
-            FileUtil.extractResourceFile("modules.zip",ApplicationConfig.getApplicationPath()+"temp/modules.zip",NexusApplication.class);
-            FileUtil.unzipFile(ApplicationConfig.getApplicationPath()+"temp/modules.zip", ApplicationConfig.getApplicationPath() + "temp/modules/");
-            logger.debug("[APP] Deleted modules archive: "+new File(ApplicationConfig.getApplicationPath()+"temp/modules.zip").delete());
-            File modules = new File(ApplicationConfig.getApplicationPath() + "temp/modules/");
-            if(modules.exists()) {
-                if(modules.isDirectory()) {
-                    for(File module : Objects.requireNonNull(modules.listFiles())) {
-                        if(module.getName().toLowerCase().endsWith(".jar")) {
-                            try {
-                                moduleLoader.loadModule(moduleLoader.readModule(module));
-                            } catch (Exception e) {
-                                getLogger().error("Couldn't load module "+module.getName()+": "+e.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.error("[APP] Couldn't extract modules: "+e.getMessage());
-        }
         try {
             if(new File(ApplicationConfig.getApplicationPath() + "temp/ui/").exists()) {
                 try {
@@ -154,6 +157,62 @@ public class NexusApplication {
         }
         logger.debug("[APP] Deleted old updatar json: "+new File(ApplicationConfig.getApplicationPath() + "updater.json").delete());
         logger.debug("[APP] Deleted older updater json: "+new File(ApplicationConfig.getApplicationPath() + "version.json").delete());
+        return updated;
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean updateModules() {
+        boolean updated = false;
+        File modules = new File(ApplicationConfig.getApplicationPath() + "temp/modules/");
+        if (modules.exists()) {
+            FileUtil.deleteFolder(modules);
+        }
+        logger.debug("[APP] Created modules path: " + modules.mkdirs());
+
+        if(!ApplicationConfig.isOffline()) {
+            try {
+                ArrayList<String> disabledIds = new ArrayList<>();
+                if(ApplicationConfig.getSettings().get("settings.modules.disabledIds")!=null) {
+                    disabledIds = (ArrayList<String>)ApplicationConfig.getSettings().get("settings.modules.disabledIds");
+                }
+
+                JsonObject mcJson = GsonUtil.getObject("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/nexus-minecraft-module.json").getAsJsonObject("module");
+                String mcId = mcJson.getAsJsonObject("meta").get("id").getAsString();
+                if(!disabledIds.contains(mcId)) {
+                    Download mcDownload = new Download(mcId+".jar",new URL(mcJson.getAsJsonObject("meta").get("download").getAsString()), Path.of(modules.getAbsolutePath()+"/"+mcId+".jar"));
+                    mcDownload.start();
+                }
+
+                updated = true;
+            } catch (Exception e) {
+                logger.error("[APP] Couldn't update online modules: "+e.getMessage());
+            }
+        }
+
+        if(!updated) {
+            try {
+                FileUtil.extractResourceFile("modules.zip", ApplicationConfig.getApplicationPath() + "temp/modules.zip", NexusApplication.class);
+                FileUtil.unzipFile(ApplicationConfig.getApplicationPath() + "temp/modules.zip", ApplicationConfig.getApplicationPath() + "temp/modules/");
+                logger.debug("[APP] Deleted modules archive: " + new File(ApplicationConfig.getApplicationPath() + "temp/modules.zip").delete());
+            } catch (Exception e) {
+                logger.error("[APP] Couldn't extract fallback modules: " + e.getMessage());
+            }
+        }
+
+        if (modules.exists()) {
+            if (modules.isDirectory()) {
+                for (File module : Objects.requireNonNull(modules.listFiles())) {
+                    if (module.getName().toLowerCase().endsWith(".jar")) {
+                        try {
+                            moduleLoader.loadModule(moduleLoader.readModule(module));
+                        } catch (Exception e) {
+                            getLogger().error("Couldn't load module " + module.getName() + ": " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+
         return updated;
     }
 

@@ -68,3 +68,19 @@ function setTheme(id) {
     setColors(id);
     highlightTheme(id);
 }
+
+addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("theme.colors")) {
+        highlightTheme(urlParams.get("theme.colors"));
+        connector("sync.firstrun.theme");
+    }
+    if(urlParams.get("back")) {
+        if(urlParams.get("back")===true||urlParams.get("back")==="true") {
+            const button = document.getElementById("fs-back");
+            button.classList.remove("disabled");
+            button.innerText = document.getElementById("language-back").innerText;
+            button.onclick = function () { location.href = 'settings.html' }
+        }
+    }
+});

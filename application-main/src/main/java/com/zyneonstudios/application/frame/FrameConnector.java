@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FrameConnector {
@@ -64,12 +65,18 @@ public class FrameConnector {
     private void init(String request) {
         frame.executeJavaScript("syncDesktop();");
         if(request.equals("discover")) {
-            frame.executeJavaScript("activateMenu('menu',true); document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = searchTerm;");
+            if(frame.getBrowser().getURL().contains("&l=search")) {
+                frame.executeJavaScript("deactivateMenu('menu',true);");
+            } else {
+                frame.executeJavaScript("activateMenu('menu',true); document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = searchTerm;");
+            }
         } else {
             frame.executeJavaScript("deactivateMenu('menu',true);");
         }
         if(request.equals("settings")) {
             frame.executeJavaScript("syncVersion(\""+ApplicationConfig.getApplicationVersion().replace("\"","''")+"\");");
+        } else if(request.equals("downloads")) {
+            
         }
     }
 
@@ -189,16 +196,27 @@ public class FrameConnector {
 
     private void syncDiscover(String request) {
         if(request.startsWith("search.")) {
-            if(request.replace("search.","").equals("modules")) {
-                if(moduleSearch.getCachedResults()==null) {
-                    moduleSearch.search("");
+            request = request.replace("search.","");
+            if(request.startsWith("modules")) {
+                String query;
+                if(request.startsWith("modules.")) {
+                    query = request.replaceFirst("modules.","");
+                } else {
+                    query = "";
+                }
+                ArrayList<HashMap<String,String>> results = null;
+                if(moduleSearch.getCachedResults()==null||!moduleSearch.getCachedSearchTerm().equals(query)) {
+                    results = moduleSearch.search(query);
                 }
                 if(moduleSearch.getCachedSearchTerm()!=null) {
                     if(!moduleSearch.getCachedSearchTerm().isEmpty()&&!moduleSearch.getCachedSearchTerm().isBlank()) {
                         frame.executeJavaScript("document.getElementById(\"search-bar\").placeholder = \""+moduleSearch.getCachedSearchTerm()+"\";");
                     }
                 }
-                for(HashMap<String,String> result : moduleSearch.getCachedResults()) {
+                if(results == null) {
+                    results = moduleSearch.search(query);
+                }
+                for(HashMap<String,String> result : results) {
                     String tags = "Tags: "+result.get("meta.tags").replace("[\"","").replace("\"]","").replace("\"","").replace(",",", ");
                     String meta = result.get("meta.id")+" | v"+result.get("info.version")+" | Hidden: "+result.get("meta.isHidden")+"<br>"+tags;
                     String location = URLEncoder.encode(result.get("meta.location"),StandardCharsets.UTF_8);
@@ -216,13 +234,14 @@ public class FrameConnector {
             request = request.replaceFirst("details.","");
             if(request.startsWith("module.")) {
                 OnlineConfig module = new OnlineConfig(URLDecoder.decode(request.replaceFirst("module.",""),StandardCharsets.UTF_8));
-                initDetails(module.getString("module.info.name"),module.getString("module.meta.id"),"Application module",module.getString("module.info.version"),module.getString("module.info.summary"),module.getString("module.info.authors"),module.getBool("module.meta.isHidden"),module.get("module.meta.tags").toString(),module.getString("module.meta.description"),module.get("module.meta.changelogs").toString(),module.get("module.meta.versions").toString(),module.getString("module.style.info"),module.getString("module.style.card"),module.getString("module.resources.background"),module.getString("module.resources.icon"),module.getString("module.resources.logo"));
+
+                frame.executeJavaScript("enableOverlay(\""+initDetails(module.getString("module.info.name"),module.getString("module.meta.id"),"Application module",module.getString("module.info.version"),module.getString("module.info.summary"),module.getString("module.info.authors"),module.getBool("module.meta.isHidden"),module.get("module.meta.tags").toString(),module.getString("module.meta.description"),module.get("module.meta.changelogs").toString(),module.get("module.meta.versions").toString(),module.getString("module.style.info"),module.getString("module.style.card"),module.getString("module.resources.background"),module.getString("module.resources.icon"),module.getString("module.resources.logo"),module.getString("module.resources.thumbnail"))+"\");");
             }
         }
     }
 
     @SuppressWarnings("all")
-    private void initDetails(String name, String id, String type, String version, String summary, String authors, boolean isHidden, String tags, String description, String changelog, String versions, String customInfoHTML, String customInfoCardHTML, String background, String icon, String logo) {
+    public static String initDetails(String name, String id, String type, String version, String summary, String authors, boolean isHidden, String tags, String description, String changelog, String versions, String customInfoHTML, String customInfoCardHTML, String background, String icon, String logo, String thumbnail) {
         String url = ApplicationConfig.urlBase+ApplicationConfig.language+"/sub-details.html";
         if(name!=null) {
             url = url+"?name="+formatForDetails(name);
@@ -275,11 +294,15 @@ public class FrameConnector {
         if(logo!=null) {
             url = url+"&logo="+formatForDetails(logo);
         }
+        if(thumbnail!=null) {
+            String t = "&thumbnail="+formatForDetails(thumbnail);
+            url = url+t;
+        }
         url = url.replace("\\","/");
-        frame.executeJavaScript("enableOverlay(\""+url+"\");");
+        return url;
     }
 
-    private String formatForDetails(String input) {
+    public static String formatForDetails(String input) {
         if(input!=null) {
             if(!input.isBlank()&&!input.isEmpty()) {
                 input = input.replace("\"","''");

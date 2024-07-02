@@ -51,7 +51,7 @@
                             </ul>
                         </div>
 
-                        <a class="button back disabled">Back</a>
+                        <a class="button back disabled" id="fs-back">Back</a>
                         <a class="button proceed hover-wiggle" onclick="syncLang('en');" id="firstrun-continue-button" href="#theme">Continue</a>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             </ul>
                         </div>
 
-                        <a class="button back hover-wiggle" href="#language">Back</a>
+                        <a class="button back hover-wiggle" id="language-back" href="#language">Back</a>
                         <a class="button proceed hover-wiggle" id="firstrun-theme-finish-button" onclick="connector('sync.firstrun.finished')" href="index.html">Finish</a>
                     </div>
                 </div>
@@ -95,13 +95,4 @@
             </div>
         </div>
     </body>
-    <script>
-        addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("theme.colors")) {
-                highlightTheme(urlParams.get("theme.colors"));
-                connector("sync.firstrun.theme");
-            }
-        });
-    </script>
 </html>

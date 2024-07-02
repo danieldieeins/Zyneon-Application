@@ -7,8 +7,8 @@ function toggleMenu(menuId,save) {
     }
 }
 
-function setMenu(menuId,active,save) {
-    if(active) {
+function setMenu(menuId,disable,save) {
+    if(disable) {
         deactivateMenu(menuId,save);
     } else {
         activateMenu(menuId,save);
