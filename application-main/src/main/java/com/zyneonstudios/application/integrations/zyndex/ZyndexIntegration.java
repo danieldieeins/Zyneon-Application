@@ -160,7 +160,6 @@ public class ZyndexIntegration {
                     }
                     Main.getLogger().debug("[ZYNDEX] Updated instance!");
                 }
-                System.out.println(onlineInstance.getMinecraftVersion());
                 localInstance.setMinecraftVersion(onlineInstance.getMinecraftVersion());
                 return localInstance;
             }

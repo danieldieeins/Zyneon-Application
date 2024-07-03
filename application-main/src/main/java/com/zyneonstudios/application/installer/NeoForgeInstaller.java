@@ -20,7 +20,6 @@ public class NeoForgeInstaller {
         UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
                 .build();
 
-        System.out.println(forgeVersion);
         AbstractForgeVersion forge = new ForgeVersionBuilder(ForgeVersionType.NEO_FORGE)
                 .withForgeVersion(forgeVersion)
                 .build();

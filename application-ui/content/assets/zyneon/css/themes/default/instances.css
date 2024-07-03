@@ -10,18 +10,18 @@
 .menu ul li a .instance-item.active,.instance-item#selected {
     color: #fff;
     background: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
 }
 
 .menu ul li a .instance-item.active:hover,.instance-item#selected:hover {
     color: #fff;
     background: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
 }
 
 .menu ul li a .instance-item:hover {
     background: var(--highlight);
-    box-shadow: 0 0 0.8rem var(--highlight);
+    box-shadow: 0 0 0.4rem var(--highlight);
     transition: 0.5s;
     cursor: pointer;
 }
@@ -125,7 +125,7 @@
 
 .content #instance-view .card#title-card .buttons i:hover {
     z-index: 2000;
-    box-shadow: 0 0 0.8rem var(--color);
+    box-shadow: 0 0 0.4rem var(--color);
     color: var(--background-accent);
     background: var(--color);
 }
@@ -166,7 +166,7 @@
 
 .content #instance-view .card#title-card .buttons .folder-dropdown .card h3:hover {
     color: var(--background-accent);
-    box-shadow: 0 0 0.8rem var(--color);
+    box-shadow: 0 0 0.4rem var(--color);
     background: var(--color);
     border-radius: 0.5rem;
     cursor: pointer;
@@ -184,7 +184,7 @@
 }
 
 .content #instance-view #instance-settings .card {
-    box-shadow: 0 0 0.4rem black;
+    box-shadow: 0 0 0.4rem var(--background-accent);
 }
 
 .content #instance-view #instance-settings h3 {
@@ -254,7 +254,7 @@
     cursor: pointer;
     color: #fff;
     background-color: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
     transition: 0.25s;
 }
 
@@ -271,7 +271,7 @@
 .content #instance-view #instance-settings h3 a.button#delete-instance:hover {
     color: white;
     background: red;
-    box-shadow: 0 0 0.8rem red;
+    box-shadow: 0 0 0.4rem red;
     animation: wiggle 0.1s linear infinite;
 }
 
@@ -339,7 +339,7 @@
     bottom: 0;
     height: 8rem;
     width: 100%;
-    box-shadow: 0 0 0.8rem #000;
+    box-shadow: 0 0 0.4rem var(--background-accent);
     z-index: 99;
     background: var(--background4);
 }
@@ -361,7 +361,7 @@
 
 .content .dock a.button#launch:hover {
     background: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
     animation: wiggle 2.5s linear infinite;
 }
 
@@ -385,7 +385,7 @@
     cursor: pointer;
     color: #fff;
     background-color: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
     transition: 0.25s;
 }
 
@@ -434,7 +434,7 @@ select#creator-minecraft,select#creator-modloader,select#creator-type,select#cre
     cursor: pointer;
     color: #fff;
     background-color: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
     transition: 0.25s;
 }
 

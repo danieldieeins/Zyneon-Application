@@ -32,9 +32,9 @@ public class Main {
         splash = new ZyneonSplash();
         splash.setVisible(true);
         FileUtil.deleteFolder(new File(getDirectoryPath()+"temp/"));
-        version = "2024.6.4";
+        version = "2024.7";
         ArrayList<String> arguments = new ArrayList<>();
-        String name = "Tricky Protonium²";
+        String name = "Transitum";
         architecture = getArchitecture();
         logger = new ZLogger("ZYNEON");
         String fullVersion = version+" ▪ "+name;
@@ -45,7 +45,9 @@ public class Main {
             switch (arg) {
                 case "--test" -> {
                     test = true;
-                    fullVersion = version + " ▪ " + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Calendar.getInstance().getTime());
+                    version = new SimpleDateFormat("yyyy.M.d-HHmmss").format(Calendar.getInstance().getTime());
+                    name = "Test";
+                    fullVersion = version+" ▪ "+name;
                 }
                 case "--debug" -> {
                     logger.setDebugEnabled(true);
