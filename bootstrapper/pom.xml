@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.zyneonstudios</groupId>
         <artifactId>nexus-application</artifactId>
-        <version>2024.7</version>
+        <version>2024.7.1</version>
     </parent>
 
     <artifactId>bootstrapper</artifactId>

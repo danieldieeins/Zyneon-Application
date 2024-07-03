@@ -5,6 +5,7 @@ import com.zyneonstudios.application.main.ApplicationConfig;
 import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
 import com.zyneonstudios.application.modules.search.ModuleSearch;
+import com.zyneonstudios.nexus.modules.ReadableModule;
 import live.nerotv.shademebaby.file.OnlineConfig;
 
 import java.awt.*;
@@ -13,12 +14,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FrameConnector {
 
     private final ApplicationFrame frame;
-    private final ModuleSearch moduleSearch = new ModuleSearch("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
+    private final ModuleSearch moduleSearch = new ModuleSearch("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json");
     private final NexusApplication application;
 
     public FrameConnector(ApplicationFrame frame,NexusApplication application) {
@@ -35,12 +35,10 @@ public class FrameConnector {
 
         if(request.startsWith("sync.")) {
             sync(request.replace("sync.", ""));
-            NexusApplication.getLogger().debug("[CONNECTOR] successfully resolved " + request);
         } else if(request.startsWith("open.")) {
             open(request.replaceFirst("open.",""));
         } else if(request.startsWith("init.")) {
             init(request.replace("init.", ""));
-            NexusApplication.getLogger().debug("[CONNECTOR] successfully resolved " + request);
         }
         for(ApplicationModule module:NexusApplication.getModuleLoader().getApplicationModules()) {
             module.getConnector().resolveFrameRequest(request);
@@ -204,8 +202,12 @@ public class FrameConnector {
                 } else {
                     query = "";
                 }
-                ArrayList<HashMap<String,String>> results = null;
-                if(moduleSearch.getCachedResults()==null||!moduleSearch.getCachedSearchTerm().equals(query)) {
+                ArrayList<ReadableModule> results = null;
+                String searchTerm = "";
+                if(moduleSearch.getCachedSearchTerm()!=null) {
+                    searchTerm = moduleSearch.getCachedSearchTerm();
+                }
+                if(moduleSearch.getCachedResults()==null||!searchTerm.equals(query)) {
                     results = moduleSearch.search(query);
                 }
                 if(moduleSearch.getCachedSearchTerm()!=null) {
@@ -216,17 +218,17 @@ public class FrameConnector {
                 if(results == null) {
                     results = moduleSearch.search(query);
                 }
-                for(HashMap<String,String> result : results) {
-                    String tags = "Tags: "+result.get("meta.tags").replace("[\"","").replace("\"]","").replace("\"","").replace(",",", ");
-                    String meta = result.get("meta.id")+" | v"+result.get("info.version")+" | Hidden: "+result.get("meta.isHidden")+"<br>"+tags;
-                    String location = URLEncoder.encode(result.get("meta.location"),StandardCharsets.UTF_8);
+                for(ReadableModule module : results) {
+                    String tags = "Tags: "+module.getTagString();
+                    String meta = module.getId()+" | v"+module.getVersion()+" | Hidden: "+module.isHidden()+"<br>"+tags;
+                    String location = module.getLocation();
                     String actions = "<a onclick=\\\"connector('sync.discover.details.module."+location+"');\\\"><i class='bx bx-spreadsheet'></i> More</a> ";
-                    if(NexusApplication.getModuleLoader().getModuleIds().contains(result.get("meta.id"))) {
-                        actions = "v"+NexusApplication.getModuleLoader().getModules().get(result.get("meta.id")).getVersion()+"  <a onclick=\\\"connector('sync.discover.details.module."+location+"');\\\"><i class='bx bx-spreadsheet'></i> More</a> <a style=\\\"background: #473e5c !important; color: white!important; cursor: not-allowed !important; box-shadow: 0 0 0.2rem var(--shadow3) !important;\\\"><i class='bx bx-check'></i> Installed</a>";
+                    if(NexusApplication.getModuleLoader().getModuleIds().contains(module.getId())) {
+                        actions = "v"+NexusApplication.getModuleLoader().getModules().get(module.getId()).getVersion()+"  <a onclick=\\\"connector('sync.discover.details.module."+location+"');\\\"><i class='bx bx-spreadsheet'></i> More</a> <a style=\\\"background: #473e5c !important; color: white!important; cursor: not-allowed !important; box-shadow: 0 0 0.2rem var(--shadow3) !important;\\\"><i class='bx bx-check'></i> Installed</a>";
                     } else {
                         actions = actions+"<a style=\\\"background: #5632a8; color: white;\\\" onclick=\\\"connector('sync.discover.install.module.nexus-minecraft-module');\\\"><i class='bx bx-download'></i> Install</a>";
                     }
-                    String command = "addResult(\""+result.get("meta.id")+"\",\""+result.get("resources.thumbnail")+"\",\""+result.get("info.name")+"\",\""+result.get("info.authors")+"\",\""+formatForDetails(result.get("info.summary"))+"\",\""+meta+"\",\""+actions+"\",\""+location+"\");";
+                    String command = "addResult(\""+module.getId()+"\",\""+module.getThumbnailUrl()+"\",\""+module.getName()+"\",\""+module.getAuthor()+"\",\""+formatForDetails(module.getSummary())+"\",\""+meta+"\",\""+actions+"\",\""+location+"\");";
                     frame.executeJavaScript(command);
                 }
             }

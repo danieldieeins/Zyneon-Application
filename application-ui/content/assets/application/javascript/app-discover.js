@@ -8,6 +8,9 @@ function initDiscover() {
     if(urlParams.get("moduleId")!==null||localStorage.getItem("settings.lastSearchModule")!==null) {
         if(urlParams.get("moduleId")!==null) {
             moduleId = urlParams.get('moduleId');
+            if(moduleId==="modules") {
+                moduleId = "-1";
+            }
             localStorage.setItem("settings.lastSearchModule",moduleId);
         } else {
             moduleId = localStorage.getItem("settings.lastSearchModule");
@@ -144,9 +147,7 @@ addEventListener("DOMContentLoaded", () => {
     document.getElementById("search-bar").addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {
             const value = document.getElementById("search-bar").value;
-            if(value) {
-                location.href = "discover.html?moduleId="+moduleId+"&l=search&s="+encodeURIComponent(value);
-            }
+            location.href = "discover.html?moduleId="+moduleId+"&l=search&s="+encodeURIComponent(value);
         }
     });
 });
