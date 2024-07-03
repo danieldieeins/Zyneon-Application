@@ -26,6 +26,7 @@ import fr.flowarg.openlauncherlib.NoFramework;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.file.OnlineConfig;
 import live.nerotv.shademebaby.utils.FileUtil;
+import live.nerotv.shademebaby.utils.GsonUtil;
 import live.nerotv.shademebaby.utils.StringUtil;
 
 import javax.swing.*;
@@ -278,12 +279,12 @@ public class Connector {
                         JsonObject instance = element.getAsJsonObject();
                         String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
                         if (new File(Application.getURLBase() + png).exists()) {
-                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
+                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "',true);");
                         } else if (instance.get("icon") != null) {
                             png = instance.get("icon").toString().replace("\"", "");
-                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "');");
+                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "',true);");
                         } else {
-                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ");");
+                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",true);");
                         }
                     }
                 } catch (IOException e) {
@@ -382,6 +383,13 @@ public class Connector {
                     } else {
                         mlversion = "No mods";
                     }
+
+                    try {
+                        if(new Gson().fromJson(GsonUtil.getFromFile(instance.getFile()),JsonObject.class).getAsJsonObject("instance").getAsJsonObject("meta").get("isEditable").getAsBoolean()) {
+                            frame.executeJavaScript("makeEditable(\""+id+"\");");
+                        }
+                    } catch (Exception ignore) {}
+
                     File icon = new File(Application.getURLBase() + "assets/zyneon/images/instances/" + id + ".png");
                     File logo = new File(Application.getURLBase() + "assets/zyneon/images/instances/" + id + "-logo.png");
                     File background = new File(Application.getURLBase() + "assets/zyneon/images/instances/" + id + ".webp");

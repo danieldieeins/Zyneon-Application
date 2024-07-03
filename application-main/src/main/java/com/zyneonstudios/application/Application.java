@@ -1,6 +1,8 @@
 package com.zyneonstudios.application;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.auth.MicrosoftAuth;
 import com.zyneonstudios.application.installer.java.OperatingSystem;
@@ -12,6 +14,7 @@ import com.zyneonstudios.application.utils.frame.web.CustomWebFrame;
 import com.zyneonstudios.application.utils.frame.web.ZyneonWebFrame;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import live.nerotv.shademebaby.file.Config;
+import live.nerotv.shademebaby.utils.GsonUtil;
 import me.friwi.jcefmaven.CefInitializationException;
 import me.friwi.jcefmaven.UnsupportedPlatformException;
 
@@ -209,6 +212,16 @@ public class Application {
                     modloader = "Fabric " + instance.getFabricVersion();
                 }
                 instance_.put("id", instance.getId());
+
+                boolean isEditable = true;
+                try {
+                    if(!new Gson().fromJson(GsonUtil.getFromFile(instance.getFile()), JsonObject.class).getAsJsonObject("instance").getAsJsonObject("meta").get("isEditable").getAsBoolean()) {
+                        isEditable = false;
+                    }
+                } catch (Exception ignore) {}
+
+                instance_.put("isEditable", isEditable);
+
                 instance_.put("name", instance.getName());
                 instance_.put("version", instance.getVersion());
                 instance_.put("minecraft", instance.getMinecraftVersion());

@@ -26,7 +26,7 @@ function syncInstanceList() {
     callJavaMethod("sync.instances.list");
 }
 
-function loadTab(tab) {
+function loadTab(tab,editable) {
     const urlParams = new URLSearchParams(window.location.search);
     let tab_ = "zyneon::overview";
     if(urlParams.get("tab")!=null) {
@@ -41,11 +41,11 @@ function loadTab(tab) {
         }
     }
     if(document.getElementById(tab)!==null) {
-        syncInstance(tab_);
+        syncInstance(tab_,editable);
     }
 }
 
-function addInstanceToList(id,name,png) {
+function addInstanceToList(id,name,png,editable) {
     const base = document.getElementById("list-template");
     const instance = base.cloneNode(true);
     instance.id = id;
@@ -53,7 +53,7 @@ function addInstanceToList(id,name,png) {
     const a = instance.querySelector("a");
     if (a) {
         a.onclick = function () {
-            syncInstance(id);
+            syncInstance(id,editable);
         }
     }
     const i = instance.querySelector("i");
@@ -76,7 +76,14 @@ function addInstanceToList(id,name,png) {
     }
 }
 
-function syncInstance(id) {
+function syncInstance(id,editableBool) {
+    let editable = false;
+    if(editableBool) {
+        if (editableBool === true||editableBool === "true") {
+            editable = true;
+        }
+    }
+
     closeSettings();
     document.getElementById("instance-adder").style.display = "none";
     document.getElementById("instance-view").style.display = "inherit";
@@ -87,7 +94,10 @@ function syncInstance(id) {
     document.getElementById("open-instance").onclick = function () { callJavaMethod("button.folder."+id); };
     document.getElementById("open-mods").onclick = function () { callJavaMethod("button.mods."+id); };
 
-    if(id.includes("official/")) {
+    if(!id.includes("official/")||editable) {
+        makeEditable(id);
+    } else {
+        document.getElementById("check").style.display = "inherit";
         document.getElementById("open-instance").style.display = "none";
         document.getElementById("content").style.display = "none";
         document.getElementById("open-mods").style.display = "none";
@@ -95,14 +105,6 @@ function syncInstance(id) {
         document.getElementById("local-appearance").style.display = "none";
         document.getElementById("check").style.display = "inherit";
         document.getElementById("folder").onclick = function () {};
-    } else {
-        document.getElementById("check").style.display = "none";
-        document.getElementById("content").style.display = "inherit";
-        document.getElementById("open-instance").style.display = "inherit";
-        document.getElementById("open-mods").style.display = "inherit";
-        document.getElementById("local-settings").style.display = "inherit";
-        document.getElementById("local-appearance").style.display = "inherit";
-        document.getElementById("folder").onclick = function () { callJavaMethod("button.folder."+id); };
     }
 
     document.getElementById("configure-memory").onclick = function () { callJavaMethod("button.settings."+id); };
@@ -110,6 +112,15 @@ function syncInstance(id) {
 
     highlight(id);
     callJavaMethod("button.instance." + id);
+}
+
+function makeEditable(id) {
+    document.getElementById("content").style.display = "inherit";
+    document.getElementById("open-instance").style.display = "inherit";
+    document.getElementById("open-mods").style.display = "inherit";
+    document.getElementById("local-settings").style.display = "inherit";
+    document.getElementById("local-appearance").style.display = "inherit";
+    document.getElementById("folder").onclick = function () { callJavaMethod("button.folder."+id); };
 }
 
 function syncTitle(name,png) {
