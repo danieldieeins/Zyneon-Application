@@ -18,7 +18,7 @@ body {
     text-align: center;
     white-space: nowrap;
     background: var(--background4);
-    box-shadow: 0 0.2rem 0.4rem #000;
+    box-shadow: 0 0.2rem 0.4rem var(--background-accent);
 }
 
 .content .flex .card:hover {

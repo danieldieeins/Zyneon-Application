@@ -54,7 +54,7 @@
 #hublayer .notifications:hover {
     transition: all 0.25s ease;
     background: #00000060;
-    box-shadow: 0 0 0.8rem #000000;
+    box-shadow: 0 0 0.4rem var(--background-accent);
     pointer-events: auto;
 }
 
@@ -151,7 +151,7 @@
 }
 
 body {
-    background: black;
+    background: var(--background-accent);
     overflow: hidden;
 }
 
@@ -168,7 +168,7 @@ body {
     overflow: hidden;
     flex-shrink: 0;
     position: relative;
-    box-shadow: 0 0 0.8rem #000;
+    box-shadow: 0 0 0.4rem var(--background-accent);
     background: var(--background-accent);
     transition: 0.5s;
     padding: 1rem;
@@ -177,6 +177,7 @@ body {
 
 .menu#main {
     z-index: 100;
+    box-shadow: none !important;
 }
 
 .menu.active {
@@ -284,7 +285,7 @@ body {
 
 .menu ul li a .menu-item:hover {
     background: var(--highlight);
-    box-shadow: 0 0 0.8rem var(--highlight);
+    box-shadow: 0 0 0.4rem var(--highlight);
     transition: 0.5s;
     cursor: pointer;
 }
@@ -346,7 +347,7 @@ body {
 .menu ul li a .menu-item.active,.menu-item#selected {
     color: #fff;
     background: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
 }
 
 .menu ul li a .menu-item.active:hover span,i,.menu ul li a .menu-item#selected:hover span,i {
@@ -430,6 +431,7 @@ body {
 }
 
 .menu#submenu {
+    border-top-left-radius: 1.5rem !important;
     overflow-y: scroll;
     z-index: 99;
     background: var(--background2);
@@ -472,7 +474,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 5rem #000;
+    box-shadow: 0 0 5rem var(--background-accent);
     border-radius: 1rem;
 }
 
@@ -491,7 +493,7 @@ body {
     font-size: 1.05rem;
     padding: 0.5rem 0.5rem 0.325rem 0.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 0 0.8rem #000;
+    box-shadow: 0 0 0.4rem var(--background-accent);
     z-index: 5;
     color: var(--color);
     background-color: var(--background-accent);
@@ -502,7 +504,7 @@ body {
     font-size: large;
     color: #fff;
     background-color: var(--accent);
-    box-shadow: 0 0 0.8rem var(--accent);
+    box-shadow: 0 0 0.4rem var(--accent);
     transition: 0.25s;
     z-index: 999;
 }
@@ -525,7 +527,7 @@ body {
 .card {
     border-radius: 0.5rem;
     background: var(--background2);
-    box-shadow: 0 0 0.8rem #000;
+    box-shadow: 0 0 0.4rem var(--background-accent);
     margin-bottom: 1.5rem;
 }
 

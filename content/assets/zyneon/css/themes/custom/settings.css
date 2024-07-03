@@ -28,7 +28,7 @@
 
 .menu-item#exit:hover {
     background: red;
-    box-shadow: 0 0 0.8rem red;
+    box-shadow: 0 0 0.4rem red;
     animation: wiggle 0.1s linear infinite;
 }
 
