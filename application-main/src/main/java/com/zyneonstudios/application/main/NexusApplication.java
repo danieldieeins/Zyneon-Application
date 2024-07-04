@@ -162,6 +162,9 @@ public class NexusApplication {
 
     @SuppressWarnings("unchecked")
     private boolean updateModules() {
+        if(ApplicationConfig.test) {
+            return true;
+        }
         boolean updated = false;
         File modules = new File(ApplicationConfig.getApplicationPath() + "temp/modules/");
         if (modules.exists()) {

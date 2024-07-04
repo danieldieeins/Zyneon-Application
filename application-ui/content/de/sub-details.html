@@ -29,7 +29,7 @@
                     <div class="logo-flex">
                         <img id="dh-logo" alt="logo" src="">
                     </div>
-                    <div class="dh-scroll flex">
+                    <div id="scroll-down" class="dh-scroll flex">
                         <a href="#dh-scroll-anchor">V</a>
                     </div>
                 </div>
@@ -37,34 +37,11 @@
             <div id="dh-scroll-anchor"></div>
             <div class="dh-content">
                 <div class="flex">
-                    <div class="dh-menu">
-                        <div class="card card-disabled">
-                            <h3 style="color: var(--highlight)" id="details-name"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</h3>
-                            <p>ID: <span id="details-id"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                            <p>Typ: <span id="details-type"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                            <p>Version: <span id="details-version"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                            <p id="details-custom"></p>
-                        </div>
-                        <div class="card card-disabled">
-                            <h3 style="color: var(--highlight)">Zusammenfassung</h3>
-                            <p><span id="details-summary"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                        </div>
-                        <div class="card card-disabled">
-                            <h3 style="color: var(--highlight)">Autoren</h3>
-                            <p><span id="details-authors"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                        </div>
-                        <div class="card card-disabled" id="details-custom-card"></div>
-                        <div class="card card-disabled">
-                            <h3 style="color: var(--highlight)">Meta</h3>
-                            <p>Hidden: <span id="details-hidden"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                            <p>Tags: <span id="details-tags"><i class='bx bx-loader-alt bx-spin'></i> Ladevorgang...</span></p>
-                        </div>
-                    </div>
                     <div class="dh-main">
                         <div class="card tabs">
                             <div class="flex">
                                 <h3 id="dh-description-button" onclick="highlight('dh-description')">Beschreibung</h3>
-                                <h3 id="dh-changelog-button" onclick="highlight('dh-changelog')">Änderungen</h3>
+                                <h3 id="dh-changelog-button" onclick="highlight('dh-changelog')">Changelogs</h3>
                                 <h3 id="dh-versions-button" onclick="highlight('dh-versions')">Versionen</h3>
                             </div>
                         </div>
@@ -77,6 +54,30 @@
                         <div class="card card-disabled" id="dh-versions">
 
                         </div>
+                    </div>
+                    <div class="dh-menu">
+                        <div class="card card-disabled">
+                            <div id="dh-thumbnail">
+                                <img alt="resource thumbnail" id="details-thumbnail" src="">
+                            </div>
+                            <h3 style="color: var(--highlight)" id="details-name"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</h3>
+                            <p>ID: <span id="details-id"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                            <p>Typ: <span id="details-type"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                            <p>Version: <span id="details-version"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                        </div>
+                        <div class="card card-disabled">
+                            <h3 style="color: var(--highlight)">Kurzbeschreibung</h3>
+                            <p><span id="details-summary"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                            <p id="details-custom"></p>
+                            <br>
+                            <h3 style="color: var(--highlight)">Autoren</h3>
+                            <p><span id="details-authors"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                            <br>
+                            <h3 style="color: var(--highlight)">Meta</h3>
+                            <p>Versteckt: <span id="details-hidden"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                            <p>Tags: <span id="details-tags"><i class='bx bx-loader-alt bx-spin'></i>Ladevorgang...</span></p>
+                        </div>
+                        <div class="card card-disabled" id="details-custom-card"></div>
                     </div>
                 </div>
             </div>

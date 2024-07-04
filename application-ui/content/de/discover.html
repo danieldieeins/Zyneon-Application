@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-discover.js"></script>
-        <script>searchTerm = "Klicke zum Suchen"; console.log("[CONNECTOR] init.discover"); init();</script>
+        <script>searchTerm = "Klicke zum Suchen"; init();</script>
     </head>
     <body>
         <div class="flex full">
@@ -40,6 +40,10 @@
                         <li onclick="window.location.href = 'library.html';">
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <p>Bibliothek</p>
+                        </li>
+                        <li onclick="window.location.href = 'downloads.html';">
+                            <i class='bx bxs-download'></i>
+                            <p>Downloads</p>
                         </li>
                         <li onclick="window.location.href = 'settings.html';">
                             <i class='bx bxs-cog'></i>
@@ -75,8 +79,8 @@
                         <div class="buttons" id="search-buttons">
                             <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
                             <label>
-                                <select id="search-type-select">
-                                    <option value="modules">App-Module</option>
+                                <select id="search-type-select" onchange="location.href = 'discover.html?moduleId='+document.getElementById('search-type-select').value+'&l=search';">
+                                    <option value="-1" id="add-module-option">App-Module</option>
                                 </select>
                             </label>
                         </div>

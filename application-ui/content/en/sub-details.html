@@ -29,7 +29,7 @@
                     <div class="logo-flex">
                         <img id="dh-logo" alt="logo" src="">
                     </div>
-                    <div class="dh-scroll flex">
+                    <div id="scroll-down" class="dh-scroll flex">
                         <a href="#dh-scroll-anchor">V</a>
                     </div>
                 </div>
@@ -37,6 +37,24 @@
             <div id="dh-scroll-anchor"></div>
             <div class="dh-content">
                 <div class="flex">
+                    <div class="dh-main">
+                        <div class="card tabs">
+                            <div class="flex">
+                                <h3 id="dh-description-button" onclick="highlight('dh-description')">Description</h3>
+                                <h3 id="dh-changelog-button" onclick="highlight('dh-changelog')">Changelog</h3>
+                                <h3 id="dh-versions-button" onclick="highlight('dh-versions')">Versions</h3>
+                            </div>
+                        </div>
+                        <div class="card card-disabled" id="dh-description">
+
+                        </div>
+                        <div class="card card-disabled" id="dh-changelog">
+
+                        </div>
+                        <div class="card card-disabled" id="dh-versions">
+
+                        </div>
+                    </div>
                     <div class="dh-menu">
                         <div class="card card-disabled">
                             <div id="dh-thumbnail">
@@ -60,24 +78,6 @@
                             <p>Tags: <span id="details-tags"><i class='bx bx-loader-alt bx-spin'></i> Loading</span></p>
                         </div>
                         <div class="card card-disabled" id="details-custom-card"></div>
-                    </div>
-                    <div class="dh-main">
-                        <div class="card tabs">
-                            <div class="flex">
-                                <h3 id="dh-description-button" onclick="highlight('dh-description')">Description</h3>
-                                <h3 id="dh-changelog-button" onclick="highlight('dh-changelog')">Changelog</h3>
-                                <h3 id="dh-versions-button" onclick="highlight('dh-versions')">Versions</h3>
-                            </div>
-                        </div>
-                        <div class="card card-disabled" id="dh-description">
-
-                        </div>
-                        <div class="card card-disabled" id="dh-changelog">
-
-                        </div>
-                        <div class="card card-disabled" id="dh-versions">
-
-                        </div>
                     </div>
                 </div>
             </div>

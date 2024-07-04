@@ -6,7 +6,6 @@ import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
 import com.zyneonstudios.application.modules.search.ModuleSearch;
 import com.zyneonstudios.nexus.modules.ReadableModule;
-import live.nerotv.shademebaby.file.OnlineConfig;
 
 import java.awt.*;
 import java.net.URI;
@@ -235,9 +234,8 @@ public class FrameConnector {
         } else if(request.startsWith("details.")) {
             request = request.replaceFirst("details.","");
             if(request.startsWith("module.")) {
-                OnlineConfig module = new OnlineConfig(URLDecoder.decode(request.replaceFirst("module.",""),StandardCharsets.UTF_8));
-
-                frame.executeJavaScript("enableOverlay(\""+initDetails(module.getString("module.info.name"),module.getString("module.meta.id"),"Application module",module.getString("module.info.version"),module.getString("module.info.summary"),module.getString("module.info.authors"),module.getBool("module.meta.isHidden"),module.get("module.meta.tags").toString(),module.getString("module.meta.description"),module.get("module.meta.changelogs").toString(),module.get("module.meta.versions").toString(),module.getString("module.style.info"),module.getString("module.style.card"),module.getString("module.resources.background"),module.getString("module.resources.icon"),module.getString("module.resources.logo"),module.getString("module.resources.thumbnail"))+"\");");
+                ReadableModule module = new ReadableModule(URLDecoder.decode(request.replaceFirst("module.",""),StandardCharsets.UTF_8));
+                frame.executeJavaScript("enableOverlay(\""+initDetails(module.getName(),module.getId(),"Application module",module.getVersion(),module.getSummary(),module.getAuthor(),module.isHidden(),module.getTagString(),module.getDescription(),module.getChangelogs().toString(),module.getVersions().toString(),module.getInfoText(),module.getInfoCard(),module.getBackgroundUrl(),module.getIconUrl(),module.getLogoUrl(),module.getThumbnailUrl())+"\");");
             }
         }
     }

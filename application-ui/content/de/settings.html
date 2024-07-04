@@ -41,6 +41,10 @@
                             <i class='bx bxs-objects-horizontal-left'></i>
                             <p>Bibliothek</p>
                         </li>
+                        <li onclick="window.location.href = 'downloads.html';">
+                            <i class='bx bxs-download'></i>
+                            <p>Downloads</p>
+                        </li>
                         <li class="highlighted">
                             <i class='bx bxs-cog'></i>
                             <p>Einstellungen</p>
@@ -88,16 +92,16 @@
                                 </li>
                                 <li id="settings-about-button" onclick="setContent('settings-about'); connector('sync.settings.about');">
                                     <i class='bx bx-info-circle'></i>
-                                    <p>Über NEXUS App</p>
+                                    <p>Über die NEXUS App</p>
                                 </li>
                             </ul>
-                            <div class="settings-modules-section" id="settings-modules-section">
-                                <h3>Module</h3>
+                            <div class="settings-modules-section" id="settings-group-template">
+                                <h3>Gruppentitel</h3>
                                 <ul>
                                     <li id="settings-module-template">
                                         <i></i>
                                         <img alt="settings menu entry icon" src="">
-                                        <p>Lade Moduleintrag...</p>
+                                        <p>Gruppeneintrag...</p>
                                     </li>
                                 </ul>
                                 <script>connector('init.settings.modules');</script>
@@ -106,7 +110,7 @@
                             <ul>
                                 <li onclick="location.href = 'firstrun.html?back=true'">
                                     <i class='bx bxs-dashboard'></i>
-                                    <p>Setup wiederholen</p>
+                                    <p>App-Setup wiederholen</p>
                                 </li>
                                 <li onclick="connector('sync.refresh')">
                                     <i class='bx bx-refresh'></i>
@@ -118,7 +122,7 @@
                                 </li>
                                 <li onclick="connector('sync.exit')" class="danger">
                                     <i class='bx bx-exit'></i>
-                                    <p>App schließen</p>
+                                    <p>App beenden</p>
                                 </li>
                             </ul>
                         </div>
@@ -130,7 +134,7 @@
                         <div class="card settings-content-card card-disabled">
                             <div id="settings-general">
                                 <div class="group" id="settings-general-startup">
-                                    <h4>Beim Start</h4>
+                                    <h4>Beim Starten</h4>
                                     <h3>
                                         Startseite
                                         <span class="select">
@@ -138,6 +142,7 @@
                                                 <select id="general-settings-start-page" onchange="syncStartPage();">
                                                     <option value="discover.html">Entdecken</option>
                                                     <option value="library.html">Bibliothek</option>
+                                                    <option value="downloads.html">Downloads</option>
                                                     <option value="settings.html">Einstellungen</option>
                                                 </select>
                                             </label>
@@ -178,8 +183,8 @@
                                             <label>
                                                 <select id="appearance-settings-theme" onchange="syncTheme();">
                                                     <option value="automatic">Standard: System</option>
-                                                    <option value="../assets/cronos/css/app-colors-dark.css">Standard: Dark</option>
-                                                    <option value="../assets/cronos/css/app-colors-light.css">Standard: Light</option>
+                                                    <option value="../assets/cronos/css/app-colors-dark.css">Standard: Dunkel</option>
+                                                    <option value="../assets/cronos/css/app-colors-light.css">Standard: Hell</option>
                                                     <option value="../assets/application/css/app-colors-oled.css">Standard: OLED (BETA)</option>
                                                     <option value="../assets/application/css/app-colors-zyneon.css">Standard: Zyneon</option>
                                                 </select><script>document.getElementById("appearance-settings-theme").value = colors;</script>
@@ -192,13 +197,13 @@
                                             <label>
                                                 <select id="appearance-settings-language" onchange="syncLanguage();">
                                                     <option value="de">Deutsch (German)</option>
-                                                    <option value="en">English (English)</option>
+                                                    <option value="en">Englisch (English)</option>
                                                 </select>
                                             </label>
                                         </span>
                                     </h3>
                                     <h3 id="linux-settings-custom-frame">
-                                        Optimiertes Linux-Fenster verwenden
+                                        Spezialfenster für Linux verwenden
                                         <span class="checkbox">
                                             <label>
                                                 <input type="checkbox" id="linux-settings-enable-custom-frame" onclick="toggleLinuxFrame();">
