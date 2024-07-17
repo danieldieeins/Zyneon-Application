@@ -15,6 +15,7 @@ import live.nerotv.shademebaby.utils.GsonUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.security.CodeSource;
@@ -179,12 +180,8 @@ public class NexusApplication {
                     disabledIds = (ArrayList<String>)ApplicationConfig.getSettings().get("settings.modules.disabledIds");
                 }
 
-                JsonObject mcJson = GsonUtil.getObject("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/nexus-minecraft-module.json").getAsJsonObject("module");
-                String mcId = mcJson.getAsJsonObject("meta").get("id").getAsString();
-                if(!disabledIds.contains(mcId)) {
-                    Download mcDownload = new Download(mcId+".jar",new URL(mcJson.getAsJsonObject("meta").get("download").getAsString()), Path.of(modules.getAbsolutePath()+"/"+mcId+".jar"));
-                    mcDownload.start();
-                }
+                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/nexus-minecraft-module.json",modules,disabledIds);
+                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/zyneon-star-module.json",modules,disabledIds);
 
                 updated = true;
             } catch (Exception e) {
@@ -217,6 +214,15 @@ public class NexusApplication {
         }
 
         return updated;
+    }
+
+    private void downloadModule(String jsonUrl, File folder, ArrayList<String> blacklist) throws MalformedURLException {
+        JsonObject module = GsonUtil.getObject(jsonUrl).getAsJsonObject("module");
+        String id = module.getAsJsonObject("meta").get("id").getAsString();
+        if(!blacklist.contains(id)) {
+            Download download = new Download(id+".jar",new URL(module.getAsJsonObject("meta").get("download").getAsString()), Path.of(folder.getAbsolutePath()+"/"+id+".jar"));
+            download.start();
+        }
     }
 
     public void launch() {

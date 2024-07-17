@@ -72,7 +72,14 @@ function addGroup(title,id) {
 }
 
 function addModuleSetting(icon,text,onclick,id,image,group) {
-    const template = document.getElementById("settings-module-template");
+    let template;
+
+    if(group) {
+        template = document.getElementById(group).querySelector("#settings-module-template");
+    } else {
+        template = document.getElementById("settings-module-template");
+    }
+
     const entry = template.cloneNode(true);
     if(!id) {
         id="unidentified";
@@ -113,6 +120,7 @@ function addModuleSetting(icon,text,onclick,id,image,group) {
             connector(onclick);
         };
     }
+
     template.parentNode.insertBefore(entry,template);
 
     if(!document.getElementById("settings-modules-section").classList.contains("active")) {
