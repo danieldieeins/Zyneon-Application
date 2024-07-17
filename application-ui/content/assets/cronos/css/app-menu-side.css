@@ -178,6 +178,22 @@ ul li.title p {
 
 .side-menu.active .menu-panel p {
     display: block;
+
+    a {
+        text-decoration: none;
+        color: var(--foreground2);
+        transition: all 0.25s ease;
+    }
+
+    a:hover {
+        cursor: pointer !important;
+        text-decoration: underline !important;
+        color: var(--accent2) !important;
+    }
+}
+
+.side-menu.active .menu-panel #panel-description {
+    color: var(--foreground2);
 }
 
 .submenu {

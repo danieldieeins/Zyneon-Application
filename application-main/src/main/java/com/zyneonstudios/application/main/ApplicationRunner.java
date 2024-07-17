@@ -129,7 +129,6 @@ public class ApplicationRunner {
             if (!v.equals(version)) {
                 NexusApplication.getLogger().debug("[RUNNER] The application is not up to date!");
                 return true;
-
             }
         }
         return false;

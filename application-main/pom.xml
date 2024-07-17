@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.7.1-beta.2</version>
+    <version>2024.7.1-beta.3</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

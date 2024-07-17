@@ -23,6 +23,7 @@ function initLibrary(skipConnector) {
         }
     }
     console.log("[CONNECTOR] init.library");
+    log(moduleId);
 }
 
 function optionExists(selectId, value) {

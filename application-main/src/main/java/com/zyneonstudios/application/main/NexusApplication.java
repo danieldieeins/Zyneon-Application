@@ -181,7 +181,7 @@ public class NexusApplication {
                 }
 
                 downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/nexus-minecraft-module.json",modules,disabledIds);
-                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/zyneon-star-module.json",modules,disabledIds);
+                //TODO downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/zyneon-star-module.json",modules,disabledIds);
 
                 updated = true;
             } catch (Exception e) {
