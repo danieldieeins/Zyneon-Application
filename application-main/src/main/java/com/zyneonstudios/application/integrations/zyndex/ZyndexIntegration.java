@@ -281,6 +281,16 @@ public class ZyndexIntegration {
                 instance.set("instance.versions.forge", instance.getString("modpack.forge.version"));
             }
 
+            //VERSIONS - QUILT
+            if (instance.get("modpack.quilt") != null) {
+                instance.set("instance.versions.quilt", instance.getString("modpack.quilt"));
+            }
+
+            //VERSIONS - NEOFORGE
+            if (instance.get("modpack.neoforge") != null) {
+                instance.set("instance.versions.neoforge", instance.getString("modpack.neoforge"));
+            }
+
             //VERSIONS - GAME
             instance.set("instance.versions.minecraft", instance.getString("modpack.minecraft"));
 

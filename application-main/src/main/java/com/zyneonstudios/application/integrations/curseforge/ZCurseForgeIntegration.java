@@ -168,6 +168,14 @@ public class ZCurseForgeIntegration extends CurseForgeIntegration {
                             modloader = "Fabric";
                             mlversion = id.replace("fabric-","");
                             instance.set("modpack.fabric",mlversion);
+                        } else if(id.startsWith("quilt-")) {
+                            modloader = "Quilt";
+                            mlversion = id.replace("quilt-","");
+                            instance.set("modpack.quilt",mlversion);
+                        } else if(id.startsWith("neoforge-")) {
+                            modloader = "NeoForge";
+                            mlversion = id.replace("neoforge-","");
+                            instance.set("modpack.neoforge",mlversion);
                         }
                     }
                 }

@@ -100,6 +100,14 @@ public class ZModrinthIntegration extends ModrinthIntegration {
                     modloader = "Fabric";
                     mlversion = modrinth.getString("dependencies.fabric-loader");
                     instance.set("modpack.fabric",mlversion);
+                } else if(modrinth.getString("dependencies.neoforge")!=null) {
+                    modloader = "NeoForge";
+                    mlversion = modrinth.getString("dependencies.neoforge");
+                    instance.set("modpack.neoforge",mlversion);
+                } else if(modrinth.getString("dependencies.quilt-loader")!=null) {
+                    modloader = "Quilt";
+                    mlversion = modrinth.getString("dependencies.quilt-loader");
+                    instance.set("modpack.quilt",mlversion);
                 }
                 logger.log("[MODRINTH] (INTEGRATION) Found "+modloader+" ("+mlversion+") for Minecraft "+minecraft+"!");
                 instance.set("modpack.minecraft",minecraft);
