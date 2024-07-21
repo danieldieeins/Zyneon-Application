@@ -1,6 +1,7 @@
 package com.zyneonstudios.application.main;
 
 import com.zyneonstudios.Main;
+import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
 
@@ -17,7 +18,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public record ApplicationConfig(String[] args) {
+public record ApplicationConfig(String[] args, NexusApplication app) {
 
     public static String language = "en";
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
@@ -31,8 +32,12 @@ public record ApplicationConfig(String[] args) {
     private static String os = null;
     private static Config updateConfig = null;
     private static String[] arguments = null;
+    private static boolean driveAccess = false;
+    private static NexusApplication application = null;
 
-    public ApplicationConfig(String[] args) {
+    public ApplicationConfig(String[] args, NexusApplication app) {
+        this.app = app;
+        application = app;
         this.args = args;
         arguments = this.args;
         for (String arg : args) {
@@ -80,6 +85,19 @@ public record ApplicationConfig(String[] args) {
         if(getSettings().get("settings.theme")!=null) {
             theme = getSettings().getString("settings.theme");
         }
+    }
+
+    public static boolean hasDriveAccess() {
+        return driveAccess;
+    }
+
+    public static void enableDriveAccess() {
+        ((ApplicationFrame)application.getFrame()).executeJavaScript("document.getElementById('drive-button').style.display = 'flex';");
+        driveAccess = true;
+    }
+
+    public static void disableDriveAccess() {
+        driveAccess = false;
     }
 
     public static String[] getArguments() {

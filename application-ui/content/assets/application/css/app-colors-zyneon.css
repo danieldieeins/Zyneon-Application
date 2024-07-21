@@ -25,6 +25,9 @@
     --highlight: #ffffff;
     --accent: #8732ec;
     --accent2: #a458ff;
+
+    --active: #46e340;
+    --inactive: #ff5858;
 }
 
 body {

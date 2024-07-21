@@ -49,6 +49,10 @@
                             <i class='bx bxs-cog'></i>
                             <p>Settings</p>
                         </li>
+                        <li id="drive-button" onclick="connector('load.drive')">
+                            <i class='bx bxs-server'></i>
+                            <p>Drive</p>
+                        </li>
                         <li id="side-menu-item">
                             <img class="invisible" alt="button icon" src="">
                             <i class='bx bx-loader-circle bx-spin'></i>
@@ -99,7 +103,29 @@
                     <div class="flex search-flex">
                         <div class="card card-disabled">
                             <div id="search-filter">
+                                <div class="filter-group" id="filter-group-template">
+                                    <h4></h4>
+                                    <div class="filter-toggle" id="toggle-template">
+                                        <div class="flex">
+                                            <p></p>
+                                            <div class="toggle-slider">
+                                                <div class="slider">
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="filter-select" id="select-template">
+                                        <div class="flex">
+                                            <label>
+                                                <select>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="group-bottom"></div>
+                                </div>
+                                <br>
                             </div>
                         </div>
                         <div id="search-content">

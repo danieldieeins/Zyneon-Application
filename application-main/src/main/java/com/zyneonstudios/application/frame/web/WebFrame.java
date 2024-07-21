@@ -12,6 +12,10 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
+import org.cef.callback.CefBeforeDownloadCallback;
+import org.cef.callback.CefDownloadItem;
+import org.cef.callback.CefDownloadItemCallback;
+import org.cef.handler.CefDownloadHandler;
 import org.cef.handler.CefFocusHandlerAdapter;
 
 import javax.imageio.ImageIO;
@@ -21,6 +25,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
@@ -81,7 +86,23 @@ public class WebFrame extends JFrame {
         builder.install();
         builder.getCefSettings().windowless_rendering_enabled = false;
         app = builder.build();
+
         client = app.createClient();
+        client.addDownloadHandler(new CefDownloadHandler() {
+            @Override
+            public void onBeforeDownload(CefBrowser browser, CefDownloadItem item, String sourceURL, CefBeforeDownloadCallback callback) {
+                if(Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(item.getURL()));
+                    } catch (Exception ignore) {}
+                }
+            }
+
+            @Override
+            public void onDownloadUpdated(CefBrowser cefBrowser, CefDownloadItem cefDownloadItem, CefDownloadItemCallback cefDownloadItemCallback) {
+                // Downloadfortschrittsaktualisierungen behandeln (optional)
+            }
+        });
         CefMessageRouter messageRouter = CefMessageRouter.create();
         if(client==null) {
             NexusApplication.getLogger().error("[WEBFRAME] Couldn't initialize WebFrame: CefClient client can't be null!");

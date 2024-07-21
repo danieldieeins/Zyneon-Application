@@ -177,8 +177,16 @@
     margin: 5rem 0.5rem 0.5rem 0.5rem;
     width: 15rem;
     max-width: 15rem;
-    height: calc(100% - 7.75rem);
-    max-height: calc(100% - 7.75rem);
+    height: calc(100% - 6.75rem);
+    max-height: calc(100% - 6.75rem);
+    padding: 0.5rem;
+    overflow: hidden;
+
+    .search-filter {
+        position: relative;
+        overflow-y: auto;
+        height: calc(100% + 0.5rem);
+    }
 }
 
 .discover-content #discover-search .search-flex #search-content {
@@ -198,5 +206,119 @@
         width: 100%;
         height: 1.5rem;
         background: linear-gradient(to top, var(--background4), transparent);
+    }
+}
+
+#filter-group-template {
+    display: none;
+}
+
+.filter-group {
+    transition: all 0.25s ease;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+
+    #select-template, #toggle-template {
+        display: none;
+    }
+}
+
+.filter-toggle {
+    margin-top: 0.4rem;
+
+    .toggle-slider {
+        transition: all 0.25s ease;
+        position: relative;
+        margin-left: 1rem;
+        width: 3rem;
+        height: 1.5rem;
+        border-radius: 0.75rem;
+        left: -0.575rem;
+
+        background: var(--background);
+
+        .slider {
+            transition: all 0.25s ease;
+            position: absolute;
+            height: 1.1rem;
+            width: 1.1rem;
+            margin: 0.2rem;
+            border-radius: 0.55rem;
+            background: var(--inactive);
+        }
+
+        .slider.active {
+            right: 0.025rem;
+            background: var(--active);
+        }
+    }
+
+    .toggle-slider:hover {
+        cursor: pointer;
+        background: var(--background3) !important;
+    }
+
+    .toggle-slider.disabled {
+        background: var(--background) !important;
+        cursor: not-allowed;
+
+        .slider {
+            background: var(--foreground3);
+        }
+    }
+}
+
+.filter-toggle.max {
+
+    .toggle-slider {
+        position: absolute !important;
+        left: 9.9rem;
+    }
+}
+
+.filter-select {
+    position: relative;
+    overflow: hidden;
+
+    select {
+        transition: all 0.25s ease;
+        background: var(--background);
+        color: var(--foreground);
+        padding: 0.4rem 0.35rem 0.45rem 0.35rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        text-overflow: ellipsis;
+        position: relative; width: 100%;
+    }
+
+    select:hover {
+        cursor: pointer;
+        background: var(--background3) !important;
+    }
+
+    select:disabled {
+        background: var(--background) !important;
+        cursor: not-allowed;
+        color: var(--foreground3);
+    }
+}
+
+.search-filter {
+    h4 {
+        font-family: MPLUS1p-Bold, sans-serif;
+        font-size: 1rem;
+        margin: -0.2rem 0 0.25rem 0;
+    }
+}
+
+.filter-group:hover {
+    background: var(--background);
+
+    .toggle-slider {
+        background: var(--background2) !important;
+    }
+
+    select {
+        background: var(--background2) !important;
     }
 }

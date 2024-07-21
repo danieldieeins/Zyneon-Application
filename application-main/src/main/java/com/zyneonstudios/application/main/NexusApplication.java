@@ -31,13 +31,14 @@ public class NexusApplication {
     private final ApplicationRunner runner;
     private final DownloadManager downloadManager;
 
-    public NexusApplication() {
-        moduleLoader = new ModuleLoader(this);
-        logger.log("[APP] Updated application ui: "+update());
+    public NexusApplication(String[] args) {
         try {
             FlatDarkLaf.setup();
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception ignore) {}
+        new ApplicationConfig(args,this);
+        moduleLoader = new ModuleLoader(this);
+        logger.log("[APP] Updated application ui: "+update());
         boolean disableCustomFrame = false;
         if(ApplicationConfig.getSettings().get("settings.linux.customFrame")!=null) {
             try {

@@ -38,6 +38,8 @@ public class FrameConnector {
             open(request.replaceFirst("open.",""));
         } else if(request.startsWith("init.")) {
             init(request.replace("init.", ""));
+        } else if(request.startsWith("load.")) {
+            load(request.replace("load.", ""));
         }
         for(ApplicationModule module:NexusApplication.getModuleLoader().getApplicationModules()) {
             module.getConnector().resolveFrameRequest(request);
@@ -56,6 +58,21 @@ public class FrameConnector {
                     desktop.browse(new URI(request));
                 } catch (Exception ignore) {}
             }
+        }
+    }
+
+    private void load(String request) {
+        switch (request) {
+            case "drive" ->
+                    frame.getBrowser().loadURL("https://drive.zyneonstudios.com/app/?theme=" + ApplicationConfig.theme + "&language=" + ApplicationConfig.language);
+            case "discover" ->
+                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/discover.html");
+            case "downloads" ->
+                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/downloads.html");
+            case "library" ->
+                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/library.html");
+            case "settings" ->
+                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/settings.html");
         }
     }
 
@@ -79,6 +96,9 @@ public class FrameConnector {
 
     private void sync(String request) {
         if(request.startsWith("title.")) {
+            if(ApplicationConfig.hasDriveAccess()) {
+                frame.executeJavaScript("document.getElementById('drive-button').style.display = 'flex';");
+            }
             String[] request_ = request.replace("title.","").split("-.-",2);
             Color background;
             Color foreground;

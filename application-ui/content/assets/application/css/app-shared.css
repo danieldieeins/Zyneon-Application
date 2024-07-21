@@ -76,7 +76,7 @@ li:hover {
     margin-bottom: 1rem;
 }
 
-#menu-panel {
+#menu-panel, #drive-button {
     display: none;
 }
 

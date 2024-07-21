@@ -141,6 +141,86 @@ function addResult(id,img,title,authors,description,meta,actions,location,connec
     }
 }
 
+function addFilterGroup(id,name) {
+    if(id&&name) {
+        const template = document.getElementById("filter-group-template");
+        const group = template.cloneNode(true);
+        group.id = id;
+        group.querySelector("h4").innerText = name;
+        template.parentNode.insertBefore(group,template);
+    }
+}
+
+function addToggleFilter(name,groupId,onclick,fullWidth,disable) {
+    if(groupId&&name) {
+        const template = document.getElementById(groupId).querySelector("#toggle-template");
+        const filter = template.cloneNode(true);
+        filter.id = groupId+"-"+name.replaceAll(" ", "-").replace(/[^a-z0-9-_]/gi, '').toLowerCase();
+        if(name) {
+            filter.querySelector("p").innerText = name;
+        }
+        if(fullWidth===true) {
+            filter.classList.add('max');
+        }
+        const slider = filter.querySelector(".toggle-slider");
+        let disabled = false;
+        if(onclick) {
+            if(typeof onclick === 'function') {
+                slider.onclick = onclick;
+            } else if(typeof onclick === "string") {
+                slider.onclick = function () {
+                    const sliderValue = slider.querySelector(".slider").classList;
+                    sliderValue.toggle("active");
+                    connector(onclick+"."+slider.querySelector(".slider").classList.contains("active"));
+                }
+            } else {
+                disabled = true;
+            }
+        } else {
+            disabled = true;
+        }
+        if(disabled||disable===true) {
+            slider.classList.add("disabled");
+            slider.onclick = null;
+        }
+        template.parentNode.insertBefore(filter,template.parentNode.querySelector(".group-bottom"));
+    }
+}
+
+function addSelectFilter(name,groupId,onchange,options,disable) {
+    if(groupId&&name) {
+        const template = document.getElementById(groupId).querySelector("#select-template");
+        const filter = template.cloneNode(true);
+        filter.id = groupId+"-"+name.replaceAll(" ", "-").replace(/[^a-z0-9-_]/gi, '').toLowerCase();
+        filter.classList.add("max");
+        const select = filter.querySelector("select");
+        select.id = filter.id+"-select";
+        let disabled = false;
+        if(onchange) {
+            if(typeof onchange === 'function') {
+                select.onchange = onchange;
+            } else if(typeof onchange === 'string') {
+                select.onchange = function () {
+                    connector(onchange+"."+select.value);
+                }
+            } else {
+                disabled = true;
+            }
+        } else {
+            disabled = true;
+        }
+        if(options) {
+            select.innerHTML = options;
+        } else {
+            disabled = true;
+        }
+        if(disabled||disable===true) {
+            select.disabled = true;
+        }
+        template.parentNode.insertBefore(filter,template.parentNode.querySelector(".group-bottom"));
+    }
+}
+
 addEventListener("DOMContentLoaded", () => {
     initDiscover();
 
