@@ -15,7 +15,7 @@
         <script src="../assets/cronos/javascript/app-menu.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-settings.js"></script>
-        <script>init();</script>
+        <script>init(); connector("sync.settings.init");</script>
     </head>
     <body>
         <div class="flex full">
@@ -220,19 +220,31 @@
                                         </span>
                                     </h3>
                                 </div>
+                                <div class="group template" id="general-group-template">
+                                    <h4>Gruppentitel Vorlage</h4>
+                                </div>
                             </div>
                             <div id="settings-global">
-
+                                <div class="group template" id="global-group-template">
+                                    <h4>Gruppentitel Vorlage</h4>
+                                </div>
                             </div>
                             <div id="settings-indexes">
-
+                                <div class="group template" id="indexes-group-template">
+                                    <h4>Gruppentitel Vorlage</h4>
+                                </div>
                             </div>
                             <div id="settings-modules">
-
+                                <div class="group template" id="modules-group-template">
+                                    <h4>Gruppentitel Vorlage</h4>
+                                </div>
                             </div>
                             <div id="settings-about">
                                 <div class="card">
                                     <span id="settings-global-application-version">${application.version}</span>
+                                </div>
+                                <div class="group template" id="about-group-template">
+                                    <h4>Gruppentitel Vorlage</h4>
                                 </div>
                             </div>
                             <!--TODO: Add other setting pages-->

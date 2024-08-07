@@ -193,3 +193,41 @@ function initSettings() {
         setContent(id,hid);
     }
 }
+
+function addSettingsGroup(title,page,id) {
+    if(title&&page) {
+        const template = document.getElementById(page+"-group-template");
+        const group = template.cloneNode(true);
+        if(id) {
+            group.id = id;
+        } else {
+            group.id = (page+"-"+title).replaceAll(" ", "-").replace(/[^a-z0-9-_]/gi, '').toLowerCase();
+        }
+        group.querySelector("h4").innerText = title;
+        group.classList.remove("template");
+        template.parentNode.insertBefore(group,template);
+    }
+}
+
+function addSelectToGroup(title,group,id,options,onchangeRequest) {
+    if(title&&group) {
+        const g = document.getElementById(group);
+        let i = (group+"-"+title).replaceAll(" ", "-").replace(/[^a-z0-9-_]/gi, '').toLowerCase();
+        if(id) {
+            i = id;
+        }
+        g.innerHTML += "<h3>"+title+" <span class='select'><label><select id='"+i+"'></select></label></span></h3>";
+        if(options) {
+            document.getElementById(i).innerHTML = options;
+        }
+        if(onchangeRequest) {
+            document.getElementById(i).onchange = function () {
+                connector(onchangeRequest+"."+document.getElementById(i).value);
+            }
+        } else {
+            document.getElementById(i).onchange = function () {
+                connector(i+"."+document.getElementById(i).value);
+            }
+        }
+    }
+}

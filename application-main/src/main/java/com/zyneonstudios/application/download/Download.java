@@ -54,7 +54,7 @@ public class Download {
     public boolean start() {
         if(state == DownloadManager.DownloadState.WAITING) {
             state = DownloadManager.DownloadState.RUNNING;
-            startTime = Instant.now(); // Record the start time
+            startTime = Instant.now();
             Instant lastTimeCheck = startTime;
 
             try (BufferedInputStream in = new BufferedInputStream(url.openStream());
@@ -185,7 +185,6 @@ public class Download {
         this.percent = percent;
         if(percent>100) {
             setFinished(true);
-            percent = 100;
         } else if(percent<0) {
             percent = 0;
         }

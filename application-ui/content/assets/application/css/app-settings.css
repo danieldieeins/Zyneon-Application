@@ -30,6 +30,10 @@
     height: calc(100% - 2rem);
     max-height: calc(100% - 2rem);
     overflow: hidden;
+
+    .group.template {
+        display: none;
+    }
 }
 
 /*Initializing default card width*/
