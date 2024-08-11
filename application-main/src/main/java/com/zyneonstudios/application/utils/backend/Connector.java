@@ -85,6 +85,7 @@ public class Connector {
 
     public void resolveRequest(String request) {
         //frame.sendNotification("Resolving...","(BackendConnector) resolving "+request+"...","",false);
+        frame.executeJavaScript("checkForWeb();");
         if (request.equals("button.copy.uuid")) {
             StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -268,7 +269,6 @@ public class Connector {
                 syncSettings("global");
             }
         } else if (request.contains("sync.instances.list")) {
-            SwingUtilities.invokeLater(() -> {
                 Application.getInstancePath();
                 String filePath = Main.getDirectoryPath() + "libs/zyneon/instances.json";
                 Gson gson = new Gson();
@@ -276,22 +276,23 @@ public class Connector {
                     JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
                     JsonArray instances = jsonObject.getAsJsonArray("instances");
                     for (JsonElement element : instances) {
-                        JsonObject instance = element.getAsJsonObject();
-                        String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
-                        if (new File(Application.getURLBase() + png).exists()) {
-                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "',true);");
-                        } else if (instance.get("icon") != null) {
-                            png = instance.get("icon").toString().replace("\"", "");
-                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "',true);");
-                        } else {
-                            frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",true);");
-                        }
+                        CompletableFuture.runAsync(()->{
+                            JsonObject instance = element.getAsJsonObject();
+                            String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
+                            if (new File(Application.getURLBase() + png).exists()) {
+                                frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "',true);");
+                            } else if (instance.get("icon") != null) {
+                                png = instance.get("icon").toString().replace("\"", "");
+                                frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",'" + png + "',true);");
+                            } else {
+                                frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",true);");
+                            }
+                        });
                     }
                 } catch (IOException e) {
                     Main.getLogger().error(e.getMessage());
                 }
                 frame.executeJavaScript("loadTab('" + Application.lastInstance + "');");
-            });
         } else if (request.contains("sync.web")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if (request.contains("sync.start")) {
@@ -349,7 +350,7 @@ public class Connector {
             SwingUtilities.invokeLater(() -> frame.getInstance().dispatchEvent(new WindowEvent(frame.getInstance(), WindowEvent.WINDOW_CLOSING)));
         } else if (request.contains("button.instance.")) {
             String id = request.replace("button.instance.", "").toLowerCase();
-            SwingUtilities.invokeLater(() -> {
+            CompletableFuture.runAsync(() -> {
                 File file = new File(Application.getInstancePath() + "instances/" + id + "/zyneonInstance.json");
                 if (file.exists()) {
                     ReadableInstance instance = new ReadableInstance(file);
@@ -465,7 +466,7 @@ public class Connector {
                 resolveRequest("button.refresh.instances");
             }
         } else if (request.contains("sync.search.")) {
-            request = request.replace("sync.search.","");
+            request = request.replace("sync.search.","").replace("%DOT�",".de");
             String[] request_ = request.split("\\.", 7);
             String source = request_[0];
             String type = request_[1];

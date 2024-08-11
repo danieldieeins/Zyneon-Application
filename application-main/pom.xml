@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.7.1f</version>
+    <version>2024.8</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>fr.flowarg</groupId>
             <artifactId>flowupdater</artifactId>
-            <version>LATEST</version>
+            <version>1.8.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
