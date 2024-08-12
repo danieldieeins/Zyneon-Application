@@ -275,8 +275,8 @@ public class Connector {
                 try (JsonReader reader = new JsonReader(new FileReader(filePath))) {
                     JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
                     JsonArray instances = jsonObject.getAsJsonArray("instances");
-                    for (JsonElement element : instances) {
-                        CompletableFuture.runAsync(()->{
+                    CompletableFuture.runAsync(() -> {
+                        for (JsonElement element : instances) {
                             JsonObject instance = element.getAsJsonObject();
                             String png = "assets/zyneon/images/instances/" + instance.get("id").toString().replace("\"", "") + ".png";
                             if (new File(Application.getURLBase() + png).exists()) {
@@ -287,8 +287,8 @@ public class Connector {
                             } else {
                                 frame.executeJavaScript("addInstanceToList(" + instance.get("id") + "," + instance.get("name") + ",true);");
                             }
-                        });
-                    }
+                        }
+                    });
                 } catch (IOException e) {
                     Main.getLogger().error(e.getMessage());
                 }
