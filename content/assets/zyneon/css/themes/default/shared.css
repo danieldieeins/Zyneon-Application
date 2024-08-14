@@ -3,6 +3,8 @@
     --background2: #101010;
     --background3: #1a1a1a;
     --background4: #080808;
+    --background5: #202020;
+    --background6: #2c2c2c;
     --background-accent: #000;
     --highlight: #fff;
     --color: #fff;
@@ -10,6 +12,8 @@
     --color-dim-less: #ffffff90;
     --inverted: #000;
     --accent: #7f34f8;
+    --border: #303030;
+    --border2: #4a4a4a;
 }
 
 @keyframes wiggle {

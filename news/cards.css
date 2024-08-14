@@ -1,0 +1,16 @@
+.cnt {
+    .card {
+        transition: all 0.25s ease;
+        background: var(--background5) !important;
+        border: 2px solid var(--border) !important;
+
+        * {
+            background: transparent !important;
+        }
+    }
+
+    .card:hover {
+        border-color: var(--border2) !important;
+        background: var(--background6) !important;
+    }
+}

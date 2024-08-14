@@ -132,12 +132,16 @@ function setTheme(newTheme) {
         root.style.setProperty('--background2', '#e0e0e0');
         root.style.setProperty('--background3', '#d3d3d3');
         root.style.setProperty("--background4", "#f6f6f6");
+        root.style.setProperty("--background5", "#cccccc");
+        root.style.setProperty("--background6", "#dddddd");
         root.style.setProperty("--background-accent", "#fff");
         root.style.setProperty("--highlight", "#000");
         root.style.setProperty("--color", "#000");
         root.style.setProperty("--color-dim", "#00000085");
         root.style.setProperty("--color-dim-less", "#00000099");
         root.style.setProperty("--inverted", "#fff");
+        root.style.setProperty("--border", "#ffffff90");
+        root.style.setProperty("--border2", "#ffffff");
         localStorage.setItem('theme', theme);
         callJavaMethod('button.theme.' + theme);
     } else if (newTheme === "default.zyneon") {
@@ -147,7 +151,11 @@ function setTheme(newTheme) {
         root.style.setProperty('--background2', '#0d061c');
         root.style.setProperty('--background3', '#120925');
         root.style.setProperty('--background4', '#060112');
+        root.style.setProperty('--background5', '#100817');
+        root.style.setProperty('--background6', '#1c0d27');
         root.style.setProperty('--background-accent', '#050113');
+        root.style.setProperty("--border", "#2d2237");
+        root.style.setProperty("--border2", "#331a40");
         localStorage.setItem('theme', theme);
         callJavaMethod('button.theme.' + theme);
     } else if (newTheme === "default.dark") {
@@ -156,12 +164,16 @@ function setTheme(newTheme) {
         root.style.setProperty('--background2', '#101010');
         root.style.setProperty('--background3', '#1a1a1a');
         root.style.setProperty('--background4', '#080808');
+        root.style.setProperty('--background5', '#202020');
+        root.style.setProperty('--background6', '#2c2c2c');
         root.style.setProperty('--background-accent', '#000');
         root.style.setProperty("--highlight", "#fff");
         root.style.setProperty("--color", "#fff");
         root.style.setProperty("--color-dim", "#ffffff60");
         root.style.setProperty("--color-dim-less", "#ffffff90");
         root.style.setProperty("--inverted", "#000");
+        root.style.setProperty("--border", "#303030");
+        root.style.setProperty("--border2", "#4a4a4a");
         localStorage.setItem('theme', theme);
         callJavaMethod('button.theme.' + theme);
     } else if (newTheme === "custom") {

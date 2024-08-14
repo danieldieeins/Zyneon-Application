@@ -7,6 +7,7 @@ addEventListener("DOMContentLoaded", () => {
         if(urlParams.get("type")==="new") {
             const newContent = document.getElementById("new-changelog");
             newContent.classList.add("active");
+            document.getElementById("card-css").href = "cards.css";
             document.getElementById("neco").classList.add("active");
             document.getElementById("neme").classList.add("active");
             appType = "new";
