@@ -176,6 +176,10 @@ ul li.title p {
     display: none;
 }
 
+.side-menu .menu-panel p.active {
+    left: 1rem !important;
+}
+
 .side-menu.active .menu-panel p {
     display: block;
 

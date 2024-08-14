@@ -1,7 +1,7 @@
 package com.zyneonstudios.application.frame.web;
 
 import com.zyneonstudios.application.frame.FrameConnector;
-import com.zyneonstudios.application.main.ApplicationConfig;
+import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
@@ -40,7 +40,8 @@ public class ApplicationFrame extends WebFrame {
     }
 
     public void setTitlebar(String title, Color background, Color foreground) {
-        setTitle("Zyneon Application ("+title+", v"+ApplicationConfig.getApplicationVersion()+", "+ ApplicationConfig.getOS()+")");
+        //setTitle("Zyneon Application ("+title+", v"+ ApplicationStorage.getApplicationVersion()+", "+ ApplicationStorage.getOS()+")");
+        setTitle("Zyneon Application");
         setTitleBackground(background);
         setTitleForeground(foreground);
     }
@@ -59,6 +60,6 @@ public class ApplicationFrame extends WebFrame {
     }
 
     public void openCustomPage(String title, String pageId, String url) {
-        getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
+        getBrowser().loadURL(ApplicationStorage.urlBase+ ApplicationStorage.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
     }
 }

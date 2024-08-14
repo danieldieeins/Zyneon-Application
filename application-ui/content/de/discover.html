@@ -76,9 +76,9 @@
                 <div class="card search flex" id="search-card">
                     <div class="search-buttons flex">
                         <div class="buttons" id="discover-buttons">
-                            <h4>Start</h4>
-                            <h4>Neuigkeiten</h4>
-                            <h4>Spiele</h4>
+                            <h4 id="home-button" class="discover-button" onclick="showTab('home')">Start</h4>
+                            <h4 id="news-button" class="discover-button" onclick="showTab('news')">Neuigkeiten</h4>
+                            <h4 id="games-button" class="discover-button" onclick="showTab('games')">Spiele</h4>
                         </div>
                         <div class="buttons" id="search-buttons">
                             <h4 class="danger" id="close-search-button" onclick="closeSearch();">X</h4>
@@ -97,7 +97,61 @@
                     </div>
                 </div>
                 <div id="discover-start">
-
+                    <div id="discover-home" class="discover-tab">
+                        <div class="discover-background"></div>
+                        <div class="discover-tab-content">
+                            <div class="flex home-quick warning">
+                                <div class="card warning">
+                                    <h4>Warnung: Dies ist eine Testversion der Zyneon Studios NEXUS App. Es kann zu Fehlern kommen!</h4>
+                                </div>
+                            </div>
+                            <div class="flex home-quick">
+                                <div class="app-logo">
+                                    <img alt="The Zyneon Studios NEXUS App logo" src="../assets/application/images/logos/app.png">
+                                </div>
+                                <div class="card quick-links">
+                                    <h4>Verlinkungen</h4>
+                                    <div class="line"></div>
+                                    <div class="links">
+                                        <h3 class="website" onclick="openUrl('https://nexus.zyneonstudios.com');"><i class='bx bx-globe'></i>Webseite</h3>
+                                        <h3 class="discord" onclick="openUrl('https://discord.com/invite/Q2AEWfesZW');"><i class='bx bxl-discord-alt'></i> Discord</h3>
+                                        <h3 class="webapp" onclick="openUrl('https://nexus.zyneonstudios.com/app/beta');"><i class='bx bx-laptop'></i>Web Version</h3>
+                                        <div class="line"></div><br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex home-quick">
+                                <div class="card quick-access">
+                                    <h4>Schnellzugriff</h4>
+                                    <div class="line"></div>
+                                    <div class="links">
+                                        <h3 class="reload" onclick="location.reload();"><i class='bx bx-refresh'></i>App neu laden</h3>
+                                        <h3 class="restart" onclick="connector('sync.restart');"><i class='bx bx-revision'></i>App neu starten</h3>
+                                        <h3 class="fes" onclick="document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = searchTerm;"><i class='bx bxs-bug-alt'></i>Suche zwangs-aktivieren</h3>
+                                        <div class="line"></div><br>
+                                    </div>
+                                </div>
+                                <div class="nexus-logo">
+                                    <img alt="The Zyneon NEXUS logo" src="../assets/application/images/logos/nexus.png">
+                                </div>
+                            </div>
+                            <br><br><br>
+                        </div>
+                    </div>
+                    <div id="discover-news" class="discover-tab">
+                        <div class="discover-background"></div>
+                        <div class="discover-tab-content">
+                            <br><br><br>
+                            Neuigkeiten
+                        </div>
+                    </div>
+                    <div id="discover-games" class="discover-tab">
+                        <div class="discover-background"></div>
+                        <div class="discover-tab-content">
+                            <br><br><br>
+                            Spiele
+                        </div>
+                    </div>
                 </div>
                 <div id="discover-search">
                     <div class="flex search-flex">

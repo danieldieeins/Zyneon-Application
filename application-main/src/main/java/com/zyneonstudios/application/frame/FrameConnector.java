@@ -1,7 +1,7 @@
 package com.zyneonstudios.application.frame;
 
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
-import com.zyneonstudios.application.main.ApplicationConfig;
+import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
 import com.zyneonstudios.application.modules.search.ModuleSearch;
@@ -26,7 +26,7 @@ public class FrameConnector {
     }
 
     public void resolveRequest(String request) {
-        if(ApplicationConfig.test) {
+        if(ApplicationStorage.test) {
             NexusApplication.getLogger().error("[CONNECTOR] (Request-Reader) resolving "+request+"...");
         } else {
             NexusApplication.getLogger().debug("[CONNECTOR] (Request-Reader) resolving "+request+"...");
@@ -64,21 +64,22 @@ public class FrameConnector {
     private void load(String request) {
         switch (request) {
             case "drive" ->
-                    frame.getBrowser().loadURL("https://drive.zyneonstudios.com/app/?theme=" + ApplicationConfig.theme + "&language=" + ApplicationConfig.language);
+                    frame.getBrowser().loadURL("https://drive.zyneonstudios.com/app/?theme=" + ApplicationStorage.theme + "&language=" + ApplicationStorage.language);
             case "discover" ->
-                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/discover.html");
+                    frame.getBrowser().loadURL(ApplicationStorage.urlBase + ApplicationStorage.language + "/discover.html");
             case "downloads" ->
-                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/downloads.html");
+                    frame.getBrowser().loadURL(ApplicationStorage.urlBase + ApplicationStorage.language + "/downloads.html");
             case "library" ->
-                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/library.html");
+                    frame.getBrowser().loadURL(ApplicationStorage.urlBase + ApplicationStorage.language + "/library.html");
             case "settings" ->
-                    frame.getBrowser().loadURL(ApplicationConfig.urlBase + ApplicationConfig.language + "/settings.html");
+                    frame.getBrowser().loadURL(ApplicationStorage.urlBase + ApplicationStorage.language + "/settings.html");
         }
     }
 
     private void init(String request) {
         frame.executeJavaScript("syncDesktop();");
         if(request.equals("discover")) {
+            frame.executeJavaScript("setMenuPanel('','"+ ApplicationStorage.getApplicationVersion()+"','"+ ApplicationStorage.getApplicationName()+"',true);");
             if(frame.getBrowser().getURL().contains("&l=search")) {
                 frame.executeJavaScript("deactivateMenu('menu',true);");
             } else {
@@ -88,7 +89,7 @@ public class FrameConnector {
             frame.executeJavaScript("deactivateMenu('menu',true);");
         }
         if(request.equals("settings")) {
-            frame.executeJavaScript("syncVersion(\""+ApplicationConfig.getApplicationVersion().replace("\"","''")+"\");");
+            frame.executeJavaScript("syncVersion(\""+ ApplicationStorage.getApplicationVersion().replace("\"","''")+"\");");
         } else if(request.equals("downloads")) {
             
         }
@@ -96,7 +97,7 @@ public class FrameConnector {
 
     private void sync(String request) {
         if(request.startsWith("title.")) {
-            if(ApplicationConfig.hasDriveAccess()) {
+            if(ApplicationStorage.hasDriveAccess()) {
                 frame.executeJavaScript("document.getElementById('drive-button').style.display = 'flex';");
             }
             String[] request_ = request.replace("title.","").split("-.-",2);
@@ -126,9 +127,9 @@ public class FrameConnector {
                 background = Color.decode("#0a0310");
                 foreground = Color.white;
             }
-            if(!ApplicationConfig.theme.equalsIgnoreCase(fReq)) {
-                ApplicationConfig.theme = fReq;
-                ApplicationConfig.getSettings().set("settings.theme", ApplicationConfig.theme);
+            if(!ApplicationStorage.theme.equalsIgnoreCase(fReq)) {
+                ApplicationStorage.theme = fReq;
+                ApplicationStorage.getSettings().set("settings.theme", ApplicationStorage.theme);
             }
             String title = request_[1];
             frame.setTitlebar(title,background,foreground);
@@ -136,11 +137,11 @@ public class FrameConnector {
             request = request.replaceFirst("firstrun.","");
             if(request.equals("theme")) {
                 frame.executeJavaScript("initThemeWizard();");
-                if(ApplicationConfig.getOS().startsWith("Linux")) {
+                if(ApplicationStorage.getOS().startsWith("Linux")) {
                     boolean customFrame = true;
-                    if(ApplicationConfig.getSettings().get("settings.linux.customFrame")!=null) {
+                    if(ApplicationStorage.getSettings().get("settings.linux.customFrame")!=null) {
                         try {
-                            customFrame = ApplicationConfig.getSettings().getBool("settings.linux.customFrame");
+                            customFrame = ApplicationStorage.getSettings().getBool("settings.linux.customFrame");
                         } catch (Exception ignore) {}
                     }
                     frame.executeJavaScript("initLinuxWizard('"+customFrame+"');");
@@ -148,16 +149,16 @@ public class FrameConnector {
             } else if(request.startsWith("linuxFrame.")) {
                 request = request.replace("linuxFrame.","");
                 boolean frame = request.equals("on");
-                ApplicationConfig.getSettings().set("settings.linux.customFrame",frame);
-                ApplicationConfig.getSettings().set("cache.restartPage","firstrun.html?theme.colors="+ApplicationConfig.theme+"#linux");
+                ApplicationStorage.getSettings().set("settings.linux.customFrame",frame);
+                ApplicationStorage.getSettings().set("cache.restartPage","firstrun.html?theme.colors="+ ApplicationStorage.theme+"#linux");
                 application.restart(true);
             } else if(request.equals("finished")) {
-                ApplicationConfig.getSettings().set("settings.setupFinished",true);
+                ApplicationStorage.getSettings().set("settings.setupFinished",true);
             }
         } else if(request.equals("exit")) {
             NexusApplication.stop();
         } else if(request.equals("refresh")) {
-            frame.getBrowser().loadURL(ApplicationConfig.urlBase+ApplicationConfig.language+"/"+ApplicationConfig.startPage);
+            frame.getBrowser().loadURL(ApplicationStorage.urlBase+ ApplicationStorage.language+"/"+ ApplicationStorage.startPage);
         } else if(request.equals("restart")) {
             application.restart(false);
         } else if(request.startsWith("settings.")) {
@@ -165,49 +166,49 @@ public class FrameConnector {
         } else if(request.startsWith("autoUpdates.")) {
             request = request.replace("autoUpdates.","");
             boolean update = request.equals("on");
-            ApplicationConfig.getUpdateSettings().set("updater.settings.autoUpdate",update);
+            ApplicationStorage.getUpdateSettings().set("updater.settings.autoUpdate",update);
             frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').checked = "+update+";");
         } else if(request.startsWith("linuxFrame.")) {
             request = request.replace("linuxFrame.","");
             boolean frame = request.equals("on");
-            ApplicationConfig.getSettings().set("settings.linux.customFrame",frame);
-            ApplicationConfig.getSettings().set("cache.restartPage","settings.html");
+            ApplicationStorage.getSettings().set("settings.linux.customFrame",frame);
+            ApplicationStorage.getSettings().set("cache.restartPage","settings.html");
             application.restart(true);
         } else if(request.startsWith("discover.")) {
             syncDiscover(request.replaceFirst("discover.",""));
         } else if(request.startsWith("updateChannel.")) {
             request = request.replace("updateChannel.","");
-            ApplicationConfig.getUpdateSettings().set("updater.settings.updateChannel",request);
+            ApplicationStorage.getUpdateSettings().set("updater.settings.updateChannel",request);
         } else if(request.startsWith("startPage.")) {
             request = request.replaceFirst("startPage.","");
-            ApplicationConfig.startPage = request;
-            ApplicationConfig.getSettings().set("settings.startPage",request);
+            ApplicationStorage.startPage = request;
+            ApplicationStorage.getSettings().set("settings.startPage",request);
         } else if(request.startsWith("language.")) {
             request = request.replaceFirst("language.","");
-            ApplicationConfig.language = request;
-            ApplicationConfig.getSettings().set("settings.language",request);
+            ApplicationStorage.language = request;
+            ApplicationStorage.getSettings().set("settings.language",request);
         }
     }
 
     private void syncSettings(String request) {
         if(request.equals("general")) {
             String channel = "experimental"; boolean autoUpdate = false;
-            if(ApplicationConfig.getUpdateSettings().getBoolean("updater.settings.autoUpdate")!=null) {
-                autoUpdate = ApplicationConfig.getUpdateSettings().getBool("updater.settings.autoUpdate");
+            if(ApplicationStorage.getUpdateSettings().getBoolean("updater.settings.autoUpdate")!=null) {
+                autoUpdate = ApplicationStorage.getUpdateSettings().getBool("updater.settings.autoUpdate");
             }
-            if(ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel")!=null) {
-                channel = ApplicationConfig.getUpdateSettings().getString("updater.settings.updateChannel");
+            if(ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel")!=null) {
+                channel = ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel");
             }
-            if(ApplicationConfig.getOS().startsWith("Linux")) {
+            if(ApplicationStorage.getOS().startsWith("Linux")) {
                 boolean linuxCustomFrame = true;
-                if (ApplicationConfig.getSettings().get("settings.linux.customFrame") != null) {
-                    linuxCustomFrame = ApplicationConfig.getSettings().getBool("settings.linux.customFrame");
+                if (ApplicationStorage.getSettings().get("settings.linux.customFrame") != null) {
+                    linuxCustomFrame = ApplicationStorage.getSettings().getBool("settings.linux.customFrame");
                 }
                 frame.executeJavaScript("document.getElementById('linux-settings-custom-frame').style.display = 'inherit'; linuxFrame = "+linuxCustomFrame+"; document.getElementById('linux-settings-enable-custom-frame').checked = linuxFrame;");
             }
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ApplicationConfig.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ ApplicationStorage.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
         } else if(request.equals("about")) {
-            frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \""+ApplicationConfig.getApplicationVersion()+"\"");
+            frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \""+ ApplicationStorage.getApplicationVersion()+"\"");
         }
     }
 
@@ -262,7 +263,7 @@ public class FrameConnector {
 
     @SuppressWarnings("all")
     public static String initDetails(String name, String id, String type, String version, String summary, String authors, boolean isHidden, String tags, String description, String changelog, String versions, String customInfoHTML, String customInfoCardHTML, String background, String icon, String logo, String thumbnail) {
-        String url = ApplicationConfig.urlBase+ApplicationConfig.language+"/sub-details.html";
+        String url = ApplicationStorage.urlBase+ ApplicationStorage.language+"/sub-details.html";
         if(name!=null) {
             url = url+"?name="+formatForDetails(name);
         }

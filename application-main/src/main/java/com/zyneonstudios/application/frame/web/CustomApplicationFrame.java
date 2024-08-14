@@ -1,6 +1,6 @@
 package com.zyneonstudios.application.frame.web;
 
-import com.zyneonstudios.application.main.ApplicationConfig;
+import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
 
 import javax.swing.*;
@@ -18,7 +18,7 @@ public class CustomApplicationFrame extends ApplicationFrame {
     public CustomApplicationFrame(NexusApplication application, String url, String jcefPath) {
         super(application,url,jcefPath);
         setUndecorated(true);
-        title = "  Zyneon Application (v"+ApplicationConfig.getApplicationVersion()+", "+ApplicationConfig.getOS()+")";
+        title = "  Zyneon Application (v"+ ApplicationStorage.getApplicationVersion()+", "+ ApplicationStorage.getOS()+")";
         JPanel customTitleBar = createCustomTitleBar();
         getContentPane().add(customTitleBar, BorderLayout.NORTH);
         addDragAndDropFunctionality();

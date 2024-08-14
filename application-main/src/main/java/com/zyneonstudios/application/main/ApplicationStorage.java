@@ -4,6 +4,7 @@ import com.zyneonstudios.Main;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import live.nerotv.shademebaby.file.Config;
 import live.nerotv.shademebaby.utils.FileUtil;
+import live.nerotv.shademebaby.utils.StringUtil;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -18,7 +19,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public record ApplicationConfig(String[] args, NexusApplication app) {
+public record ApplicationStorage(String[] args, NexusApplication app) {
 
     public static String language = "en";
     public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
@@ -26,7 +27,8 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
     public static String theme = "automatic";
     public static boolean test = false;
     private static UUID applicationId = UUID.randomUUID();
-    private static String applicationVersion = "unknown";
+    private static String applicationVersion = StringUtil.generateAlphanumericString(6)+"-"+StringUtil.generateAlphanumericString(3);
+    private static String applicationName = "Unofficial NEXUS App";
     private static String applicationPath = null;
     private static Config configuration = null;
     private static String os = null;
@@ -35,11 +37,12 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
     private static boolean driveAccess = false;
     private static NexusApplication application = null;
 
-    public ApplicationConfig(String[] args, NexusApplication app) {
+    public ApplicationStorage(String[] args, NexusApplication app) {
         this.app = app;
         application = app;
         this.args = args;
         arguments = this.args;
+
         for (String arg : args) {
             if(arg.startsWith("--test")) {
                 test = true;
@@ -52,6 +55,17 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
             }
         }
 
+        FileUtil.extractResourceFile("nexus.json",getApplicationPath()+"temp/nexus.json", Main.class);
+        Config properties = new Config(new File(getApplicationPath() + "temp/nexus.json"));
+
+            if (properties.getString("version") != null) {
+                applicationVersion = properties.getString("version");
+            }
+            if (properties.getString("name") != null) {
+                applicationName = properties.getString("name");
+            }
+
+
         if(new File(getApplicationPath() + "temp/").exists()) {
             try {
                 FileUtil.deleteFolder(new File(getApplicationPath() + "temp/"));
@@ -62,9 +76,6 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
         if(new File(getApplicationPath() + "temp/nexus.json").exists()) {
             NexusApplication.getLogger().debug("[CONFIG] Deleted old properties: "+new File(getApplicationPath() + "temp/nexus.json").delete());
         }
-        FileUtil.extractResourceFile("nexus.json",getApplicationPath()+"temp/nexus.json", Main.class);
-        Config properties = new Config(new File(getApplicationPath() + "temp/nexus.json"));
-        applicationVersion = properties.getString("version");
 
         String lang = Locale.getDefault().toLanguageTag();
         if(lang.startsWith("de-")) {
@@ -111,13 +122,13 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
                 appData = System.getenv("LOCALAPPDATA");
-                ApplicationConfig.os = "Windows-"+getArchitecture();
+                ApplicationStorage.os = "Windows-"+getArchitecture();
             } else if (os.contains("mac")) {
                 appData = System.getProperty("user.home") + "/Library/Application Support";
-                ApplicationConfig.os = "macOS-"+getArchitecture();
+                ApplicationStorage.os = "macOS-"+getArchitecture();
             } else {
                 appData = System.getProperty("user.home") + "/.local/share";
-                ApplicationConfig.os = System.getProperty("os.name")+"-"+getArchitecture();
+                ApplicationStorage.os = System.getProperty("os.name")+"-"+getArchitecture();
             }
             Path folderPath = Paths.get(appData, folderName);
             try {
@@ -129,11 +140,11 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
         } else if(os == null) {
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
-                ApplicationConfig.os = "Windows-"+getArchitecture();
+                ApplicationStorage.os = "Windows-"+getArchitecture();
             } else if (os.contains("mac")) {
-                ApplicationConfig.os = "macOS-"+getArchitecture();
+                ApplicationStorage.os = "macOS-"+getArchitecture();
             } else {
-                ApplicationConfig.os = System.getProperty("os.name")+"-"+getArchitecture();
+                ApplicationStorage.os = System.getProperty("os.name")+"-"+getArchitecture();
             }
         }
         return URLDecoder.decode(applicationPath, StandardCharsets.UTF_8);
@@ -168,13 +179,17 @@ public record ApplicationConfig(String[] args, NexusApplication app) {
 
     public static Config getUpdateSettings() {
         if(updateConfig==null) {
-            updateConfig = new Config(ApplicationConfig.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
+            updateConfig = new Config(ApplicationStorage.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
         }
         return updateConfig;
     }
 
     public static String getApplicationVersion() {
         return applicationVersion;
+    }
+
+    public static String getApplicationName() {
+        return applicationName;
     }
 
     public static UUID getApplicationId() {

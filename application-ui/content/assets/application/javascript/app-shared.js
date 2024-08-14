@@ -111,12 +111,6 @@ colorSchemeQuery.addListener(handleColorSchemeChange);
 
 function setMenuPanel(img,title,description,show) {
     hideMenuPanel();
-    const image = document.getElementById("panel-image");
-    image.src = "";
-    if(img) {
-        image.src = img;
-    }
-
     const pTitle = document.getElementById("panel-title");
     pTitle.innerHTML = "";
     if(title) {
@@ -127,6 +121,16 @@ function setMenuPanel(img,title,description,show) {
     pDescription.innerHTML = "";
     if(description) {
         pDescription.innerHTML = description;
+    }
+
+    const image = document.getElementById("panel-image");
+    image.src = "";
+    if(img) {
+        image.src = img;
+        document.getElementById("menu-panel").querySelector("p").classList.remove("active");
+    } else {
+        image.style.display = "none";
+        document.getElementById("menu-panel").querySelector("p").classList.add("active");
     }
 
     if(show) {
@@ -149,4 +153,12 @@ function decodeURL(string) {
     string = decodeURIComponent(decodeURI(string));
     string = string.replaceAll("%plus%","+");
     return string;
+}
+
+function openUrl(url) {
+    if(desktop) {
+        connector("open.url."+url);
+    } else {
+        window.open(url, '_blank');
+    }
 }

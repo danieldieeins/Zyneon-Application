@@ -221,8 +221,23 @@ function addSelectFilter(name,groupId,onchange,options,disable) {
     }
 }
 
+let activeTab = "";
+function showTab(tabId) {
+    const tab = document.getElementById("discover-"+tabId);
+    const button = document.getElementById(tabId+"-button");
+    if(activeTab) {
+        document.getElementById(activeTab+"-button").classList.remove("active");
+        document.getElementById("discover-"+activeTab).classList.remove("active");
+    }
+    activeTab = tabId;
+    tab.classList.add("active");
+    button.classList.add("active");
+}
+
 addEventListener("DOMContentLoaded", () => {
+    showTab("home");
     initDiscover();
+    setMenuPanel("", "web app", "undefined version", true)
 
     document.getElementById("search-bar").addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {

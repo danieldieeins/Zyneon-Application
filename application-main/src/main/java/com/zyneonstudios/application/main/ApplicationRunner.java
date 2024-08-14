@@ -22,7 +22,7 @@ public class ApplicationRunner {
 
     private UUID downloading = null;
 
-    private final String version = ApplicationConfig.getApplicationVersion();
+    private final String version = ApplicationStorage.getApplicationVersion();
     //TODO private final String motd_id = "";
 
     public ApplicationRunner(NexusApplication app) {
@@ -120,7 +120,7 @@ public class ApplicationRunner {
     }
 
     private boolean runUpdateCheck(JsonObject json) {
-        if (!ApplicationConfig.test) {
+        if (!ApplicationStorage.test) {
             NexusApplication.getLogger().debug("[RUNNER] Checking for Updates...");
             NexusApplication.getLogger().debug("[RUNNER] Parsed JSON Data...");
             String v = json.get("info").getAsJsonObject().get("version").getAsString();

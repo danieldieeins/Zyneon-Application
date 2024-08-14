@@ -322,3 +322,192 @@
         background: var(--background2) !important;
     }
 }
+
+
+.discover-tab {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    display: none;
+}
+
+.discover-tab.active {
+    display: inherit;
+}
+
+.discover-button.active {
+    background: var(--accent) !important;
+    box-shadow: none !important;
+}
+
+.discover-button.active:hover {
+    background: var(--accent) !important;
+    color: var(--highlight) !important;
+}
+
+.discover-background {
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    backdrop-filter: blur(4px);
+    background: linear-gradient(180deg, #00000000, var(--background));
+    z-index: 0;
+}
+
+
+
+.discover-tab-content {
+    position: absolute;
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+    overflow-y: scroll !important;
+    padding: 1rem;
+    z-index: 1;
+}
+
+#discover-home {
+    background: url("../images/background/discover-home.png") no-repeat center;
+    background-size: cover;
+
+    .card {
+        opacity: 0.5;
+        background: var(--background5);
+        border-color: var(--background5);
+    }
+
+    .card:hover {
+        opacity: 1;
+        background: var(--background2);
+        border-color: var(--border);
+    }
+
+    .card.disabled {
+        opacity: 0.25;
+    }
+
+    .card.disabled:hover {
+        background: var(--background2);
+        border-color: var(--border);
+        cursor: not-allowed;
+    }
+
+    .home-quick {
+        position: relative;
+        height: 12rem;
+        top: 5rem;
+        margin-bottom: 1rem;
+
+        .nexus-logo, .app-logo {
+            overflow: hidden;
+            padding: 0;
+            width: calc(100% - 2rem - 4px);
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+
+            img {
+                scale: 0.50;
+            }
+        }
+
+        .nexus-logo:hover, .app-logo:hover {
+            transition: all 0.25s ease;
+            box-shadow: 0 0 0.8rem var(--shadow3);
+            background: var(--background6);
+            border-radius: 0.75rem;
+        }
+
+        .nexus-logo {
+            margin-left: 0.4rem;
+        }
+
+        .app-logo {
+            margin-right: 0.4rem;
+        }
+
+        .card {
+            padding: 0;
+            width: calc(100% - 2rem - 4px);
+            height: 100%;
+
+            h4 {
+                margin: 1rem 1rem 0 1rem;
+            }
+
+            h3 {
+                color: var(--highlight);
+                position: relative;
+                padding: 0.15rem 0 0.25rem 3.5rem;
+                margin-right: 3.5rem;
+                font-size: 1.25rem;
+
+                i {
+                    font-size: 1.75rem;
+                    left: 1rem;
+                    top: 0.25rem;
+                    position: absolute;
+                }
+            }
+
+            h3:hover {
+                transition: all 0.25s linear !important;
+                background: linear-gradient(90deg, var(--accent), transparent);
+                cursor: pointer;
+            }
+
+            h3.website:hover {
+                background: linear-gradient(90deg, dodgerblue, transparent);
+            }
+
+            h3.discord:hover {
+                background: linear-gradient(90deg, #7289da, transparent);
+            }
+
+            h3.reload:hover {
+                color: var(--background5);
+                background: linear-gradient(90deg, greenyellow, transparent);
+            }
+
+            h3.restart:hover {
+                background: linear-gradient(90deg, #f43636, transparent);
+            }
+
+            h3.fes:hover {
+                color: var(--background5);
+                background: linear-gradient(90deg, var(--highlight), transparent);
+            }
+        }
+
+        .quick-access {
+            margin-right: 0.4rem;
+        }
+
+        .quick-links {
+            margin-left: 0.4rem;
+        }
+
+        .line {
+            margin: 0.1rem 1rem 0.25rem 1rem !important;
+            width: calc(100% - 2rem);
+        }
+    }
+
+    .home-quick.warning {
+        height: fit-content;
+
+        .card.warning {
+            opacity: 1;
+            width: 100%;
+            background: #c52d2d;
+            border-color: #ea5757;
+            height: fit-content;
+            padding: 0.75rem 0.75rem 0.7rem 0.75rem;
+
+            h4 {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 package com.zyneonstudios.application.frame.web;
 
-import com.zyneonstudios.application.main.ApplicationConfig;
+import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
 import live.nerotv.shademebaby.ShadeMeBaby;
 import me.friwi.jcefmaven.CefAppBuilder;
@@ -71,7 +71,7 @@ public class WebFrame extends JFrame {
                 if (state == CefApp.CefAppState.TERMINATED) {
                     NexusApplication.stop();
                 }
-                if(!ApplicationConfig.getOS().startsWith("Windows")) {
+                if(!ApplicationStorage.getOS().startsWith("Windows")) {
                     if(state == CefApp.CefAppState.SHUTTING_DOWN) {
                         NexusApplication.stop();
                     }
