@@ -80,10 +80,11 @@ public class FrameConnector {
         frame.executeJavaScript("syncDesktop();");
         if(request.equals("discover")) {
             frame.executeJavaScript("setMenuPanel('','"+ ApplicationStorage.getApplicationVersion()+"','"+ ApplicationStorage.getApplicationName()+"',true);");
-            if(frame.getBrowser().getURL().contains("&l=search")) {
+            if(frame.getBrowser().getURL().contains("&l=search")||frame.getBrowser().getURL().contains("?l=search")) {
                 frame.executeJavaScript("deactivateMenu('menu',true);");
             } else {
                 frame.executeJavaScript("activateMenu('menu',true); document.getElementById('search-bar').disabled = false; document.getElementById('search-bar').placeholder = searchTerm;");
+                frame.executeJavaScript("document.querySelector('.fes').innerHTML = \"<i class='bx bxs-bug-alt'></i> Force disable search\"; document.querySelector('.fes').onclick = function () { document.getElementById('search-bar').disabled = true; document.getElementById('search-bar').placeholder = 'Search disabled'; }");
             }
         } else {
             frame.executeJavaScript("deactivateMenu('menu',true);");

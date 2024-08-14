@@ -400,7 +400,7 @@
         .nexus-logo, .app-logo {
             overflow: hidden;
             padding: 0;
-            width: calc(100% - 2rem - 4px);
+            width: calc(100% - 2rem);
             height: 100%;
             position: relative;
             display: flex;
@@ -510,4 +510,18 @@
             }
         }
     }
+}
+
+#discover-news {
+    iframe {
+        position: absolute;
+        border: none;
+        top: 4.75rem;
+        width: calc(100% - 2rem);
+        height: calc(100% - 4.75rem);
+    }
+}
+
+#discover-games, #games-button {
+    display: none;
 }
