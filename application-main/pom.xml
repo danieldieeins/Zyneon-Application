@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.8.1-beta.1</version>
-    <name>Solus Lupus (2.0.0-build368)</name>
+    <version>2024.8.1-beta.2</version>
+    <name>Solus Lupus (2.0.0-build369)</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
