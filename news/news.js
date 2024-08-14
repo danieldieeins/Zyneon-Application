@@ -14,7 +14,6 @@ addEventListener("DOMContentLoaded", () => {
             return;
         }
     }
-    console.log("hi");
     oldContent.classList.add("active");
 });
 
