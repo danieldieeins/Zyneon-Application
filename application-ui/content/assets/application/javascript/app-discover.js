@@ -237,7 +237,17 @@ function showTab(tabId) {
 addEventListener("DOMContentLoaded", () => {
     showTab("home");
     initDiscover();
-    setMenuPanel("", "web app", "undefined version", true)
+    setMenuPanel("", "web app", "undefined version", true);
+
+    let theme = document.getElementById("css-colors").href;
+    if(theme.includes("app-colors-light.css")) {
+        theme="default.light";
+    } else if(theme.includes("app-colors-zyneon.css")) {
+        theme="default.zyneon";
+    } else {
+        theme="default.dark";
+    }
+    document.getElementById("news-frame").src="https://danieldieeins.github.io/Zyneon-Application/news/news.html?type=new&theme="+theme;
 
     document.getElementById("search-bar").addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {

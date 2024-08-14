@@ -118,14 +118,11 @@ function addModuleSetting(icon,text,onclick,id,image,group) {
     if(onclick) {
         entry.onclick = function() {
             connector(onclick);
+            log(entry.id);
         };
     }
 
     template.parentNode.insertBefore(entry,template);
-
-    if(!document.getElementById("settings-modules-section").classList.contains("active")) {
-        document.getElementById("settings-modules-section").classList.add("active");
-    }
 }
 
 function highlight(newHighlight) {
@@ -227,6 +224,29 @@ function addSelectToGroup(title,group,id,options,onchangeRequest) {
         } else {
             document.getElementById(i).onchange = function () {
                 connector(i+"."+document.getElementById(i).value);
+            }
+        }
+    }
+}
+
+function addValueToGroup(title,group,id,onclickRequest,defaultValue) {
+    if(title&&group) {
+        const g = document.getElementById(group);
+        let i = (group+"-"+title).replaceAll(" ", "-").replace(/[^a-z0-9-_]/gi, '').toLowerCase();
+        if(id) {
+            i = id;
+        }
+        g.innerHTML += "<h3>"+title+" <span id='"+i+"' class='value flex'><div class='setting-value'></div><a class='setting-button'><i class='bx bxs-edit'></i></a></span></h3>";
+        if(defaultValue) {
+            document.getElementById(i).querySelector(".setting-value").innerText = defaultValue;
+        }
+        if(onclickRequest) {
+            document.getElementById(i).querySelector(".setting-button").onclick = function () {
+                connector(onclickRequest);
+            }
+        } else {
+            document.getElementById(i).querySelector(".setting-button").onclick = function () {
+                connector(i);
             }
         }
     }
