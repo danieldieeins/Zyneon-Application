@@ -13,3 +13,7 @@
 .content.active {
     margin-top: 0.5rem !important;
 }
+
+i {
+    font-size: 1.9rem;
+}
