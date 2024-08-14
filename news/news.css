@@ -1,0 +1,15 @@
+#old-changelog, #new-changelog {
+    display: none;
+}
+
+#old-changelog.active, #new-changelog.active {
+    display: inherit;
+}
+
+.flex.active {
+    top: 1rem !important;
+}
+
+.content.active {
+    margin-top: 0.5rem !important;
+}

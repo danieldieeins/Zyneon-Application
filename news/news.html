@@ -4,17 +4,16 @@
         <meta charset="UTF-8">
         <title>News ▪ Zyneon Application</title>
         <script src="../content/assets/zyneon/js/functions.js"></script>
+        <script src="news.js"></script>
         <link id="shared-css" rel="stylesheet" href="../content/assets/zyneon/css/themes/default/shared.css">
         <link id="page-css" rel="stylesheet" href="../content/assets/zyneon/css/themes/default/sub/news.css">
+        <link id="new-css" rel="stylesheet" href="news.css">
         <link id="icons-css" rel='stylesheet' href='../content/assets/boxicons/css/boxicons.min.css'>
         <script>syncTheme();</script>
-        <script>
-
-        </script>
     </head>
     <body>
-        <div class="content">
-            <div class="flex">
+        <div class="content" id="neco">
+            <div class="flex" id="neme">
                 <div class="card" id="news" onclick="syncNews();">
                     <h1>News</h1>
                 </div>
@@ -94,86 +93,93 @@
                     </div>
                 </div>
                 <div class="field" id="changelog-content">
-                    <div class="card">
-                        <h1>2024.4.7:</h1>
-                        <h3 class="background">2024/04/29@Zyneon: 2024.4.7 (Horizon) changelog:</h3>
-                        <h3><span class="bold">New Features:</span>
-                            <br>+ Added support for the NeoForge modloader
-                            <br>+ Added support for the quilt modloader
-                            <br>+ Added dynamic updates (Updates the UI to the latest available online-version)
-                            <br>+ Added dynamic updates switcher in the settings actions
-                            <br>+ Added a funtion to change the Update Channel
-                            <br>+ New Update Channel: Experimental (Test the latest features before their official release! Might be unstable...)
-                            <br>+ New Update Channel: Shervann (Try the Zyneon Studios NEXUS Application rewrite! Very unstable and many features are currently missing....)
-                        </h3>
-                        <h3><span class="bold">Important Bugfixes:</span>
-                            <br>• Fixed the "load more" button on resources page
-                        </h3>
-                        <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/61335e7..930a99e')">This update also contains bugfixes and improvements. Click here to see all changes.</a></h3>
+                    <div id="new-changelog">
+                        <div class="card">
+                            <h1>No more changelogs yet...</h1>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h1>2024.4.5:</h1>
-                        <h3 class="background">2024/04/20@Zyneon: 2024.4.5 (Dream) changelog:</h3>
-                        <h3><span class="bold">New Features:</span>
-                            <br>+ Added more selects to instance settings updater and creator.
-                            <br>+ Automatic version getter for Forge, Minecraft and Fabric.
-                            <br>+ SNAPSHOTS ARE HERE! You can now play snapshots using the Zyneon App!
-                        </h3>
-                        <h3><span class="bold">Important Bugfixes:</span>
-                            <br>• Fixed the "load more" button on resources page
-                        </h3>
-                        <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/8330814..61335e7')">This update contains bugfixes and improvements. Click here to see all changes.</a></h3>
-                    </div>
-                    <div class="card">
-                        <h1>2024.4.2:</h1>
-                        <h3 class="background">2024/04/03@Zyneon: 2024.4.4_c (Fixus) changelog:</h3>
-                        <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/3c411ac..8330814')">This update contains bugfixes and improvements.</a></h3>
-                    </div>
-                    <div class="card">
-                        <h1>2024.4.2:</h1>
-                        <h3 class="background">2024/04/03@Zyneon: 2024.4.2 (NEXUS) changelog:</h3>
-                        <h3><span class="bold">New Features:</span>
-                            <br>+ Added the Zyndex system to provide instances and more.
-                            <br>+ Added a feature which allows you to press "ENTER" in the resources search bar to start the search.
-                        </h3>
-                        <h3><span class="bold">Removed Features:</span>
-                            <br>- ZAJ (Zyneon Application JSON) System.
-                        </h3>
-                        <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/3c411ac..7ba4d6f')">This update also contains bugfixes and improvements.</a></h3>
-                    </div>
-                    <div class="card">
-                        <h1>2024.4:</h1>
-                        <h3 class="background">2024/04/02@Zyneon: 2024.4 (Savanna) changelog:</h3>
-                        <h3><span class="bold">Bugfixes:</span>
-                            <br>• Changed folder (package) structure to remove the doubled backend package
-                            <br>• Fixed april fools updates
-                            <br>• Fixed some versions not starting on windows and macOS
-                        </h3>
-                    </div>
-                    <div class="card">
-                        <h1>2024.3.2:</h1>
-                        <h3 class="background">2024/03/23@Zyneon: 2024.3.2 (Fosca) changelog:</h3>
-                        <h3><span class="bold">Bugfixes:</span>
-                            <br>• Fixed links open in a separate window
-                        </h3>
-                        <h3 class="bottom"><span class="bold">New Features:</span>
-                            <br>• Added the index settings to settings.
-                            <br>• Redesigned the card theming in settings, home and instances
-                        </h3>
-                    </div>
-                    <div class="card">
-                        <h1>2024.3.1.1:</h1>
-                        <h3 class="background">2024/03/23@Zyneon: 2024.3.1.1 (Matter) changelog:</h3>
-                        <h3><span class="bold">Bugfixes:</span>
-                            <br>• Fixed missing theming textures for official packs.
-                            <br>• Fixed CurseForge modpack extraction errors.
-                        </h3>
-                        <h3 class="bottom"><span class="bold">New Features:</span>
-                            <br>• Added changelogs content to home.
-                        </h3>
-                    </div>
-                    <div class="card">
-                        <h1>No more changelogs yet...</h1>
+                    <div id="old-changelog">
+                        <div class="card">
+                            <h1>2024.4.7:</h1>
+                            <h3 class="background">2024/04/29@Zyneon: 2024.4.7 (Horizon) changelog:</h3>
+                            <h3><span class="bold">New Features:</span>
+                                <br>+ Added support for the NeoForge modloader
+                                <br>+ Added support for the quilt modloader
+                                <br>+ Added dynamic updates (Updates the UI to the latest available online-version)
+                                <br>+ Added dynamic updates switcher in the settings actions
+                                <br>+ Added a funtion to change the Update Channel
+                                <br>+ New Update Channel: Experimental (Test the latest features before their official release! Might be unstable...)
+                                <br>+ New Update Channel: Shervann (Try the Zyneon Studios NEXUS Application rewrite! Very unstable and many features are currently missing....)
+                            </h3>
+                            <h3><span class="bold">Important Bugfixes:</span>
+                                <br>• Fixed the "load more" button on resources page
+                            </h3>
+                            <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/61335e7..930a99e')">This update also contains bugfixes and improvements. Click here to see all changes.</a></h3>
+                        </div>
+                        <div class="card">
+                            <h1>2024.4.5:</h1>
+                            <h3 class="background">2024/04/20@Zyneon: 2024.4.5 (Dream) changelog:</h3>
+                            <h3><span class="bold">New Features:</span>
+                                <br>+ Added more selects to instance settings updater and creator.
+                                <br>+ Automatic version getter for Forge, Minecraft and Fabric.
+                                <br>+ SNAPSHOTS ARE HERE! You can now play snapshots using the Zyneon App!
+                            </h3>
+                            <h3><span class="bold">Important Bugfixes:</span>
+                                <br>• Fixed the "load more" button on resources page
+                            </h3>
+                            <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/8330814..61335e7')">This update contains bugfixes and improvements. Click here to see all changes.</a></h3>
+                        </div>
+                        <div class="card">
+                            <h1>2024.4.2:</h1>
+                            <h3 class="background">2024/04/03@Zyneon: 2024.4.4_c (Fixus) changelog:</h3>
+                            <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/3c411ac..8330814')">This update contains bugfixes and improvements.</a></h3>
+                        </div>
+                        <div class="card">
+                            <h1>2024.4.2:</h1>
+                            <h3 class="background">2024/04/03@Zyneon: 2024.4.2 (NEXUS) changelog:</h3>
+                            <h3><span class="bold">New Features:</span>
+                                <br>+ Added the Zyndex system to provide instances and more.
+                                <br>+ Added a feature which allows you to press "ENTER" in the resources search bar to start the search.
+                            </h3>
+                            <h3><span class="bold">Removed Features:</span>
+                                <br>- ZAJ (Zyneon Application JSON) System.
+                            </h3>
+                            <h3><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/compare/3c411ac..7ba4d6f')">This update also contains bugfixes and improvements.</a></h3>
+                        </div>
+                        <div class="card">
+                            <h1>2024.4:</h1>
+                            <h3 class="background">2024/04/02@Zyneon: 2024.4 (Savanna) changelog:</h3>
+                            <h3><span class="bold">Bugfixes:</span>
+                                <br>• Changed folder (package) structure to remove the doubled backend package
+                                <br>• Fixed april fools updates
+                                <br>• Fixed some versions not starting on windows and macOS
+                            </h3>
+                        </div>
+                        <div class="card">
+                            <h1>2024.3.2:</h1>
+                            <h3 class="background">2024/03/23@Zyneon: 2024.3.2 (Fosca) changelog:</h3>
+                            <h3><span class="bold">Bugfixes:</span>
+                                <br>• Fixed links open in a separate window
+                            </h3>
+                            <h3 class="bottom"><span class="bold">New Features:</span>
+                                <br>• Added the index settings to settings.
+                                <br>• Redesigned the card theming in settings, home and instances
+                            </h3>
+                        </div>
+                        <div class="card">
+                            <h1>2024.3.1.1:</h1>
+                            <h3 class="background">2024/03/23@Zyneon: 2024.3.1.1 (Matter) changelog:</h3>
+                            <h3><span class="bold">Bugfixes:</span>
+                                <br>• Fixed missing theming textures for official packs.
+                                <br>• Fixed CurseForge modpack extraction errors.
+                            </h3>
+                            <h3 class="bottom"><span class="bold">New Features:</span>
+                                <br>• Added changelogs content to home.
+                            </h3>
+                        </div>
+                        <div class="card">
+                            <h1>No more changelogs yet...</h1>
+                        </div>
                     </div>
                 </div>
             </div>
