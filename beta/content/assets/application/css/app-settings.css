@@ -123,6 +123,48 @@
     right: 0.7rem;
 }
 
+.settings {
+    .settings-content {
+        h3 {
+            .value {
+                .setting-button {
+                    position: absolute;
+                    right: 0.15rem;
+                    top: 0.1rem;
+                    font-size: 1rem;
+                    border-radius: 0.4rem;
+                    padding: 0.2rem 0.2rem 0 0.2rem;
+                    border: 2px solid var(--border) !important;
+                    background: var(--background2);
+                    color: var(--foreground2);
+                    transition: all 0.25s ease;
+                }
+
+                .setting-value {
+                    position: absolute;
+                    font-weight: 1;
+                    right: 2rem;
+                    top: 0.1375rem;
+                }
+            }
+        }
+
+        h3:hover {
+            .setting-button {
+                border: 2px solid var(--border1) !important;
+                background: var(--background3);
+            }
+
+            .setting-button:hover {
+                border: 2px solid var(--highlight) !important;
+                background: var(--highlight);
+                color: var(--background5);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
 .settings .settings-content h3 select {
     position: absolute;
     top: 0; right: 0;
