@@ -64,7 +64,8 @@ public class FrameConnector {
     private void load(String request) {
         switch (request) {
             case "drive" ->
-                    frame.getBrowser().loadURL("https://drive.zyneonstudios.com/app/?theme=" + ApplicationStorage.theme + "&language=" + ApplicationStorage.language);
+                    open("url.https://drive.zyneonstudios.com");
+                    //frame.getBrowser().loadURL("https://drive.zyneonstudios.com/app/?theme=" + ApplicationStorage.theme + "&language=" + ApplicationStorage.language);
             case "discover" ->
                     frame.getBrowser().loadURL(ApplicationStorage.urlBase + ApplicationStorage.language + "/discover.html");
             case "downloads" ->

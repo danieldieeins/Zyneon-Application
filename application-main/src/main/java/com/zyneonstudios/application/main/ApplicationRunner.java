@@ -38,10 +38,16 @@ public class ApplicationRunner {
         executor.scheduleAtFixedRate(() -> CompletableFuture.runAsync(this::run), 0, 1, TimeUnit.SECONDS);
     }
 
+    int c = 0;
     protected void run() {
         if (!started) {
             started = true;
             return;
+        }
+
+        if(c == 300) {
+            c = 0;
+            System.gc();
         }
 
 
