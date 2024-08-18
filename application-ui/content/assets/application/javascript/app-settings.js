@@ -4,12 +4,15 @@ let highlighted = undefined;
 let content = undefined;
 
 function toggleUpdates() {
-    if(updates) {
+    const updateSlider = document.getElementById("updater-settings-enable-updates");
+    if(updateSlider.classList.contains("active")) {
         updates = false;
         connector('sync.autoUpdates.off');
+        updateSlider.classList.remove("active");
     } else {
         updates = true;
         connector('sync.autoUpdates.on');
+        updateSlider.classList.add("active");
     }
 }
 
@@ -224,6 +227,34 @@ function addSelectToGroup(title,group,id,options,onchangeRequest) {
         } else {
             document.getElementById(i).onchange = function () {
                 connector(i+"."+document.getElementById(i).value);
+            }
+        }
+    }
+}
+
+function addToggleToGroup(title,group,id,onchangeRequest,defaultState) {
+    if(title&&group) {
+        const g = document.getElementById(group);
+        let i = (group+"-"+title).replaceAll(" ", "-").replace(/[^a-z0-9-_]/gi, '').toLowerCase();
+        if(id) {
+            i = id;
+        }
+        g.innerHTML += "<h3>"+title+" <div id='"+i+"' class='toggle'><div class='toggle-slider'></div></div></h3>";
+        const toggle = document.getElementById(i);
+        if(defaultState) {
+            if(defaultState===true) {
+                toggle.classList.add("active");
+            }
+        }
+        if(onchangeRequest) {
+            toggle.onclick = function () {
+                toggle.classList.toggle("active");
+                connector(onchangeRequest+"."+toggle.classList.contains("active"));
+            }
+        } else {
+            toggle.onclick = function () {
+                toggle.classList.toggle("active");
+                connector(i+"."+toggle.classList.contains("active"));
             }
         }
     }

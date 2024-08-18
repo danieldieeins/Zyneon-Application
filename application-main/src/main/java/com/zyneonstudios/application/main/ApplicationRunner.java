@@ -35,7 +35,7 @@ public class ApplicationRunner {
 
     public void start() {
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(() -> CompletableFuture.runAsync(this::run), 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::run, 0, 1, TimeUnit.SECONDS);
     }
 
     int c = 0;
@@ -148,7 +148,6 @@ public class ApplicationRunner {
                 NexusApplication.getLogger().debug("[RUNNER] Sending notification...");
                 //TODO: Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", v, true);
             }
-            ;
         }
     }
 }

@@ -169,7 +169,6 @@ public class FrameConnector {
             request = request.replace("autoUpdates.","");
             boolean update = request.equals("on");
             ApplicationStorage.getUpdateSettings().set("updater.settings.autoUpdate",update);
-            frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').checked = "+update+";");
         } else if(request.startsWith("linuxFrame.")) {
             request = request.replace("linuxFrame.","");
             boolean frame = request.equals("on");
@@ -208,7 +207,10 @@ public class FrameConnector {
                 }
                 frame.executeJavaScript("document.getElementById('linux-settings-custom-frame').style.display = 'inherit'; linuxFrame = "+linuxCustomFrame+"; document.getElementById('linux-settings-enable-custom-frame').checked = linuxFrame;");
             }
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-enable-updates').checked = updates; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ ApplicationStorage.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
+            if(autoUpdate) {
+                frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').classList.add('active');");
+            }
+            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ ApplicationStorage.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
         } else if(request.equals("about")) {
             frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \""+ ApplicationStorage.getApplicationVersion()+"\"");
         }

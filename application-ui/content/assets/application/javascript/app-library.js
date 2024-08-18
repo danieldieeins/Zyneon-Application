@@ -23,7 +23,6 @@ function initLibrary(skipConnector) {
         }
     }
     console.log("[CONNECTOR] init.library");
-    log(moduleId);
 }
 
 function optionExists(selectId, value) {
@@ -180,12 +179,40 @@ function setTitle(img,text,options_) {
         image.src = "";
     }
     if(options_) {
-        image.style.display = "inherit";
-        image.innerHTML = options_;
+        options.style.display = "inherit";
+        options.innerHTML = options_;
     } else {
         options.style.display = "none";
         options.innerHTML = "";
     }
+    document.getElementById("library-overlay").classList.remove("active");
+}
+
+function toggleOverlay(button) {
+    const overlay = document.getElementById("library-overlay");
+    if(overlay.classList.contains("active")) {
+        overlay.classList.remove("active");
+        if(button) {
+            document.getElementById(button).classList.remove("active");
+        }
+    } else {
+        overlay.classList.add("active");
+        if(button) {
+            document.getElementById(button).classList.add("active");
+        }
+    }
+}
+
+function setOverlayContent(content) {
+    document.getElementById("library-overlay").innerHTML = content;
+}
+
+function addOverlayContent(content) {
+    document.getElementById("library-overlay").innerHTML += content;
+}
+
+function clearOverlay() {
+    document.getElementById("library-overlay").innerHTML = "";
 }
 
 function setViewDescription(description) {
@@ -212,7 +239,6 @@ function setViewImage(image_) {
 function showView(id) {
     document.getElementById("library-view").style.display = "inherit";
     document.querySelector(".cnt").style.backgroundImage = "url('')";
-    const button = document.getElementById(id);
     setTitle(); setViewImage(); setViewDescription(); disableLaunch();
     connector("sync.library.module." + moduleId + ".view." + id);
     highlight(id);

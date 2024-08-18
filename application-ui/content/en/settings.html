@@ -13,6 +13,7 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="../assets/cronos/javascript/app-base.js"></script>
         <script src="../assets/cronos/javascript/app-menu.js"></script>
+        <script src="../assets/cronos/javascript/app-tables.js"></script>
         <script src="../assets/application/javascript/app-shared.js"></script>
         <script src="../assets/application/javascript/app-settings.js"></script>
         <script>init(); connector("sync.settings.init");</script>
@@ -159,16 +160,7 @@
                                     <div id="updater-settings">
                                         <h3>
                                             Check for updates
-                                            <span class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
-                                                    <script>
-                                                        document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
-                                                            event.preventDefault();
-                                                        });
-                                                    </script>
-                                                </label>
-                                            </span>
+                                            <span id="updater-settings-enable-updates" onclick="toggleUpdates();" class="toggle"><span class="toggle-slider"></span></span>
                                         </h3>
                                         <h3>
                                             Update channel

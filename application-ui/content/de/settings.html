@@ -159,16 +159,7 @@
                                     <div id="updater-settings">
                                         <h3>
                                             Auf Aktualisierungen prüfen
-                                            <span class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" id="updater-settings-enable-updates" onclick="toggleUpdates();">
-                                                    <script>
-                                                        document.getElementById('updater-settings-enable-updates').addEventListener('click', function(event) {
-                                                            event.preventDefault();
-                                                        });
-                                                    </script>
-                                                </label>
-                                            </span>
+                                            <span id="updater-settings-enable-updates" onclick="toggleUpdates();" class="toggle"><span class="toggle-slider"></span></span>
                                         </h3>
                                         <h3>
                                             Aktualisierungskanal

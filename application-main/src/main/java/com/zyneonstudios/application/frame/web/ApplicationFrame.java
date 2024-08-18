@@ -32,6 +32,8 @@ public class ApplicationFrame extends WebFrame {
                     NexusApplication.getLogger().error(message.replace("[ERR] ",""));
                 } else if (message.startsWith("[DEB] ")) {
                     NexusApplication.getLogger().debug(message.replace("[DEB] ",""));
+                } else {
+                    NexusApplication.getLogger().debug("[FRAME] (Console) "+message);
                 }
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
