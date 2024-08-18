@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.8.1</version>
+    <version>2024.8.1f</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,30 +20,35 @@
 
     <repositories>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>zyneonstudios-repo-releases</id>
+            <name>Zyneon Studios Repository</name>
+            <url>https://maven.zyneonstudios.com/releases</url>
+        </repository>
+        <repository>
+            <id>zyneonstudios-repo-private</id>
+            <name>Zyneon Studios Repository</name>
+            <url>https://maven.zyneonstudios.com/private</url>
         </repository>
     </repositories>
-
 
     <dependencies>
         <!--Dependencies by Zyneon Studios' NEXUS Team-->
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-zyndex</artifactId>
-            <version>2024.7</version>
+            <version>2024.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>nexus-auth</artifactId>
-            <version>2024.7</version>
+            <version>2024.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zyneonstudios</groupId>
             <artifactId>verget-all</artifactId>
-            <version>2024.6</version>
+            <version>2024.8</version>
             <scope>compile</scope>
         </dependency>
 
@@ -58,8 +63,7 @@
             <groupId>fr.flowarg</groupId>
             <artifactId>openlauncherlib</artifactId>
             <version>3.2.11</version>
-            <scope>system</scope>
-            <systemPath>D:\Workspaces\IntelliJ\OpenLauncherLib\build\libs\openlauncherlib-3.2.11.jar</systemPath>
+            <scope>compile</scope>
         </dependency>
 
         <!--Something... that is used?.... in the code?-->
