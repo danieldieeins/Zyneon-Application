@@ -184,6 +184,9 @@ public class FrameConnector {
             request = request.replaceFirst("startPage.","");
             ApplicationStorage.startPage = request;
             ApplicationStorage.getSettings().set("settings.startPage",request);
+        } else if(request.startsWith("zoomLevel.")) {
+            double d = Double.parseDouble(request.replaceFirst("zoomLevel.",""));
+            ApplicationStorage.setZoomLevel(d);
         } else if(request.startsWith("language.")) {
             request = request.replaceFirst("language.","");
             ApplicationStorage.language = request;

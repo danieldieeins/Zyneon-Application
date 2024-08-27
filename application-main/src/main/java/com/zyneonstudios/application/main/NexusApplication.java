@@ -67,7 +67,7 @@ public class NexusApplication {
             JFrame frame_ = null;
             try {
                 frame_ = new CustomApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, ApplicationStorage.getApplicationPath() + "libs/jcef/");
-                frame_.pack(); frame_.setSize(new Dimension(1150,700));
+                frame_.pack(); frame_.setSize(new Dimension(1080,660));
             } catch (Exception e) {
                 logger.error("[APP] Couldn't load custom Linux frame: "+e.getMessage());
                 logger.error("[APP] Disabling custom Linux frame and restarting...");

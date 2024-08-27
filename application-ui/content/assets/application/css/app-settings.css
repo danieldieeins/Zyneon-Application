@@ -126,6 +126,17 @@
 .settings {
     .settings-content {
         h3 {
+            .slider {
+                input {
+                    accent-color: var(--accent2);
+                    opacity: 0.75;
+                }
+
+                input:hover {
+                    opacity: 1;
+                }
+            }
+
             .toggle {
                 position: absolute;
                 top: 0; right: 0;

@@ -36,6 +36,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
     private static String[] arguments = null;
     private static boolean driveAccess = false;
     private static NexusApplication application = null;
+    private static double zoomLevel = 0;
 
     public ApplicationStorage(String[] args, NexusApplication app) {
         this.app = app;
@@ -96,6 +97,9 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
         if(getSettings().get("settings.theme")!=null) {
             theme = getSettings().getString("settings.theme");
         }
+
+        configuration.checkEntry("settings.general.appearance.zoomLevel",0);
+        zoomLevel = configuration.getDouble("settings.general.appearance.zoomLevel");
     }
 
     public static boolean hasDriveAccess() {
@@ -105,6 +109,22 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
     public static void enableDriveAccess() {
         ((ApplicationFrame)application.getFrame()).executeJavaScript("document.getElementById('drive-button').style.display = 'flex';");
         driveAccess = true;
+    }
+
+    public static double getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public static void setZoomLevel(double zoomLevel) {
+        ApplicationStorage.zoomLevel = zoomLevel;
+        configuration.set("settings.general.appearance.zoomLevel",zoomLevel);
+        ApplicationFrame frame = (ApplicationFrame)application.getFrame();
+        if (frame.getWidth() < 700 || frame.getHeight() < 480) {
+            zoomLevel -= 2;
+        } else if (frame.getWidth() < 1080 || frame.getHeight() < 720) {
+            zoomLevel -= 1;
+        }
+        frame.getBrowser().setZoomLevel(zoomLevel);
     }
 
     public static void disableDriveAccess() {

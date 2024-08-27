@@ -23,7 +23,7 @@ public class CustomApplicationFrame extends ApplicationFrame {
         getContentPane().add(customTitleBar, BorderLayout.NORTH);
         addDragAndDropFunctionality();
         setBorder(true);
-        setMinimumSize(new Dimension(1150,700));
+        setMinimumSize(getMinSize());
     }
 
     @Override

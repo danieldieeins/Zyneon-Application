@@ -164,3 +164,52 @@ li:hover {
     position: absolute !important;
     overflow: hidden !important;
 }
+
+h3.input-list {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--background2);
+
+    .list-input-content {
+        .list-input-item {
+            padding: 0.2rem 1.5rem 0.2rem 0.5rem;
+            border-radius: 0.5rem;
+            background: var(--background);
+            position: relative;
+            margin: 0 0.25rem 0 0;
+            line-height: 2.25rem;
+            transition: all 0.25s ease;
+
+            i {
+                opacity: 0.5;
+                position: absolute;
+                font-size: 1.5rem;
+                top: 0.25rem;
+                right: 0.25rem;
+                transition: all 0.25s ease;
+            }
+
+            i:hover {
+                opacity: 1;
+                color: var(--inactive);
+                cursor: pointer;
+                transition: all 0.1s ease;
+            }
+        }
+
+        .list-input-item:hover {
+            background: var(--background6);
+            color: var(--foreground);
+        }
+
+        .list-input-item.template {
+            display: none;
+        }
+    }
+
+    input.list {
+        margin: 0 0.15rem 0 0.2rem;
+        font-size: 1.25rem;
+        color: var(--foreground);
+    }
+}

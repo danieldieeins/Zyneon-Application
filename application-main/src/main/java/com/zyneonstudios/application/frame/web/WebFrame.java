@@ -90,12 +90,13 @@ public class WebFrame extends JFrame {
         client = app.createClient();
         client.addDownloadHandler(new CefDownloadHandler() {
             @Override
-            public void onBeforeDownload(CefBrowser browser, CefDownloadItem item, String sourceURL, CefBeforeDownloadCallback callback) {
+            public boolean onBeforeDownload(CefBrowser browser, CefDownloadItem item, String sourceURL, CefBeforeDownloadCallback callback) {
                 if(Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(new URI(item.getURL()));
                     } catch (Exception ignore) {}
                 }
+                return false;
             }
 
             @Override

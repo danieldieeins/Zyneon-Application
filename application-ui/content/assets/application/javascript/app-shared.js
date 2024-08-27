@@ -162,3 +162,55 @@ function openUrl(url) {
         window.open(url, '_blank');
     }
 }
+
+const listInputs = new Map();
+
+function initializeListInput(id) {
+    const input = document.getElementById(id);
+    if(input) {
+        if (listInputs.has(id)) {
+            listInputs.delete(id);
+        }
+
+        const list = [];
+        listInputs.set(id, list);
+
+        input.addEventListener('keydown', (event) => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                if(!list.includes(input.querySelector( "input").value)&&input.querySelector( "input").value !== "") {
+                    listInputs.get(id).push(input.querySelector("input").value);
+                    connector(id+".add."+input.querySelector("input").value);
+                }
+                input.querySelector("input").value = "";
+                syncListInput(id);
+            }
+        });
+    }
+}
+
+function syncListInput(id) {
+    const input = document.getElementById(id);
+    if(input) {
+        if(listInputs.has(id)) {
+            const list = listInputs.get(id);
+            input.querySelector(".list-input-content").innerHTML = "";
+            for (let i = 0; i < list.length; i++) {
+                input.querySelector(".list-input-content").innerHTML += "<span class='list-input-item'>" + list[i] + " <i onclick=\"removeStringFromListInput('"+id+"','"+list[i]+"');\" class='bx bx-x'></i></span>";
+            }
+        }
+    }
+}
+
+function removeStringFromListInput(id,string) {
+    if(listInputs.has(id)) {
+        for (let i = 0; i < listInputs.get(id).length; i++) {
+            if(listInputs.get(id)[i] === string) {
+                listInputs.get(id).splice(i, 1);
+                syncListInput(id);
+                connector(id+".remove."+string);
+                break;
+            }
+        }
+    }
+}
