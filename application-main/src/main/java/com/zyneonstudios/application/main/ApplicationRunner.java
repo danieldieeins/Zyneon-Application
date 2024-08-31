@@ -5,10 +5,9 @@ import com.google.gson.JsonObject;
 import com.zyneonstudios.application.download.Download;
 import com.zyneonstudios.application.download.DownloadManager;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
-import live.nerotv.shademebaby.utils.GsonUtil;
+import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -119,7 +118,7 @@ public class ApplicationRunner {
         }
 
         try {
-            JsonObject json = new Gson().fromJson(GsonUtil.getFromURL("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/application/index.json"), JsonObject.class).getAsJsonArray("versions").get(0).getAsJsonObject();
+            JsonObject json = new Gson().fromJson(GsonUtility.getFromURL("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/application/index.json"), JsonObject.class).getAsJsonArray("versions").get(0).getAsJsonObject();
             checkVersion(json);
         } catch (Exception ignore) {
         }
@@ -127,13 +126,13 @@ public class ApplicationRunner {
 
     private boolean runUpdateCheck(JsonObject json) {
         if (!ApplicationStorage.test) {
-            NexusApplication.getLogger().debug("[RUNNER] Checking for Updates...");
-            NexusApplication.getLogger().debug("[RUNNER] Parsed JSON Data...");
+            NexusApplication.getLogger().dbg("[RUNNER] Checking for Updates...");
+            NexusApplication.getLogger().dbg("[RUNNER] Parsed JSON Data...");
             String v = json.get("info").getAsJsonObject().get("version").getAsString();
-            NexusApplication.getLogger().debug("[RUNNER] Latest version: " + v + "...");
-            NexusApplication.getLogger().debug("[RUNNER] Current version: " + version + "...");
+            NexusApplication.getLogger().dbg("[RUNNER] Latest version: " + v + "...");
+            NexusApplication.getLogger().dbg("[RUNNER] Current version: " + version + "...");
             if (!v.equals(version)) {
-                NexusApplication.getLogger().debug("[RUNNER] The application is not up to date!");
+                NexusApplication.getLogger().dbg("[RUNNER] The application is not up to date!");
                 return true;
             }
         }
@@ -145,7 +144,7 @@ public class ApplicationRunner {
         if (u > 120) {
             u = 0;
             if (runUpdateCheck(json)) {
-                NexusApplication.getLogger().debug("[RUNNER] Sending notification...");
+                NexusApplication.getLogger().dbg("[RUNNER] Sending notification...");
                 //TODO: Application.getFrame().sendNotification("Update available!", "Version " + v + " has been released!", "<a onclick=\"callJavaMethod('button.exit');\" class='button'>Install</a><a onclick=\"callJavaMethod('button.online');\" class='button'>Dynamic update</a>", v, true);
             }
         }

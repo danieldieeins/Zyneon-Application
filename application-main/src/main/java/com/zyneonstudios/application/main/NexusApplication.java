@@ -1,6 +1,5 @@
 package com.zyneonstudios.application.main;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.download.Download;
@@ -8,9 +7,13 @@ import com.zyneonstudios.application.download.DownloadManager;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
 import com.zyneonstudios.application.modules.ModuleLoader;
-import live.nerotv.shademebaby.logger.Logger;
-import live.nerotv.shademebaby.utils.FileUtil;
-import live.nerotv.shademebaby.utils.GsonUtil;
+import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
+import com.zyneonstudios.nexus.utilities.file.FileActions;
+import com.zyneonstudios.nexus.utilities.file.FileExtractor;
+import com.zyneonstudios.nexus.utilities.json.GsonUtility;
+import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
+import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
+import org.cef.CefApp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,17 +28,13 @@ import java.util.Objects;
 public class NexusApplication {
 
     private final JFrame frame;
-    private static final Logger logger = new Logger("APP");
+    private static final NexusLogger logger = new NexusLogger("APP");
     private static ModuleLoader moduleLoader = null;
 
     private final ApplicationRunner runner;
     private final DownloadManager downloadManager;
 
     public NexusApplication(String[] args) {
-        try {
-            FlatDarkLaf.setup();
-            UIManager.setLookAndFeel(new FlatDarkLaf());
-        } catch (Exception ignore) {}
         new ApplicationStorage(args,this);
         moduleLoader = new ModuleLoader(this);
         logger.log("[APP] Updated application ui: "+update());
@@ -60,17 +59,33 @@ public class NexusApplication {
                 ApplicationStorage.getSettings().delete("cache.restartPage");
             } catch (Exception ignore) {}
         }
+        NexusWebSetup setup = new NexusWebSetup(ApplicationStorage.getApplicationPath()+"libraries/cef");
+        setup.getBuilder().setAppHandler(new MavenCefAppHandlerAdapter() {
+            @Override @Deprecated
+            public void stateHasChanged(CefApp.CefAppState state) {
+                if (state == CefApp.CefAppState.TERMINATED) {
+                    NexusApplication.stop();
+                }
+                if(!ApplicationStorage.getOS().startsWith("Windows")) {
+                    if(state == CefApp.CefAppState.SHUTTING_DOWN) {
+                        NexusApplication.stop();
+                    }
+                }
+            }
+        });
+        setup.enableCache(true); setup.enableCookies(true); setup.setup();
+
         if(ApplicationStorage.getOS().startsWith("macOS")|| ApplicationStorage.getOS().startsWith("Windows")||disableCustomFrame) {
-            frame = new ApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, ApplicationStorage.getApplicationPath() + "libs/jcef/");
+            frame = new ApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, setup.getWebClient());
             frame.pack(); frame.setSize(new Dimension(1200,720));
         } else {
             JFrame frame_ = null;
             try {
-                frame_ = new CustomApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, ApplicationStorage.getApplicationPath() + "libs/jcef/");
+                frame_ = new CustomApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, setup.getWebClient());
                 frame_.pack(); frame_.setSize(new Dimension(1080,660));
             } catch (Exception e) {
-                logger.error("[APP] Couldn't load custom Linux frame: "+e.getMessage());
-                logger.error("[APP] Disabling custom Linux frame and restarting...");
+                logger.err("[APP] Couldn't load custom Linux frame: "+e.getMessage());
+                logger.err("[APP] Disabling custom Linux frame and restarting...");
                 ApplicationStorage.getSettings().set("settings.linux.customFrame",false);
                 restart(false);
             }
@@ -95,12 +110,12 @@ public class NexusApplication {
                             try {
                                 moduleLoader.loadModule(moduleLoader.readModule(module));
                             } catch (Exception e) {
-                                getLogger().debug("[APP] Cant read module "+module.getName()+": "+e.getMessage());
+                                logger.dbg("[APP] Cant read module "+module.getName()+": "+e.getMessage());
                             }
                         }
                     }
                 } catch (Exception e) {
-                    getLogger().error("[APP] Can't read modules: "+e.getMessage());
+                    logger.err("[APP] Can't read modules: "+e.getMessage());
                 }
             }
         }
@@ -114,7 +129,7 @@ public class NexusApplication {
         return runner;
     }
 
-    public static Logger getLogger() {
+    public static NexusLogger getLogger() {
         return logger;
     }
 
@@ -132,9 +147,9 @@ public class NexusApplication {
         File temp = new File(ApplicationStorage.getApplicationPath() + "temp");
         if(temp.exists()) {
             if(temp.isDirectory()) {
-                FileUtil.deleteFolder(temp);
+                logger.dbg("[APP] Deleted temporary files: "+FileActions.deleteFolder(temp));
             } else {
-                logger.debug("[APP] Deleted temporary files: "+temp.delete());
+                logger.dbg("[APP] Deleted temporary files: "+temp.delete());
             }
         }
 
@@ -143,22 +158,22 @@ public class NexusApplication {
         try {
             if(new File(ApplicationStorage.getApplicationPath() + "temp/ui/").exists()) {
                 try {
-                    FileUtil.deleteFolder(new File(ApplicationStorage.getApplicationPath() + "temp/ui/"));
+                    FileActions.deleteFolder(new File(ApplicationStorage.getApplicationPath() + "temp/ui/"));
                 } catch (Exception e) {
-                    getLogger().error("Couldn't delete old temporary ui files: "+e.getMessage());
+                    logger.err("Couldn't delete old temporary ui files: "+e.getMessage());
                 }
             }
-            logger.debug("[APP] Created new ui path: "+new File(ApplicationStorage.getApplicationPath() + "temp/ui/").mkdirs());
-            FileUtil.extractResourceFile("content.zip", ApplicationStorage.getApplicationPath()+"temp/content.zip",Main.class);
-            FileUtil.unzipFile(ApplicationStorage.getApplicationPath()+"temp/content.zip", ApplicationStorage.getApplicationPath() + "temp/ui");
-            logger.debug("[APP] Deleted ui archive: "+new File(ApplicationStorage.getApplicationPath()+"temp/content.zip").delete());
+            logger.dbg("[APP] Created new ui path: "+new File(ApplicationStorage.getApplicationPath() + "temp/ui/").mkdirs());
+            FileExtractor.extractResourceFile("content.zip", ApplicationStorage.getApplicationPath()+"temp/content.zip",Main.class);
+            FileExtractor.unzipFile(ApplicationStorage.getApplicationPath()+"temp/content.zip", ApplicationStorage.getApplicationPath() + "temp/ui");
+            logger.dbg("[APP] Deleted ui archive: "+new File(ApplicationStorage.getApplicationPath()+"temp/content.zip").delete());
             updated = true;
         } catch (Exception e) {
-            logger.error("[APP] Couldn't update application user interface: "+e.getMessage());
+            logger.err("[APP] Couldn't update application user interface: "+e.getMessage());
             updated = false;
         }
-        logger.debug("[APP] Deleted old updatar json: "+new File(ApplicationStorage.getApplicationPath() + "updater.json").delete());
-        logger.debug("[APP] Deleted older updater json: "+new File(ApplicationStorage.getApplicationPath() + "version.json").delete());
+        logger.dbg("[APP] Deleted old updatar json: "+new File(ApplicationStorage.getApplicationPath() + "updater.json").delete());
+        logger.dbg("[APP] Deleted older updater json: "+new File(ApplicationStorage.getApplicationPath() + "version.json").delete());
         return updated;
     }
 
@@ -170,9 +185,9 @@ public class NexusApplication {
         boolean updated = false;
         File modules = new File(ApplicationStorage.getApplicationPath() + "temp/modules/");
         if (modules.exists()) {
-            FileUtil.deleteFolder(modules);
+            FileActions.deleteFolder(modules);
         }
-        logger.debug("[APP] Created modules path: " + modules.mkdirs());
+        logger.dbg("[APP] Created modules path: " + modules.mkdirs());
 
         if(!ApplicationStorage.isOffline()) {
             try {
@@ -186,17 +201,17 @@ public class NexusApplication {
 
                 updated = true;
             } catch (Exception e) {
-                logger.error("[APP] Couldn't update online modules: "+e.getMessage());
+                logger.err("[APP] Couldn't update online modules: "+e.getMessage());
             }
         }
 
         if(!updated) {
             try {
-                FileUtil.extractResourceFile("modules.zip", ApplicationStorage.getApplicationPath() + "temp/modules.zip", NexusApplication.class);
-                FileUtil.unzipFile(ApplicationStorage.getApplicationPath() + "temp/modules.zip", ApplicationStorage.getApplicationPath() + "temp/modules/");
-                logger.debug("[APP] Deleted modules archive: " + new File(ApplicationStorage.getApplicationPath() + "temp/modules.zip").delete());
+                FileExtractor.extractResourceFile("modules.zip", ApplicationStorage.getApplicationPath() + "temp/modules.zip", NexusApplication.class);
+                FileExtractor.unzipFile(ApplicationStorage.getApplicationPath() + "temp/modules.zip", ApplicationStorage.getApplicationPath() + "temp/modules/");
+                logger.dbg("[APP] Deleted modules archive: " + new File(ApplicationStorage.getApplicationPath() + "temp/modules.zip").delete());
             } catch (Exception e) {
-                logger.error("[APP] Couldn't extract fallback modules: " + e.getMessage());
+                logger.err("[APP] Couldn't extract fallback modules: " + e.getMessage());
             }
         }
 
@@ -207,7 +222,7 @@ public class NexusApplication {
                         try {
                             moduleLoader.loadModule(moduleLoader.readModule(module));
                         } catch (Exception e) {
-                            getLogger().error("Couldn't load module " + module.getName() + ": " + e.getMessage());
+                            getLogger().err("Couldn't load module " + module.getName() + ": " + e.getMessage());
                         }
                     }
                 }
@@ -218,7 +233,7 @@ public class NexusApplication {
     }
 
     private void downloadModule(String jsonUrl, File folder, ArrayList<String> blacklist) throws MalformedURLException {
-        JsonObject module = GsonUtil.getObject(jsonUrl).getAsJsonObject("module");
+        JsonObject module = GsonUtility.getObject(jsonUrl).getAsJsonObject("module");
         String id = module.getAsJsonObject("meta").get("id").getAsString();
         if(!blacklist.contains(id)) {
             Download download = new Download(id+".jar",new URL(module.getAsJsonObject("meta").get("download").getAsString()), Path.of(folder.getAbsolutePath()+"/"+id+".jar"));
@@ -257,7 +272,7 @@ public class NexusApplication {
                 try {
                     pb.start();
                 } catch (Exception e) {
-                    logger.error("[APP] Couldn't restart application: "+e.getMessage());
+                    logger.err("[APP] Couldn't restart application: "+e.getMessage());
                 }
                 getModuleLoader().deactivateModules();
                 System.exit(0);
@@ -285,7 +300,7 @@ public class NexusApplication {
                 try {
                     pb.start();
                 } catch (Exception e) {
-                    logger.error("[APP] Couldn't restart application: " + e.getMessage());
+                    logger.err("[APP] Couldn't restart application: " + e.getMessage());
                 }
                 stop();
             }
@@ -295,7 +310,7 @@ public class NexusApplication {
 
     public static void stop() {
         moduleLoader.deactivateModules();
-        FileUtil.deleteFolder(new File(ApplicationStorage.getApplicationPath() + "temp/"));
+        FileActions.deleteFolder(new File(ApplicationStorage.getApplicationPath() + "temp/"));
         System.exit(0);
     }
 }

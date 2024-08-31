@@ -14,7 +14,7 @@ public class ApplicationModule {
     private final NexusApplication application;
 
     public ApplicationModule(NexusApplication application, String id, String name, String version, String authors) {
-        NexusApplication.getLogger().debug("[MODULES] Creating object for "+name+" ("+id+") v"+version);
+        NexusApplication.getLogger().dbg("[MODULES] Creating object for "+name+" ("+id+") v"+version);
 
         this.id = id;
         this.name = name;

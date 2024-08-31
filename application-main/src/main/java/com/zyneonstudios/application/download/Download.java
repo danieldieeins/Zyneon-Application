@@ -95,7 +95,7 @@ public class Download {
                 setFinished(true);
             } catch (IOException e) {
                 state = DownloadManager.DownloadState.FAILED;
-                NexusApplication.getLogger().error("Couldn't download \""+url+"\" to \""+path.toString()+"\": " + e.getMessage());
+                NexusApplication.getLogger().err("Couldn't download \""+url+"\" to \""+path.toString()+"\": " + e.getMessage());
                 return false;
             }
             return true;

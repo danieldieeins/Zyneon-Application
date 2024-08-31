@@ -2,6 +2,7 @@ package com.zyneonstudios.application.frame.web;
 
 import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
+import org.cef.CefClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,8 @@ public class CustomApplicationFrame extends ApplicationFrame {
     private JPanel titleBar;
     private boolean border;
 
-    public CustomApplicationFrame(NexusApplication application, String url, String jcefPath) {
-        super(application,url,jcefPath);
+    public CustomApplicationFrame(NexusApplication application, String url, CefClient client) {
+        super(application,url,client);
         setUndecorated(true);
         title = "  Zyneon Application (v"+ ApplicationStorage.getApplicationVersion()+", "+ ApplicationStorage.getOS()+")";
         JPanel customTitleBar = createCustomTitleBar();

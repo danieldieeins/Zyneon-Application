@@ -2,9 +2,10 @@ package com.zyneonstudios.application.main;
 
 import com.zyneonstudios.Main;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
-import live.nerotv.shademebaby.file.Config;
-import live.nerotv.shademebaby.utils.FileUtil;
-import live.nerotv.shademebaby.utils.StringUtil;
+import com.zyneonstudios.nexus.utilities.file.FileActions;
+import com.zyneonstudios.nexus.utilities.file.FileExtractor;
+import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
+import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -27,12 +28,12 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
     public static String theme = "automatic";
     public static boolean test = false;
     private static UUID applicationId = UUID.randomUUID();
-    private static String applicationVersion = StringUtil.generateAlphanumericString(6)+"-"+StringUtil.generateAlphanumericString(3);
+    private static String applicationVersion = StringGenerator.generateAlphanumericString(6)+"-"+StringGenerator.generateAlphanumericString(3);
     private static String applicationName = "Unofficial NEXUS App";
     private static String applicationPath = null;
-    private static Config configuration = null;
+    private static JsonStorage configuration = null;
     private static String os = null;
-    private static Config updateConfig = null;
+    private static JsonStorage updateConfig = null;
     private static String[] arguments = null;
     private static boolean driveAccess = false;
     private static NexusApplication application = null;
@@ -47,7 +48,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
         for (String arg : args) {
             if(arg.startsWith("--test")) {
                 test = true;
-                NexusApplication.getLogger().setDebugEnabled(true);
+                NexusApplication.getLogger().enableDebug();
             } else if (arg.startsWith("--ui:")) {
                 urlBase = arg.replace("--ui:", "");
             }
@@ -56,8 +57,8 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
             }
         }
 
-        FileUtil.extractResourceFile("nexus.json",getApplicationPath()+"temp/nexus.json", Main.class);
-        Config properties = new Config(new File(getApplicationPath() + "temp/nexus.json"));
+        FileExtractor.extractResourceFile("nexus.json",getApplicationPath()+"temp/nexus.json", Main.class);
+        JsonStorage properties = new JsonStorage(new File(getApplicationPath() + "temp/nexus.json"));
 
             if (properties.getString("version") != null) {
                 applicationVersion = properties.getString("version");
@@ -69,23 +70,23 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
 
         if(new File(getApplicationPath() + "temp/").exists()) {
             try {
-                FileUtil.deleteFolder(new File(getApplicationPath() + "temp/"));
+                FileActions.deleteFolder(new File(getApplicationPath() + "temp/"));
             } catch (Exception e) {
-                NexusApplication.getLogger().error("[CONFIG] Couldn't delete old temp files: "+e.getMessage());
+                NexusApplication.getLogger().err("[CONFIG] Couldn't delete old temp files: "+e.getMessage());
             }
         }
         if(new File(getApplicationPath() + "temp/nexus.json").exists()) {
-            NexusApplication.getLogger().debug("[CONFIG] Deleted old properties: "+new File(getApplicationPath() + "temp/nexus.json").delete());
+            NexusApplication.getLogger().dbg("[CONFIG] Deleted old properties: "+new File(getApplicationPath() + "temp/nexus.json").delete());
         }
 
         String lang = Locale.getDefault().toLanguageTag();
         if(lang.startsWith("de-")) {
-            getSettings().checkEntry("settings.language","de");
+            getSettings().ensure("settings.language","de");
         } else {
-            getSettings().checkEntry("settings.language","en");
+            getSettings().ensure("settings.language","en");
         }
 
-        getSettings().checkEntry("settings.applicationId", applicationId);
+        getSettings().ensure("settings.applicationId", applicationId);
         applicationId = UUID.fromString(getSettings().getString("settings.applicationId"));
 
         if(getSettings().get("settings.startPage")!=null) {
@@ -98,7 +99,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
             theme = getSettings().getString("settings.theme");
         }
 
-        configuration.checkEntry("settings.general.appearance.zoomLevel",0);
+        configuration.ensure("settings.general.appearance.zoomLevel",0);
         zoomLevel = configuration.getDouble("settings.general.appearance.zoomLevel");
     }
 
@@ -190,16 +191,16 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
         return os;
     }
 
-    public static Config getSettings() {
+    public static JsonStorage getSettings() {
         if(configuration==null) {
-            configuration = new Config(getApplicationPath()+"config/settings.json");
+            configuration = new JsonStorage(getApplicationPath()+"config/settings.json");
         }
         return configuration;
     }
 
-    public static Config getUpdateSettings() {
+    public static JsonStorage getUpdateSettings() {
         if(updateConfig==null) {
-            updateConfig = new Config(ApplicationStorage.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
+            updateConfig = new JsonStorage(ApplicationStorage.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
         }
         return updateConfig;
     }

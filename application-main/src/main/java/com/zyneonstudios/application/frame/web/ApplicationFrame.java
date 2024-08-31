@@ -3,6 +3,8 @@ package com.zyneonstudios.application.frame.web;
 import com.zyneonstudios.application.frame.FrameConnector;
 import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
+import com.zyneonstudios.nexus.desktop.frame.web.NexusWebFrame;
+import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
@@ -10,22 +12,29 @@ import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefLoadHandler;
 import org.cef.network.CefRequest;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class ApplicationFrame extends WebFrame implements ComponentListener {
+public class ApplicationFrame extends NexusWebFrame implements ComponentListener {
 
     private final FrameConnector connector;
     private final Dimension minSize = new Dimension(640,360);
 
-    public ApplicationFrame(NexusApplication application, String url, String jcefPath) {
-        super(url, jcefPath, application);
+    public ApplicationFrame(NexusApplication application, String url, CefClient client) {
+        super(client, url, true);
+        try {
+            setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/logo.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+        } catch (Exception ignore) {}
         addComponentListener(this);
         this.connector = new FrameConnector(this,application);
-        getClient().addDisplayHandler(new CefDisplayHandlerAdapter() {
+        client.addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
                 if (message.startsWith("[CONNECTOR] ")) {
@@ -36,16 +45,22 @@ public class ApplicationFrame extends WebFrame implements ComponentListener {
                 } else if (message.startsWith("[LOG] ")) {
                     NexusApplication.getLogger().log(message.replace("[LOG] ",""));
                 } else if (message.startsWith("[ERR] ")) {
-                    NexusApplication.getLogger().error(message.replace("[ERR] ",""));
+                    NexusApplication.getLogger().err(message.replace("[ERR] ",""));
                 } else if (message.startsWith("[DEB] ")) {
-                    NexusApplication.getLogger().debug(message.replace("[DEB] ",""));
+                    NexusApplication.getLogger().dbg(message.replace("[DEB] ",""));
                 } else {
-                    NexusApplication.getLogger().debug("[FRAME] (Console) "+message);
+                    NexusApplication.getLogger().dbg("[FRAME] (Console) "+message);
                 }
                 return super.onConsoleMessage(browser, level, message, source, line);
             }
         });
-        getClient().addLoadHandler(new CefLoadHandler() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                NexusApplication.stop();
+            }
+        });
+        client.addLoadHandler(new CefLoadHandler() {
             @Override
             public void onLoadingStateChange(CefBrowser cefBrowser, boolean b, boolean b1, boolean b2) {
 
@@ -86,6 +101,12 @@ public class ApplicationFrame extends WebFrame implements ComponentListener {
         setTitleForeground(foreground);
     }
 
+    @Override
+    public void setTitleColors(Color background, Color foreground) {
+        setBackground(background);
+        super.setTitleColors(background, foreground);
+    }
+
     public void setTitleBackground(Color color) {
         setBackground(color);
         getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
@@ -95,12 +116,12 @@ public class ApplicationFrame extends WebFrame implements ComponentListener {
         getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
     }
 
-    public void executeJavaScript(String command) {
-        getBrowser().executeJavaScript(command,getBrowser().getURL(),5);
-    }
-
     public void openCustomPage(String title, String pageId, String url) {
         getBrowser().loadURL(ApplicationStorage.urlBase+ ApplicationStorage.language+"/custom.html?title="+title+"&id="+pageId+"&url="+url);
+    }
+
+    public void executeJavaScript(String script) {
+        super.executeJavaScript(script);
     }
 
     @Override

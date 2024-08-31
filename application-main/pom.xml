@@ -21,9 +21,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.zyneonstudios</groupId>
-            <artifactId>nexus-zyndex</artifactId>
-            <version>2024.8</version>
+            <groupId>com.zyneonstudios.nexus</groupId>
+            <artifactId>zyndex-java</artifactId>
+            <version>2024.8.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zyneonstudios.nexus</groupId>
+            <artifactId>base-desktop</artifactId>
+            <version>2024.9-alpha.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

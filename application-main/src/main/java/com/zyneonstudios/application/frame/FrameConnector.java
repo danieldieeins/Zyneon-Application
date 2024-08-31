@@ -27,9 +27,9 @@ public class FrameConnector {
 
     public void resolveRequest(String request) {
         if(ApplicationStorage.test) {
-            NexusApplication.getLogger().error("[CONNECTOR] (Request-Reader) resolving "+request+"...");
+            NexusApplication.getLogger().err("[CONNECTOR] (Request-Reader) resolving "+request+"...");
         } else {
-            NexusApplication.getLogger().debug("[CONNECTOR] (Request-Reader) resolving "+request+"...");
+            NexusApplication.getLogger().dbg("[CONNECTOR] (Request-Reader) resolving "+request+"...");
         }
 
         if(request.startsWith("sync.")) {

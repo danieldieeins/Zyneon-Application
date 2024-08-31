@@ -58,7 +58,7 @@ public class ModuleLoader {
                 version = array.get(0).getAsJsonObject().get("version").getAsString();
                 authors = array.get(0).getAsJsonObject().get("authors").getAsJsonArray().toString();
             } catch (Exception e) {
-                NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+                NexusApplication.getLogger().err("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
                 return null;
             }
             URLClassLoader classLoader = new URLClassLoader(new URL[]{moduleJar.toURI().toURL()});
@@ -66,7 +66,7 @@ public class ModuleLoader {
             Constructor<?> constructor = module.getConstructor(NexusApplication.class, String.class, String.class, String.class, String.class);
             return (ApplicationModule) constructor.newInstance(application, id, name, version, authors);
         } catch (Exception e) {
-            NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+            NexusApplication.getLogger().err("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
             return null;
         }
     }
@@ -93,11 +93,11 @@ public class ModuleLoader {
                     return modules;
                 }
             } catch (Exception e) {
-                NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+                NexusApplication.getLogger().err("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
                 return null;
             }
         } catch (Exception e) {
-            NexusApplication.getLogger().error("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
+            NexusApplication.getLogger().err("[MODULES] Couldn't read module "+moduleJar.getPath()+": "+e.getMessage());
             return null;
         }
     }
