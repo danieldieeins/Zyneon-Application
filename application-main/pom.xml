@@ -23,13 +23,13 @@
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>
             <artifactId>zyndex-java</artifactId>
-            <version>2024.8.2</version>
+            <version>2024.8.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>
             <artifactId>base-desktop</artifactId>
-            <version>2024.9-alpha.5</version>
+            <version>2024.9-alpha.8</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

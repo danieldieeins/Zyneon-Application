@@ -8,6 +8,7 @@ import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
 import com.zyneonstudios.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
+import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
 import com.zyneonstudios.nexus.utilities.json.GsonUtility;
@@ -28,7 +29,7 @@ import java.util.Objects;
 public class NexusApplication {
 
     private final JFrame frame;
-    private static final NexusLogger logger = new NexusLogger("APP");
+    private static final NexusLogger logger = NexusUtilities.getLogger();
     private static ModuleLoader moduleLoader = null;
 
     private final ApplicationRunner runner;
