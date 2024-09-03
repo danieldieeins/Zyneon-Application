@@ -167,8 +167,8 @@
 
             .toggle.active {
                 .toggle-slider {
-                    opacity: 1;
-                    background: var(--highlight);
+                    opacity: 0.8;
+                    background: var(--accent2);
                     animation: toggleSlideRight 0.15s ease-in-out;
                     animation-fill-mode: forwards;
                 }
