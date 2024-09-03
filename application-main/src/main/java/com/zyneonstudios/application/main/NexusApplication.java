@@ -1,34 +1,26 @@
 package com.zyneonstudios.application.main;
 
-import com.google.gson.JsonObject;
 import com.zyneonstudios.Main;
-import com.zyneonstudios.application.download.Download;
 import com.zyneonstudios.application.download.DownloadManager;
-import com.zyneonstudios.application.frame.web.ApplicationFrame;
-import com.zyneonstudios.application.frame.web.CustomApplicationFrame;
+import com.zyneonstudios.application.frame.ApplicationFrame;
 import com.zyneonstudios.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
-import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import me.friwi.jcefmaven.MavenCefAppHandlerAdapter;
 import org.cef.CefApp;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.security.CodeSource;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class NexusApplication {
 
-    private final JFrame frame;
+    private ApplicationFrame frame;
+
     private static final NexusLogger logger = NexusUtilities.getLogger();
     private static ModuleLoader moduleLoader = null;
 
@@ -37,6 +29,7 @@ public class NexusApplication {
 
     public NexusApplication(String[] args) {
         new ApplicationStorage(args,this);
+        frame = new ApplicationFrame();
         moduleLoader = new ModuleLoader(this);
         logger.log("[APP] Updated application ui: "+update());
         boolean disableCustomFrame = false;
@@ -76,32 +69,10 @@ public class NexusApplication {
         });
         setup.enableCache(true); setup.enableCookies(true); setup.setup();
 
-        if(ApplicationStorage.getOS().startsWith("macOS")|| ApplicationStorage.getOS().startsWith("Windows")||disableCustomFrame) {
-            frame = new ApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, setup.getWebClient());
-            frame.pack(); frame.setSize(new Dimension(1200,720));
-        } else {
-            JFrame frame_ = null;
-            try {
-                frame_ = new CustomApplicationFrame(this, ApplicationStorage.urlBase + ApplicationStorage.language + "/" + startPage, setup.getWebClient());
-                frame_.pack(); frame_.setSize(new Dimension(1080,660));
-            } catch (Exception e) {
-                logger.err("[APP] Couldn't load custom Linux frame: "+e.getMessage());
-                logger.err("[APP] Disabling custom Linux frame and restarting...");
-                ApplicationStorage.getSettings().set("settings.linux.customFrame",false);
-                restart(false);
-            }
-            frame = frame_;
-        }
-        if(frame==null) {
-            System.exit(-1);;
-        }
-        frame.setLocationRelativeTo(null);
-
         this.runner = new ApplicationRunner(this);
         this.runner.start();
         this.downloadManager = new DownloadManager(this);
 
-        logger.log("[APP] Updated application modules: "+updateModules());
         File modules = new File(ApplicationStorage.getApplicationPath()+"modules/");
         if(modules.exists()) {
             if(modules.isDirectory()) {
@@ -136,10 +107,6 @@ public class NexusApplication {
 
     public static ModuleLoader getModuleLoader() {
         return moduleLoader;
-    }
-
-    public JFrame getFrame() {
-        return frame;
     }
 
     private boolean update() {
@@ -178,73 +145,9 @@ public class NexusApplication {
         return updated;
     }
 
-    @SuppressWarnings("unchecked")
-    private boolean updateModules() {
-        if(ApplicationStorage.test) {
-            return true;
-        }
-        boolean updated = false;
-        File modules = new File(ApplicationStorage.getApplicationPath() + "temp/modules/");
-        if (modules.exists()) {
-            FileActions.deleteFolder(modules);
-        }
-        logger.dbg("[APP] Created modules path: " + modules.mkdirs());
-
-        if(!ApplicationStorage.isOffline()) {
-            try {
-                ArrayList<String> disabledIds = new ArrayList<>();
-                if(ApplicationStorage.getSettings().get("settings.modules.disabledIds")!=null) {
-                    disabledIds = (ArrayList<String>) ApplicationStorage.getSettings().get("settings.modules.disabledIds");
-                }
-
-                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/nexus-minecraft-module.json",modules,disabledIds);
-                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/zyneon-star-module.json",modules,disabledIds);
-
-                updated = true;
-            } catch (Exception e) {
-                logger.err("[APP] Couldn't update online modules: "+e.getMessage());
-            }
-        }
-
-        if(!updated) {
-            try {
-                FileExtractor.extractResourceFile("modules.zip", ApplicationStorage.getApplicationPath() + "temp/modules.zip", NexusApplication.class);
-                FileExtractor.unzipFile(ApplicationStorage.getApplicationPath() + "temp/modules.zip", ApplicationStorage.getApplicationPath() + "temp/modules/");
-                logger.dbg("[APP] Deleted modules archive: " + new File(ApplicationStorage.getApplicationPath() + "temp/modules.zip").delete());
-            } catch (Exception e) {
-                logger.err("[APP] Couldn't extract fallback modules: " + e.getMessage());
-            }
-        }
-
-        if (modules.exists()) {
-            if (modules.isDirectory()) {
-                for (File module : Objects.requireNonNull(modules.listFiles())) {
-                    if (module.getName().toLowerCase().endsWith(".jar")) {
-                        try {
-                            moduleLoader.loadModule(moduleLoader.readModule(module));
-                        } catch (Exception e) {
-                            getLogger().err("Couldn't load module " + module.getName() + ": " + e.getMessage());
-                        }
-                    }
-                }
-            }
-        }
-
-        return updated;
-    }
-
-    private void downloadModule(String jsonUrl, File folder, ArrayList<String> blacklist) throws MalformedURLException {
-        JsonObject module = GsonUtility.getObject(jsonUrl).getAsJsonObject("module");
-        String id = module.getAsJsonObject("meta").get("id").getAsString();
-        if(!blacklist.contains(id)) {
-            Download download = new Download(id+".jar",new URL(module.getAsJsonObject("meta").get("download").getAsString()), Path.of(folder.getAbsolutePath()+"/"+id+".jar"));
-            download.start();
-        }
-    }
-
     public void launch() {
-        moduleLoader.activateModules();
         frame.setVisible(true);
+        //moduleLoader.activateModules();
         if(Main.splash!=null) {
             Main.splash.setVisible(false);
             Main.splash = null;

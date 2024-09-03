@@ -1,7 +1,6 @@
 package com.zyneonstudios.application.main;
 
 import com.zyneonstudios.Main;
-import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
@@ -105,27 +104,6 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
 
     public static boolean hasDriveAccess() {
         return driveAccess;
-    }
-
-    public static void enableDriveAccess() {
-        ((ApplicationFrame)application.getFrame()).executeJavaScript("document.getElementById('drive-button').style.display = 'flex';");
-        driveAccess = true;
-    }
-
-    public static double getZoomLevel() {
-        return zoomLevel;
-    }
-
-    public static void setZoomLevel(double zoomLevel) {
-        ApplicationStorage.zoomLevel = zoomLevel;
-        configuration.set("settings.general.appearance.zoomLevel",zoomLevel);
-        ApplicationFrame frame = (ApplicationFrame)application.getFrame();
-        if (frame.getWidth() < 700 || frame.getHeight() < 480) {
-            zoomLevel -= 2;
-        } else if (frame.getWidth() < 1080 || frame.getHeight() < 720) {
-            zoomLevel -= 1;
-        }
-        frame.getBrowser().setZoomLevel(zoomLevel);
     }
 
     public static void disableDriveAccess() {
