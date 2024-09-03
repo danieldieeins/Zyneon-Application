@@ -18,6 +18,5 @@
 
     <modules>
         <module>application-main</module>
-        <module>bootstrapper</module>
     </modules>
 </project>
