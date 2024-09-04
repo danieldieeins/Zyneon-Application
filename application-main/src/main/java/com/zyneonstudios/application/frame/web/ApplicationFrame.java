@@ -95,8 +95,7 @@ public class ApplicationFrame extends NexusWebFrame implements ComponentListener
     }
 
     public void setTitlebar(String title, Color background, Color foreground) {
-        //setTitle("Zyneon Application ("+title+", v"+ ApplicationStorage.getApplicationVersion()+", "+ ApplicationStorage.getOS()+")");
-        setTitle("Zyneon Application");
+        setTitle("NEXUS App ("+title+")");
         setTitleBackground(background);
         setTitleForeground(foreground);
     }

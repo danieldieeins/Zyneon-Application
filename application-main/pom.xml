@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.zyneonstudios</groupId>
-        <artifactId>nexus-application</artifactId>
-        <version>2024.8</version>
+        <groupId>com.zyneonstudios.nexus</groupId>
+        <artifactId>application</artifactId>
+        <version>2024.9</version>
     </parent>
 
     <artifactId>application-main</artifactId>
     <version>2024.9-beta.1</version>
-    <name>Solus Lupus (2.0.0-build375)</name>
+    <name>Renovatio (2.0.0-build375)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

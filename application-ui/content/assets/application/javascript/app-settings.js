@@ -267,18 +267,13 @@ function addValueToGroup(title,group,id,onclickRequest,defaultValue) {
         if(id) {
             i = id;
         }
-        g.innerHTML += "<h3>"+title+" <span id='"+i+"' class='value flex'><div class='setting-value'></div><a class='setting-button'><i class='bx bxs-edit'></i></a></span></h3>";
+        if(onclickRequest) {
+            g.innerHTML += "<h3>" + title + " <span id='" + i + "' class='value flex'><div class='setting-value'></div><a class='setting-button'><i class='bx bxs-edit' onclick=\"connector('" + onclickRequest + "');\"></i></a></span></h3>";
+        } else {
+            g.innerHTML += "<h3>" + title + " <span id='" + i + "' class='value flex'><div class='setting-value'></div><a class='setting-button'><i class='bx bxs-edit' onclick=\"connector('" + i + "');\"></i></a></span></h3>";
+        }
         if(defaultValue) {
             document.getElementById(i).querySelector(".setting-value").innerText = defaultValue;
-        }
-        if(onclickRequest) {
-            document.getElementById(i).querySelector(".setting-button").onclick = function () {
-                connector(onclickRequest);
-            }
-        } else {
-            document.getElementById(i).querySelector(".setting-button").onclick = function () {
-                connector(i);
-            }
         }
     }
 }

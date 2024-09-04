@@ -166,19 +166,21 @@ li:hover {
 }
 
 h3.input-list {
+    position: relative;
     padding: 0.5rem !important;
     border-radius: 0.5rem;
     background: var(--background2);
 
     .list-input-content {
         .list-input-item {
+            position: relative;
             padding: 0.2rem 1.5rem 0.2rem 0.5rem;
             border-radius: 0.5rem;
             background: var(--background) !important;
-            position: relative;
-            margin: 0 0.13rem;
+            margin-right: 0.25rem;
             line-height: 2.25rem;
             transition: all 0.25s ease;
+            white-space: nowrap;
 
             i {
                 opacity: 0.5;
@@ -211,23 +213,30 @@ h3.input-list {
         top: 0.1rem;
         right: 0;
         width: calc(100% - 10rem);
-        position: absolute;
-        padding: 0.1rem;
+        position: relative;
+        padding: 0.5rem 0.4rem 0.55rem 0.4rem;
         border-radius: 0.5rem;
-        background: var(--background2);
     }
 
     input.list {
-        margin: 0 0.15rem 0 0.2rem;
+        transition: all 0.25s ease;
+        position: relative;
+        margin: 0.5rem 0.15rem 0 0.2rem;
         font-size: 1.25rem;
         color: var(--foreground);
         background: var(--background);
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
+        padding: 0.25rem;
+        width: calc(100% - 1.75rem);
     }
 }
 
 h3.input-list:hover {
-    .input-list-field {
+    input.list {
         background: var(--background2);
+    }
+
+    input.list:hover {
+        background: var(--background);
     }
 }
