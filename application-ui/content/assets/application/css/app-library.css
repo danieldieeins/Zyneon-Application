@@ -304,6 +304,64 @@ body {
             color: var(--foreground);
             overflow: hidden;
 
+            a.button {
+                position: absolute;
+                top: 0; right: 0;
+                font-size: 1rem;
+                padding: 0.25rem 0.5rem 0.3rem 0.5rem !important;
+                margin: 0.3rem;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                box-shadow: 0 0 0.3rem var(--shadow3);
+            }
+
+            a.button.delete,a.button.danger {
+                background: #dc5151;
+                color: white !important;
+            }
+
+            a.button.danger {
+                right: 5rem;
+            }
+
+            a.button:hover {
+                box-shadow: 0 0 0.3rem var(--accent);
+            }
+
+            a.button.disable:hover,a.button.delete:hover,a.button.danger:hover {
+                background: red !important;
+                animation: wiggle 0.25s infinite !important;
+                box-shadow: 0 0 0.4rem red;
+                color: var(--foreground2) !important;
+            }
+
+            img {
+                transition: all 0.25s ease;
+                border-radius: 0.5rem;
+                height: 6rem;
+                margin: 0.5rem 0.4rem 0.4rem 0.4rem;
+                right: 0;
+                box-shadow: 0 0 0.4rem var(--shadow3);
+            }
+
+            img:hover {
+                cursor: pointer;
+                rotate: 1deg;
+                height: 7rem;
+            }
+
+            img.active {
+                rotate: unset !important;
+                width: calc(100% - 2rem);
+                height: calc(100% - 2rem);
+                object-fit: contain;
+                background: #00000099;
+                position: fixed;
+                z-index: 2000;
+                margin: 1rem;
+                top: 0; right: 0;
+            }
+
             input.text {
                 white-space: nowrap;
                 transition: all 0.25s ease;

@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.9-beta.1</version>
-    <name>Renovatio (2.0.0-build375)</name>
+    <version>2024.9-beta.2</version>
+    <name>Renovatio (2.0.0-build376)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
