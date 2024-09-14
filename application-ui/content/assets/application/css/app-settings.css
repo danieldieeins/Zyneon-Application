@@ -126,6 +126,7 @@
 .settings {
     .settings-content {
         h3 {
+            overflow: hidden;
             .slider {
                 input {
                     accent-color: var(--accent2);
@@ -189,10 +190,15 @@
                 }
 
                 .setting-value {
+                    font-family: OpenSans, sans-serif;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    max-width: calc(100% - 18rem);
                     position: absolute;
                     font-weight: 1;
                     right: 2rem;
-                    top: 0.1375rem;
+                    top: 0.2rem;
                 }
             }
         }

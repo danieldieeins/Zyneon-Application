@@ -218,7 +218,7 @@ function clearOverlay() {
 function setViewDescription(description) {
     const desc = document.getElementById("view-description");
     if(description) {
-        desc.innerText = description;
+        desc.innerHTML = description;
     } else {
         desc.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Loading...";
     }

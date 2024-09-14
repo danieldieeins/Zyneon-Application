@@ -46,6 +46,29 @@
     z-index: 101;
 }
 
+.search-actions {
+    position: relative;
+    margin-bottom: 1rem;
+    padding: 0;
+    justify-content: right;
+
+    #load-more {
+        display: none;
+        position: relative;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        background: var(--background3) !important;
+        color: var(--foreground) !important;
+        border: 1px solid var(--border2) !important;
+    }
+
+    #load-more:hover {
+        background: var(--border2) !important;
+        color: var(--highlight) !important;
+        cursor: pointer;
+    }
+}
+
 .search:hover {
     border: 2px solid var(--border1) !important;
     background: var(--background2) ;

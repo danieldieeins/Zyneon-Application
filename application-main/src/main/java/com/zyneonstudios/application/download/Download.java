@@ -1,10 +1,10 @@
 package com.zyneonstudios.application.download;
 
 import com.zyneonstudios.application.main.NexusApplication;
+import com.zyneonstudios.nexus.utilities.NexusUtilities;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Path;
@@ -57,48 +57,43 @@ public class Download {
             startTime = Instant.now();
             Instant lastTimeCheck = startTime;
 
-            try (BufferedInputStream in = new BufferedInputStream(url.openStream());
-                 FileOutputStream fileOutputStream = new FileOutputStream(path.toFile())) {
-
-                URLConnection connection = url.openConnection();
+            try {
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 fileSize = connection.getContentLength();
-
-                byte[] dataBuffer = new byte[1024];
-                int bytesRead;
-                long totalBytesRead = 0;
-
-                while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                    totalBytesRead += bytesRead;
-                    Instant now = Instant.now();
-                    Duration elapsedTime = Duration.between(lastTimeCheck, now);
-
-                    setPercent((totalBytesRead * 100.0) / fileSize);
-                    lastBytesRead = totalBytesRead;
-                    lastTimeCheck = now;
-
-                    fileOutputStream.write(dataBuffer, 0, bytesRead);
-
-                    if (elapsedTime.getSeconds() >= 1) {
-
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = connection.getInputStream();
+                    File outputFile = new File(path.toString());
+                    FileOutputStream outputStream = new FileOutputStream(outputFile);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    long totalBytesRead = 0;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
                         totalBytesRead += bytesRead;
+                        Instant now = Instant.now();
+                        Duration elapsedTime = Duration.between(lastTimeCheck, now);
                         setPercent((totalBytesRead * 100.0) / fileSize);
-                        String s = (int)percent + "%";
-                        if(!percentString.equals(s)) {
-                            percentString = s;
+                        lastBytesRead = totalBytesRead;
+                        lastTimeCheck = now;
+                        outputStream.write(buffer, 0, bytesRead);
+                        if (elapsedTime.getSeconds() >= 1) {
+
+                            totalBytesRead += bytesRead;
+                            setPercent((totalBytesRead * 100.0) / fileSize);
+                            String s = (int)percent + "%";
+                            if(!percentString.equals(s)) {
+                                percentString = s;
+                            }
                         }
                     }
-
-                    if(percent>=100||finished) {
-                        break;
-                    }
+                    inputStream.close();
+                    outputStream.close();
+                    setFinished(true);
+                    return true;
                 }
-                setFinished(true);
-            } catch (IOException e) {
-                state = DownloadManager.DownloadState.FAILED;
+            } catch (Exception e) {
                 NexusApplication.getLogger().err("Couldn't download \""+url+"\" to \""+path.toString()+"\": " + e.getMessage());
-                return false;
             }
-            return true;
         }
         state = DownloadManager.DownloadState.FAILED;
         return false;

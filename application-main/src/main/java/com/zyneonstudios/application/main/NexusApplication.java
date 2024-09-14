@@ -33,7 +33,7 @@ public class NexusApplication {
     private static ModuleLoader moduleLoader = null;
 
     private final ApplicationRunner runner;
-    private final DownloadManager downloadManager;
+    private static DownloadManager downloadManager;
 
     public NexusApplication(String[] args) {
         new ApplicationStorage(args,this);
@@ -99,7 +99,7 @@ public class NexusApplication {
 
         this.runner = new ApplicationRunner(this);
         this.runner.start();
-        this.downloadManager = new DownloadManager(this);
+        downloadManager = new DownloadManager(this);
 
         logger.log("[APP] Updated application modules: "+updateModules());
         File modules = new File(ApplicationStorage.getApplicationPath()+"modules/");
@@ -122,7 +122,7 @@ public class NexusApplication {
         }
     }
 
-    public DownloadManager getDownloadManager() {
+    public static DownloadManager getDownloadManager() {
         return downloadManager;
     }
 

@@ -302,7 +302,6 @@ body {
             transition: all 0.25s ease;
             margin: 0 0.5rem 0.75rem 0.5rem;
             color: var(--foreground);
-            overflow: hidden;
 
             a.button {
                 position: absolute;
@@ -336,11 +335,13 @@ body {
             }
 
             img {
+                position: absolute;
                 transition: all 0.25s ease;
                 border-radius: 0.5rem;
                 height: 6rem;
                 margin: 0.5rem 0.4rem 0.4rem 0.4rem;
-                right: 0;
+                left: 0.5rem;
+                bottom: 0.5rem;
                 box-shadow: 0 0 0.4rem var(--shadow3);
             }
 

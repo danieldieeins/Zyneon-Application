@@ -1,6 +1,7 @@
 let searchTerm = "Click to search";
 let moduleId = "-1";
 let query = "";
+let offset = 0;
 
 function initDiscover() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -45,9 +46,9 @@ function openSearch() {
     if(!search.classList.contains('active')) {
         search.classList.add('active');
         if(query) {
-            connector("sync.discover.search."+moduleId.replaceAll("-1","modules")+"."+query);
+            connector("sync.discover.search."+moduleId.replaceAll("-1","modules")+"."+offset+"."+query);
         } else {
-            connector("sync.discover.search." + moduleId.replaceAll("-1", "modules"));
+            connector("sync.discover.search." + moduleId.replaceAll("-1", "modules")+"."+offset);
         }
     }
 
@@ -235,6 +236,10 @@ function showTab(tabId) {
 }
 
 addEventListener("DOMContentLoaded", () => {
+    document.getElementById("load-more").onclick = function () {
+        offset = offset+20;
+        connector("sync.discover.search." + moduleId.replaceAll("-1", "modules")+"."+offset);
+    }
     showTab("home");
     initDiscover();
     setMenuPanel("", "web app", "undefined version", true);

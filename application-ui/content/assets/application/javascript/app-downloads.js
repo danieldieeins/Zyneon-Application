@@ -29,7 +29,7 @@ function setDownload(title,state,elapsedTime,downloadSpeed,remainingTime,downloa
     }
 
     if(state) {
-        download.querySelector(".download-state").innerHTML = state;
+        download.querySelector(".download-state").innerText = state;
     }
 
     if(elapsedTime) {
@@ -67,6 +67,10 @@ function setDownload(title,state,elapsedTime,downloadSpeed,remainingTime,downloa
     if(downloadSpeed) {
         download.querySelector(".download-speed").innerText = downloadSpeed;
     }
+}
+
+function addDownload(title,state,elapsedTime,downloadSpeed,remainingTime,downloadSize,fileSize,path,url,id,progress,percent) {
+
 }
 
 function initDownloads() {

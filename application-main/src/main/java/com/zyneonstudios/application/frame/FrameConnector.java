@@ -1,5 +1,6 @@
 package com.zyneonstudios.application.frame;
 
+import com.zyneonstudios.application.download.Download;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
@@ -93,7 +94,9 @@ public class FrameConnector {
         if(request.equals("settings")) {
             frame.executeJavaScript("syncVersion(\""+ ApplicationStorage.getApplicationVersion().replace("\"","''")+"\");");
         } else if(request.equals("downloads")) {
-            
+            for(Download download:NexusApplication.getDownloadManager().getDownloads().values()) {
+                frame.executeJavaScript("setDownload(\""+download.getName().replace("\"","''")+"\",'"+download.getState().toString()+"','"+download.getElapsedTime().getSeconds()+"','"+download.getSpeedMbps()+"','"+download.getEstimatedRemainingTime().getSeconds()+"','"+download.getFileSize()+"','"+download.getLastBytesRead()+"',\""+download.getPath().toString().replace("\\","/")+"\",\""+download.getUrl().toString().replace("\\","/")+"\",\""+download.getUuid()+"\",'"+download.getPercentString()+"','"+download.getPercent()+"');");
+            }
         }
     }
 
@@ -221,12 +224,17 @@ public class FrameConnector {
 
     private void syncDiscover(String request) {
         if(request.startsWith("search.")) {
-            request = request.replace("search.","");
-            if(request.startsWith("modules")) {
+            request = request.replaceFirst("search.","");
+            if(request.startsWith("modules.")) {
+                request = request.replaceFirst("modules.","");
                 String query;
-                if(request.startsWith("modules.")) {
-                    query = request.replaceFirst("modules.","");
+                int offset;
+                if(request.contains(".")) {
+                    String[] req = request.split("\\.",2);
+                    offset = Integer.parseInt(req[0]);
+                    query = req[1];
                 } else {
+                    offset = Integer.parseInt(request);
                     query = "";
                 }
                 ArrayList<ReadableModule> results = null;

@@ -5,7 +5,7 @@ function initializeTable(id,rows) {
 
     const data = getTableData(id);
     const table = document.getElementById(id);
-    table.innerHTML = "";
+    table.innerText = "";
 
     if (typeof rows !== 'number') {
         rows = 2;
@@ -35,7 +35,7 @@ function setTableContent(tableId,columnNumber,rowNumber,text) {
 function reloadTable(id) {
     const table = document.getElementById(id);
     const data = getTableData(id);
-    table.innerHTML = "";
+    table.innerText = "";
 
     for (let i = 0; i < data.size; i++) {
         let column = id + "-column-" + i;

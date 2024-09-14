@@ -51,16 +51,15 @@ public class ApplicationRunner {
 
 
         if (downloading != null) {
-            Download download = app.getDownloadManager().getDownloads().get(downloading);
+            Download download = NexusApplication.getDownloadManager().getDownloads().get(downloading);
             if (download.isFinished()) {
                 downloading = null;
             }
         } else {
-            app.getDownloadManager().getDownloads().forEach((uuid, download) -> {
+            NexusApplication.getDownloadManager().getDownloads().forEach((uuid, download) -> {
                 if (download.getState().equals(DownloadManager.DownloadState.WAITING)) {
                     downloading = uuid;
                     download.start();
-                    ((ApplicationFrame) app.getFrame()).executeJavaScript("window.location.href = 'downloads.html?reInit=false';");
                 }
             });
         }
@@ -76,8 +75,8 @@ public class ApplicationRunner {
                     String remainingTime = "\"\",";
                     String downloadSize = "\"\",";
                     String fileSize = "\"0 mb\",";
-                    String path = "\"" + download.getPath().toString().replace("\"", "''") + "\",";
-                    String url = "\"" + download.getUrl().toString().replace("\"", "''") + "\",";
+                    String path = "\"" + download.getPath().toString().replace("\\","/").replace("\"", "''") + "\",";
+                    String url = "\"" + download.getUrl().toString().replace("\\","/").replace("\"", "''") + "\",";
                     String id = "\"" + download.getId().replace("\"", "''") + "\",";
                     String progress = "\"" + download.getPercentString() + "\",";
                     String percent = download.getPercent() + ");";
@@ -91,8 +90,8 @@ public class ApplicationRunner {
                     String remainingTime = "\"" + download.getEstimatedRemainingTime().getSeconds() + " seconds\",";
                     String downloadSize = "\"" + (download.getFileSize() / 1000) / 1000 + " mb\",";
                     String fileSize = "\"" + (download.getLastBytesRead() / 1000) / 1000 + " mb\",";
-                    String path = "\"" + download.getPath().toString().replace("\"", "''") + "\",";
-                    String url = "\"" + download.getUrl().toString().replace("\"", "''") + "\",";
+                    String path = "\"" + download.getPath().toString().replace("\\","/").replace("\"", "''") + "\",";
+                    String url = "\"" + download.getUrl().toString().replace("\\","/").replace("\"", "''") + "\",";
                     String id = "\"" + download.getId().replace("\"", "''") + "\",";
                     String progress = "\"" + download.getPercentString() + "\",";
                     String percent = download.getPercent() + ");";
@@ -106,8 +105,8 @@ public class ApplicationRunner {
                     String remainingTime = "\"" + download.getEstimatedRemainingTime().getSeconds() + " seconds\",";
                     String downloadSize = "\"" + (download.getFileSize() / 1000) / 1000 + " mb\",";
                     String fileSize = downloadSize;
-                    String path = "\"" + download.getPath().toString().replace("\"", "''") + "\",";
-                    String url = "\"" + download.getUrl().toString().replace("\"", "''") + "\",";
+                    String path = "\"" + download.getPath().toString().replace("\\","/").replace("\"", "''") + "\",";
+                    String url = "\"" + download.getUrl().toString().replace("\\","/").replace("\"", "''") + "\",";
                     String id = "\"" + download.getId().replace("\"", "''") + "\",";
                     String progress = "\"" + download.getPercentString() + "\",";
                     String percent = download.getPercent() + ");";
