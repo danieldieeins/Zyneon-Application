@@ -304,8 +304,8 @@ public class Application {
             frame = new ZyneonWebFrame(getStartURL());
             frame.pack();
         }
-        frame.setMinimumSize(new Dimension(1200,500));
-        frame.setSize(new Dimension(1200,720));
+        frame.setMinimumSize(new Dimension(1201,501));
+        frame.setSize(new Dimension(1201,721));
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
     }
