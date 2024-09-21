@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.9-beta.2</version>
-    <name>Renovatio (2.0.0-build376)</name>
+    <version>2024.9-prerelease.1</version>
+    <name>Praeparatio (2.0.0-build377)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -23,13 +23,14 @@
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>
             <artifactId>zyndex-java</artifactId>
-            <version>2024.8.4</version>
+            <version>2024.9</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>
             <artifactId>base-desktop</artifactId>
-            <version>2024.9-alpha.8</version>
+            <version>2024.9</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
