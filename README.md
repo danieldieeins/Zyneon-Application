@@ -13,8 +13,6 @@ Supported platforms:
 # Description
 The Zyneon Application allows you to create, launch, manage, download and share Minecraft instances and modpacks. It supports a variety of Minecraft versions and has integrations for CurseForge and Modrinth. Install shaders, mods, resource packs and much more in the Zyneon Application.
 
-[Planned features (todo)](https://github.com/danieldieeins/Zyneon-Application/blob/master/application-main/TODO.md)
-
 ---
 # Web version (alpha)
 The application also has a version that can be easily accessed from an Internet browser. This is currently still in a very early alpha phase and is missing a lot of features.
