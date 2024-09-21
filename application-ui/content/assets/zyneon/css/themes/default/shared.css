@@ -61,15 +61,16 @@
 #hublayer .notifications .notification {
     position: relative;
     padding: 0.75rem 10rem 0.5rem 1rem;
-    background: #2770ff99;
+    background: rgba(255, 39, 39, 0.6);
     min-width: 25rem;
     pointer-events: auto;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
+    backdrop-filter: blur(16px);
 }
 
 #hublayer .notifications .notification:hover {
-    background: #4f89ff;
+    background: #ff4f4f;
 }
 
 #hublayer .notifications .notification:hover * {

@@ -24,7 +24,7 @@
         <div class="menu" id="main">
             <div class="menu-title">
                 <img src="assets/zyneon/images/logo.png" alt="Zyneon Studios logo">
-                <p>Zyneon<br>Application</p>
+                <p>NEXUS App<br>(Zyneon Application)</p>
             </div>
             <a onclick="toggleMenu();"><i class="bx bx-menu" id="switch"></i></a>
             <ul>
@@ -125,7 +125,7 @@
                     <a onclick="syncAbout();">
                         <div class="menu-item" id="about">
                             <i class='bx bxs-info-circle'></i>
-                            <span class="menu-item">About Zyneon App</span>
+                            <span class="menu-item">About NEXUS App</span>
                         </div>
                     </a>
                 </li>
@@ -158,7 +158,7 @@
                 </li>
             </ul>
             <div class="info">
-                <p class="app">Zyneon Application</p>
+                <p class="app">NEXUS App</p>
                 <p class="version" id="app-version">unstable ▪ web-app</p>
             </div>
         </div>
@@ -182,8 +182,8 @@
                             Update channel:
                             <label>
                                 <select id="channel" onchange="callJavaMethod('button.updateChannel.'+document.getElementById('channel').value);">
-                                    <option value="stable">Stable (recommended)</option>
-                                    <option value="experimental">Experimental (could be unstable)</option>
+                                    <option value="stable">Old (not recommended)</option>
+                                    <option value="experimental">Prerelease (recommended, new)</option>
                                 </select>
                             </label>
                         </h3>
@@ -276,23 +276,23 @@
             </div>
             <div id="about-app">
                 <div class="card">
-                    <h1>About Zyneon App</h1>
+                    <h1>About NEXUS App</h1>
                 </div>
                 <div class="card">
                     <h3>Information</h3>
-                    <h3 class="background"><span class="highlight">Zyneon Application</span></h3>
+                    <h3 class="background"><span class="highlight">NEXUS App (former Zyneon Application)</span></h3>
                     <h3><span class="highlight">Developers:</span> nerotvlive<br>
                         This is an open source project by <a onclick="openInBrowser('https://www.zyneonstudios.com/nexus')">Zyneon Nexus</a>. (GPL-3.0 license)<br><br><a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application');" target="_blank" class="button">View Code on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/ZyneonApplicationContent');" target="_blank" class="button">View Content on GitHub</a> or <a onclick="openInBrowser('https://github.com/danieldieeins/Zyneon-Application/blob/master/LICENSE.md');" target="_blank" class="button">View license</a><br></h3>
                 </div>
                 <div class="card">
                     <h3>List</h3>
                     <h3 class="background"><span class="highlight">Dependencies</span></h3>
-                    <h3>Nexus-Auth v2024.7 by Zyneon Nexus (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-auth');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-auth/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
-                    <h3>Nexus-Verget v2024.6 by Zyneon Nexus (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-verget');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-verget/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
-                    <h3>Nexus-Zyndex v2024.7 by Zyneon Nexus (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-zyndex-java');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-zyndex-java/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                    <h3>Nexus-Auth v2024.8 by Zyneon Nexus (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-auth');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-auth/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                    <h3>Nexus-Verget v2024.8 by Zyneon Nexus (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-verget');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-verget/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
+                    <h3>Nexus-Zyndex v2024.6 by Zyneon Nexus (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-zyndex-java');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/zyneonstudios/nexus-zyndex-java/blob/master/LICENSE.md');" target="_blank">View license</a><br></h3>
                     <br>
                     <h3>FlowUpdater v1.8.5 by FlowArg (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/FlowUpdater/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
-                    <h3>OpenLauncherLib v3.2.9 by FlowArg (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
+                    <h3>OpenLauncherLib v3.2.11 by FlowArg (GPL-3.0 license)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/FlowArg/OpenLauncherLib/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
                     <h3>toml4j v0.7.2 by Moandji Ezana (MIT License)<br><br>→ <a class="button" onclick="openInBrowser('https://github.com/mwanji/toml4j');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/mwanji/toml4j/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
                     <br>
                     <h3>Boxicons v2.1.4 by Atisa (MIT license)<br><br>→ <a class="button" onclick="openInBrowser('https://boxicons.com/');" target="_blank">View website</a> or <a class="button" onclick="openInBrowser('https://github.com/atisawd/boxicons');" target="_blank">View on GitHub</a> or <a class="button" onclick="openInBrowser('https://github.com/atisawd/boxicons/blob/master/LICENSE');" target="_blank">View license</a><br></h3>
