@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zyneonstudios</groupId>
-    <artifactId>application-parent</artifactId>
-    <version>2024.8</version>
+    <groupId>com.zyneonstudios.nexus</groupId>
+    <artifactId>application</artifactId>
+    <version>2024.9</version>
     <packaging>pom</packaging>
 
     <repositories>
@@ -18,6 +18,6 @@
 
     <modules>
         <module>application-main</module>
-        <module>application-updater</module>
+        <module>bootstrapper</module>
     </modules>
 </project>

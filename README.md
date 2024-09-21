@@ -1,5 +1,5 @@
-Zyneon Application ```2024.8.1f (Neo Primalia)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
-<br>`Contributions are welcome!` [Visit the rewrite branch to contribute](https://github.com/danieldieeins/Zyneon-Application/tree/shervann)
+Zyneon Application ```2024.9-prerelease.1 (Praeparatio)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
+<br>`Contributions are welcome!`
 
 Download the Zyneon Application from https://github.com/danieldieeins/Zyneon-Application/releases and https://nexus.zyneonstudios.com/application only! All other sources are not verified and we assume no liability!
 
