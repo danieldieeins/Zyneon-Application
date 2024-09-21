@@ -86,6 +86,11 @@ public class Connector {
     public void resolveRequest(String request) {
         //frame.sendNotification("Resolving...","(BackendConnector) resolving "+request+"...","",false);
         frame.executeJavaScript("checkForWeb();");
+        if (request.equals("sync.settings.general")) {
+            if(!frame.getBrowser().getURL().contains("tab=general")) {
+                frame.getBrowser().loadURL(Application.getSettingsURL() + "?tab=general");
+            }
+        }
         if (request.equals("button.copy.uuid")) {
             StringSelection uuid = new StringSelection(StringUtil.addHyphensToUUID(Application.auth.getAuthInfos().getUuid()));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
