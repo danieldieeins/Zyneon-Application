@@ -397,6 +397,7 @@ body {
                 font-size: 1.25rem;
                 color: var(--foreground2);
                 font-weight: 500;
+                cursor: pointer;
 
                 option {
                     background: var(--background1);

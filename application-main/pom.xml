@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.9.1-prerelease.1</version>
-    <name>Praeparatio (2.0.0-build377)</name>
+    <version>2024.9.1-prerelease.2</version>
+    <name>Praeparatio (2.0.0-build378)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>
             <artifactId>zyndex-java</artifactId>
-            <version>2024.9</version>
+            <version>2024.9.1</version>
             <scope>compile</scope>
         </dependency>
 
