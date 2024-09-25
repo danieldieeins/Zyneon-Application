@@ -180,6 +180,9 @@ function initSettings() {
     let id = "settings-general";
     if(urlParams.get('t')) {
         id = urlParams.get("t");
+        if(id==="modules") {
+            setContent('settings-modules'); connector('sync.settings.modules');
+        }
     }
 
     let hid = id+"-button";

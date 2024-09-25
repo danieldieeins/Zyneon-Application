@@ -105,6 +105,7 @@
 
 .settings .settings-content .group h3 {
     transition: background-color 0.25s ease !important;
+    color: var(--highlight);
 }
 
 .settings .settings-content .group:hover h3 {
@@ -190,6 +191,7 @@
                 }
 
                 .setting-value {
+                    color: var(--foreground2);
                     font-family: OpenSans, sans-serif;
                     overflow: hidden;
                     white-space: nowrap;
@@ -230,6 +232,50 @@
     color: var(--foreground2);
     padding: 0.46rem;
     border-radius: 0.35rem;
+}
+
+.settings .settings-content h3 span.text {
+    color: var(--foreground2);
+    font-weight: 1;
+    position: absolute;
+    text-align: right;
+    right: 0.4rem;
+}
+
+.settings .settings-content h3 span.buttons {
+    color: var(--foreground2);
+    font-weight: 1;
+    position: absolute;
+    text-align: right;
+    right: 0.2rem;
+
+    span {
+        margin-left: 0.25rem;
+    }
+
+    a {
+        transition: all 0.25s ease;
+        background: var(--background2);
+        border: 2px solid var(--border) !important;
+        padding: 0 0.3rem 0.1rem 0.3rem;
+        border-radius: 0.5rem;
+        margin-left: 0.25rem;
+        color: var(--foreground2);
+        text-decoration: none;
+    }
+
+    a:hover {
+        cursor: pointer;
+        background: var(--highlight);
+        color: var(--background5);
+        border-color: var(--highlight) !important;
+        box-shadow: 0 0 0.2rem var(--highlight);
+    }
+
+    a.danger:hover {
+        color: white !important;
+        border-color: red !important;
+    }
 }
 
 .settings .settings-content h3 select:hover {

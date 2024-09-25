@@ -393,9 +393,10 @@
     background-size: cover;
 
     .card {
-        opacity: 0.5;
-        background: var(--background5);
-        border-color: var(--background5);
+        opacity: 1;
+        background: var(--background7);
+        border-color: var(--background7);
+        backdrop-filter: blur(32px);
     }
 
     .card:hover {
@@ -522,8 +523,9 @@
         .card.warning {
             opacity: 1;
             width: 100%;
-            background: #c52d2d;
-            border-color: #ea5757;
+            background: #c5b12d75;
+            border-color: #eacd5775;
+            backdrop-filter: blur(16px);
             height: fit-content;
             padding: 0.75rem 0.75rem 0.7rem 0.75rem;
 

@@ -38,6 +38,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
     private static boolean driveAccess = false;
     private static NexusApplication application = null;
     private static double zoomLevel = 0;
+    private static ArrayList<String> bundledModules;
 
     public ApplicationStorage(String[] args, NexusApplication app) {
         this.app = app;
@@ -65,6 +66,13 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
             }
             if (properties.getString("name") != null) {
                 applicationName = properties.getString("name");
+            }
+            if(properties.has("modules")) {
+                try {
+                    bundledModules = (ArrayList<String>) properties.get("modules");
+                } catch (Exception e) {
+                    bundledModules = new ArrayList<>();
+                }
             }
 
 
@@ -110,6 +118,10 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
     public static void enableDriveAccess() {
         ((ApplicationFrame)application.getFrame()).executeJavaScript("document.getElementById('drive-button').style.display = 'flex';");
         driveAccess = true;
+    }
+
+    public static ArrayList<String> getBundledModules() {
+        return bundledModules;
     }
 
     public static double getZoomLevel() {

@@ -37,11 +37,14 @@ public class ApplicationFrame extends NexusWebFrame implements ComponentListener
         client.addDisplayHandler(new CefDisplayHandlerAdapter() {
             @Override
             public boolean onConsoleMessage(CefBrowser browser, CefSettings.LogSeverity level, String message, String source, int line) {
-                if (message.startsWith("[CONNECTOR] ")) {
+                if (message.startsWith("[CONNECTOR] async.")) {
                     CompletableFuture.runAsync(() -> {
-                        String request = message.replace("[CONNECTOR] ", "");
+                        String request = message.replace("[CONNECTOR] async.", "");
                         connector.resolveRequest(request);
                     });
+                } else if (message.startsWith("[CONNECTOR] ")) {
+                    String request = message.replace("[CONNECTOR] ", "");
+                    connector.resolveRequest(request);
                 } else if (message.startsWith("[LOG] ")) {
                     NexusApplication.getLogger().log(message.replace("[LOG] ",""));
                 } else if (message.startsWith("[ERR] ")) {

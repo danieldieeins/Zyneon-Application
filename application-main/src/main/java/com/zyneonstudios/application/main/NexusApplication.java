@@ -193,12 +193,19 @@ public class NexusApplication {
         if(!ApplicationStorage.isOffline()) {
             try {
                 ArrayList<String> disabledIds = new ArrayList<>();
-                if(ApplicationStorage.getSettings().get("settings.modules.disabledIds")!=null) {
+                if(ApplicationStorage.getSettings().has("settings.modules.disabledIds")) {
                     disabledIds = (ArrayList<String>) ApplicationStorage.getSettings().get("settings.modules.disabledIds");
                 }
 
-                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/nexus-minecraft-module.json",modules,disabledIds);
-                downloadModule("https://zyneonstudios.github.io/nexus-nex/zyndex/modules/official/zyneon-star-module.json",modules,disabledIds);
+                try {
+                    if(!ApplicationStorage.getBundledModules().isEmpty()) {
+                        for(String url : ApplicationStorage.getBundledModules()) {
+                            downloadModule(url,modules,disabledIds);
+                        }
+                    }
+                } catch (Exception e) {
+                    NexusUtilities.getLogger().printErr("NEXUS","ERROR","Couldn't download modules...",e.getMessage(),e.getStackTrace(),"Check your internet connection");
+                }
 
                 updated = true;
             } catch (Exception e) {

@@ -8,6 +8,7 @@ import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -50,20 +51,21 @@ public class ApplicationRunner {
         }
 
 
-        if (downloading != null) {
-            Download download = NexusApplication.getDownloadManager().getDownloads().get(downloading);
-            if (download.isFinished()) {
-                downloading = null;
-            }
-        } else {
-            NexusApplication.getDownloadManager().getDownloads().forEach((uuid, download) -> {
-                if (download.getState().equals(DownloadManager.DownloadState.WAITING)) {
-                    downloading = uuid;
-                    download.start();
+        CompletableFuture.runAsync(()-> {
+            if (downloading != null) {
+                Download download = NexusApplication.getDownloadManager().getDownloads().get(downloading);
+                if (download.isFinished()) {
+                    downloading = null;
                 }
-            });
-        }
-
+            } else {
+                NexusApplication.getDownloadManager().getDownloads().forEach((uuid, download) -> {
+                    if (download.getState().equals(DownloadManager.DownloadState.WAITING)) {
+                        downloading = uuid;
+                        download.start();
+                    }
+                });
+            }
+        });
 
         if (((ApplicationFrame) app.getFrame()).getBrowser().getURL().contains("/downloads.html")) {
             app.getDownloadManager().getDownloads().forEach((uuid, download) -> {
@@ -93,7 +95,7 @@ public class ApplicationRunner {
                     String path = "\"" + download.getPath().toString().replace("\\","/").replace("\"", "''") + "\",";
                     String url = "\"" + download.getUrl().toString().replace("\\","/").replace("\"", "''") + "\",";
                     String id = "\"" + download.getId().replace("\"", "''") + "\",";
-                    String progress = "\"" + download.getPercentString() + "\",";
+                    String progress = "\"" + (int)download.getPercent() + "%\",";
                     String percent = download.getPercent() + ");";
                     String command = title + state + elapsedTime + downloadSpeed + remainingTime + downloadSize + fileSize + path + url + id + progress + percent;
                     ((ApplicationFrame) app.getFrame()).executeJavaScript(command);

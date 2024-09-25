@@ -5,10 +5,14 @@ import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
+import com.zyneonstudios.application.modules.ModuleLoader;
 import com.zyneonstudios.application.modules.search.ModuleSearch;
 import com.zyneonstudios.nexus.modules.ReadableModule;
 
 import java.awt.*;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -138,6 +142,27 @@ public class FrameConnector {
             }
             String title = request_[1];
             frame.setTitlebar(title,background,foreground);
+        } else if(request.startsWith("uninstall.")) {
+            request = request.replaceFirst("uninstall.","");
+            if(request.startsWith("module.")) {
+                String id = request.replaceFirst("module.","");
+                if(NexusApplication.getModuleLoader().getModuleIds().contains(id)) {
+                    ApplicationStorage.getSettings().ensure("settings.modules.uninstall",new ArrayList<>());
+                    ArrayList<String> uninstallModules = (ArrayList<String>)ApplicationStorage.getSettings().get("settings.modules.uninstall");
+                    if(!uninstallModules.contains(NexusApplication.getModuleLoader().moduleJars.get(id))) {
+                        uninstallModules.add(NexusApplication.getModuleLoader().moduleJars.get(id));
+                    }
+                    ApplicationStorage.getSettings().set("settings.modules.uninstall",uninstallModules);
+                    ApplicationStorage.getSettings().set("cache.restartPage","settings.html?t=modules");
+                    ApplicationStorage.getSettings().ensure("settings.modules.disabledIds",new ArrayList<>());
+                    ArrayList<String> disabledModules = (ArrayList<String>)ApplicationStorage.getSettings().get("settings.modules.disabledIds");
+                    if(!disabledModules.contains(id)) {
+                        disabledModules.add(id);
+                    }
+                    ApplicationStorage.getSettings().set("settings.modules.disabledIds",disabledModules);
+                    application.restart(true);
+                }
+            }
         } else if(request.startsWith("firstrun.")) {
             request = request.replaceFirst("firstrun.","");
             if(request.equals("theme")) {
@@ -217,6 +242,21 @@ public class FrameConnector {
                 frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').classList.add('active');");
             }
             frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ ApplicationStorage.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
+        } else if(request.equals("modules")) {
+            if(!NexusApplication.getModuleLoader().getApplicationModules().isEmpty()) {
+                frame.executeJavaScript("document.getElementById('settings-modules-content').innerHTML = \"<h4>Installed modules</h4><h3>Loading... <span class='text'><i class='bx bx-loader-alt bx-spin' ></i></span></h3>\";");
+                StringBuilder command = new StringBuilder("document.getElementById('settings-modules-content').innerHTML = \"<h4>Installed modules</h4>");
+                for(ApplicationModule module:NexusApplication.getModuleLoader().getApplicationModules()) {
+                    String name = module.getName().replace("\"","''");
+                    String author = module.getAuthors().replace("\"","").replace("'","").replace("[","").replace("]","").replace(",",", ");
+                    author = author.split(",",2)[0];
+                    String version = module.getVersion();
+                    command.append("<h3>").append(name).append(" by ").append(author).append("<span class='buttons'><span>").append(version).append("</span><a onclick='connector(`sync.uninstall.module.").append(module.getId()).append("`);' class='danger'>Uninstall</a></span></h3>");
+                }
+                frame.executeJavaScript(command+"\"");
+            }
+        } else if(request.equals("indexes")) {
+            frame.executeJavaScript("if(!document.getElementById('indexes-group-default').innerHTML.includes('Zyneon NEX')) { document.getElementById('indexes-group-default').innerHTML += \"<h3>Zyneon NEX <span class='buttons'><span>Official</span><a onclick='openUrl(`https://github.com/zyneonstudios/nexus-nex`);'>GitHub</a><a onclick='openUrl(`https://nexus.zyneonstudios.com/nex/`);'>Open</a></span></h3>\"}");
         } else if(request.equals("about")) {
             frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \""+ ApplicationStorage.getApplicationVersion()+"\"");
         }

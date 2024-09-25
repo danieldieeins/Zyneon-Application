@@ -197,7 +197,7 @@
                                             <label>
                                                 <select id="appearance-settings-language" onchange="syncLanguage();">
                                                     <option value="en">English (English)</option>
-                                                    <option value="de">German (Deutsch)</option>
+                                                    <option value="de">German (Deutsch, 80%)</option>
                                                 </select>
                                             </label>
                                         </span>
@@ -234,18 +234,152 @@
                                 </div>
                             </div>
                             <div id="settings-indexes">
+                                <div class="group" id="indexes-group-default">
+                                    <h4>Default index</h4>
+                                </div>
                                 <div class="group template" id="indexes-group-template">
                                     <h4>New settings group</h4>
                                 </div>
                             </div>
                             <div id="settings-modules">
+                                <div id="settings-modules-content">
+                                    <div class="group">
+                                        <h4>No modules found</h4>
+                                        <h3>You don't have any modules installed <span class="buttons"><a href="discover.html?l=search&moduleId=-1">Discover modules</a></span></h3>
+                                    </div>
+                                </div>
                                 <div class="group template" id="modules-group-template">
                                     <h4>New settings group</h4>
                                 </div>
                             </div>
                             <div id="settings-about">
-                                <div class="card">
-                                    <span id="settings-global-application-version">${application.version}</span>
+                                <div class="group">
+                                    <h4>NEXUS App by Zyneon Studios</h4>
+                                    <h3>Version <span class="text" id="settings-global-application-version">${application.version}</span></h3>
+                                    <h3>Author(s) <span class="text">Zyneon Nexus</span></h3>
+                                    <h3>Publisher <span class="text">Zyneon Studios</span></h3>
+                                    <h3>License <span class="buttons"><span>GPL-3.0</span><a onclick="openUrl('https://github.com/danieldieeins/Zyneon-Application/blob/master/LICENSE.md');">View</a></span></h3>
+                                    <h3>Code <span class="buttons"><span>Open source</span><a onclick="openUrl('https://github.com/danieldieeins/Zyneon-Application');">View</a></span></h3>
+                                </div>
+                                <div class="group">
+                                    <h4>Contributors</h4>
+                                    <h3>nerotvlive <span class="buttons"><a onclick="openUrl('https://nerotv.live/links');">Links</a><a onclick="openUrl('https://github.com/danieldieeins');">GitHub</a></span></h3>
+                                </div>
+                                <div class="group">
+                                    <h4>Internal dependencies</h4>
+                                    <h3>
+                                        Desktop Base v2024.9 by Zyneon Nexus
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/zyneonstudios/nexus-desktop-base/blob/main/LICENSE.md');">GPL-3.0 license</a>
+                                            <a onclick="openUrl('https://github.com/zyneonstudios/nexus-desktop-base');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Zyndex Java API v2024.9.1 by Zyneon Nexus
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/zyneonstudios/nexus-zyndex-java/blob/main/LICENSE.md');">GPL-3.0 license</a>
+                                            <a onclick="openUrl('https://github.com/zyneonstudios/nexus-zyndex-java');">Code</a>
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="group">
+                                    <h4>base-desktop@nexus Dependencies</h4>
+                                    <h3>
+                                        Flatlaf v3.5.1 by formdev
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/JFormDesigner/FlatLaf/blob/main/LICENSE');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/JFormDesigner/FlatLaf');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        JcefMaven v126.2.0 by friwi
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/jcefmaven/jcefmaven/blob/master/LICENSE');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/jcefmaven/jcefmaven');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Nexus Utilities v2024.9.3 by Zyneon Nexus
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/zyneonstudios/nexus-utilities/blob/main/LICENSE.md');">GPL-3.0 license</a>
+                                            <a onclick="openUrl('https://github.com/zyneonstudios/nexus-utilities');">Code</a>
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="group">
+                                    <h4>base-utilities@nexus Dependencies</h4>
+                                    <h3>
+                                        GSON v2.11.0 by Google
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/google/gson/blob/main/LICENSE');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/google/gson');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Commons-Compress v1.27.1 by Apache
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/apache/commons-compress/blob/master/LICENSE.txt');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/apache/commons-compress');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        SQLite-JDBC v3.46.1.0 by Xerial
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/xerial/sqlite-jdbc/blob/master/LICENSE');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/xerial/sqlite-jdbc');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        MySQLConnectorJ v9.0.0 by MySQL
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/mysql/mysql-connector-j/blob/release/9.x/LICENSE');">License</a>
+                                            <a onclick="openUrl('https://github.com/mysql/mysql-connector-j');">Code</a>
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="group">
+                                    <h4>gson@google Dependencies</h4>
+                                    <h3>
+                                        ErrorProne Annotations v2.27.0 by Google
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/google/error-prone/blob/master/COPYING');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/google/error-prone');">Code</a>
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="group">
+                                    <h4>commons-compress@apache Dependencies</h4>
+                                    <h3>
+                                        Commons-Codec v1.17.1 by Apache
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/apache/commons-codec/blob/master/LICENSE.txt');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/apache/commons-codec');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Commons-IO v2.16.1 by Apache
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/apache/commons-io/blob/master/LICENSE.txt');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/apache/commons-io');">Code</a>
+                                        </span>
+                                    </h3>
+                                    <h3>
+                                        Commons-Lang v3.16.0 by Apache
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/apache/commons-lang/blob/master/LICENSE.txt');">Apache-2.0 license</a>
+                                            <a onclick="openUrl('https://github.com/apache/commons-lang');">Code</a>
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="group">
+                                    <h4>sqlite-jdbc@xerial Dependencies</h4>
+                                    <h3>
+                                        SLF4J-API v1.7.36 by SLF4J
+                                        <span class="buttons">
+                                            <a onclick="openUrl('https://github.com/qos-ch/slf4j/blob/master/LICENSE.txt');">MIT license</a>
+                                            <a onclick="openUrl('https://github.com/qos-ch/slf4j');">Code</a>
+                                        </span>
+                                    </h3>
                                 </div>
                                 <div class="group template" id="about-group-template">
                                     <h4>New settings group</h4>
