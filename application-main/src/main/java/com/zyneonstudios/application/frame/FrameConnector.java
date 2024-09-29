@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class FrameConnector {
 
@@ -144,26 +145,28 @@ public class FrameConnector {
             String title = request_[1];
             frame.setTitlebar(title,background,foreground);
         } else if(request.startsWith("uninstall.")) {
-            request = request.replaceFirst("uninstall.","");
-            if(request.startsWith("module.")) {
-                String id = request.replaceFirst("module.","");
-                if(NexusApplication.getModuleLoader().getModuleIds().contains(id)) {
-                    ApplicationStorage.getSettings().ensure("settings.modules.uninstall",new ArrayList<>());
-                    ArrayList<String> uninstallModules = (ArrayList<String>)ApplicationStorage.getSettings().get("settings.modules.uninstall");
-                    if(!uninstallModules.contains(NexusApplication.getModuleLoader().moduleJars.get(id))) {
-                        uninstallModules.add(NexusApplication.getModuleLoader().moduleJars.get(id));
+            String sid = request.replaceFirst("uninstall.","");
+            CompletableFuture.runAsync(()->{
+                if(sid.startsWith("module.")) {
+                    String id = sid.replaceFirst("module.","");
+                    if(NexusApplication.getModuleLoader().getModuleIds().contains(id)) {
+                        ApplicationStorage.getSettings().ensure("settings.modules.uninstall",new ArrayList<>());
+                        ArrayList<String> uninstallModules = (ArrayList<String>)ApplicationStorage.getSettings().get("settings.modules.uninstall");
+                        if(!uninstallModules.contains(NexusApplication.getModuleLoader().moduleJars.get(id))) {
+                            uninstallModules.add(NexusApplication.getModuleLoader().moduleJars.get(id));
+                        }
+                        ApplicationStorage.getSettings().set("settings.modules.uninstall",uninstallModules);
+                        ApplicationStorage.getSettings().set("cache.restartPage","settings.html?t=modules");
+                        ApplicationStorage.getSettings().ensure("settings.modules.disabledIds",new ArrayList<>());
+                        ArrayList<String> disabledModules = (ArrayList<String>)ApplicationStorage.getSettings().get("settings.modules.disabledIds");
+                        if(!disabledModules.contains(id)) {
+                            disabledModules.add(id);
+                        }
+                        ApplicationStorage.getSettings().set("settings.modules.disabledIds",disabledModules);
+                        application.restart(true);
                     }
-                    ApplicationStorage.getSettings().set("settings.modules.uninstall",uninstallModules);
-                    ApplicationStorage.getSettings().set("cache.restartPage","settings.html?t=modules");
-                    ApplicationStorage.getSettings().ensure("settings.modules.disabledIds",new ArrayList<>());
-                    ArrayList<String> disabledModules = (ArrayList<String>)ApplicationStorage.getSettings().get("settings.modules.disabledIds");
-                    if(!disabledModules.contains(id)) {
-                        disabledModules.add(id);
-                    }
-                    ApplicationStorage.getSettings().set("settings.modules.disabledIds",disabledModules);
-                    application.restart(true);
                 }
-            }
+            });
         } else if(request.startsWith("firstrun.")) {
             request = request.replaceFirst("firstrun.","");
             if(request.equals("theme")) {
@@ -224,42 +227,46 @@ public class FrameConnector {
     }
 
     private void syncSettings(String request) {
-        if(request.equals("general")) {
-            String channel = "experimental"; boolean autoUpdate = false;
-            if(ApplicationStorage.getUpdateSettings().getBoolean("updater.settings.autoUpdate")!=null) {
-                autoUpdate = ApplicationStorage.getUpdateSettings().getBool("updater.settings.autoUpdate");
-            }
-            if(ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel")!=null) {
-                channel = ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel");
-            }
-            if(ApplicationStorage.getOS().startsWith("Linux")) {
-                boolean linuxCustomFrame = true;
-                if (ApplicationStorage.getSettings().get("settings.linux.customFrame") != null) {
-                    linuxCustomFrame = ApplicationStorage.getSettings().getBool("settings.linux.customFrame");
+        switch (request) {
+            case "general" -> {
+                String channel = "experimental";
+                boolean autoUpdate = false;
+                if (ApplicationStorage.getUpdateSettings().getBoolean("updater.settings.autoUpdate") != null) {
+                    autoUpdate = ApplicationStorage.getUpdateSettings().getBool("updater.settings.autoUpdate");
                 }
-                frame.executeJavaScript("document.getElementById('linux-settings-custom-frame').style.display = 'inherit'; linuxFrame = "+linuxCustomFrame+"; document.getElementById('linux-settings-enable-custom-frame').checked = linuxFrame;");
-            }
-            if(autoUpdate) {
-                frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').classList.add('active');");
-            }
-            frame.executeJavaScript("updates = "+autoUpdate+"; document.getElementById('updater-settings-update-channel').value = \""+channel+"\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '"+ ApplicationStorage.startPage+"'; document.getElementById('updater-settings').style.display = 'inherit';");
-        } else if(request.equals("modules")) {
-            if(!NexusApplication.getModuleLoader().getApplicationModules().isEmpty()) {
-                frame.executeJavaScript("document.getElementById('settings-modules-content').innerHTML = \"<h4>Installed modules</h4><h3>Loading... <span class='text'><i class='bx bx-loader-alt bx-spin' ></i></span></h3>\";");
-                StringBuilder command = new StringBuilder("document.getElementById('settings-modules-content').innerHTML = \"<h4>Installed modules</h4>");
-                for(ApplicationModule module:NexusApplication.getModuleLoader().getApplicationModules()) {
-                    String name = module.getName().replace("\"","''");
-                    String author = module.getAuthors().replace("\"","").replace("'","").replace("[","").replace("]","").replace(",",", ");
-                    author = author.split(",",2)[0];
-                    String version = module.getVersion();
-                    command.append("<h3>").append(name).append(" by ").append(author).append("<span class='buttons'><span>").append(version).append("</span><a onclick='connector(`sync.uninstall.module.").append(module.getId()).append("`);' class='danger'>Uninstall</a></span></h3>");
+                if (ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel") != null) {
+                    channel = ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel");
                 }
-                frame.executeJavaScript(command+"\"");
+                if (ApplicationStorage.getOS().startsWith("Linux")) {
+                    boolean linuxCustomFrame = true;
+                    if (ApplicationStorage.getSettings().get("settings.linux.customFrame") != null) {
+                        linuxCustomFrame = ApplicationStorage.getSettings().getBool("settings.linux.customFrame");
+                    }
+                    frame.executeJavaScript("document.getElementById('linux-settings-custom-frame').style.display = 'inherit'; linuxFrame = " + linuxCustomFrame + "; document.getElementById('linux-settings-enable-custom-frame').checked = linuxFrame;");
+                }
+                if (autoUpdate) {
+                    frame.executeJavaScript("document.getElementById('updater-settings-enable-updates').classList.add('active');");
+                }
+                frame.executeJavaScript("updates = " + autoUpdate + "; document.getElementById('updater-settings-update-channel').value = \"" + channel + "\"; document.getElementById('updater-settings').style.display = 'inherit'; document.getElementById('general-settings-start-page').value = '" + ApplicationStorage.startPage + "'; document.getElementById('updater-settings').style.display = 'inherit';");
             }
-        } else if(request.equals("indexes")) {
-            frame.executeJavaScript("if(!document.getElementById('indexes-group-default').innerHTML.includes('Zyneon NEX')) { document.getElementById('indexes-group-default').innerHTML += \"<h3>Zyneon NEX <span class='buttons'><span>Official</span><a onclick='openUrl(`https://github.com/zyneonstudios/nexus-nex`);'>GitHub</a><a onclick='openUrl(`https://nexus.zyneonstudios.com/nex/`);'>Open</a></span></h3>\"}");
-        } else if(request.equals("about")) {
-            frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \""+ ApplicationStorage.getApplicationVersion()+"\"");
+            case "modules" -> {
+                if (!NexusApplication.getModuleLoader().getApplicationModules().isEmpty()) {
+                    frame.executeJavaScript("document.getElementById('settings-modules-content').innerHTML = \"<h4>Installed modules</h4><h3>Loading... <span class='text'><i class='bx bx-loader-alt bx-spin' ></i></span></h3>\";");
+                    StringBuilder command = new StringBuilder("document.getElementById('settings-modules-content').innerHTML = \"<h4>Installed modules</h4>");
+                    for (ApplicationModule module : NexusApplication.getModuleLoader().getApplicationModules()) {
+                        String name = module.getName().replace("\"", "''");
+                        String author = module.getAuthors().replace("\"", "").replace("'", "").replace("[", "").replace("]", "").replace(",", ", ");
+                        author = author.split(",", 2)[0];
+                        String version = module.getVersion();
+                        command.append("<h3>").append(name).append(" by ").append(author).append("<span class='buttons'><span>").append(version).append("</span><a onclick='connector(`sync.uninstall.module.").append(module.getId()).append("`);' class='danger'>Uninstall</a></span></h3>");
+                    }
+                    frame.executeJavaScript(command + "\"");
+                }
+            }
+            case "indexes" ->
+                    frame.executeJavaScript("if(!document.getElementById('indexes-group-default').innerHTML.includes('Zyneon NEX')) { document.getElementById('indexes-group-default').innerHTML += \"<h3>Zyneon NEX <span class='buttons'><span>Official</span><a onclick='openUrl(`https://github.com/zyneonstudios/nexus-nex`);'>GitHub</a><a onclick='openUrl(`https://nexus.zyneonstudios.com/nex/`);'>Open</a></span></h3>\"}");
+            case "about" ->
+                    frame.executeJavaScript("document.getElementById('settings-global-application-version').innerText = \"" + ApplicationStorage.getApplicationVersion() + "\"");
         }
     }
 
@@ -325,8 +332,14 @@ public class FrameConnector {
                     }
                     String path;
                     if (ApplicationStorage.getBundledModules().contains(request)) {
+                        new File(ApplicationStorage.getApplicationPath()+"temp/modules/").mkdirs();
                         path = ApplicationStorage.getApplicationPath() + "temp/modules/" + module.getId() + ".jar";
-                        ArrayList<String> disabledModules = (ArrayList<String>) ApplicationStorage.getSettings().get("settings.modules.disabledIds");
+                        ArrayList<String> disabledModules;
+                        if(ApplicationStorage.getSettings().has("settings.modules.disabledIds")) {
+                            disabledModules = (ArrayList<String>) ApplicationStorage.getSettings().get("settings.modules.disabledIds");
+                        } else {
+                            disabledModules = new ArrayList<>();
+                        }
                         if (disabledModules.contains(module.getId())) {
                             disabledModules.remove(module.getId());
                             ApplicationStorage.getSettings().set("settings.modules.disabledIds", disabledModules);
