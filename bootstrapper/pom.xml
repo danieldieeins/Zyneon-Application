@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.zyneonstudios.nexus</groupId>
-        <artifactId>application</artifactId>
-        <version>2024.9</version>
+        <artifactId>application-parent</artifactId>
+        <version>2024.9.1</version>
     </parent>
 
     <artifactId>bootstrapper</artifactId>

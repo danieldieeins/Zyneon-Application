@@ -6,11 +6,11 @@
 
     <parent>
         <groupId>com.zyneonstudios.nexus</groupId>
-        <artifactId>application</artifactId>
-        <version>2024.9</version>
+        <artifactId>application-parent</artifactId>
+        <version>2024.9.1</version>
     </parent>
 
-    <artifactId>application-main</artifactId>
+    <artifactId>application</artifactId>
     <version>2024.9.1-rc.1</version>
     <name>Praeparatio (2.0.0-build379)</name>
 
