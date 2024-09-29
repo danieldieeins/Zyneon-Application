@@ -21,7 +21,7 @@ import java.util.UUID;
 public record ApplicationStorage(String[] args, NexusApplication app) {
 
     public static String language = "en";
-    public static String urlBase = "file://" + getApplicationPath() + "temp/ui/";
+    public static String urlBase;
     public static String startPage = "discover.html";
     public static String theme = "automatic";
     public static boolean test = false;
@@ -56,6 +56,8 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
                 NexusApplication.getLogger().enableDebug();
             }
         }
+
+        urlBase = "file://" + getApplicationPath() + "temp/ui/";
 
         FileExtractor.extractResourceFile("nexus.json",getApplicationPath()+"temp/nexus.json", Main.class);
         JsonStorage properties = new JsonStorage(new File(getApplicationPath() + "temp/nexus.json"));
