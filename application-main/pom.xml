@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.9.1-prerelease.2</version>
-    <name>Praeparatio (2.0.0-build378)</name>
+    <version>2024.9.1-rc.1</version>
+    <name>Praeparatio (2.0.0-build379)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

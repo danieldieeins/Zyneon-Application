@@ -52,9 +52,10 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
                 NexusApplication.getLogger().enableDebug();
             } else if (arg.startsWith("--ui:")) {
                 urlBase = arg.replace("--ui:", "");
-            }
-            else if(arg.startsWith("--path:")) {
+            } else if(arg.startsWith("--path:")) {
                 applicationPath = arg.replace("--path:", "");
+            } else if(arg.startsWith("--debug")) {
+                NexusApplication.getLogger().enableDebug();
             }
         }
 

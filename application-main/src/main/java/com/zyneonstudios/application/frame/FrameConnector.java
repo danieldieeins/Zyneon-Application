@@ -1,23 +1,24 @@
 package com.zyneonstudios.application.frame;
 
 import com.zyneonstudios.application.download.Download;
+import com.zyneonstudios.application.events.DownloadFinishEvent;
 import com.zyneonstudios.application.frame.web.ApplicationFrame;
 import com.zyneonstudios.application.main.ApplicationStorage;
 import com.zyneonstudios.application.main.NexusApplication;
 import com.zyneonstudios.application.modules.ApplicationModule;
-import com.zyneonstudios.application.modules.ModuleLoader;
 import com.zyneonstudios.application.modules.search.ModuleSearch;
 import com.zyneonstudios.nexus.modules.ReadableModule;
+import com.zyneonstudios.nexus.utilities.NexusUtilities;
 
 import java.awt.*;
 import java.io.File;
-import java.io.RandomAccessFile;
-import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class FrameConnector {
 
@@ -263,14 +264,14 @@ public class FrameConnector {
     }
 
     private void syncDiscover(String request) {
-        if(request.startsWith("search.")) {
-            request = request.replaceFirst("search.","");
-            if(request.startsWith("modules.")) {
-                request = request.replaceFirst("modules.","");
+        if (request.startsWith("search.")) {
+            request = request.replaceFirst("search.", "");
+            if (request.startsWith("modules.")) {
+                request = request.replaceFirst("modules.", "");
                 String query;
                 int offset;
-                if(request.contains(".")) {
-                    String[] req = request.split("\\.",2);
+                if (request.contains(".")) {
+                    String[] req = request.split("\\.", 2);
                     offset = Integer.parseInt(req[0]);
                     query = req[1];
                 } else {
@@ -279,39 +280,85 @@ public class FrameConnector {
                 }
                 ArrayList<ReadableModule> results = null;
                 String searchTerm = "";
-                if(moduleSearch.getCachedSearchTerm()!=null) {
+                if (moduleSearch.getCachedSearchTerm() != null) {
                     searchTerm = moduleSearch.getCachedSearchTerm();
                 }
-                if(moduleSearch.getCachedResults()==null||!searchTerm.equals(query)) {
+                if (moduleSearch.getCachedResults() == null || !searchTerm.equals(query)) {
                     results = moduleSearch.search(query);
                 }
-                if(moduleSearch.getCachedSearchTerm()!=null) {
-                    if(!moduleSearch.getCachedSearchTerm().isEmpty()&&!moduleSearch.getCachedSearchTerm().isBlank()) {
-                        frame.executeJavaScript("document.getElementById(\"search-bar\").placeholder = \""+moduleSearch.getCachedSearchTerm()+"\";");
+                if (moduleSearch.getCachedSearchTerm() != null) {
+                    if (!moduleSearch.getCachedSearchTerm().isEmpty() && !moduleSearch.getCachedSearchTerm().isBlank()) {
+                        frame.executeJavaScript("document.getElementById(\"search-bar\").placeholder = \"" + moduleSearch.getCachedSearchTerm() + "\";");
                     }
                 }
-                if(results == null) {
+                if (results == null) {
                     results = moduleSearch.search(query);
                 }
-                for(ReadableModule module : results) {
-                    String tags = "Tags: "+module.getTagString();
-                    String meta = module.getId()+" | v"+module.getVersion()+" | Hidden: "+module.isHidden()+"<br>"+tags;
+                for (ReadableModule module : results) {
+                    String tags = "Tags: " + module.getTagString();
+                    String meta = module.getId() + " | v" + module.getVersion() + " | Hidden: " + module.isHidden() + "<br>" + tags;
                     String location = module.getLocation();
-                    String actions = "<a onclick=\\\"connector('sync.discover.details.module."+location+"');\\\"><i class='bx bx-spreadsheet'></i> More</a> ";
-                    if(NexusApplication.getModuleLoader().getModuleIds().contains(module.getId())) {
-                        actions = "v"+NexusApplication.getModuleLoader().getModules().get(module.getId()).getVersion()+"  <a onclick=\\\"connector('sync.discover.details.module."+location+"');\\\"><i class='bx bx-spreadsheet'></i> More</a> <a style=\\\"background: #473e5c !important; color: white!important; cursor: not-allowed !important; box-shadow: 0 0 0.2rem var(--shadow3) !important;\\\"><i class='bx bx-check'></i> Installed</a>";
+                    String actions = "<a onclick=\\\"connector('sync.discover.details.module." + location + "');\\\"><i class='bx bx-spreadsheet'></i> More</a> ";
+                    if (NexusApplication.getModuleLoader().getModuleIds().contains(module.getId())) {
+                        actions = "v" + NexusApplication.getModuleLoader().getModules().get(module.getId()).getVersion() + "  <a onclick=\\\"connector('sync.discover.details.module." + location + "');\\\"><i class='bx bx-spreadsheet'></i> More</a> <a style=\\\"background: #473e5c !important; color: white!important; cursor: not-allowed !important; box-shadow: 0 0 0.2rem var(--shadow3) !important;\\\"><i class='bx bx-check'></i> Installed</a>";
                     } else {
-                        actions = actions+"<a style=\\\"background: #5632a8; color: white;\\\" onclick=\\\"connector('sync.discover.install.module.nexus-minecraft-module');\\\"><i class='bx bx-download'></i> Install</a>";
+                        actions = actions + "<a style=\\\"background: #5632a8; color: white;\\\" onclick=\\\"connector('async.sync.discover.install.module." + location + "');\\\"><i class='bx bx-download'></i> Install</a>";
                     }
-                    String command = "addResult(\""+module.getId()+"\",\""+module.getThumbnailUrl()+"\",\""+module.getName()+"\",\""+module.getAuthor()+"\",\""+formatForDetails(module.getSummary())+"\",\""+meta+"\",\""+actions+"\",\""+location+"\");";
+                    String command = "addResult(\"" + module.getId() + "\",\"" + module.getThumbnailUrl() + "\",\"" + module.getName() + "\",\"" + module.getAuthor() + "\",\"" + formatForDetails(module.getSummary()) + "\",\"" + meta + "\",\"" + actions + "\",\"" + location + "\");";
                     frame.executeJavaScript(command);
                 }
             }
-        } else if(request.startsWith("details.")) {
-            request = request.replaceFirst("details.","");
-            if(request.startsWith("module.")) {
-                ReadableModule module = new ReadableModule(URLDecoder.decode(request.replaceFirst("module.",""),StandardCharsets.UTF_8));
-                frame.executeJavaScript("enableOverlay(\""+initDetails(module.getName(),module.getId(),"Application module",module.getVersion(),module.getSummary(),module.getAuthor(),module.isHidden(),module.getTagString(),module.getDescription(),module.getChangelogs().toString(),module.getVersions().toString(),module.getInfoText(),module.getInfoCard(),module.getBackgroundUrl(),module.getIconUrl(),module.getLogoUrl(),module.getThumbnailUrl())+"\");");
+        } else if (request.startsWith("details.")) {
+            request = request.replaceFirst("details.", "");
+            if (request.startsWith("module.")) {
+                ReadableModule module = new ReadableModule(URLDecoder.decode(request.replaceFirst("module.", ""), StandardCharsets.UTF_8));
+                frame.executeJavaScript("enableOverlay(\"" + initDetails(module.getName(), module.getId(), "Application module", module.getVersion(), module.getSummary(), module.getAuthor(), module.isHidden(), module.getTagString(), module.getDescription(), module.getChangelogs().toString(), module.getVersions().toString(), module.getInfoText(), module.getInfoCard(), module.getBackgroundUrl(), module.getIconUrl(), module.getLogoUrl(), module.getThumbnailUrl()) + "\");");
+            }
+        } else if (request.startsWith("install.")) {
+            request = request.replaceFirst("install.", "");
+            if (request.startsWith("module.")) {
+                request = request.replaceFirst("module.", "");
+                try {
+                    ReadableModule module = new ReadableModule(request);
+                    if (NexusApplication.getModuleLoader().getModuleIds().contains(module.getId())) {
+                        return;
+                    }
+                    String path;
+                    if (ApplicationStorage.getBundledModules().contains(request)) {
+                        path = ApplicationStorage.getApplicationPath() + "temp/modules/" + module.getId() + ".jar";
+                        ArrayList<String> disabledModules = (ArrayList<String>) ApplicationStorage.getSettings().get("settings.modules.disabledIds");
+                        if (disabledModules.contains(module.getId())) {
+                            disabledModules.remove(module.getId());
+                            ApplicationStorage.getSettings().set("settings.modules.disabledIds", disabledModules);
+                        }
+                    } else {
+                        path = ApplicationStorage.getApplicationPath() + "modules/" + module.getId() + ".jar";
+                    }
+                    Download download = new Download(UUID.randomUUID(), module.getName(), URI.create(module.getDownloadUrl()).toURL(), Path.of(path));
+                    DownloadFinishEvent event = new DownloadFinishEvent(download) {
+                        @Override
+                        public boolean onFinish() {
+                            try {
+                                NexusApplication.getModuleLoader().loadModule(NexusApplication.getModuleLoader().readModule(new File(path)));
+                                NexusApplication.getModuleLoader().getModules().get(module.getId()).onEnable();
+                                String url = frame.getBrowser().getURL().toLowerCase();
+                                if(url.contains("discover.html")) {
+                                    frame.getBrowser().loadURL(ApplicationStorage.urlBase+ ApplicationStorage.language+"/discover.html?l=search&moduleId=-1");
+                                } else {
+                                    frame.getBrowser().reload();
+                                }
+                                return true;
+                            } catch (Exception e) {
+                                NexusUtilities.getLogger().err("[CONNECTOR] (Discover) Couldn't install module from " + module.getLocation() + ": " + e.getMessage());
+                                return false;
+                            }
+                        }
+                    };
+                    download.setFinishEvent(event);
+                    NexusApplication.getDownloadManager().addDownload(download);
+                } catch (Exception e) {
+                    NexusUtilities.getLogger().err("[CONNECTOR] (Discover) Couldn't install module from " + request + ": " + e.getMessage());
+                }
             }
         }
     }

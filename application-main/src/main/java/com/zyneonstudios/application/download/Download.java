@@ -1,12 +1,13 @@
 package com.zyneonstudios.application.download;
 
+import com.zyneonstudios.application.events.DownloadFinishEvent;
 import com.zyneonstudios.application.main.NexusApplication;
-import com.zyneonstudios.nexus.utilities.NexusUtilities;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -30,6 +31,8 @@ public class Download {
     private boolean finished = false;
     private double percent = 0;
 
+    private DownloadFinishEvent event = null;
+
     public Download(UUID uuid, URL downloadUrl, Path path) {
         this.id = uuid.toString();
         this.name = this.id;
@@ -49,6 +52,10 @@ public class Download {
         this.name = name;
         this.path = path;
         this.url = downloadUrl;
+    }
+
+    public void setFinishEvent(DownloadFinishEvent event) {
+        this.event = event;
     }
 
     public boolean start() {
@@ -187,6 +194,9 @@ public class Download {
 
     private void setFinished(boolean finished) {
         this.finished = finished;
+        if(event!=null) {
+            event.execute();
+        }
         if(finished) {
             finishTime = Instant.now();
             percent = 100;
