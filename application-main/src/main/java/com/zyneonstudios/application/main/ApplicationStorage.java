@@ -10,8 +10,6 @@ import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -181,7 +179,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
                 ApplicationStorage.os = System.getProperty("os.name")+"-"+getArchitecture();
             }
         }
-        return URLDecoder.decode(applicationPath, StandardCharsets.UTF_8);
+        return applicationPath.replace("\\","/");
     }
 
     private static String getArchitecture() {
