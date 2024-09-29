@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>bootstrapper</artifactId>
+    <version>2024.9-alpha.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

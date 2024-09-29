@@ -16,6 +16,13 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>zyneonstudios-repo-snapshots</id>
+            <url>https://maven.zyneonstudios.com/snapshots</url>
+        </repository>
+    </distributionManagement>
+
     <modules>
         <module>application-main</module>
         <module>bootstrapper</module>
