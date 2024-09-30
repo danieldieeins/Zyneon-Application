@@ -331,7 +331,7 @@ public class FrameConnector {
                         return;
                     }
                     String path;
-                    if (ApplicationStorage.getBundledModules().contains(request)) {
+                    if (!ApplicationStorage.test&&ApplicationStorage.getBundledModules().contains(request)) {
                         new File(ApplicationStorage.getApplicationPath()+"temp/modules/").mkdirs();
                         path = ApplicationStorage.getApplicationPath() + "temp/modules/" + module.getId() + ".jar";
                         ArrayList<String> disabledModules;
@@ -369,6 +369,7 @@ public class FrameConnector {
                     };
                     download.setFinishEvent(event);
                     NexusApplication.getDownloadManager().addDownload(download);
+                    frame.getBrowser().loadURL(ApplicationStorage.urlBase+ ApplicationStorage.language+"/downloads.html");
                 } catch (Exception e) {
                     NexusUtilities.getLogger().err("[CONNECTOR] (Discover) Couldn't install module from " + request + ": " + e.getMessage());
                 }
