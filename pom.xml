@@ -9,17 +9,10 @@
     <version>2024.10</version>
     <packaging>pom</packaging>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/zyneonstudios/zyneon-maven</url>
-        </repository>
-    </repositories>
-
     <distributionManagement>
         <repository>
-            <id>zyneonstudios-repo-snapshots</id>
-            <url>https://maven.zyneonstudios.com/snapshots</url>
+            <id>zyneonstudios-repo-releases</id>
+            <url>https://maven.zyneonstudios.com/releases</url>
         </repository>
     </distributionManagement>
 

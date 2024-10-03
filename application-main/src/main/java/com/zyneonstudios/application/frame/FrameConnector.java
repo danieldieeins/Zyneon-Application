@@ -51,6 +51,10 @@ public class FrameConnector {
         for(ApplicationModule module:NexusApplication.getModuleLoader().getApplicationModules()) {
             module.getConnector().resolveFrameRequest(request);
         }
+
+        if(NexusApplication.getDownloadManager().getDownloads().isEmpty()) {
+            frame.executeJavaScript("document.getElementById('downloads-button').style.display = 'none';");
+        }
     }
 
     private void open(String request) {
