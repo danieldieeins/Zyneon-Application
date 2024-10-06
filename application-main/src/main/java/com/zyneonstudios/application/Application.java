@@ -73,9 +73,9 @@ public class Application {
     }
 
     private void initConfig() {
-        Config updaterConfig = new Config(new File(Main.getDirectoryPath() + "libs/zyneon/updater.json"));
-        if(updaterConfig.getString("updater.settings.updateChannel")!=null) {
-            updateChannel = updaterConfig.getString("updater.settings.updateChannel");
+        Config updaterConfig = new Config(new File(Main.getDirectoryPath().replace("/Application/","/NEXUS App/") + "config/updater.json"));
+        if(updaterConfig.getString("updater.versions.app.type")!=null) {
+            updateChannel = updaterConfig.getString("updater.versions.app.type");
         }
 
         config = new Config(new File(Main.getDirectoryPath() + "config.json"));

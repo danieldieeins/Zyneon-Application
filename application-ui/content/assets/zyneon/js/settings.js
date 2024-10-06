@@ -146,10 +146,10 @@ function syncGeneral(start,channel) {
     document.getElementById("title_general").innerText = "Settings > General";
 
     if(channel===undefined) {
-        channel = "stable";
+        channel = "old";
     }
 
-    if(channel!=="old") {
+    if(channel==="old") {
         document.getElementById("channel").value = channel;
         document.getElementById("updater-settings").style.display = "inherit";
     }

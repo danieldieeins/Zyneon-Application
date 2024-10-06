@@ -99,7 +99,7 @@ public class Connector {
             frame.removeNotification(request.replace("button.notification.remove.",""));
         } else if (request.startsWith("button.updateChannel.")) {
             Application.updateChannel = request.replace("button.updateChannel.","");
-            new Config(Main.getDirectoryPath()+"libs/zyneon/updater.json").set("updater.settings.updateChannel",Application.updateChannel);
+            new Config(Main.getDirectoryPath().replace("\\","/").replace("/Application/","/NEXUS App/")+"config/updater.json").set("updater.versions.app.type",Application.updateChannel);
         } else if (request.equals("button.online")) {
             frame.getBrowser().loadURL(Application.getOnlineStartURL());
         } else if(request.equals("sync.notifications")) {

@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.zyneonstudios</groupId>
         <artifactId>application-parent</artifactId>
-        <version>2024.9</version>
+        <version>2024.10-old.1</version>
     </parent>
 
     <artifactId>application-main</artifactId>
-    <version>2024.9</version>
+    <version>2024.10-old.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
