@@ -139,6 +139,9 @@ public class ApplicationBootstrapper {
         config.ensure("updater.versions.app.type","null");
         config.ensure("updater.versions.app.value","null");
         config.ensure("updater.settings.updateApp",true);
+        if(updateChannel==null) {
+            updateChannel = config.getString("updater.versions.app.type");
+        }
     }
 
     private static void launchFallback() {
