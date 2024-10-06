@@ -300,7 +300,12 @@ public class NexusApplication {
                         args.append(arg).append(" ");
                     }
                 }
-                File updater = new File(ApplicationStorage.getApplicationPath().replace("\\", "/").replace("/experimental/", "/app.jar"));
+                File updater;
+                if(new File(ApplicationStorage.getApplicationPath()+"bootstrapper.jar").exists()) {
+                    updater = new File(ApplicationStorage.getApplicationPath()+"bootstrapper.jar");
+                } else {
+                    updater = new File(ApplicationStorage.getApplicationPath().replace("\\", "/").replace("/NEXUS App/", "/Application/app.jar"));
+                }
                 if (updater.exists()) {
                     jarPath = updater.getAbsolutePath();
                 }

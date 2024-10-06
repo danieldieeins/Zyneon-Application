@@ -120,7 +120,7 @@
                                     <i class='bx bx-refresh'></i>
                                     <p>App neu laden</p>
                                 </li>
-                                <li onclick="connector('sync.restart')">
+                                <li onclick="connector('async.sync.restart')">
                                     <i class='bx bx-revision'></i>
                                     <p>App neu starten</p>
                                 </li>
@@ -162,8 +162,8 @@
                                             <span class="select">
                                                 <label>
                                                     <select id="updater-settings-update-channel" onchange="syncUpdates();">
-                                                        <option value="experimental">Prerelease (aktiv, empfohlen)</option>
-                                                        <option value="stable">Alt (veraltet, nicht empfohlen)</option>
+                                                        <option value="stable">Stabil (aktiv, empfohlen)</option>
+                                                        <option value="old">Alt (veraltet, nicht empfohlen)</option>
                                                     </select>
                                                 </label>
                                             </span>

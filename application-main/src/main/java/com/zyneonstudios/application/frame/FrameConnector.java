@@ -204,7 +204,7 @@ public class FrameConnector {
         } else if(request.startsWith("autoUpdates.")) {
             request = request.replace("autoUpdates.","");
             boolean update = request.equals("on");
-            ApplicationStorage.getUpdateSettings().set("updater.settings.autoUpdate",update);
+            ApplicationStorage.getUpdateSettings().set("updater.settings.updateApp",update);
         } else if(request.startsWith("linuxFrame.")) {
             request = request.replace("linuxFrame.","");
             boolean frame = request.equals("on");
@@ -215,7 +215,7 @@ public class FrameConnector {
             syncDiscover(request.replaceFirst("discover.",""));
         } else if(request.startsWith("updateChannel.")) {
             request = request.replace("updateChannel.","");
-            ApplicationStorage.getUpdateSettings().set("updater.settings.updateChannel",request);
+            ApplicationStorage.getUpdateSettings().set("updater.versions.app.type",request);
         } else if(request.startsWith("startPage.")) {
             request = request.replaceFirst("startPage.","");
             ApplicationStorage.startPage = request;
@@ -233,13 +233,13 @@ public class FrameConnector {
     private void syncSettings(String request) {
         switch (request) {
             case "general" -> {
-                String channel = "experimental";
+                String channel = "stable";
                 boolean autoUpdate = false;
-                if (ApplicationStorage.getUpdateSettings().getBoolean("updater.settings.autoUpdate") != null) {
-                    autoUpdate = ApplicationStorage.getUpdateSettings().getBool("updater.settings.autoUpdate");
+                if (ApplicationStorage.getUpdateSettings().getBoolean("updater.settings.updateApp") != null) {
+                    autoUpdate = ApplicationStorage.getUpdateSettings().getBool("updater.settings.updateApp");
                 }
-                if (ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel") != null) {
-                    channel = ApplicationStorage.getUpdateSettings().getString("updater.settings.updateChannel");
+                if (ApplicationStorage.getUpdateSettings().getString("updater.versions.app.type") != null) {
+                    channel = ApplicationStorage.getUpdateSettings().getString("updater.versions.app.type");
                 }
                 if (ApplicationStorage.getOS().startsWith("Linux")) {
                     boolean linuxCustomFrame = true;

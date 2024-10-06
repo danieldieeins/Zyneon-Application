@@ -151,7 +151,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
 
     public static String getApplicationPath() {
         if (applicationPath == null) {
-            String folderName = "Zyneon/Application/experimental";
+            String folderName = "Zyneon/NEXUS App";
             String appData;
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
@@ -213,7 +213,7 @@ public record ApplicationStorage(String[] args, NexusApplication app) {
 
     public static JsonStorage getUpdateSettings() {
         if(updateConfig==null) {
-            updateConfig = new JsonStorage(ApplicationStorage.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"libs/zyneon/updater.json");
+            updateConfig = new JsonStorage(ApplicationStorage.getApplicationPath().replace("\\\\","\\").replace("\\","/").replace("/experimental/","/")+"config/updater.json");
         }
         return updateConfig;
     }

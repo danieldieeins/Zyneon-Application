@@ -121,7 +121,7 @@
                                     <i class='bx bx-refresh'></i>
                                     <p>Reload app</p>
                                 </li>
-                                <li onclick="connector('sync.restart')">
+                                <li onclick="connector('async.sync.restart')">
                                     <i class='bx bx-revision'></i>
                                     <p>Restart app</p>
                                 </li>
@@ -163,8 +163,8 @@
                                             <span class="select">
                                                 <label>
                                                     <select id="updater-settings-update-channel" onchange="syncUpdates();">
-                                                        <option value="experimental">Prerelease (active, recommended)</option>
-                                                        <option value="stable">Old (deprecated, not recommended)</option>
+                                                        <option value="stable">Stable (active, recommended)</option>
+                                                        <option value="old">Old (deprecated, not recommended)</option>
                                                     </select>
                                                 </label>
                                             </span>
