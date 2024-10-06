@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>application</artifactId>
-    <version>2024.10.4</version>
-    <name>Libertas (2.0.4)</name>
+    <version>2024.10.5</version>
+    <name>Libertas (2.0.5)</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
