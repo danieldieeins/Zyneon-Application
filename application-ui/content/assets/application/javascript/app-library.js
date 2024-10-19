@@ -118,7 +118,7 @@ function addGroupEntry(groupId,title,id,image) {
     }
 
     actionEntry.addEventListener("dblclick", function() {
-        connector("java.button.launch."+id);
+        connector("async.java.button.launch."+id);
         actionEntry.querySelector("p").innerText = "Starting...";
         let seconds = 5;
         const countdownInterval = setInterval(() => {
