@@ -30,6 +30,10 @@ public class ApplicationBootstrapper {
     public static ApplicationSplash splash = new ApplicationSplash("/updater-logo.png");
 
     public static void main(String[] args) {
+        new UpdateWindow().setVisible(true);
+    }
+
+    public static void main_(String[] args) {
         splash.setVisible(true);
         resolveArguments(args);
         if(appFolder == null) {
