@@ -29,11 +29,11 @@ public class ApplicationBootstrapper {
     private static JsonStorage config = null;
     public static ApplicationSplash splash = new ApplicationSplash("/updater-logo.png");
 
-    public static void main(String[] args) {
+    public static void main_(String[] args) {
         new UpdateWindow().setVisible(true);
     }
 
-    public static void main_(String[] args) {
+    public static void main(String[] args) {
         splash.setVisible(true);
         resolveArguments(args);
         if(appFolder == null) {

@@ -1,4 +1,4 @@
-Zyneon Application ```2024.11 (LibertasFix)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
+Zyneon Application ```2024.11(.1) (Optimus)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
 <br>`Contributions are welcome!`
 
 Download the Zyneon Application from https://github.com/danieldieeins/Zyneon-Application/releases and https://nexus.zyneonstudios.com/application only! All other sources are not verified and we assume no liability!

@@ -184,11 +184,10 @@ public class NexusApplication {
             return true;
         }
         boolean updated = false;
-        File modules = new File(ApplicationStorage.getApplicationPath() + "temp/modules/");
-        if (modules.exists()) {
-            FileActions.deleteFolder(modules);
+        File modules = new File(ApplicationStorage.getApplicationPath() + "modules/");
+        if (!modules.exists()) {
+            logger.dbg("[APP] Created modules path: " + modules.mkdirs());
         }
-        logger.dbg("[APP] Created modules path: " + modules.mkdirs());
 
         if(!ApplicationStorage.isOffline()) {
             try {
@@ -243,6 +242,16 @@ public class NexusApplication {
     private void downloadModule(String jsonUrl, File folder, ArrayList<String> blacklist) throws MalformedURLException {
         JsonObject module = GsonUtility.getObject(jsonUrl).getAsJsonObject("module");
         String id = module.getAsJsonObject("meta").get("id").getAsString();
+        try {
+            for(File modules:folder.listFiles()) {
+                if(!modules.isDirectory()) {
+                    if (modules.getName().equalsIgnoreCase(id + ".jar")) {
+                        System.out.println(modules.getName());
+                        return;
+                    }
+                }
+            }
+        } catch (Exception ignore) {}
         if(!blacklist.contains(id)) {
             Download download = new Download(id+".jar",new URL(module.getAsJsonObject("meta").get("download").getAsString()), Path.of(folder.getAbsolutePath()+"/"+id+".jar"));
             download.start();
