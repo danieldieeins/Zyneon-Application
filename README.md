@@ -1,4 +1,6 @@
 # The continuation of this project can be found here: https://github.com/zyneonstudios/nexus-app
+---
+### We have moved this project to a new repository, as there is now an official GitHub organization for Zyneon Studios projects, including Zyneon Nexus. Please note that this is the official continuation of this project and not a third-party fork.
 
 <details>
   <summary>Old README.md</summary>
