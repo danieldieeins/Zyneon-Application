@@ -3,15 +3,11 @@
 ### We have moved this project to a new repository, as there is now an official GitHub organization for Zyneon Studios projects, including Zyneon Nexus. Please note that this is the official continuation of this project and not a third-party fork.
 
 <details>
-  <summary>Old README.md</summary>
-  Zyneon Application ```2024.11(.1) (Optimus)``` [Download latest version](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
-  <br>`Contributions are welcome!`
-  
-  Download the Zyneon Application from https://github.com/danieldieeins/Zyneon-Application/releases and https://nexus.zyneonstudios.com/application only! All other sources are not verified and we assume no liability!
+  Download the Zyneon Application from https://github.com/zyneonstudios/nexus-app/releases and https://nexus.zyneonstudios.com/application only! All other sources are not verified and we assume no liability!
   
   ---
   ![Zyneon Application logo and text](https://i.ibb.co/tsKhXtB/23.png)
-  by [Zyneon Studios](https://www.zyneonstudios.com). Metadata and update repository: [here](https://github.com/danieldieeins/ZyneonApplicationContent)
+  by [Zyneon Studios](https://www.zyneonstudios.com). Metadata and update repository: [here](https://github.com/zyneonstudios/nexus-nex)
   ---
   Supported platforms:
   ![Zyneon Application logo and text](https://i.ibb.co/FK4LNHm/platforms.png)
@@ -26,7 +22,7 @@
   [Click here to open web version](https://www.zyneonstudios.com/nexus/app)
   
   ---
-  [<img src="https://i.ibb.co/nBLzRMT/download.png">](https://github.com/danieldieeins/Zyneon-Application/releases/latest)
+  [<img src="https://i.ibb.co/nBLzRMT/download.png">](https://github.com/zyneonstudios/nexus-app/releases/latest)
   
   ---
   # Images
